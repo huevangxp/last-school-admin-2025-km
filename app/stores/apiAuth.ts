@@ -45,7 +45,6 @@ export const useApiAuthStore = defineStore('apiAuth', {
             const userRole = useCookie('role');
             const userPhone = useCookie('phone');
             const email = useCookie('email');
-
             // Clear all cookies
             token.value = null;
             userId.value = null;
