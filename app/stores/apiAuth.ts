@@ -50,10 +50,10 @@ async login(user: string, password: string) {
 
             // Set cookie values
             token.value = response.data.token;
-            userId.value = String(response.data.id);
-            userRole.value = response.data.role;
-            userPhone.value = response.data.phone;
-            email.value = response.data.email;
+            userId.value = String(response.data.data.id);
+            userRole.value = response.data.data.role;
+            userPhone.value = response.data.data.phone;
+            email.value = response.data.data.email;
 
             console.log('Login successful, token saved', response.data);
 
