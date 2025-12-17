@@ -18,54 +18,97 @@ export const useApiAuthStore = defineStore('apiAuth', {
         profile: {} as Profile,
     }),
     actions: {
-        async login(user: any, password: any) {
-           
-            try {
-                  const token = useCookie('token');
-                    const userId = useCookie('id');
-                    const userRole = useCookie('role');
-                    const userPhone = useCookie('phone');
-                    const email = useCookie('email');
+     async login(user: string, password: string) {
+    try {
+        const { $axios } = useNuxtApp();
 
-                const {$axios} = useNuxtApp();
+        const response = await $axios.post('/login', {
+            user: user,
+            password: password,
+        });
 
-                const response = await $axios.post('/login', {
-                    user: user,
-                    password: password,
-                });
+        if (response.status === 200 && response.data) {
+            // Set authentication state
+            this.authenticated = true;
+            this.profile = response.data;
+            
+            // Store credentials in httpOnly cookies (server-side)
+            const token = useCookie('token', {
+                maxAge: 60 * 60 * 24 * 7, // 7 days
+                secure: true, // HTTPS only
+                httpOnly: true, // Not accessible via JavaScript
+                sameSite: 'strict' // CSRF protection
+            });
+            
+            const userId = useCookie('id', {
+                maxAge: 60 * 60 * 24 * 7,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'strict'
+            });
+            
+            const userRole = useCookie('role', {
+                maxAge: 60 * 60 * 24 * 7,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'strict'
+            });
+            
+            const userPhone = useCookie('phone', {
+                maxAge: 60 * 60 * 24 * 7,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'strict'
+            });
+            
+            const email = useCookie('email', {
+                maxAge: 60 * 60 * 24 * 7,
+                secure: true,
+                httpOnly: true,
+                sameSite: 'strict'
+            });
 
+            // Set cookie values
+            token.value = response.data.token;
+            userId.value = response.data.id;
+            userRole.value = response.data.role;
+            userPhone.value = response.data.phone;
+            email.value = response.data.email;
 
-                if (response.status === 200) {
-                    this.authenticated = true;
-                    this.profile = response.data;
-                   
-                  
-                    // Clear all cookies
-                    token.value = response.data.token;
-                    userId.value = response.data.id;
-                    userRole.value = response.data.role;
-                    userPhone.value = response.data.phone;
-                    email.value = response.data.email;
-
-                    this.authenticated = false;
-                    this.profile = {} as Profile;
-                     navigateTo('/');
-
-
-                    return navigateTo('/');
-                }
-                else {
-                    this.authenticated = false;
-                    this.profile = {} as Profile;
-                    navigateTo('/login');
-                }
-
-                
-            } catch (error) {
-                
-            }
-             
-        },
+            // Navigate to home page
+            return navigateTo('/');
+        } else {
+            // Login failed
+            this.authenticated = false;
+            this.profile = {} as Profile;
+            throw new Error('Login failed');
+        }
+        
+    } catch (error) {
+        // Handle error properly
+        console.error('Login error:', error);
+        
+        // Clear authentication state
+        this.authenticated = false;
+        this.profile = {} as Profile;
+        
+        // Clear cookies on error
+        const token = useCookie('token');
+        const userId = useCookie('id');
+        const userRole = useCookie('role');
+        const userPhone = useCookie('phone');
+        const email = useCookie('email');
+        
+        token.value = null;
+        userId.value = null;
+        userRole.value = null;
+        userPhone.value = null;
+        email.value = null;
+        
+        // Show error to user or navigate to login
+        throw error; // Re-throw to allow caller to handle
+    }
+},
 
         logout() {
             const token = useCookie('token');
