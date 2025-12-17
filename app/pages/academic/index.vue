@@ -7,7 +7,7 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
+        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
           <span> {{ $t("management") }} {{ $t("academic") }}</span>
         </h1>
         <!-- <p class="text-body-2 text-grey-darken-1">
