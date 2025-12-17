@@ -80,7 +80,7 @@
             </v-list-item-title>
           </v-list-item>
         </v-list>
-        <template v-slot:append>
+        <!-- <template v-slot:append>
           <div class="user-profile">
             <div class="d-flex align-center ga-3">
               <v-avatar size="40">
@@ -99,7 +99,7 @@
               </div>
             </div>
           </div>
-        </template>
+        </template> -->
       </v-navigation-drawer>
     </ClientOnly>
   </div>
