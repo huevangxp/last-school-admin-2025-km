@@ -18,74 +18,47 @@ export const useApiAuthStore = defineStore('apiAuth', {
         profile: {} as Profile,
     }),
     actions: {
-     async login(user: string, password: string) {
+async login(user: string, password: string) {
     try {
         const { $axios } = useNuxtApp();
-
-        const token = useCookie('token');
-        const userId = useCookie('id');
-        const userRole = useCookie('role');
-        const userPhone = useCookie('phone');
-        const email = useCookie('email');
 
         const response = await $axios.post('/login-teacher', {
             username: user,
             password: password,
         });
-        
 
         if (response.status === 200 && response.data) {
             // Set authentication state
             this.authenticated = true;
             this.profile = response.data;
             
-            // Store credentials in httpOnly cookies (server-side)
-            const token = useCookie('token', {
+            // Define cookie options once
+            const cookieOptions = {
                 maxAge: 60 * 60 * 24 * 7, // 7 days
-                secure: true, // HTTPS only
-                httpOnly: true, // Not accessible via JavaScript
-                sameSite: 'strict' // CSRF protection
-            });
+                secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+                sameSite: 'lax' as const, // 'strict' might cause issues with redirects
+                path: '/'
+            };
             
-            const userId = useCookie('id', {
-                maxAge: 60 * 60 * 24 * 7,
-                secure: true,
-                httpOnly: true,
-                sameSite: 'strict'
-            });
-            
-            const userRole = useCookie('role', {
-                maxAge: 60 * 60 * 24 * 7,
-                secure: true,
-                httpOnly: true,
-                sameSite: 'strict'
-            });
-            
-            const userPhone = useCookie('phone', {
-                maxAge: 60 * 60 * 24 * 7,
-                secure: true,
-                httpOnly: true,
-                sameSite: 'strict'
-            });
-            
-            const email = useCookie('email', {
-                maxAge: 60 * 60 * 24 * 7,
-                secure: true,
-                httpOnly: true,
-                sameSite: 'strict'
-            });
-
-            console.log(response.data.token);
+            // Store credentials in cookies
+            // Note: httpOnly can only be set server-side in Nuxt
+            const token = useCookie('token', cookieOptions);
+            const userId = useCookie('id', cookieOptions);
+            const userRole = useCookie('role', cookieOptions);
+            const userPhone = useCookie('phone', cookieOptions);
+            const email = useCookie('email', cookieOptions);
 
             // Set cookie values
             token.value = response.data.token;
-            userId.value = response.data.id;
+            userId.value = String(response.data.id);
             userRole.value = response.data.role;
             userPhone.value = response.data.phone;
             email.value = response.data.email;
 
+            console.log('Login successful, token saved');
+
             // Navigate to home page
-            navigateTo('/');
+            return navigateTo('/');
         } else {
             // Login failed
             this.authenticated = false;
@@ -93,7 +66,7 @@ export const useApiAuthStore = defineStore('apiAuth', {
             throw new Error('Login failed');
         }
         
-    } catch (error) {
+    } catch (error: any) {
         // Handle error properly
         console.error('Login error:', error);
         
@@ -114,10 +87,13 @@ export const useApiAuthStore = defineStore('apiAuth', {
         userPhone.value = null;
         email.value = null;
         
-        // Show error to user or navigate to login
-        throw error; // Re-throw to allow caller to handle
+        // Return error message for UI handling
+        return {
+            error: true,
+            message: error.response?.data?.message || 'Login failed. Please check your credentials.'
+        };
     }
-},
+}
 
         logout() {
             const token = useCookie('token');
