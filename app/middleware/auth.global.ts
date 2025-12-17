@@ -5,6 +5,8 @@ export default defineNuxtRouteMiddleware((to) => {
     const { authenticated } = storeToRefs(useApiAuthStore());
     const token = useCookie('token');
 
+    console.log(token.value);
+
     if (token.value) {
         authenticated.value = true;
     }
