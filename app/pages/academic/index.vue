@@ -200,7 +200,9 @@
             <div class="font-weight-medium text-grey-darken-3">
               {{ formatDate(item.start_date) }}
             </div>
-            <div class="text-caption text-grey-darken-1">Start Date</div>
+            <div class="text-caption text-grey-darken-1">
+              {{ t("start_date") }}
+            </div>
           </div>
         </template>
 
