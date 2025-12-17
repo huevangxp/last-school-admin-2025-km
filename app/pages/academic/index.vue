@@ -197,7 +197,7 @@
         <!-- Start Date Slot -->
         <template v-slot:item.startDate="{ item }">
           <div>
-            <div class="font-weight-medium text-grey-darken-3">
+            <div class="font-weight-bold text-grey-darken-4">
               <span>{{ formatDate(item.start_date) }}</span>
             </div>
             <div class="text-caption text-grey-darken-1">
