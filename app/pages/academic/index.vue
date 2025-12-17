@@ -275,10 +275,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useAcademicStore } from "@/stores/apiAcademic";
 
 const search = ref("");
 const { t } = useI18n();
+
+const { academics } = storeToRefs(useAcademicStore());
+const { fetchAcademics } = useAcademicStore();
+
+onMounted(() => {
+  fetchAcademics();
+});
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
