@@ -277,6 +277,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useAcademicStore } from "@/stores/apiAcademic";
+import { formatDate } from "@/utils/formatDate";
 
 const search = ref("");
 
