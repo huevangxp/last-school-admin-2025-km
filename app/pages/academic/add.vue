@@ -203,8 +203,16 @@ const save = async () => {
     console.log("Form submitted:", form.value);
 
     const { $axios } = useNuxtApp();
-    const response = await $axios.post("/add-academic-year", form.value);
-    console.log("API response:", response.data);
+    await $axios.post("/add-academic-year", form.value).then((res) => {
+      console.log(res);
+      form.value = {
+        title: "",
+        status: "active",
+        startDate: "",
+        endDate: "",
+        description: "",
+      };
+    });
 
     // // Simulate API delay
     // await new Promise((resolve) => setTimeout(resolve, 1000));
