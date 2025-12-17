@@ -93,7 +93,7 @@ async login(user: string, password: string) {
             message: error.response?.data?.message || 'Login failed. Please check your credentials.'
         };
     }
-}
+},
 
         logout() {
             const token = useCookie('token');
