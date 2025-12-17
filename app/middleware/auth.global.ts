@@ -2,7 +2,6 @@ import { storeToRefs } from 'pinia';
 import { useApiAuthStore } from '~/stores/apiAuth';
 
 export default defineNuxtRouteMiddleware((to) => {
-    console.log(to);
     const { authenticated } = storeToRefs(useApiAuthStore());
     const token = useCookie('token');
 
