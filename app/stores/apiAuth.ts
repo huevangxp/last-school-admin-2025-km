@@ -55,7 +55,7 @@ async login(user: string, password: string) {
             userPhone.value = response.data.phone;
             email.value = response.data.email;
 
-            console.log('Login successful, token saved');
+            console.log('Login successful, token saved', response.data);
 
             // Navigate to home page
             return navigateTo('/');
