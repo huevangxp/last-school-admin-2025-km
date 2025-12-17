@@ -58,7 +58,7 @@ async login(user: string, password: string) {
             console.log('Login successful, token saved', response.data.token);
 
             // Navigate to home page
-          navigateTo('/');
+            navigateTo('/');
         } else {
             // Login failed
             this.authenticated = false;
