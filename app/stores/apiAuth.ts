@@ -54,7 +54,7 @@ async login(user: string, password: string) {
             token.value = response.data.token;
             userId.value = String(response.data.data.id);
             userRole.value = String(response.data.data.role);
-            userPhone.value = String(response.data.data.phone);
+            userPhone.value = String(response.data.data.phone_number);
             email.value = String(response.data.data.email);
             avatar.value = String(response.data.data.avatar);
             username.value = String(response.data.data.username);
