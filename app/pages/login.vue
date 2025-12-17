@@ -14,7 +14,9 @@
           height="400"
           class="mb-8"
         ></v-img>
-        <h1 class="text-h3 font-weight-bold mb-4"><span>{{ $t("schoolmanagement") }}</span></h1>
+        <h1 class="text-h3 font-weight-bold mb-4">
+          <span>{{ $t("schoolmanagement") }}</span>
+        </h1>
         <p class="text-h6 font-weight-light opacity-80">
           <span>{{ $t("schoolmanagementText") }}</span>
         </p>
@@ -126,7 +128,7 @@ definePageMeta({
   layout: "empty",
 });
 
-const username = ref("a37607");
+const username = ref("admin");
 const password = ref("admin");
 const showPassword = ref(false);
 const loading = ref(false);
