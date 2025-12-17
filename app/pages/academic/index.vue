@@ -69,7 +69,7 @@
               <p class="text-caption text-grey-darken-1 mb-1">
                 <span class="text-green">ສົກຮຽນປີນີ້</span>
               </p>
-              <h4 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h4 class="text-h5 font-weight-bold text-grey-darken-4">
                 <span>2024-25</span>
               </h4>
             </div>
