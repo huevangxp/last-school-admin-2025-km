@@ -244,8 +244,8 @@
               <strong>1</strong>
               <span> {{ $t("to") }} </span>
               <strong>{{ academics.length }}</strong>
-              <span class="px-2"> {{ $t("of") }} </span>
-              <strong>{{ academics.length }}</strong>
+              <span> {{ $t("of") }} </span>
+              <strong class="px-2">{{ academics.length }}</strong>
               <span> {{ $t("results") }} </span>
             </div>
             <div class="d-flex gap-2 align-center">
