@@ -84,12 +84,16 @@ async login(user: string, password: string) {
         const userRole = useCookie('role');
         const userPhone = useCookie('phone');
         const email = useCookie('email');
+        const avatar = useCookie('avatar');
+        const username = useCookie('username');
         
         token.value = null;
         userId.value = null;
         userRole.value = null;
         userPhone.value = null;
         email.value = null;
+        avatar.value = null;
+        username.value = null;
         
         // Return error message for UI handling
         return {
