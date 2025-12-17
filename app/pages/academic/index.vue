@@ -210,7 +210,7 @@
         <template v-slot:item.endDate="{ item }">
           <div>
             <div class="font-weight-medium text-grey-darken-3">
-              {{ formatDate(item.end_date) }}
+              <span>{{ formatDate(item.end_date) }}</span>
             </div>
             <div class="text-caption text-grey-darken-1">
               {{ t("end_date") }}
