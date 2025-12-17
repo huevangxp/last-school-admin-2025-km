@@ -59,7 +59,7 @@ async login(user: string, password: string) {
             avatar.value = String(response.data.data.avatar);
             username.value = String(response.data.data.username);
 
-            console.log('Login successful, token saved', response.data);
+            // console.log('Login successful, token saved', response.data);
 
             // Navigate to home page
             navigateTo('/');
