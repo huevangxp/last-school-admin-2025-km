@@ -212,6 +212,8 @@ const save = async () => {
         endDate: "",
         description: "",
       };
+      loading.value = false;
+      // router.push("/academic");
     });
 
     // // Simulate API delay
