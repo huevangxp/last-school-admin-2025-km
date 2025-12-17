@@ -202,10 +202,14 @@ const save = async () => {
     // TODO: Implement API call
     console.log("Form submitted:", form.value);
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const { $axios } = useNuxtApp();
+    const response = await $axios.post("/add-academic-year", form.value);
+    console.log("API response:", response.data);
 
-    router.push("/academic");
+    // // Simulate API delay
+    // await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // router.push("/academic");
   } catch (error) {
     console.error(error);
   } finally {
