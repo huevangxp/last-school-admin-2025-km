@@ -160,6 +160,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
+
 const loading = ref(false);
 const formRef = ref();
 
@@ -181,9 +184,9 @@ const statusOptions = [
 ];
 
 const breadcrumbs = [
-  { title: $t("dashboard"), disabled: false, to: "/" },
-  { title: $t("academic"), disabled: false, to: "/academic" },
-  { title: $t("add"), disabled: true, to: "/academic/add" },
+  { title: t("dashboard"), disabled: false, to: "/" },
+  { title: t("academic"), disabled: false, to: "/academic" },
+  { title: t("add"), disabled: true, to: "/academic/add" },
 ];
 
 const rules = {
