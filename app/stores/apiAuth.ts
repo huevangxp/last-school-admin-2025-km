@@ -30,6 +30,11 @@ export const useApiAuthStore = defineStore('apiAuth', {
                 });
 
 
+                if (response.status === 200) {
+                    this.authenticated = true;
+                    this.profile = response.data;
+                    navigateTo('/');
+                }
 
                  console.log(response)
                 
