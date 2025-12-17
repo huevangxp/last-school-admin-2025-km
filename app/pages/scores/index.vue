@@ -7,12 +7,9 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
+        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
           <span>{{ $t("management") }} {{ $t("scores") }}</span>
         </h1>
-        <p class="text-body-2 text-grey-darken-1">
-          Manage student scores and academic performance
-        </p>
       </div>
 
       <div class="d-flex gap-3 align-center flex-wrap">
@@ -62,15 +59,11 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">
-                total students
+                <span>total students</span>
               </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
                 {{ students.length }}
               </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-arrow-up</v-icon>
-                +5.2% vs last semester
-              </p>
             </div>
             <v-avatar color="blue-lighten-5" size="56">
               <v-icon color="blue" size="28">mdi-account-group</v-icon>
@@ -87,12 +80,10 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ຄະແນນສະເລ່ຍ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">83.2</h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-check-circle</v-icon>
-                Good Performance
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ຄະແນນສະເລ່ຍ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">83.2</h2>
             </div>
             <v-avatar color="green-lighten-5" size="56">
               <v-icon color="green" size="28">mdi-chart-line</v-icon>
@@ -109,12 +100,10 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ອັດຕາຜ່ານ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">92%</h2>
-              <p class="text-caption text-purple mt-1">
-                <v-icon size="14" color="purple">mdi-trophy</v-icon>
-                this month
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ອັດຕາຜ່ານ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">92%</h2>
             </div>
             <v-avatar color="purple-lighten-5" size="56">
               <v-icon color="purple" size="28">mdi-trophy</v-icon>
@@ -132,13 +121,9 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">
-                ຍັງບໍ່ປ້ອນຄະແນນ
+                <span>ຍັງບໍ່ປ້ອນຄະແນນ</span>
               </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">3</h2>
-              <p class="text-caption text-orange mt-1">
-                <v-icon size="14" color="orange">mdi-clock-outline</v-icon>
-                requires action
-              </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">3</h2>
             </div>
             <v-avatar color="orange-lighten-5" size="56">
               <v-icon color="orange" size="28">mdi-clock-outline</v-icon>

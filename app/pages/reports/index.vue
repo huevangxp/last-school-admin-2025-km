@@ -7,7 +7,7 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
+        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
           <span>Management Reports</span>
         </h1>
         <p class="text-body-2 text-grey-darken-1">
@@ -53,15 +53,9 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">ລາຍງານທັງໝົດ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
                 {{ reports.length }}
               </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success"
-                  >mdi-file-document-multiple</v-icon
-                >
-                ປະຈຳເດືອນ
-              </p>
             </div>
             <v-avatar color="blue-lighten-5" size="56">
               <v-icon color="blue" size="28">mdi-file-document-multiple</v-icon>
@@ -79,13 +73,9 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">ລາຍງານສຳເລັດ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
                 {{ reports.filter((r) => r.status === "ສຳເລັດ").length }}
               </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-check-circle</v-icon>
-                ພ້ອມດາວໂຫຼດ
-              </p>
             </div>
             <v-avatar color="green-lighten-5" size="56">
               <v-icon color="green" size="28">mdi-check-circle</v-icon>
@@ -103,11 +93,7 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">ກຳລັງປະມວນຜົນ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">2</h2>
-              <p class="text-caption text-purple mt-1">
-                <v-icon size="14" color="purple">mdi-progress-clock</v-icon>
-                ລໍຖ້າ
-              </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">2</h2>
             </div>
             <v-avatar color="purple-lighten-5" size="56">
               <v-icon color="purple" size="28">mdi-progress-clock</v-icon>
@@ -125,11 +111,7 @@
           <div class="d-flex align-center justify-space-between">
             <div>
               <p class="text-caption text-grey-darken-1 mb-1">ດາວໂຫຼດທັງໝົດ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">156</h2>
-              <p class="text-caption text-orange mt-1">
-                <v-icon size="14" color="orange">mdi-download</v-icon>
-                ເດືອນນີ້
-              </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">156</h2>
             </div>
             <v-avatar color="orange-lighten-5" size="56">
               <v-icon color="orange" size="28">mdi-download</v-icon>

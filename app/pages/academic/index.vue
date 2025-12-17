@@ -169,6 +169,9 @@
         class="academic-table"
         hover
       >
+        <template v-slot:item.id="{ index }">
+          <div class="text-uppercase">{{ index + 1 }}</div>
+        </template>
         <!-- Academic Year Slot -->
         <template v-slot:item.title="{ item }">
           <div class="d-flex align-center py-2">
@@ -187,7 +190,7 @@
               <div class="font-weight-bold text-grey-darken-4">
                 <span>{{ item.title }}</span>
               </div>
-              <div class="text-caption text-grey-darken-1">
+              <div class="text-caption text-grey-darken-1 text-uppercase">
                 {{ hiddenId(item.id) }}
               </div>
             </div>
@@ -300,6 +303,12 @@ const breadcrumbs = [
 ];
 
 const headers = [
+  {
+    title: $t("id"),
+    key: "id",
+    align: "start" as const,
+    sortable: true,
+  },
   {
     title: $t("academic"),
     key: "title",

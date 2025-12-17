@@ -7,12 +7,9 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
+        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
           <span>{{ $t("management") }} {{ $t("subject") }}</span>
         </h1>
-        <p class="text-body-2 text-grey-darken-1">
-          Manage subjects and curriculum
-        </p>
       </div>
 
       <div class="d-flex gap-3 align-center flex-wrap">
@@ -52,16 +49,10 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                total subjects
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
+              <p class="text-caption text-grey-darken-1 mb-1">total subjects</p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
                 {{ subjects.length }}
               </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-arrow-up</v-icon>
-                +2 this year
-              </p>
             </div>
             <v-avatar color="teal-lighten-5" size="56">
               <v-icon color="teal" size="28">mdi-book-open-page-variant</v-icon>
@@ -81,13 +72,9 @@
               <p class="text-caption text-grey-darken-1 mb-1">
                 active subjects
               </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
                 {{ subjects.filter((s) => s.status === "Active").length }}
               </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-check-circle</v-icon>
-                100% {{ t("rate") }}
-              </p>
             </div>
             <v-avatar color="green-lighten-5" size="56">
               <v-icon color="green" size="28">mdi-check-circle</v-icon>
@@ -104,14 +91,8 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                total teachers
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">12</h2>
-              <p class="text-caption text-purple mt-1">
-                <v-icon size="14" color="purple">mdi-account-tie</v-icon>
-                assigned
-              </p>
+              <p class="text-caption text-grey-darken-1 mb-1">total teachers</p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">12</h2>
             </div>
             <v-avatar color="purple-lighten-5" size="56">
               <v-icon color="purple" size="28">mdi-account-tie</v-icon>
@@ -128,14 +109,8 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                avg students
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">280</h2>
-              <p class="text-caption text-orange mt-1">
-                <v-icon size="14" color="orange">mdi-account-group</v-icon>
-                per subject
-              </p>
+              <p class="text-caption text-grey-darken-1 mb-1">avg students</p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">280</h2>
             </div>
             <v-avatar color="orange-lighten-5" size="56">
               <v-icon color="orange" size="28">mdi-account-group</v-icon>

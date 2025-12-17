@@ -80,9 +80,21 @@
             </v-list-item-title>
           </v-list-item>
         </v-list>
-        <!-- <template v-slot:append>
+        <template v-slot:append>
           <div class="user-profile">
-            <div class="d-flex align-center ga-3">
+            <!-- logout button -->
+            <v-btn
+              variant="flat"
+              block
+              color="red"
+              size="large"
+              class="mt-2 text-uppercase"
+              @click="logoutDialog = true"
+            >
+              <v-icon start class="mt-1">mdi-logout</v-icon>
+              {{ t("logout") }}
+            </v-btn>
+            <!-- <div class="d-flex align-center ga-3">
               <v-avatar size="40">
                 <v-img
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZa1BqD943Cz_nb3fZ0bc9PyOOvdt8sHdy_-M-e-ZFonb_RtKd97pIOeLha6GZ3MtnseeSPtt8TZk8DixN2gs_w1uS3nqYx4EwL-jfX2EYJbBoSDcwVNklTfhlItCwz5c4Qzof1hDBipAxXRa-H4dfRaYiOOF7zFvRcIO85IHhFfLruNJr4tdEo29YPc7EYuB83BQ-_7LR1LR_25q1YNwXSTeoWclOhIFCPoJxGKAkAWhBMel3re2598v4nFU4-QSnrFK01yF9ZW8"
@@ -97,18 +109,55 @@
                   <span>Admin</span>
                 </p>
               </div>
-            </div>
+            </div> -->
           </div>
-        </template> -->
+        </template>
       </v-navigation-drawer>
     </ClientOnly>
+
+    <v-dialog v-model="logoutDialog" width="600">
+      <v-card>
+        <v-card-title class="text-h5 bg-primary text-white">
+          <span>{{ t("logout") }}</span>
+        </v-card-title>
+        <v-card-text class="my-10">{{ t("logout_message") }}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="red"
+            variant="outlined"
+            @click="logoutDialog = false"
+            class="px-6"
+          >
+            <v-icon start>mdi-close</v-icon>
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="flat"
+            @click="logoutButton"
+            class="px-6"
+          >
+            <v-icon start>mdi-logout</v-icon>
+            {{ t("logout") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useApiAuthStore } from "~/stores/apiAuth";
+
+const apiAuthStore = useApiAuthStore();
+const { logout } = apiAuthStore;
+
 const langName = useCookie("lang_name", { default: () => "English" });
 const langFlag = useCookie("lang_flag", { default: () => "/eng.png" });
 const { locales, setLocale, t } = useI18n();
+
+const logoutDialog = ref(false);
 
 const getFlag = (item: any) => {
   return item.flag || "/eng.png";
@@ -127,6 +176,11 @@ const menuItems = ref([
     title: "dashboard",
     icon: "mdi-view-dashboard",
     to: "/",
+  },
+  {
+    title: "ethnic_group",
+    icon: "mdi-book",
+    to: "/ethnic-group",
   },
   {
     title: "academic",
@@ -174,6 +228,11 @@ const menuItems = ref([
     to: "/settings",
   },
 ]);
+
+const logoutButton = () => {
+  logout();
+  logoutDialog.value = false;
+};
 </script>
 
 <style scoped>
@@ -192,7 +251,7 @@ const menuItems = ref([
 
 .user-profile {
   padding: 16px 24px;
-  border-top: 1px solid rgb(var(--v-theme-on-surface), 0.12);
+  /* border-top: 1px solid rgb(var(--v-theme-on-surface), 0.12); */
 }
 
 :deep(.v-list-item--active) {

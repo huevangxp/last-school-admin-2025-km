@@ -78,6 +78,10 @@
     "export":"Export",
     "schoolmanagement":"School Management",
     "schoolmanagementText":"Streamline your educational administration with our comprehensive platform.",
-    "action":"Action"
-    
+    "action":"Action",
+    "logout":"Logout",
+    "logout_message":"Are you sure you want to logout?",
+    "ethnic_group": "Ethnic Group",
+    "ethnic_groups": "Ethnic Groups",
+    "name": "Name"
 }

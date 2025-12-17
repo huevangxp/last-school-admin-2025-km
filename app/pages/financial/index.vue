@@ -7,12 +7,9 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
+        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
           <span>Manage Financial</span>
         </h1>
-        <p class="text-body-2 text-grey-darken-1">
-          Manage school finances, payments and transactions
-        </p>
       </div>
 
       <div class="d-flex gap-3 align-center flex-wrap">
@@ -52,14 +49,12 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ລາຍຮັບທັງໝົດ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
-                ₭45.2M
-              </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-arrow-up</v-icon>
-                +12.5% ເດືອນນີ້
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ລາຍຮັບທັງໝົດ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+                <span>₭45.2M</span>
+              </h2>
             </div>
             <v-avatar color="green-lighten-5" size="56">
               <v-icon color="green" size="28">mdi-cash-plus</v-icon>
@@ -76,14 +71,12 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ລາຍຈ່າຍທັງໝົດ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
-                ₭28.7M
-              </h2>
-              <p class="text-caption text-error mt-1">
-                <v-icon size="14" color="error">mdi-arrow-down</v-icon>
-                -5.2% ເດືອນນີ້
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ລາຍຈ່າຍທັງໝົດ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+                <span>₭28.7M</span>
+              </h2>
             </div>
             <v-avatar color="red-lighten-5" size="56">
               <v-icon color="red" size="28">mdi-cash-minus</v-icon>
@@ -100,14 +93,12 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ຍອດຄົງເຫຼືອ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
-                ₭16.5M
-              </h2>
-              <p class="text-caption text-purple mt-1">
-                <v-icon size="14" color="purple">mdi-wallet</v-icon>
-                ບັນຊີຫຼັກ
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ຍອດຄົງເຫຼືອ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+                <span>₭16.5M</span>
+              </h2>
             </div>
             <v-avatar color="purple-lighten-5" size="56">
               <v-icon color="purple" size="28">mdi-wallet</v-icon>
@@ -124,12 +115,12 @@
         >
           <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">ຄ້າງຊຳລະ</p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">15</h2>
-              <p class="text-caption text-orange mt-1">
-                <v-icon size="14" color="orange">mdi-clock-outline</v-icon>
-                ລໍຖ້າຊຳລະ
+              <p class="text-caption text-grey-darken-1 mb-1">
+                <span>ຄ້າງຊຳລະ</span>
               </p>
+              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+                <span>15</span>
+              </h2>
             </div>
             <v-avatar color="orange-lighten-5" size="56">
               <v-icon color="orange" size="28">mdi-clock-outline</v-icon>
