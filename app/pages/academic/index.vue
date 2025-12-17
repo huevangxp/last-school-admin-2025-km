@@ -244,7 +244,7 @@
               <strong>1</strong>
               <span> {{ $t("to") }} </span>
               <strong>{{ academics.length }}</strong>
-              <span> {{ $t("of") }} </span>
+              <span class="px-2"> {{ $t("of") }} </span>
               <strong>{{ academics.length }}</strong>
               <span> {{ $t("results") }} </span>
             </div>
