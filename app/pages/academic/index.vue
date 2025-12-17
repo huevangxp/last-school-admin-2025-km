@@ -236,6 +236,13 @@
           </v-chip>
         </template>
 
+        <!-- Action Slot -->
+        <template v-slot:item.action="{ item }">
+          <v-btn icon size="small" variant="text" color="primary">
+            <v-icon icon="mdi-pencil"></v-icon>
+          </v-btn>
+        </template>
+
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-6">
