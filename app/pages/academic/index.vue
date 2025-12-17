@@ -240,9 +240,13 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-6">
             <div class="text-body-2 text-grey-darken-1">
-              {{ $t("showing") }} <strong>1</strong> {{ $t("to") }}
-              <strong>{{ academics.length }}</strong> {{ $t("of") }}
-              <strong>{{ academics.length }}</strong> {{ $t("results") }}
+              <span>{{ $t("showing") }}</span>
+              <strong>1</strong>
+              <span>{{ $t("to") }}</span>
+              <strong>{{ academics.length }}</strong>
+              <span>{{ $t("of") }}</span>
+              <strong>{{ academics.length }}</strong>
+              <span>{{ $t("results") }}</span>
             </div>
             <div class="d-flex gap-2 align-center">
               <v-btn icon variant="text" color="grey-darken-1" size="small">
