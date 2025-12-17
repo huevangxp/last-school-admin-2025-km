@@ -302,19 +302,19 @@ const headers = [
     sortable: true,
   },
   {
-    title: $t("start_date"),
+    title: t("start_date"),
     key: "startDate",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: $t("end_date"),
+    title: t("end_date"),
     key: "endDate",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: $t("status"),
+    title: t("status"),
     key: "status",
     align: "start" as const,
     sortable: true,
@@ -323,18 +323,6 @@ const headers = [
   ...h,
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
 }));
-
-const { $axios } = useNuxtApp();
-const academics = ref([]);
-
-onMounted(async () => {
-  try {
-    const response = await $axios.get("/get-all-academic-year");
-    academics.value = response.data.data;
-  } catch (error) {
-    console.error(error);
-  }
-});
 </script>
 
 <style scoped>
