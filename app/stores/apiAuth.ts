@@ -22,10 +22,17 @@ export const useApiAuthStore = defineStore('apiAuth', {
     try {
         const { $axios } = useNuxtApp();
 
+        const token = useCookie('token');
+        const userId = useCookie('id');
+        const userRole = useCookie('role');
+        const userPhone = useCookie('phone');
+        const email = useCookie('email');
+
         const response = await $axios.post('/login-teacher', {
             username: user,
             password: password,
         });
+        
 
         if (response.status === 200 && response.data) {
             // Set authentication state
