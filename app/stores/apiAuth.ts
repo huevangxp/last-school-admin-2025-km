@@ -47,6 +47,8 @@ async login(user: string, password: string) {
             const userRole = useCookie('role');
             const userPhone = useCookie('phone');
             const email = useCookie('email');
+            const avatar = useCookie('avatar');
+            const username = useCookie('username');
 
             // Set cookie values
             token.value = response.data.token;
@@ -54,6 +56,8 @@ async login(user: string, password: string) {
             userRole.value = response.data.data.role;
             userPhone.value = response.data.data.phone;
             email.value = response.data.data.email;
+            avatar.value = response.data.data.avatar;
+            username.value = response.data.data.username;
 
             console.log('Login successful, token saved', response.data);
 
