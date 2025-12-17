@@ -51,7 +51,7 @@
               <p class="text-caption text-grey-darken-1 mb-1">
                 <span>ສົກຮຽນທັງໝົດ</span>
               </p>
-              <h4 class="text-h4 font-weight-bold text-grey-darken-4">
+              <h4 class="text-h5 font-weight-bold text-grey-darken-4">
                 <span>{{ academics.length }}</span>
               </h4>
             </div>
