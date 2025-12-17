@@ -281,8 +281,9 @@ import { useAcademicStore } from "@/stores/apiAcademic";
 const search = ref("");
 const { t } = useI18n();
 
-const { academics } = storeToRefs(useAcademicStore());
-const { fetchAcademics } = useAcademicStore();
+const academicStore = useAcademicStore();
+const { fetchAcademics } = academicStore;
+const { academics } = storeToRefs(academicStore);
 
 onMounted(() => {
   fetchAcademics();
@@ -295,7 +296,7 @@ const breadcrumbs = [
 
 const headers = [
   {
-    title: $t("academic"),
+    title: t("academic"),
     key: "title",
     align: "start" as const,
     sortable: true,
