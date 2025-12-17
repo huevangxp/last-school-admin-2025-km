@@ -242,11 +242,11 @@
             <div class="text-body-2 text-grey-darken-1">
               <span>{{ $t("showing") }}</span>
               <strong>1</strong>
-              <span>{{ $t("to") }}</span>
+              <span> {{ $t("to") }} </span>
               <strong>{{ academics.length }}</strong>
-              <span>{{ $t("of") }}</span>
+              <span> {{ $t("of") }} </span>
               <strong>{{ academics.length }}</strong>
-              <span>{{ $t("results") }}</span>
+              <span> {{ $t("results") }} </span>
             </div>
             <div class="d-flex gap-2 align-center">
               <v-btn icon variant="text" color="grey-darken-1" size="small">
