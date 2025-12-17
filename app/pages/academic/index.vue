@@ -218,7 +218,7 @@
             :color="
               item.status === 'active'
                 ? 'success'
-                : item.status === 'Upcoming'
+                : item.status === 'upcoming'
                 ? 'info'
                 : 'grey'
             "
