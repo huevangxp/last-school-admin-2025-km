@@ -285,10 +285,6 @@ const academicStore = useAcademicStore();
 const { fetchAcademics } = academicStore;
 const { academics } = storeToRefs(academicStore);
 
-onMounted(() => {
-  fetchAcademics();
-});
-
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("academic"), disabled: true, to: "/academic" },
@@ -323,6 +319,10 @@ const headers = [
   ...h,
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
 }));
+
+onMounted(() => {
+  fetchAcademics();
+});
 </script>
 
 <style scoped>
