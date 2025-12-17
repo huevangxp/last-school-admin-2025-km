@@ -220,7 +220,7 @@
                 ? 'success'
                 : item.status === 'upcoming'
                 ? 'info'
-                : 'grey'
+                : 'warning'
             "
             size="small"
             class="font-weight-medium"
