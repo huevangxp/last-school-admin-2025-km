@@ -49,11 +49,11 @@ async login(user: string, password: string) {
             const email = useCookie('email', cookieOptions);
 
             // Set cookie values
-            token.value = response.data.token;
+            token.value = String(response.data.token);
             userId.value = String(response.data.id);
-            userRole.value = response.data.role;
-            userPhone.value = response.data.phone;
-            email.value = response.data.email;
+            userRole.value = String(response.data.role);
+            userPhone.value = String(response.data.phone);
+            email.value = String(response.data.email);
 
             console.log('Login successful, token saved', response.data.token);
 
