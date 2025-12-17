@@ -260,7 +260,7 @@
                 class="font-weight-bold"
                 style="min-width: 32px; height: 32px"
               >
-                {{ academics.length }}
+                1
               </v-btn>
 
               <v-btn icon variant="text" color="grey-darken-1" size="small">
