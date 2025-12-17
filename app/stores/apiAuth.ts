@@ -53,7 +53,6 @@ export const useApiAuthStore = defineStore('apiAuth', {
                     return navigateTo('/login');
                 }
 
-                 console.log(response)
                 
             } catch (error) {
                 
