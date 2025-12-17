@@ -53,48 +53,55 @@
         <v-icon>mdi-cog</v-icon>
       </v-btn>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" width="256" class="sidebar" persistent>
-      <v-list class="px-4 py-4" nav>
-        <v-list-item
-          v-for="item in menuItems"
-          :key="item.title"
-          :to="item.to"
-          class="mb-2 rounded-lg"
-          active-class="bg-primary text-white"
-          :exact="item.to === '/'"
-        >
-          <template v-slot:prepend>
-            <v-icon>{{ item.icon }}</v-icon>
-          </template>
-          <v-list-item-title
-            class="font-weight-semibold"
-            style="font-size: 16px"
+    <ClientOnly>
+      <v-navigation-drawer
+        v-model="drawer"
+        width="256"
+        class="sidebar"
+        persistent
+      >
+        <v-list class="px-4 py-4" nav>
+          <v-list-item
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="item.to"
+            class="mb-2 rounded-lg"
+            active-class="bg-primary text-white"
+            :exact="item.to === '/'"
           >
-            <span> {{ t(item.title) }}</span>
-          </v-list-item-title>
-        </v-list-item>
-      </v-list>
-      <template v-slot:append>
-        <div class="user-profile">
-          <div class="d-flex align-center ga-3">
-            <v-avatar size="40">
-              <v-img
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZa1BqD943Cz_nb3fZ0bc9PyOOvdt8sHdy_-M-e-ZFonb_RtKd97pIOeLha6GZ3MtnseeSPtt8TZk8DixN2gs_w1uS3nqYx4EwL-jfX2EYJbBoSDcwVNklTfhlItCwz5c4Qzof1hDBipAxXRa-H4dfRaYiOOF7zFvRcIO85IHhFfLruNJr4tdEo29YPc7EYuB83BQ-_7LR1LR_25q1YNwXSTeoWclOhIFCPoJxGKAkAWhBMel3re2598v4nFU4-QSnrFK01yF9ZW8"
-                alt="Admin user avatar"
-              />
-            </v-avatar>
-            <div>
-              <p class="text-body-2 font-weight-semibold mb-0">
-                <span>Huevang</span>
-              </p>
-              <p class="text-caption text-medium-emphasis mb-0">
-                <span>Admin</span>
-              </p>
+            <template v-slot:prepend>
+              <v-icon>{{ item.icon }}</v-icon>
+            </template>
+            <v-list-item-title
+              class="font-weight-semibold"
+              style="font-size: 16px"
+            >
+              <span> {{ t(item.title) }}</span>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+        <template v-slot:append>
+          <div class="user-profile">
+            <div class="d-flex align-center ga-3">
+              <v-avatar size="40">
+                <v-img
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZa1BqD943Cz_nb3fZ0bc9PyOOvdt8sHdy_-M-e-ZFonb_RtKd97pIOeLha6GZ3MtnseeSPtt8TZk8DixN2gs_w1uS3nqYx4EwL-jfX2EYJbBoSDcwVNklTfhlItCwz5c4Qzof1hDBipAxXRa-H4dfRaYiOOF7zFvRcIO85IHhFfLruNJr4tdEo29YPc7EYuB83BQ-_7LR1LR_25q1YNwXSTeoWclOhIFCPoJxGKAkAWhBMel3re2598v4nFU4-QSnrFK01yF9ZW8"
+                  alt="Admin user avatar"
+                />
+              </v-avatar>
+              <div>
+                <p class="text-body-2 font-weight-semibold mb-0">
+                  <span>Huevang</span>
+                </p>
+                <p class="text-caption text-medium-emphasis mb-0">
+                  <span>Admin</span>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-    </v-navigation-drawer>
+        </template>
+      </v-navigation-drawer>
+    </ClientOnly>
   </div>
 </template>
 
