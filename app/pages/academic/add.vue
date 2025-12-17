@@ -137,7 +137,7 @@
             color="red"
             class="mr-3 text-none px-6"
             height="45"
-            @click="$router.back()"
+            @click="$router.push('/academic')"
           >
             {{ $t("cancel") }}
           </v-btn>
