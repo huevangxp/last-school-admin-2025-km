@@ -185,7 +185,7 @@
             </v-avatar>
             <div>
               <div class="font-weight-bold text-grey-darken-4">
-                {{ item.title }}
+                <span>{{ item.title }}</span>
               </div>
               <div class="text-caption text-grey-darken-1">
                 {{ hiddenId(item.id) }}
