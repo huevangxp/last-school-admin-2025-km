@@ -216,7 +216,7 @@
         <template v-slot:item.status="{ item }">
           <v-chip
             :color="
-              item.status === 'Active'
+              item.status === 'active'
                 ? 'success'
                 : item.status === 'Upcoming'
                 ? 'info'
