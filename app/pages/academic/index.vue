@@ -263,16 +263,6 @@
                 1
               </v-btn>
 
-              <v-btn
-                variant="text"
-                color="grey-darken-1"
-                size="small"
-                class="font-weight-medium"
-                style="min-width: 32px; height: 32px"
-              >
-                2
-              </v-btn>
-
               <v-btn icon variant="text" color="grey-darken-1" size="small">
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
