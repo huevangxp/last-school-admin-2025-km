@@ -22,7 +22,7 @@ export const useApiAuthStore = defineStore('apiAuth', {
     try {
         const { $axios } = useNuxtApp();
 
-        const response = await $axios.post('/login', {
+        const response = await $axios.post('/teacher-login', {
             user: user,
             password: password,
         });
