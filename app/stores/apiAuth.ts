@@ -21,6 +21,11 @@ export const useApiAuthStore = defineStore('apiAuth', {
         async login(user: any, password: any) {
            
             try {
+                  const token = useCookie('token');
+                    const userId = useCookie('id');
+                    const userRole = useCookie('role');
+                    const userPhone = useCookie('phone');
+                    const email = useCookie('email');
 
                 const {$axios} = useNuxtApp();
 
@@ -33,24 +38,26 @@ export const useApiAuthStore = defineStore('apiAuth', {
                 if (response.status === 200) {
                     this.authenticated = true;
                     this.profile = response.data;
-                    navigateTo('/');
-
-                    const token = useCookie('token');
-                    const userId = useCookie('id');
-                    const userRole = useCookie('role');
-                    const userPhone = useCookie('phone');
-                    const email = useCookie('email');
+                   
+                  
                     // Clear all cookies
-                    token.value = null;
-                    userId.value = null;
-                    userRole.value = null;
-                    userPhone.value = null;
-                    email.value = null;
+                    token.value = response.data.token;
+                    userId.value = response.data.id;
+                    userRole.value = response.data.role;
+                    userPhone.value = response.data.phone;
+                    email.value = response.data.email;
 
                     this.authenticated = false;
                     this.profile = {} as Profile;
+                     navigateTo('/');
 
-                    return navigateTo('/login');
+
+                    return navigateTo('/');
+                }
+                else {
+                    this.authenticated = false;
+                    this.profile = {} as Profile;
+                    navigateTo('/login');
                 }
 
                 
