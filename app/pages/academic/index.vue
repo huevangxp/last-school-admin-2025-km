@@ -241,9 +241,9 @@
           <div class="d-flex align-center justify-space-between pt-6">
             <div class="text-body-2 text-grey-darken-1">
               <span>{{ $t("showing") }}</span>
-              <strong>1</strong>
+              <strong class="px-2">1</strong>
               <span> {{ $t("to") }} </span>
-              <strong>{{ academics.length }}</strong>
+              <strong class="px-2">{{ academics.length }}</strong>
               <span> {{ $t("of") }} </span>
               <strong class="px-2">{{ academics.length }}</strong>
               <span> {{ $t("results") }} </span>
