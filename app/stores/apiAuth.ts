@@ -53,11 +53,11 @@ async login(user: string, password: string) {
             // Set cookie values
             token.value = response.data.token;
             userId.value = String(response.data.data.id);
-            userRole.value = response.data.data.role;
-            userPhone.value = response.data.data.phone;
-            email.value = response.data.data.email;
-            avatar.value = response.data.data.avatar;
-            username.value = response.data.data.username;
+            userRole.value = String(response.data.data.role);
+            userPhone.value = String(response.data.data.phone);
+            email.value = String(response.data.data.email);
+            avatar.value = String(response.data.data.avatar);
+            username.value = String(response.data.data.username);
 
             console.log('Login successful, token saved', response.data);
 
