@@ -35,7 +35,7 @@ async login(user: string, password: string) {
             // Define cookie options once
             const cookieOptions = {
                 maxAge: 60 * 60 * 24 * 7, // 7 days
-                secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+                secure: true, // HTTPS only in production
                 sameSite: 'lax' as const, // 'strict' might cause issues with redirects
                 path: '/'
             };
