@@ -68,6 +68,8 @@ export const useApiAuthStore = defineStore('apiAuth', {
                 sameSite: 'strict'
             });
 
+            console.log(response.data);
+
             // Set cookie values
             token.value = response.data.token;
             userId.value = response.data.id;
