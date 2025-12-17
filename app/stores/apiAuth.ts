@@ -33,20 +33,20 @@ async login(user: string, password: string) {
             this.profile = response.data;
             
             // Define cookie options once
-            const cookieOptions = {
-                maxAge: 60 * 60 * 24 * 7, // 7 days
-                secure: true, // HTTPS only in production
-                sameSite: 'lax' as const, // 'strict' might cause issues with redirects
-                path: '/'
-            };
+            // const cookieOptions = {
+            //     maxAge: 60 * 60 * 24 * 7, // 7 days
+            //     secure: true, // HTTPS only in production
+            //     sameSite: 'lax' as const, // 'strict' might cause issues with redirects
+            //     path: '/'
+            // };
             
             // Store credentials in cookies
             // Note: httpOnly can only be set server-side in Nuxt
-            const token = useCookie('token', cookieOptions);
-            const userId = useCookie('id', cookieOptions);
-            const userRole = useCookie('role', cookieOptions);
-            const userPhone = useCookie('phone', cookieOptions);
-            const email = useCookie('email', cookieOptions);
+            const token = useCookie('token');
+            const userId = useCookie('id');
+            const userRole = useCookie('role');
+            const userPhone = useCookie('phone');
+            const email = useCookie('email');
 
             // Set cookie values
             token.value = response.data.token;
