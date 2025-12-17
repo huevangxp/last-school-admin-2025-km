@@ -164,7 +164,7 @@
       <!-- Data Table -->
       <v-data-table
         :headers="headers"
-        :items="data"
+        :items="academics"
         :search="search"
         class="academic-table"
         hover
