@@ -315,29 +315,19 @@ const headers = [
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
 }));
 
-const academics = ref([
-  {
-    id: "#AY-001",
-    title: "2023-2024",
-    startDate: "Aug 1, 2023",
-    endDate: "Jul 31, 2024",
-    status: "Completed",
-  },
-  {
-    id: "#AY-002",
-    title: "2024-2025",
-    startDate: "Aug 1, 2024",
-    endDate: "Jul 31, 2025",
-    status: "Active",
-  },
-  {
-    id: "#AY-003",
-    title: "2025-2026",
-    startDate: "Aug 1, 2025",
-    endDate: "Jul 31, 2026",
-    status: "Upcoming",
-  },
-]);
+const data = ref([]);
+
+const { $axios } = useNuxtApp();
+const academics = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await $axios.get("/get-all-academic-year");
+    data.value = response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
 
 <style scoped>
