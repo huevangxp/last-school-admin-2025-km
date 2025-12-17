@@ -76,7 +76,7 @@ export const useApiAuthStore = defineStore('apiAuth', {
             email.value = response.data.email;
 
             // Navigate to home page
-            return navigateTo('/');
+            navigateTo('/');
         } else {
             // Login failed
             this.authenticated = false;
