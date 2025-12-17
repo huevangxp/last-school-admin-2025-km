@@ -315,15 +315,13 @@ const headers = [
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
 }));
 
-const data: any[] = ref([]);
-
 const { $axios } = useNuxtApp();
 const academics = ref([]);
 
 onMounted(async () => {
   try {
     const response = await $axios.get("/get-all-academic-year");
-    data.value = response.data.data;
+    academics.value = response.data.data;
   } catch (error) {
     console.error(error);
   }
