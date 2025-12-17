@@ -196,7 +196,7 @@
         <template v-slot:item.startDate="{ item }">
           <div>
             <div class="font-weight-medium text-grey-darken-3">
-              {{ item.startDate }}
+              {{ item.start_date }}
             </div>
             <div class="text-caption text-grey-darken-1">Start Date</div>
           </div>
