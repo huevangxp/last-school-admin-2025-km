@@ -187,7 +187,9 @@
               <div class="font-weight-bold text-grey-darken-4">
                 {{ item.title }}
               </div>
-              <div class="text-caption text-grey-darken-1">{{ item.id }}</div>
+              <div class="text-caption text-grey-darken-1">
+                {{ hiddenId(item.id) }}
+              </div>
             </div>
           </div>
         </template>
