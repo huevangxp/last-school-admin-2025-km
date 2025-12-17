@@ -279,38 +279,37 @@ import { storeToRefs } from "pinia";
 import { useAcademicStore } from "@/stores/apiAcademic";
 
 const search = ref("");
-const { t } = useI18n();
 
 const academicStore = useAcademicStore();
 const { fetchAcademics } = academicStore;
 const { academics } = storeToRefs(academicStore);
 
 const breadcrumbs = [
-  { title: t("dashboard"), disabled: false, to: "/" },
-  { title: t("academic"), disabled: true, to: "/academic" },
+  { title: $t("dashboard"), disabled: false, to: "/" },
+  { title: $t("academic"), disabled: true, to: "/academic" },
 ];
 
 const headers = [
   {
-    title: t("academic"),
+    title: $t("academic"),
     key: "title",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: t("start_date"),
+    title: $t("start_date"),
     key: "startDate",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: t("end_date"),
+    title: $t("end_date"),
     key: "endDate",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: t("status"),
+    title: $t("status"),
     key: "status",
     align: "start" as const,
     sortable: true,
