@@ -229,7 +229,7 @@
                 : 'warning'
             "
             size="small"
-            class="font-weight-medium"
+            class="font-weight-bold"
             label
           >
             {{ item.status }}
