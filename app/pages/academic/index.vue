@@ -315,7 +315,7 @@ const headers = [
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
 }));
 
-const data: any = ref([]);
+const data: any[] = ref([]);
 
 const { $axios } = useNuxtApp();
 const academics = ref([]);
