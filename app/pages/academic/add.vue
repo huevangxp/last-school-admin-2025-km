@@ -190,7 +190,7 @@ const breadcrumbs = [
 ];
 
 const rules = {
-  required: (v: any) => !!v || $t("required"),
+  required: (v: any) => !!v || t("required"),
 };
 
 const save = async () => {
