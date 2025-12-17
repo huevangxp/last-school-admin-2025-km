@@ -324,6 +324,12 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
+  {
+    title: $t("action"),
+    key: "action",
+    align: "start" as const,
+    sortable: false,
+  },
 ].map((h) => ({
   ...h,
   class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
