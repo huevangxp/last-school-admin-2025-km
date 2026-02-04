@@ -1,29 +1,35 @@
 <template>
-  <div>
+  <div class="dashboard-container">
     <!-- Header Section -->
     <div class="d-flex justify-space-between align-center mb-8">
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4">Dashboard</h1>
-        <p class="text-subtitle-1 text-grey text-medium-emphasis mt-1">
-          Welcome back, here's what's happening today.
+        <h1
+          class="text-h4 font-weight-bold text-brown-darken-4"
+          style="letter-spacing: -0.5px"
+        >
+          Dashboard
+        </h1>
+        <p class="text-subtitle-1 text-brown-lighten-1 mt-1 font-weight-medium">
+          Welcome back, here's your daily overview.
         </p>
       </div>
-      <div class="d-flex ga-2">
+      <div class="d-flex ga-3">
         <v-btn
-          prepend-icon="mdi-download"
+          prepend-icon="mdi-tray-arrow-down"
           variant="outlined"
-          color="grey-darken-1"
-          class="text-none font-weight-medium"
-          rounded="lg"
+          color="brown-lighten-2"
+          class="text-none font-weight-bold px-4"
+          rounded="xl"
+          border
         >
           Export
         </v-btn>
         <v-btn
           prepend-icon="mdi-plus"
-          color="primary"
-          class="text-none font-weight-bold"
-          rounded="lg"
-          elevation="2"
+          color="brown-darken-3"
+          class="text-none font-weight-bold px-6"
+          rounded="xl"
+          elevation="4"
         >
           New Project
         </v-btn>
@@ -31,7 +37,7 @@
     </div>
 
     <!-- Stats Row -->
-    <v-row class="mb-4">
+    <v-row class="mb-6">
       <v-col
         cols="12"
         sm="6"
@@ -42,45 +48,50 @@
         <v-card
           elevation="0"
           rounded="xl"
-          class="pa-5 h-100 border transition-swing card-hover bg-white"
+          class="bean-card pa-5 h-100 d-flex flex-column justify-space-between"
         >
           <div class="d-flex align-center justify-space-between mb-4">
             <v-avatar
-              :color="stat.color"
-              variant="tonal"
+              :color="stat.bgColor"
               rounded="lg"
-              size="48"
-            >
-              <v-icon :icon="stat.icon" size="24"></v-icon>
-            </v-avatar>
-            <v-chip
-              v-if="stat.trendValue"
-              :color="stat.trendUp ? 'success' : 'error'"
-              variant="flat"
-              size="x-small"
-              class="font-weight-bold px-2"
+              size="52"
+              class="icon-box"
             >
               <v-icon
-                :icon="stat.trendUp ? 'mdi-arrow-up' : 'mdi-arrow-down'"
-                start
-                size="x-small"
+                :icon="stat.icon"
+                size="26"
+                :color="stat.iconColor"
+              ></v-icon>
+            </v-avatar>
+            <div
+              v-if="stat.trendValue"
+              class="d-flex align-center px-3 py-1 rounded-pill trend-badge"
+              :class="stat.trendUp ? 'bg-green-light' : 'bg-red-light'"
+            >
+              <v-icon
+                :icon="
+                  stat.trendUp ? 'mdi-arrow-up-right' : 'mdi-arrow-down-right'
+                "
+                size="16"
+                :color="stat.trendUp ? 'green-darken-2' : 'red-darken-2'"
                 class="mr-1"
               ></v-icon>
-              {{ stat.trendValue }}
-            </v-chip>
+              <span
+                class="text-caption font-weight-bold"
+                :class="
+                  stat.trendUp ? 'text-green-darken-3' : 'text-red-darken-3'
+                "
+              >
+                {{ stat.trendValue }}
+              </span>
+            </div>
           </div>
           <div>
-            <div
-              class="text-caption text-grey-darken-1 font-weight-medium text-uppercase mb-1"
-            >
-              {{ stat.title }}
-            </div>
-            <div class="text-h4 font-weight-bold text-grey-darken-4">
+            <div class="text-h4 font-weight-bold text-brown-darken-4 mb-1">
               {{ stat.value }}
             </div>
-            <div class="text-caption text-grey mt-2 d-flex align-center">
-              <v-icon icon="mdi-clock-outline" size="14" class="mr-1"></v-icon>
-              {{ stat.badgeText }}
+            <div class="text-body-2 text-brown-lighten-1 font-weight-medium">
+              {{ stat.title }}
             </div>
           </div>
         </v-card>
@@ -92,34 +103,43 @@
       <!-- Left Column (Charts & Tables) -->
       <v-col cols="12" lg="8">
         <!-- Project Progress Chart -->
-        <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
+        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
           <div
-            class="d-flex flex-wrap justify-space-between align-center mb-6 ga-4"
+            class="d-flex flex-wrap justify-space-between align-center mb-8 ga-4"
           >
             <div>
-              <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-                Project Progress
+              <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+                Analytics Overview
               </h2>
-              <div class="text-body-2 text-grey">Weekly completion rates</div>
+              <div
+                class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+              >
+                Project Performance
+              </div>
             </div>
             <v-btn-toggle
               v-model="chartPeriod"
               density="compact"
-              color="primary"
-              variant="outlined"
-              rounded="lg"
-              divided
-              class="border-thin"
+              class="cream-toggle rounded-pill"
+              color="brown-darken-3"
+              mandatory
+              borderless
             >
-              <v-btn value="weekly" size="small" class="text-capitalize px-4"
+              <v-btn
+                value="weekly"
+                size="small"
+                class="text-none font-weight-bold px-5"
                 >Weekly</v-btn
               >
-              <v-btn value="monthly" size="small" class="text-capitalize px-4"
+              <v-btn
+                value="monthly"
+                size="small"
+                class="text-none font-weight-bold px-5"
                 >Monthly</v-btn
               >
             </v-btn-toggle>
           </div>
-          <div style="height: 320px" class="w-100">
+          <div style="height: 320px" class="w-100 chart-container rounded-lg">
             <ClientOnly>
               <DashboardChart />
             </ClientOnly>
@@ -127,45 +147,50 @@
         </v-card>
 
         <!-- Projects Table -->
-        <v-card
-          elevation="0"
-          rounded="xl"
-          class="pa-0 border overflow-hidden bg-white"
-        >
-          <div class="pa-6 d-flex justify-space-between align-center border-b">
+        <v-card elevation="0" rounded="xl" class="bean-card overflow-hidden">
+          <div
+            class="pa-6 border-b-cream d-flex justify-space-between align-center"
+          >
             <div>
-              <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-                Active Projects
+              <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+                Recent Projects
               </h2>
-              <div class="text-body-2 text-grey">
-                {{ projects.length }} projects in progress
+              <div
+                class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+              >
+                {{ projects.length }} active tracks
               </div>
             </div>
-            <v-btn variant="text" color="primary" class="text-none">
-              View All Projects
+            <v-btn
+              variant="text"
+              color="brown-darken-2"
+              class="text-none font-weight-bold px-0"
+              append-icon="mdi-arrow-right"
+            >
+              View All
             </v-btn>
           </div>
 
           <v-table class="projects-table">
             <thead>
-              <tr class="bg-grey-lighten-5">
+              <tr class="bg-cream-light">
                 <th
-                  class="text-caption font-weight-bold text-grey-darken-1 pl-6 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-brown-lighten-1 pl-6 py-4 text-uppercase"
                 >
-                  Project
+                  Project Name
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
                 >
-                  Owner
+                  Lead
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
                 >
                   Status
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
                 >
                   Progress
                 </th>
@@ -174,49 +199,47 @@
             </thead>
             <tbody>
               <tr v-for="(project, i) in projects" :key="i" class="project-row">
-                <td class="pl-6 py-4">
+                <td class="pl-6 py-5">
                   <div class="d-flex align-center">
-                    <v-avatar
-                      color="grey-lighten-4"
+                    <v-sheet
                       rounded="lg"
-                      size="44"
-                      class="mr-4"
+                      class="d-flex align-center justify-center mr-4 bg-cream-darken-1"
+                      height="44"
+                      width="44"
                     >
-                      <span class="text-primary text-h6 font-weight-bold">{{
-                        project.name.charAt(0)
-                      }}</span>
-                    </v-avatar>
+                      <span
+                        class="text-brown-darken-3 text-h6 font-weight-bold"
+                      >
+                        {{ project.name.charAt(0) }}
+                      </span>
+                    </v-sheet>
                     <div>
                       <div
-                        class="text-subtitle-2 font-weight-bold text-grey-darken-3"
+                        class="text-subtitle-2 font-weight-bold text-brown-darken-4"
                       >
                         {{ project.name }}
                       </div>
-                      <div class="text-caption text-grey">
+                      <div
+                        class="text-caption text-brown-lighten-2 font-weight-medium"
+                      >
                         {{ project.subtitle }}
                       </div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <div class="d-flex align-center">
-                    <v-avatar size="24" class="mr-2">
-                      <v-img
-                        :src="`https://ui-avatars.com/api/?name=${project.owner}&background=random`"
-                      ></v-img>
-                    </v-avatar>
-                    <span class="text-body-2 text-grey-darken-3">{{
-                      project.owner
-                    }}</span>
-                  </div>
+                  <v-avatar size="28" class="border-cream">
+                    <v-img
+                      :src="`https://ui-avatars.com/api/?name=${project.owner}&background=D7CCC8&color=3E2723`"
+                    ></v-img>
+                  </v-avatar>
                 </td>
                 <td>
                   <v-chip
                     :color="project.statusColor"
                     size="small"
-                    label
-                    variant="tonal"
-                    class="font-weight-bold text-uppercase"
+                    variant="flat"
+                    class="font-weight-bold text-uppercase status-chip"
                   >
                     {{ project.status }}
                   </v-chip>
@@ -226,11 +249,13 @@
                     <v-progress-linear
                       :model-value="project.progress"
                       :color="project.progressColor"
-                      height="6"
+                      bg-color="brown-lighten-5"
+                      height="8"
                       rounded
                       class="flex-grow-1 mr-3"
                     ></v-progress-linear>
-                    <span class="text-caption text-grey font-weight-bold"
+                    <span
+                      class="text-caption text-brown-darken-3 font-weight-bold"
                       >{{ project.progress }}%</span
                     >
                   </div>
@@ -240,7 +265,7 @@
                     icon="mdi-dots-horizontal"
                     variant="text"
                     density="comfortable"
-                    color="grey"
+                    color="brown-lighten-2"
                   ></v-btn>
                 </td>
               </tr>
@@ -252,30 +277,36 @@
       <!-- Right Column (Sidebar Widgets) -->
       <v-col cols="12" lg="4">
         <!-- Deadlines -->
-        <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
+        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
           <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-              Upcoming Deadlines
+            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+              Schedule
             </h2>
+            <v-btn
+              icon="mdi-calendar-month"
+              variant="text"
+              density="comfortable"
+              color="brown-lighten-2"
+            ></v-btn>
           </div>
           <div class="d-flex flex-column ga-3">
             <div
               v-for="(deadline, i) in deadlines"
               :key="i"
-              class="d-flex align-center pa-3 rounded-lg bg-grey-lighten-5 border-thin transition-swing hover-light"
+              class="d-flex align-center pa-4 rounded-xl transition-swing hover-scale bg-cream-soft"
             >
               <div
-                class="d-flex flex-column align-center justify-center bg-white rounded-lg px-3 py-2 border mr-4"
-                style="min-width: 56px"
+                class="d-flex flex-column align-center justify-center bg-white rounded-lg px-3 py-2 mr-4 shadow-sm"
+                style="min-width: 60px"
               >
                 <div
-                  class="text-h6 font-weight-bold text-primary"
+                  class="text-h6 font-weight-black text-brown-darken-3"
                   style="line-height: 1"
                 >
                   {{ deadline.day }}
                 </div>
                 <div
-                  class="text-caption text-grey font-weight-bold text-uppercase mt-1"
+                  class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mt-1"
                   style="font-size: 0.65rem !important"
                 >
                   {{ deadline.month }}
@@ -283,126 +314,91 @@
               </div>
               <div class="flex-grow-1" style="min-width: 0">
                 <div
-                  class="text-subtitle-2 font-weight-bold text-grey-darken-3 text-truncate"
+                  class="text-subtitle-2 font-weight-bold text-brown-darken-4 text-truncate"
                 >
                   {{ deadline.title }}
                 </div>
-                <!-- truncated -->
                 <div class="d-flex align-center mt-1">
-                  <v-chip
-                    v-if="deadline.urgent"
-                    size="x-small"
-                    color="error"
-                    variant="flat"
-                    label
-                    class="mr-2 font-weight-bold"
-                    >Urgent</v-chip
+                  <span
+                    class="status-dot mr-2"
+                    :class="
+                      deadline.urgent ? 'bg-red-accent-2' : 'bg-green-lighten-1'
+                    "
+                  ></span>
+                  <span
+                    class="text-caption text-brown-lighten-1 font-weight-medium"
                   >
-                  <span class="text-caption text-grey font-weight-medium">{{
-                    deadline.status
-                  }}</span>
+                    {{ deadline.status }}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
-          <v-btn
-            block
-            variant="tonal"
-            color="primary"
-            class="mt-4 text-none"
-            rounded="lg"
-            >View Calendar</v-btn
-          >
         </v-card>
 
         <!-- Tasks Status -->
-        <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
-          <div class="mb-5">
-            <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-              Task Overview
+        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
+          <div class="mb-6">
+            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+              Workload
             </h2>
+            <div
+              class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+            >
+              Task Distribution
+            </div>
           </div>
-          <div v-for="(task, i) in taskStatus" :key="i" class="mb-4 last-mb-0">
-            <div class="d-flex justify-space-between mb-1">
-              <span
-                class="text-caption font-weight-medium text-grey-darken-2"
-                >{{ task.label }}</span
-              >
-              <span class="text-caption font-weight-bold text-grey-darken-3">{{
-                task.count
+          <div v-for="(task, i) in taskStatus" :key="i" class="mb-5 last-mb-0">
+            <div class="d-flex justify-space-between mb-2">
+              <span class="text-body-2 font-weight-bold text-brown-darken-3">{{
+                task.label
               }}</span>
+              <span class="text-caption font-weight-bold text-brown-lighten-2"
+                >{{ task.count }} tasks</span
+              >
             </div>
             <v-progress-linear
               :model-value="task.percentage"
               :color="task.color"
-              height="6"
+              bg-color="brown-lighten-5"
+              height="8"
               rounded
             ></v-progress-linear>
           </div>
         </v-card>
 
-        <!-- Workload Chart -->
-        <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
-          <div class="mb-4">
-            <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-              Team Workload
-            </h2>
-            <div class="text-body-2 text-grey">Active tasks distribution</div>
-          </div>
-          <div
-            style="height: 220px; position: relative"
-            class="d-flex justify-center align-center"
-          >
-            <div class="position-absolute text-center" style="z-index: 0">
-              <div class="text-h4 font-weight-bold text-grey-darken-3">124</div>
-              <div class="text-caption text-grey-darken-1 font-weight-medium">
-                Tasks
-              </div>
-            </div>
-            <ClientOnly>
-              <WorkloadChart />
-            </ClientOnly>
-          </div>
-        </v-card>
-
-        <!-- Recent Activity -->
-        <v-card elevation="0" rounded="xl" class="pa-6 border bg-white">
+        <!-- Activity -->
+        <v-card elevation="0" rounded="xl" class="bean-card pa-6">
           <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-grey-darken-4">
-              Activity
+            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+              Latest Activity
             </h2>
-            <v-btn
-              icon="mdi-history"
-              variant="text"
-              size="small"
-              color="grey"
-            ></v-btn>
           </div>
 
-          <div class="activity-timeline">
+          <div class="activity-timeline pl-2">
             <div
               v-for="(activity, i) in recentActivity"
               :key="i"
-              class="d-flex align-start mb-6 last-mb-0 relative"
+              class="d-flex align-start mb-6 last-mb-0 relative activity-item"
             >
-              <div class="mr-4 relative">
+              <div class="mr-4 relative z-10">
                 <v-avatar
                   :image="activity.avatar"
-                  size="40"
-                  class="border"
+                  size="42"
+                  class="border-2 border-white shadow-sm"
                 ></v-avatar>
-                <!-- Connector line could go here if we wanted a real timeline look -->
               </div>
-              <div>
+              <div class="pt-1">
                 <div
-                  class="text-subtitle-2 text-grey-darken-3 lin-height-tight mb-1"
+                  class="text-subtitle-2 text-brown-darken-4 mb-1"
+                  style="line-height: 1.4"
                 >
-                  <span class="font-weight-bold">{{ activity.user }}</span>
-                  <span class="font-weight-regular text-grey-darken-1">
+                  <span class="font-weight-black">{{ activity.user }}</span>
+                  <span class="font-weight-medium text-brown-darken-2">
                     {{ activity.action }}</span
                   >
                 </div>
-                <div class="text-caption text-grey font-weight-medium">
+                <div class="text-caption text-brown-lighten-2 font-weight-bold">
                   {{ activity.time }}
                 </div>
               </div>
@@ -422,40 +418,40 @@ const chartPeriod = ref("weekly");
 
 const stats = [
   {
-    title: "Total Teachers",
-    value: "18",
-    badgeText: "Since last week",
+    title: "Total Faculty",
+    value: "24",
     trendUp: true,
     trendValue: "12%",
-    icon: "mdi-human-male-board",
-    color: "primary",
+    icon: "mdi-human-lecturer",
+    bgColor: "orange-lighten-5",
+    iconColor: "orange-darken-2",
   },
   {
-    title: "Total Students",
-    value: "42",
-    badgeText: "Since yesterday",
+    title: "Students Enrolled",
+    value: "1,204",
+    trendUp: true,
+    trendValue: "8%",
+    icon: "mdi-school-outline",
+    bgColor: "blue-lighten-5",
+    iconColor: "blue-darken-2",
+  },
+  {
+    title: "Pending Tasks",
+    value: "13",
     trendUp: false,
-    trendValue: "5%",
-    icon: "mdi-school",
-    color: "purple",
+    trendValue: "2%",
+    icon: "mdi-clipboard-text-clock-outline",
+    bgColor: "red-lighten-5",
+    iconColor: "red-darken-2",
   },
   {
-    title: "Administrators",
-    value: "3",
-    badgeText: "Updated today",
+    title: "Revenue",
+    value: "$42k",
     trendUp: true,
-    trendValue: null,
-    icon: "mdi-shield-crown",
-    color: "indigo",
-  },
-  {
-    title: "Active Classes",
-    value: "10",
-    badgeText: "Currently running",
-    trendUp: true,
-    trendValue: null,
-    icon: "mdi-google-classroom",
-    color: "teal",
+    trendValue: "15%",
+    icon: "mdi-currency-usd",
+    bgColor: "green-lighten-5",
+    iconColor: "green-darken-2",
   },
 ];
 
@@ -463,148 +459,206 @@ const deadlines = [
   {
     day: "12",
     month: "May",
-    title: "Prototype usability test",
-    subtitle: "Capstone: Campus Portal Redesign",
-    status: "Due today",
+    title: "UX Research Review",
+    status: "Urgent",
     urgent: true,
   },
   {
     day: "14",
     month: "May",
-    title: "API integration review",
-    subtitle: "Library Booking System",
-    status: "In 2 days",
+    title: "Library API Integration",
+    status: "In Progress",
     urgent: false,
   },
   {
     day: "18",
     month: "May",
-    title: "Sprint 4 demo",
-    subtitle: "Lab Equipment Tracker",
-    status: "Next week",
+    title: "Marketing Strategy",
+    status: "Upcoming",
     urgent: false,
   },
 ];
 
 const taskStatus = [
-  { label: "To Do", count: 96, percentage: 30, color: "orange" },
   {
-    label: "In Progress",
-    count: 143,
-    percentage: 60,
-    color: "purple-accent-2",
+    label: "Design Phase",
+    count: 45,
+    percentage: 70,
+    color: "orange-darken-1",
   },
-  { label: "Blocked", count: 28, percentage: 15, color: "red-accent-2" },
-  { label: "Done", count: 321, percentage: 85, color: "success" },
+  {
+    label: "Development",
+    count: 28,
+    percentage: 45,
+    color: "blue-grey-darken-1",
+  },
+  { label: "Testing", count: 12, percentage: 20, color: "teal-darken-1" },
 ];
 
 const recentActivity = [
   {
-    user: "Jordan",
-    action: "marked 8 tasks as done in Library Booking System.",
-    time: "12 min ago",
+    user: "Sarah M.",
+    action: "completed the wireframes for the new portal.",
+    time: "2 mins ago",
+    avatar: "https://i.pravatar.cc/150?img=35",
+  },
+  {
+    user: "David K.",
+    action: "commented on the API documentation.",
+    time: "1 hour ago",
     avatar: "https://i.pravatar.cc/150?img=11",
   },
   {
-    user: "Priya",
-    action: "added new milestone Orientation week launch.",
-    time: "45 min ago",
+    user: "Elena R.",
+    action: "added 3 new tasks to the backlog.",
+    time: "3 hours ago",
     avatar: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    user: "Alex",
-    action: "updated priority for Lab Equipment Tracker to High.",
-    time: "1 hr ago",
-    avatar: "https://i.pravatar.cc/150?img=32",
   },
 ];
 
 const projects = [
   {
-    name: "Campus Portal",
-    subtitle: "UX Research",
+    name: "Student Portal",
+    subtitle: "Web Development",
     owner: "Alex Kim",
     status: "Active",
-    statusColor: "success",
-    progress: 45,
-    progressColor: "purple-accent-2",
-    dueDate: "May 24",
-    priority: "High",
-    priorityColor: "error",
+    statusColor: "green-lighten-4 text-green-darken-4",
+    progress: 75,
+    progressColor: "green-darken-1",
   },
   {
-    name: "Library System",
-    subtitle: "Backend Dev",
+    name: "LMS Upgrade",
+    subtitle: "System Architecture",
     owner: "Jordan Lee",
-    status: "Planning",
-    statusColor: "info",
-    progress: 20,
-    progressColor: "orange",
-    dueDate: "Jun 3",
-    priority: "Medium",
-    priorityColor: "warning",
+    status: "Review",
+    statusColor: "orange-lighten-4 text-orange-darken-4",
+    progress: 40,
+    progressColor: "orange-darken-2",
   },
   {
-    name: "Orientation App",
-    subtitle: "Mobile Design",
+    name: "Mobile App",
+    subtitle: "React Native",
     owner: "Priya Patel",
-    status: "Complete",
-    statusColor: "primary",
-    progress: 100,
-    progressColor: "success",
-    dueDate: "Apr 14",
-    priority: "Low",
-    priorityColor: "success",
+    status: "On Hold",
+    statusColor: "grey-lighten-3 text-grey-darken-3",
+    progress: 15,
+    progressColor: "grey-darken-1",
   },
   {
-    name: "Lab Tracker",
-    subtitle: "Data Analysis",
+    name: "Analytics D.B",
+    subtitle: "Data Science",
     owner: "Samir Rao",
-    status: "At Risk",
-    statusColor: "warning",
-    progress: 15,
-    progressColor: "warning",
-    dueDate: "May 10",
-    priority: "High",
-    priorityColor: "error",
+    status: "Active",
+    statusColor: "green-lighten-4 text-green-darken-4",
+    progress: 55,
+    progressColor: "green-darken-1",
   },
 ];
 </script>
 
 <style scoped>
-.border-thin {
-  border-width: 1px !important;
+/* Cream Theme Variables */
+.dashboard-container {
+  /* This simulates the background if layout allows, or just applies to this component's area */
+  --cream-bg: #fafaf5;
+  --cream-card: #ffffff;
+  --cream-border: #efebe0;
+  --text-primary: #4a4036;
+  --text-secondary: #8c847e;
 }
 
-/* Enhanced Card Hover Effect */
-.card-hover {
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+/* Bean Card - The core component of the cream UI */
+.bean-card {
+  background-color: var(--cream-card);
+  border: 1px solid var(--cream-border) !important;
+  box-shadow: 0 6px 16px -4px rgba(166, 155, 140, 0.08) !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-.card-hover:hover {
+
+.bean-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+  box-shadow: 0 12px 24px -6px rgba(166, 155, 140, 0.15) !important;
+  border-color: #e6dccd !important;
 }
 
-.lin-height-tight {
-  line-height: 1.4;
-}
-.last-mb-0:last-child {
-  margin-bottom: 0 !important;
+/* Typography Tools */
+.tracking-wide {
+  letter-spacing: 0.05em;
 }
 
-/* Table Styling */
-:deep(.v-table .v-table__wrapper) {
-  overflow-x: auto;
+/* Custom Colors */
+.bg-cream-light {
+  background-color: #fcfbf9;
 }
-:deep(.projects-table tbody tr) {
-  transition: background-color 0.2s ease;
+.bg-cream-soft {
+  background-color: #f9f7f5;
 }
+.bg-cream-darken-1 {
+  background-color: #f0eae2;
+}
+.border-cream {
+  border: 2px solid #ffffff !important;
+}
+.border-b-cream {
+  border-bottom: 1px solid var(--cream-border);
+}
+
+.bg-green-light {
+  background-color: #e8f5e9;
+}
+.bg-red-light {
+  background-color: #ffebee;
+}
+
+/* Toggle Button Styling */
+.cream-toggle {
+  background-color: #f5f2eb !important;
+  border: 1px solid #e6e0d4;
+}
+
+:deep(.v-btn--active) {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Table Enhancements */
 :deep(.projects-table tbody tr:hover) {
-  background-color: #f8f9fa !important;
+  background-color: #fafaf8 !important;
 }
 
-.hover-light:hover {
-  background-color: #f0f0f0 !important;
+.status-chip {
+  letter-spacing: 0.5px;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03) !important;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.status-dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Activity Timeline Line */
+.activity-timeline {
+  position: relative;
+}
+.activity-timeline::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  bottom: 30px;
+  left: 21px; /* Align with avatar center (42px / 2 = 21px) */
+  width: 2px;
+  background-color: #f0eae2;
+  z-index: 0;
 }
 </style>
