@@ -315,6 +315,32 @@
           >
         </v-card>
 
+        <!-- Tasks Status -->
+        <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
+          <div class="mb-5">
+            <h2 class="text-h6 font-weight-bold text-grey-darken-4">
+              Task Overview
+            </h2>
+          </div>
+          <div v-for="(task, i) in taskStatus" :key="i" class="mb-4 last-mb-0">
+            <div class="d-flex justify-space-between mb-1">
+              <span
+                class="text-caption font-weight-medium text-grey-darken-2"
+                >{{ task.label }}</span
+              >
+              <span class="text-caption font-weight-bold text-grey-darken-3">{{
+                task.count
+              }}</span>
+            </div>
+            <v-progress-linear
+              :model-value="task.percentage"
+              :color="task.color"
+              height="6"
+              rounded
+            ></v-progress-linear>
+          </div>
+        </v-card>
+
         <!-- Workload Chart -->
         <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
           <div class="mb-4">
