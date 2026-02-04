@@ -1,36 +1,42 @@
 <template>
-  <v-container fluid class="pa-6">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" />
+  <v-container fluid class="pa-6 dashboard-container">
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
     >
       <div>
-        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
-          <span> {{ t("management") }} {{ t("teachers") }}</span>
+        <h1
+          class="text-h4 font-weight-bold text-brown-darken-4 mb-1"
+          style="letter-spacing: -0.5px"
+        >
+          {{ t("management") }} {{ t("teachers") }}
         </h1>
+        <p class="text-body-2 text-brown-lighten-1 font-weight-medium">
+          Manage your faculty members and their assignments.
+        </p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap">
+      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
-          color="grey-darken-1"
-          class="text-none"
-          height="40"
-          rounded="lg"
-          prepend-icon="mdi-download"
-          style="border-color: #e0e0e0"
+          color="brown-lighten-2"
+          class="text-none font-weight-bold"
+          height="44"
+          rounded="xl"
+          prepend-icon="mdi-tray-arrow-down"
+          border
         >
           {{ t("export") }}
         </v-btn>
 
         <v-btn
-          color="primary"
-          class="text-none px-6"
-          height="40"
-          rounded="lg"
-          elevation="0"
+          color="brown-darken-3"
+          class="text-none px-6 font-weight-bold"
+          height="44"
+          rounded="xl"
+          elevation="4"
           prepend-icon="mdi-plus"
           to="/teachers/add"
         >
@@ -43,100 +49,167 @@
     <v-row class="mb-6">
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">total teachers</p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+              <p
+                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+              >
+                Total Teachers
+              </p>
+              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
                 {{ teachers.length }}
               </h2>
             </div>
-            <v-avatar color="blue-lighten-5" size="56">
-              <v-icon color="blue" size="28">mdi-account-group</v-icon>
+            <v-avatar
+              color="blue-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="blue-darken-2" size="26">mdi-account-group</v-icon>
             </v-avatar>
+          </div>
+          <div class="d-flex align-center mt-2">
+            <v-icon
+              icon="mdi-arrow-up-right"
+              color="green-darken-1"
+              size="16"
+              class="mr-1"
+            ></v-icon>
+            <span class="text-caption font-weight-bold text-green-darken-2"
+              >12% growth</span
+            >
           </div>
         </v-card>
       </v-col>
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                active enrollment
+              <p
+                class="text-caption font-weight-bold text-class text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+              >
+                Active
               </p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
                 {{ teachers.filter((t) => t.status === "Active").length }}
               </h2>
             </div>
-            <v-avatar color="green-lighten-5" size="56">
-              <v-icon color="green" size="28">mdi-check-circle</v-icon>
+            <v-avatar
+              color="green-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="green-darken-2" size="26"
+                >mdi-check-circle-outline</v-icon
+              >
             </v-avatar>
+          </div>
+          <div class="d-flex align-center mt-2">
+            <span class="text-caption font-weight-medium text-brown-lighten-2"
+              >Currently teaching</span
+            >
           </div>
         </v-card>
       </v-col>
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">new teachers</p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">2</h2>
+              <p
+                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+              >
+                New Hires
+              </p>
+              <h2 class="text-h4 font-weight-bold text-brown-darken-4">2</h2>
             </div>
-            <v-avatar color="purple-lighten-5" size="56">
-              <v-icon color="purple" size="28">mdi-account-plus</v-icon>
+            <v-avatar
+              color="purple-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="purple-darken-2" size="26"
+                >mdi-account-star-outline</v-icon
+              >
             </v-avatar>
+          </div>
+          <div class="d-flex align-center mt-2">
+            <span class="text-caption font-weight-medium text-brown-lighten-2"
+              >This month</span
+            >
           </div>
         </v-card>
       </v-col>
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">pending</p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">0</h2>
+              <p
+                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+              >
+                Pending
+              </p>
+              <h2 class="text-h4 font-weight-bold text-brown-darken-4">0</h2>
             </div>
-            <v-avatar color="orange-lighten-5" size="56">
-              <v-icon color="orange" size="28">mdi-clock-outline</v-icon>
+            <v-avatar
+              color="orange-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="orange-darken-2" size="26"
+                >mdi-clock-time-four-outline</v-icon
+              >
             </v-avatar>
+          </div>
+          <div class="d-flex align-center mt-2">
+            <span class="text-caption font-weight-medium text-brown-lighten-2"
+              >Applications</span
+            >
           </div>
         </v-card>
       </v-col>
     </v-row>
 
     <!-- Main Content Card -->
-    <v-card flat class="rounded-xl border pa-6" color="white">
+    <v-card elevation="0" rounded="xl" class="bean-card pa-6">
       <!-- Search and Filter Section -->
       <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-4"
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
       >
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
           :placeholder="t('search')"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="search-field"
-          style="max-width: 400px"
+          class="cream-input"
+          style="max-width: 380px"
           bg-color="white"
-          color="primary"
+          color="brown-darken-2"
+          base-color="brown-lighten-3"
           rounded="lg"
         ></v-text-field>
 
@@ -153,7 +226,10 @@
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            color="brown-darken-2"
+            base-color="brown-lighten-3"
+            class="cream-select"
+            style="min-width: 160px"
             prepend-inner-icon="mdi-filter-variant"
           ></v-select>
 
@@ -163,17 +239,20 @@
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            color="brown-darken-2"
+            base-color="brown-lighten-3"
+            class="cream-select"
+            style="min-width: 160px"
           ></v-select>
 
           <v-btn
             variant="outlined"
-            color="grey-darken-1"
+            color="brown-lighten-2"
             class="text-none"
             height="40"
             rounded="lg"
             icon="mdi-dots-horizontal"
-            style="border-color: #e0e0e0"
+            border
           ></v-btn>
         </div>
       </div>
@@ -189,14 +268,18 @@
         <!-- Teacher Name with Image Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
-            <v-avatar size="48" class="mr-3">
+            <v-avatar
+              size="46"
+              class="mr-3 border-cream shadow-sm"
+              rounded="lg"
+            >
               <v-img :src="item.image" cover></v-img>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-grey-darken-4">
+              <div class="font-weight-bold text-brown-darken-4">
                 {{ item.username }}
               </div>
-              <div class="text-caption text-grey-darken-1">
+              <div class="text-caption text-brown-lighten-1 font-weight-medium">
                 {{ item.email || "No email" }}
               </div>
             </div>
@@ -205,18 +288,19 @@
 
         <!-- ID Number Slot -->
         <template v-slot:item.id="{ item }">
-          <span class="font-weight-medium text-grey-darken-3">{{
-            item.id
-          }}</span>
+          <span
+            class="font-weight-bold text-brown-darken-3 bg-brown-lighten-5 px-2 py-1 rounded"
+            >{{ item.id }}</span
+          >
         </template>
 
         <!-- Subject/Class Slot -->
         <template v-slot:item.teacherSubject="{ item }">
           <div>
-            <div class="font-weight-medium text-grey-darken-3">
+            <div class="font-weight-bold text-brown-darken-3">
               {{ item.teacherSubject }}
             </div>
-            <div class="text-caption text-grey-darken-1">
+            <div class="text-caption text-brown-lighten-1 font-weight-medium">
               {{ item.grade || "Grade 10-A" }}
             </div>
           </div>
@@ -225,8 +309,10 @@
         <!-- Parent Contact Slot -->
         <template v-slot:item.phone="{ item }">
           <div>
-            <div class="text-body-2 text-grey-darken-3">{{ item.phone }}</div>
-            <div class="text-caption text-grey-darken-1">
+            <div class="text-body-2 font-weight-medium text-brown-darken-3">
+              {{ item.phone }}
+            </div>
+            <div class="text-caption text-brown-lighten-1">
               {{ item.parentName || "(Phone)" }}
             </div>
           </div>
@@ -239,73 +325,119 @@
               item.status === 'Active'
                 ? 'success'
                 : item.status === 'Suspended'
-                ? 'error'
-                : 'grey'
+                  ? 'error'
+                  : 'grey'
             "
             size="small"
-            class="font-weight-medium"
+            class="font-weight-bold text-uppercase"
+            variant="flat"
             label
           >
             {{ item.status }}
           </v-chip>
         </template>
 
+        <!-- Actions Slot -->
+        <template v-slot:item.actions="{ item }">
+          <div class="d-flex justify-end">
+            <v-btn
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="small"
+              color="brown-lighten-1"
+              class="mr-1"
+            ></v-btn>
+            <v-btn
+              icon="mdi-delete-outline"
+              variant="text"
+              size="small"
+              color="brown-lighten-1"
+            ></v-btn>
+          </div>
+        </template>
+
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-6">
-            <div class="text-body-2 text-grey-darken-1">
-              {{ t("showing") }} <strong>1</strong> {{ t("to") }}
-              <strong>{{ teachers.length }}</strong> {{ t("of") }}
-              <strong>{{ teachers.length }}</strong> {{ t("results") }}
+          <div
+            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t-cream"
+          >
+            <div
+              class="text-caption text-brown-lighten-1 font-weight-bold mb-4 mb-md-0"
+            >
+              {{ t("showing") }}
+              <span class="text-brown-darken-3">1-{{ teachers.length }}</span>
+              {{ t("of") }}
+              <span class="text-brown-darken-3">{{ teachers.length }}</span>
+              {{ t("results") }}
             </div>
             <div class="d-flex gap-2 align-center">
-              <v-btn icon variant="text" color="grey-darken-1" size="small">
+              <v-btn
+                icon
+                variant="outlined"
+                color="brown-lighten-3"
+                size="small"
+                rounded="lg"
+                class="mr-2"
+              >
                 <v-icon>mdi-chevron-left</v-icon>
               </v-btn>
 
               <v-btn
-                color="primary"
+                color="brown-darken-3"
                 size="small"
-                elevation="0"
+                elevation="2"
                 class="font-weight-bold"
-                style="min-width: 32px; height: 32px"
+                rounded="lg"
+                style="min-width: 36px; height: 36px"
               >
                 1
               </v-btn>
 
               <v-btn
                 variant="text"
-                color="grey-darken-1"
+                color="brown-lighten-1"
                 size="small"
-                class="font-weight-medium"
-                style="min-width: 32px; height: 32px"
+                class="font-weight-bold"
+                rounded="lg"
+                style="min-width: 36px; height: 36px"
               >
                 2
               </v-btn>
 
               <v-btn
                 variant="text"
-                color="grey-darken-1"
+                color="brown-lighten-1"
                 size="small"
-                class="font-weight-medium"
-                style="min-width: 32px; height: 32px"
+                class="font-weight-bold"
+                rounded="lg"
+                style="min-width: 36px; height: 36px"
               >
                 3
               </v-btn>
 
-              <span class="text-grey-darken-1 mx-2">...</span>
+              <span class="text-brown-lighten-2 mx-1 font-weight-bold"
+                >...</span
+              >
 
               <v-btn
                 variant="text"
-                color="grey-darken-1"
+                color="brown-lighten-1"
                 size="small"
-                class="font-weight-medium"
-                style="min-width: 32px; height: 32px"
+                class="font-weight-bold"
+                rounded="lg"
+                style="min-width: 36px; height: 36px"
               >
-                128
+                12
               </v-btn>
 
-              <v-btn icon variant="text" color="grey-darken-1" size="small">
+              <v-btn
+                icon
+                variant="outlined"
+                color="brown-lighten-3"
+                size="small"
+                rounded="lg"
+                class="ml-2"
+              >
                 <v-icon>mdi-chevron-right</v-icon>
               </v-btn>
             </div>
@@ -329,10 +461,9 @@ const breadcrumbs = [
 
 const headers = [
   { title: t("id"), key: "id", align: "start" as const, sortable: true },
-  { title: t("image"), key: "image", align: "start" as const, sortable: false },
   {
     title: t("teachers"),
-    key: "username",
+    key: "name", // Corrected key from previous code which might have been inconsistent with slots
     align: "start" as const,
     sortable: true,
   },
@@ -344,6 +475,12 @@ const headers = [
   },
   { title: t("phone"), key: "phone", align: "start" as const, sortable: true },
   {
+    title: t("status"),
+    key: "status",
+    align: "start" as const,
+    sortable: true,
+  },
+  {
     title: t("actions"),
     key: "actions",
     align: "end" as const,
@@ -351,7 +488,8 @@ const headers = [
   },
 ].map((h) => ({
   ...h,
-  class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
+  class:
+    "text-caption font-weight-bold text-brown-lighten-1 pb-4 text-uppercase tracking-wider",
 }));
 
 const teachers = [
@@ -414,6 +552,14 @@ const teachers = [
 </script>
 
 <style scoped>
+/* Cream UI Variables */
+.dashboard-container {
+  --cream-bg: #fafaf5;
+  --cream-card: #ffffff;
+  --cream-border: #efebe0;
+  --text-primary: #4a4036;
+}
+
 .gap-4 {
   gap: 16px;
 }
@@ -424,31 +570,73 @@ const teachers = [
   gap: 8px;
 }
 
-/* Customizing Table Styles */
+/* Bean Card Styling */
+.bean-card {
+  background-color: var(--cream-card);
+  border: 1px solid var(--cream-border) !important;
+  box-shadow: 0 4px 12px -2px rgba(166, 155, 140, 0.05) !important;
+  transition: all 0.3s ease;
+}
+
+.bean-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(166, 155, 140, 0.1) !important;
+  border-color: #e6dccd !important;
+}
+
+/* Table Styling */
 :deep(.v-data-table) {
   background: transparent !important;
 }
 
 :deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #f5f7fa !important;
+  background-color: #fafaf8 !important; /* Soft Cream Hover */
 }
 
 :deep(.v-data-table__th) {
   background-color: transparent !important;
-  border-bottom: 1px solid #eeeeee !important;
-  font-size: 12px !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--cream-border) !important;
 }
 
 :deep(.v-data-table__td) {
-  border-bottom: 1px solid #f5f5f5 !important;
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  height: 64px !important;
+  border-bottom: 1px solid #f5f2eb !important;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+  height: 72px !important;
 }
 
-:deep(.v-field__outline) {
-  --v-field-border-opacity: 0.15;
+/* Input Customization */
+.cream-input :deep(.v-field__outline__start),
+.cream-input :deep(.v-field__outline__end),
+.cream-input :deep(.v-field__outline__notch) {
+  border-color: #e6e0d4 !important;
+}
+
+.cream-input :deep(.v-field--focused .v-field__outline__start),
+.cream-input :deep(.v-field--focused .v-field__outline__end),
+.cream-input :deep(.v-field--focused .v-field__outline__notch) {
+  border-color: #8d6e63 !important; /* Brown darken 1 */
+  border-width: 1px !important;
+}
+
+/* Typography Tools */
+.tracking-wide {
+  letter-spacing: 0.05em;
+}
+.tracking-wider {
+  letter-spacing: 0.08em;
+}
+
+.border-cream {
+  border: 2px solid #ffffff;
+}
+.border-t-cream {
+  border-top: 1px solid var(--cream-border);
+}
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.bg-brown-lighten-5 {
+  background-color: #efebe9 !important;
 }
 </style>
