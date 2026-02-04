@@ -34,7 +34,7 @@ export const useApiAuthStore = defineStore("apiAuth", {
 
           // Define cookie options once
           const cookieOptions = {
-            maxAge: 60 * 60 * 24 * 7, // 7 days
+            maxAge: 60 * 3, // 3 - Removed to make it a session cookie
             secure: false, // HTTPS only in production
             sameSite: "lax" as const, // 'strict' might cause issues with redirects
             path: "/",
@@ -43,12 +43,12 @@ export const useApiAuthStore = defineStore("apiAuth", {
           // Store credentials in cookies
           // Note: httpOnly can only be set server-side in Nuxt
           const token = useCookie("token", cookieOptions);
-          const userId = useCookie("id");
-          const userRole = useCookie("role");
-          const userPhone = useCookie("phone");
-          const email = useCookie("email");
-          const avatar = useCookie("avatar");
-          const username = useCookie("username");
+          const userId = useCookie("id", cookieOptions);
+          const userRole = useCookie("role", cookieOptions);
+          const userPhone = useCookie("phone", cookieOptions);
+          const email = useCookie("email", cookieOptions);
+          const avatar = useCookie("avatar", cookieOptions);
+          const username = useCookie("username", cookieOptions);
 
           // Set cookie values
           token.value = response.data.token;
