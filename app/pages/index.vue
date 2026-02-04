@@ -8,7 +8,7 @@
           Welcome back, here's what's happening today.
         </p>
       </div>
-      <div class="d-flex gap-2">
+      <div class="d-flex ga-2">
         <v-btn
           prepend-icon="mdi-download"
           variant="outlined"
@@ -94,7 +94,7 @@
         <!-- Project Progress Chart -->
         <v-card elevation="0" rounded="xl" class="pa-6 border mb-6 bg-white">
           <div
-            class="d-flex flex-wrap justify-space-between align-center mb-6 gap-4"
+            class="d-flex flex-wrap justify-space-between align-center mb-6 ga-4"
           >
             <div>
               <h2 class="text-h6 font-weight-bold text-grey-darken-4">
@@ -258,7 +258,7 @@
               Upcoming Deadlines
             </h2>
           </div>
-          <div class="d-flex flex-column gap-3">
+          <div class="d-flex flex-column ga-3">
             <div
               v-for="(deadline, i) in deadlines"
               :key="i"
@@ -546,15 +546,6 @@ const projects = [
 </script>
 
 <style scoped>
-.gap-2 {
-  gap: 8px;
-}
-.gap-3 {
-  gap: 12px;
-}
-.gap-4 {
-  gap: 16px;
-}
 .border-thin {
   border-width: 1px !important;
 }
@@ -584,10 +575,10 @@ const projects = [
   transition: background-color 0.2s ease;
 }
 :deep(.projects-table tbody tr:hover) {
-  background-color: rgb(var(--v-theme-grey-lighten-5)) !important;
+  background-color: #f8f9fa !important;
 }
 
 .hover-light:hover {
-  background-color: rgb(var(--v-theme-grey-lighten-4)) !important;
+  background-color: #f0f0f0 !important;
 }
 </style>
