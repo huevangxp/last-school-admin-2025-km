@@ -8,12 +8,12 @@
     >
       <div>
         <h1
-          class="text-h4 font-weight-bold text-brown-darken-4 mb-1"
+          class="text-h4 font-weight-bold text-secondary mb-1"
           style="letter-spacing: -0.5px"
         >
           Manage Financial
         </h1>
-        <p class="text-body-2 text-brown-lighten-1 font-weight-medium">
+        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
           Track revenue, expenses, and transaction history.
         </p>
       </div>
@@ -21,7 +21,7 @@
       <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
-          color="brown-lighten-2"
+          color="grey-darken-1"
           class="text-none font-weight-bold"
           height="44"
           rounded="xl"
@@ -32,7 +32,7 @@
         </v-btn>
 
         <v-btn
-          color="brown-darken-3"
+          color="primary"
           class="text-none px-6 font-weight-bold"
           height="44"
           rounded="xl"
@@ -56,13 +56,11 @@
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
               <p
-                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
               >
                 ລາຍຮັບທັງໝົດ
               </p>
-              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
-                ₭45.2M
-              </h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">₭45.2M</h2>
             </div>
             <v-avatar
               color="green-lighten-5"
@@ -96,13 +94,11 @@
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
               <p
-                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
               >
                 ລາຍຈ່າຍທັງໝົດ
               </p>
-              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
-                ₭28.7M
-              </h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">₭28.7M</h2>
             </div>
             <v-avatar
               color="red-lighten-5"
@@ -136,13 +132,11 @@
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
               <p
-                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
               >
                 ຍອດຄົງເຫຼືອ
               </p>
-              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
-                ₭16.5M
-              </h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">₭16.5M</h2>
             </div>
             <v-avatar
               color="purple-lighten-5"
@@ -156,7 +150,7 @@
             </v-avatar>
           </div>
           <div class="d-flex align-center mt-2">
-            <span class="text-caption font-weight-medium text-brown-lighten-2"
+            <span class="text-caption font-weight-medium text-grey-darken-1"
               >Available balance</span
             >
           </div>
@@ -172,11 +166,11 @@
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
               <p
-                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
               >
                 ຄ້າງຊຳລະ
               </p>
-              <h2 class="text-h4 font-weight-bold text-brown-darken-4">15</h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">15</h2>
             </div>
             <v-avatar
               color="orange-lighten-5"
@@ -191,7 +185,7 @@
           </div>
           <div class="d-flex align-center mt-2">
             <span
-              class="text-caption font-weight-medium text-brown-lighten-2 text-decoration-underline cursor-pointer"
+              class="text-caption font-weight-medium text-grey-darken-1 text-decoration-underline cursor-pointer"
               >View details</span
             >
           </div>
@@ -215,8 +209,8 @@
           class="cream-input"
           style="max-width: 380px"
           bg-color="white"
-          color="brown-darken-2"
-          base-color="brown-lighten-3"
+          color="primary"
+          base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
 
@@ -227,8 +221,8 @@
             density="compact"
             hide-details
             rounded="lg"
-            color="brown-darken-2"
-            base-color="brown-lighten-3"
+            color="primary"
+            base-color="grey-lighten-1"
             class="cream-select"
             style="min-width: 160px"
             prepend-inner-icon="mdi-filter-variant"
@@ -240,15 +234,15 @@
             density="compact"
             hide-details
             rounded="lg"
-            color="brown-darken-2"
-            base-color="brown-lighten-3"
+            color="primary"
+            base-color="grey-lighten-1"
             class="cream-select"
             style="min-width: 160px"
           ></v-select>
 
           <v-btn
             variant="outlined"
-            color="brown-lighten-2"
+            color="grey-darken-1"
             class="text-none"
             height="40"
             rounded="lg"
@@ -269,7 +263,7 @@
         <!-- Transaction ID Slot -->
         <template v-slot:item.id="{ item }">
           <span
-            class="font-weight-bold text-brown-darken-3 bg-brown-lighten-5 px-2 py-1 rounded text-caption"
+            class="font-weight-bold text-secondary bg-grey-lighten-4 px-2 py-1 rounded text-caption"
             >{{ item.id }}</span
           >
         </template>
@@ -299,10 +293,10 @@
               </v-icon>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-brown-darken-4">
+              <div class="font-weight-bold text-secondary">
                 {{ item.description }}
               </div>
-              <div class="text-caption text-brown-lighten-1 font-weight-medium">
+              <div class="text-caption text-grey-darken-1 font-weight-medium">
                 {{ item.category }}
               </div>
             </div>
@@ -326,10 +320,10 @@
         <!-- Date Slot -->
         <template v-slot:item.date="{ item }">
           <div>
-            <div class="font-weight-bold text-brown-darken-3">
+            <div class="font-weight-bold text-secondary">
               {{ item.date }}
             </div>
-            <div class="text-caption text-brown-lighten-1 font-weight-medium">
+            <div class="text-caption text-grey-darken-1 font-weight-medium">
               {{ item.time }}
             </div>
           </div>
@@ -360,13 +354,13 @@
             <v-btn
               icon="mdi-eye-outline"
               variant="text"
-              color="brown-lighten-1"
+              color="grey-darken-1"
               size="small"
             ></v-btn>
             <v-btn
               icon="mdi-pencil-outline"
               variant="text"
-              color="brown-lighten-1"
+              color="grey-darken-1"
               size="small"
             ></v-btn>
           </div>
@@ -375,24 +369,22 @@
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
           <div
-            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t-cream"
+            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t"
           >
             <div
-              class="text-caption text-brown-lighten-1 font-weight-bold mb-4 mb-md-0"
+              class="text-caption text-grey-darken-1 font-weight-bold mb-4 mb-md-0"
             >
               Showing
-              <span class="text-brown-darken-3"
-                >1-{{ transactions.length }}</span
-              >
+              <span class="text-secondary">1-{{ transactions.length }}</span>
               of
-              <span class="text-brown-darken-3">{{ transactions.length }}</span>
+              <span class="text-secondary">{{ transactions.length }}</span>
               results
             </div>
             <div class="d-flex gap-2 align-center">
               <v-btn
                 icon
                 variant="outlined"
-                color="brown-lighten-3"
+                color="grey-lighten-1"
                 size="small"
                 rounded="lg"
                 class="mr-2"
@@ -400,7 +392,7 @@
                 <v-icon>mdi-chevron-left</v-icon>
               </v-btn>
               <v-btn
-                color="brown-darken-3"
+                color="primary"
                 size="small"
                 elevation="2"
                 class="font-weight-bold"
@@ -410,7 +402,7 @@
               >
               <v-btn
                 variant="text"
-                color="brown-lighten-1"
+                color="grey-darken-1"
                 size="small"
                 class="font-weight-bold"
                 rounded="lg"
@@ -419,7 +411,7 @@
               >
               <v-btn
                 variant="text"
-                color="brown-lighten-1"
+                color="grey-darken-1"
                 size="small"
                 class="font-weight-bold"
                 rounded="lg"
@@ -429,7 +421,7 @@
               <v-btn
                 icon
                 variant="outlined"
-                color="brown-lighten-3"
+                color="grey-lighten-1"
                 size="small"
                 rounded="lg"
                 class="ml-2"
@@ -478,7 +470,7 @@ const headers = [
 ].map((h) => ({
   ...h,
   class:
-    "text-caption font-weight-bold text-brown-lighten-1 pb-4 text-uppercase tracking-wider",
+    "text-caption font-weight-bold text-grey-darken-1 pb-4 text-uppercase tracking-wider",
 }));
 
 const transactions = ref([
@@ -538,10 +530,7 @@ const transactions = ref([
 <style scoped>
 /* Cream UI Variables */
 .dashboard-container {
-  --cream-bg: #fafaf5;
-  --cream-card: #ffffff;
-  --cream-border: #efebe0;
-  --text-primary: #4a4036;
+  /* --cream-bg: #fafaf5; */
 }
 
 .gap-4 {
@@ -556,16 +545,20 @@ const transactions = ref([
 
 /* Bean Card Styling */
 .bean-card {
-  background-color: var(--cream-card);
-  border: 1px solid var(--cream-border) !important;
-  box-shadow: 0 4px 12px -2px rgba(166, 155, 140, 0.05) !important;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   transition: all 0.3s ease;
 }
 
 .bean-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(166, 155, 140, 0.1) !important;
-  border-color: #e6dccd !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(var(--v-theme-primary), 0.3) !important;
 }
 
 /* Table Styling */
@@ -574,16 +567,16 @@ const transactions = ref([
 }
 
 :deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #fafaf8 !important; /* Soft Cream Hover */
+  background-color: #f8fafc !important; /* Soft Slate Hover */
 }
 
 :deep(.v-data-table__th) {
   background-color: transparent !important;
-  border-bottom: 1px solid var(--cream-border) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 :deep(.v-data-table__td) {
-  border-bottom: 1px solid #f5f2eb !important;
+  border-bottom: 1px solid #f1f5f9 !important;
   padding-top: 16px !important;
   padding-bottom: 16px !important;
   height: 72px !important;
@@ -593,13 +586,13 @@ const transactions = ref([
 .cream-input :deep(.v-field__outline__start),
 .cream-input :deep(.v-field__outline__end),
 .cream-input :deep(.v-field__outline__notch) {
-  border-color: #e6e0d4 !important;
+  border-color: #e2e8f0 !important;
 }
 
 .cream-input :deep(.v-field--focused .v-field__outline__start),
 .cream-input :deep(.v-field--focused .v-field__outline__end),
 .cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: #8d6e63 !important; /* Brown darken 1 */
+  border-color: rgb(var(--v-theme-primary)) !important;
   border-width: 1px !important;
 }
 
@@ -614,13 +607,10 @@ const transactions = ref([
 .border-cream {
   border: 2px solid #ffffff;
 }
-.border-t-cream {
-  border-top: 1px solid var(--cream-border);
+.border-t {
+  border-top: 1px solid #e2e8f0;
 }
 .shadow-sm {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-.bg-brown-lighten-5 {
-  background-color: #efebe9 !important;
 }
 </style>

@@ -8,12 +8,12 @@
     >
       <div>
         <h1
-          class="text-h4 font-weight-bold text-brown-darken-4 mb-1"
+          class="text-h4 font-weight-bold text-secondary mb-1"
           style="letter-spacing: -0.5px"
         >
           {{ t("management") }} {{ t("ethnic_group") }}
         </h1>
-        <p class="text-body-2 text-brown-lighten-1 font-weight-medium">
+        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
           Manage ethnic group classifications and records.
         </p>
       </div>
@@ -21,7 +21,7 @@
       <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
-          color="brown-lighten-2"
+          color="grey-darken-1"
           class="text-none font-weight-bold"
           height="44"
           rounded="xl"
@@ -32,7 +32,7 @@
         </v-btn>
 
         <v-btn
-          color="brown-darken-3"
+          color="primary"
           class="text-none px-6 font-weight-bold"
           height="44"
           rounded="xl"
@@ -56,11 +56,11 @@
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
               <p
-                class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mb-1 tracking-wide"
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
               >
                 {{ t("total") }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-brown-darken-4">
+              <h2 class="text-h4 font-weight-bold text-secondary">
                 {{ total }}
               </h2>
             </div>
@@ -76,7 +76,7 @@
             </v-avatar>
           </div>
           <div class="d-flex align-center mt-2">
-            <span class="text-caption font-weight-medium text-brown-lighten-2"
+            <span class="text-caption font-weight-medium text-grey-darken-1"
               >Registered groups</span
             >
           </div>
@@ -100,8 +100,8 @@
           class="cream-input"
           style="max-width: 380px"
           bg-color="white"
-          color="brown-darken-2"
-          base-color="brown-lighten-3"
+          color="primary"
+          base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
       </div>
@@ -115,10 +115,10 @@
         hover
       >
         <!-- ID Slot -->
-        <template v-slot:item.id="{ index }">
+        <template v-slot:item.id="{ item, index }">
           <span
-            class="font-weight-bold text-brown-darken-3 bg-brown-lighten-5 px-3 py-1 rounded"
-            >{{ index + 1 }}</span
+            class="font-weight-bold text-secondary bg-grey-lighten-4 px-3 py-1 rounded"
+            >{{ offset + index + 1 }}</span
           >
         </template>
 
@@ -126,24 +126,24 @@
         <template v-slot:item.title="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar
-              color="brown-lighten-5"
+              color="grey-lighten-4"
               size="46"
-              class="mr-4 rounded-lg border-cream shadow-sm"
+              class="mr-4 rounded-lg border-white shadow-sm"
             >
               <v-icon
                 icon="mdi-text-box-outline"
                 size="24"
-                color="brown-darken-2"
+                color="secondary"
               ></v-icon>
             </v-avatar>
             <div>
-              <div class="text-brown-darken-4 text-subtitle-2 font-weight-bold">
-                {{ item.title }}
+              <div class="text-secondary text-subtitle-2 font-weight-bold">
+                {{ getItemRaw(item).title }}
               </div>
               <div
-                class="text-caption text-brown-lighten-2 font-weight-medium text-uppercase tracking-wide"
+                class="text-caption text-grey-darken-1 font-weight-medium text-uppercase tracking-wide"
               >
-                ID: {{ hiddenId(String(item.id)) }}
+                ID: {{ hiddenId(String(getItemRaw(item).id)) }}
               </div>
             </div>
           </div>
@@ -156,9 +156,9 @@
               icon
               size="small"
               variant="text"
-              color="brown-darken-1"
+              color="grey-darken-1"
               class="mr-1"
-              :to="`/ethnic-group/${item.id}`"
+              :to="`/ethnic-group/${getItemRaw(item).id}`"
             >
               <v-icon icon="mdi-pencil-outline"></v-icon>
               <v-tooltip activator="parent" location="top">Edit</v-tooltip>
@@ -168,7 +168,7 @@
               size="small"
               variant="text"
               color="error"
-              @click="deleteItem(item.id)"
+              @click="deleteItem(getItemRaw(item).id)"
             >
               <v-icon icon="mdi-delete-outline"></v-icon>
               <v-tooltip activator="parent" location="top">Delete</v-tooltip>
@@ -179,17 +179,17 @@
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
           <div
-            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t-cream"
+            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t"
           >
             <div
-              class="text-caption text-brown-lighten-1 font-weight-bold mb-4 mb-md-0"
+              class="text-caption text-grey-darken-1 font-weight-bold mb-4 mb-md-0"
             >
               {{ t("showing") }}
-              <span class="text-brown-darken-3"
+              <span class="text-secondary"
                 >{{ offset + 1 }}-{{ Math.min(offset + limit, total) }}</span
               >
               {{ t("of") }}
-              <span class="text-brown-darken-3">{{ total }}</span>
+              <span class="text-secondary">{{ total }}</span>
               {{ t("results") }}
             </div>
 
@@ -197,7 +197,7 @@
               <v-btn
                 icon
                 variant="outlined"
-                color="brown-lighten-3"
+                color="grey-lighten-1"
                 size="small"
                 rounded="lg"
                 @click="prevPage"
@@ -208,7 +208,7 @@
               </v-btn>
 
               <v-btn
-                color="brown-darken-3"
+                color="primary"
                 size="small"
                 elevation="2"
                 class="font-weight-bold"
@@ -221,7 +221,7 @@
               <v-btn
                 icon
                 variant="outlined"
-                color="brown-lighten-3"
+                color="grey-lighten-1"
                 size="small"
                 rounded="lg"
                 @click="nextPage"
@@ -261,6 +261,10 @@ const deleteItem = async (id: number) => {
     await ethnicGroupStore.deleteEthnicGroup(id);
     fetchEthnicGroups(limit.value, offset.value);
   }
+};
+
+const getItemRaw = (item: any) => {
+  return item.raw || item;
 };
 
 const nextPage = () => {
@@ -308,17 +312,14 @@ const headers = [
 ].map((h) => ({
   ...h,
   class:
-    "text-caption font-weight-bold text-brown-lighten-1 pb-4 text-uppercase tracking-wider",
+    "text-caption font-weight-bold text-grey-darken-1 pb-4 text-uppercase tracking-wider",
 }));
 </script>
 
 <style scoped>
 /* Cream UI Variables */
 .dashboard-container {
-  --cream-bg: #fafaf5;
-  --cream-card: #ffffff;
-  --cream-border: #efebe0;
-  --text-primary: #4a4036;
+  /* --cream-bg: #fafaf5; */
 }
 
 .gap-4 {
@@ -333,16 +334,20 @@ const headers = [
 
 /* Bean Card Styling */
 .bean-card {
-  background-color: var(--cream-card);
-  border: 1px solid var(--cream-border) !important;
-  box-shadow: 0 4px 12px -2px rgba(166, 155, 140, 0.05) !important;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   transition: all 0.3s ease;
 }
 
 .bean-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(166, 155, 140, 0.1) !important;
-  border-color: #e6dccd !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(var(--v-theme-primary), 0.3) !important;
 }
 
 /* Table Styling */
@@ -351,16 +356,16 @@ const headers = [
 }
 
 :deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #fafaf8 !important; /* Soft Cream Hover */
+  background-color: #f8fafc !important; /* Soft Slate Hover */
 }
 
 :deep(.v-data-table__th) {
   background-color: transparent !important;
-  border-bottom: 1px solid var(--cream-border) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 :deep(.v-data-table__td) {
-  border-bottom: 1px solid #f5f2eb !important;
+  border-bottom: 1px solid #f1f5f9 !important;
   padding-top: 16px !important;
   padding-bottom: 16px !important;
   height: 72px !important;
@@ -370,13 +375,13 @@ const headers = [
 .cream-input :deep(.v-field__outline__start),
 .cream-input :deep(.v-field__outline__end),
 .cream-input :deep(.v-field__outline__notch) {
-  border-color: #e6e0d4 !important;
+  border-color: #e2e8f0 !important;
 }
 
 .cream-input :deep(.v-field--focused .v-field__outline__start),
 .cream-input :deep(.v-field--focused .v-field__outline__end),
 .cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: #8d6e63 !important; /* Brown darken 1 */
+  border-color: rgb(var(--v-theme-primary)) !important;
   border-width: 1px !important;
 }
 
@@ -388,16 +393,13 @@ const headers = [
   letter-spacing: 0.08em;
 }
 
-.border-cream {
+.border-white {
   border: 2px solid #ffffff;
 }
-.border-t-cream {
-  border-top: 1px solid var(--cream-border);
+.border-t {
+  border-top: 1px solid #e2e8f0;
 }
 .shadow-sm {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-.bg-brown-lighten-5 {
-  background-color: #efebe9 !important;
 }
 </style>

@@ -1,25 +1,32 @@
 <template>
-  <v-container fluid class="pa-6 min-h-screen">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" />
+  <v-container fluid class="pa-6 min-h-screen dashboard-container">
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
     >
       <div>
-        <h1 class="text-h5 font-weight-bold text-grey-darken-4 mb-2">
-          <span>{{ $t("management") }} {{ $t("scores") }}</span>
+        <h1
+          class="text-h4 font-weight-bold text-secondary mb-1"
+          style="letter-spacing: -0.5px"
+        >
+          {{ $t("management") }} {{ $t("scores") }}
         </h1>
+        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
+          Manage student grades and performance.
+        </p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap">
+      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="success"
-          class="text-none"
-          height="40"
-          rounded="lg"
+          class="text-none font-weight-bold"
+          height="44"
+          rounded="xl"
           prepend-icon="mdi-file-excel"
+          border
         >
           Excel
         </v-btn>
@@ -27,20 +34,21 @@
         <v-btn
           variant="outlined"
           color="error"
-          class="text-none"
-          height="40"
-          rounded="lg"
+          class="text-none font-weight-bold"
+          height="44"
+          rounded="xl"
           prepend-icon="mdi-file-pdf-box"
+          border
         >
           PDF
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6"
-          height="40"
-          rounded="lg"
-          elevation="0"
+          class="text-none px-6 font-weight-bold"
+          height="44"
+          rounded="xl"
+          elevation="4"
           prepend-icon="mdi-plus"
         >
           {{ $t("add") }}
@@ -52,21 +60,28 @@
     <v-row class="mb-6">
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                <span>total students</span>
+              <p
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
+              >
+                total students
               </p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">
+              <h2 class="text-h4 font-weight-bold text-secondary">
                 {{ students.length }}
               </h2>
             </div>
-            <v-avatar color="blue-lighten-5" size="56">
-              <v-icon color="blue" size="28">mdi-account-group</v-icon>
+            <v-avatar
+              color="blue-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="blue-darken-2" size="26">mdi-account-group</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -74,19 +89,26 @@
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                <span>ຄະແນນສະເລ່ຍ</span>
+              <p
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
+              >
+                ຄະແນນສະເລ່ຍ
               </p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">83.2</h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">83.2</h2>
             </div>
-            <v-avatar color="green-lighten-5" size="56">
-              <v-icon color="green" size="28">mdi-chart-line</v-icon>
+            <v-avatar
+              color="green-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="green-darken-2" size="26">mdi-chart-line</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -94,19 +116,26 @@
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                <span>ອັດຕາຜ່ານ</span>
+              <p
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
+              >
+                ອັດຕາຜ່ານ
               </p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">92%</h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">92%</h2>
             </div>
-            <v-avatar color="purple-lighten-5" size="56">
-              <v-icon color="purple" size="28">mdi-trophy</v-icon>
+            <v-avatar
+              color="purple-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="purple-darken-2" size="26">mdi-trophy</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -114,19 +143,28 @@
 
       <v-col cols="12" sm="6" md="3">
         <v-card
-          class="rounded-xl pa-4"
+          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
+          rounded="xl"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                <span>ຍັງບໍ່ປ້ອນຄະແນນ</span>
+              <p
+                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
+              >
+                ຍັງບໍ່ປ້ອນຄະແນນ
               </p>
-              <h2 class="text-h5 font-weight-bold text-grey-darken-4">3</h2>
+              <h2 class="text-h4 font-weight-bold text-secondary">3</h2>
             </div>
-            <v-avatar color="orange-lighten-5" size="56">
-              <v-icon color="orange" size="28">mdi-clock-outline</v-icon>
+            <v-avatar
+              color="orange-lighten-5"
+              rounded="lg"
+              size="52"
+              class="icon-box"
+            >
+              <v-icon color="orange-darken-2" size="26"
+                >mdi-clock-time-four-outline</v-icon
+              >
             </v-avatar>
           </div>
         </v-card>
@@ -135,7 +173,7 @@
 
     <!-- Main Content Card -->
     <div>
-      <v-card class="rounded-xl">
+      <v-card class="rounded-xl bean-card" elevation="0">
         <!-- Filter Section -->
         <div class="pa-6 pb-0">
           <div
@@ -153,6 +191,7 @@
               bg-color="white"
               color="primary"
               rounded="lg"
+              class="cream-input"
             ></v-text-field>
 
             <!-- Filter Dropdowns -->
@@ -168,6 +207,8 @@
                 hide-details
                 rounded="lg"
                 style="min-width: 140px"
+                class="cream-select"
+                color="primary"
               ></v-select>
 
               <!-- Semester Filter -->
@@ -181,6 +222,8 @@
                 hide-details
                 rounded="lg"
                 style="min-width: 140px"
+                class="cream-select"
+                color="primary"
               ></v-select>
 
               <!-- Class Filter -->
@@ -194,6 +237,8 @@
                 hide-details
                 rounded="lg"
                 style="min-width: 140px"
+                class="cream-select"
+                color="primary"
               ></v-select>
 
               <!-- Subject Filter -->
@@ -207,6 +252,8 @@
                 hide-details
                 rounded="lg"
                 style="min-width: 140px"
+                class="cream-select"
+                color="primary"
               ></v-select>
             </div>
           </div>
@@ -438,6 +485,10 @@ const getRankColor = (index: number) => {
 </script>
 
 <style scoped>
+/* Cream UI Variables */
+.dashboard-container {
+  /* --cream-bg: #fafaf5; */
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -450,12 +501,49 @@ const getRankColor = (index: number) => {
   gap: 16px;
 }
 
+/* Bean Card Styling */
+.bean-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+  transition: all 0.3s ease;
+}
+
+.bean-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+}
+
+/* Input/Select Customization */
+.cream-input :deep(.v-field__outline__start),
+.cream-input :deep(.v-field__outline__end),
+.cream-input :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
+}
+
+.cream-input :deep(.v-field--focused .v-field__outline__start),
+.cream-input :deep(.v-field--focused .v-field__outline__end),
+.cream-input :deep(.v-field--focused .v-field__outline__notch) {
+  border-color: rgb(var(--v-theme-primary)) !important;
+  border-width: 1px !important;
+}
+
+.cream-select :deep(.v-field__outline__start),
+.cream-select :deep(.v-field__outline__end),
+.cream-select :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
+}
+
 /* Table Wrapper */
 .table-wrapper {
   overflow-x: auto;
   border-radius: 12px;
-  border: 2px solid #e9ecef;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 /* Score Table Styling */
@@ -466,69 +554,28 @@ const getRankColor = (index: number) => {
   font-size: 14px;
 }
 
-.score-table thead {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
 .score-table th {
   padding: 16px 12px;
-  border: 1px solid rgba(167, 167, 167, 0.2);
+  border: 1px solid #e2e8f0;
   font-weight: 700;
   text-align: center;
   vertical-align: middle;
   position: relative;
+  background-color: #f8fafc;
+  color: #4a4036; /* Primary text color match */
 }
 
-.score-table th.col-no {
-  width: 60px;
-}
-
-.score-table th.col-name {
-  min-width: 220px;
-  text-align: left;
-  padding-left: 20px;
-}
-
-.score-table th.col-score {
-  width: 65px;
-  height: 140px;
-  padding: 8px 4px;
-}
-
-.score-table th.col-total,
-.score-table th.col-rank {
-  width: 90px;
-}
-
-/* Rotated Header Text */
-.rotate-text {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  white-space: nowrap;
-  font-size: 13px;
-  padding: 8px 0;
-  font-weight: 600;
-}
-
-/* Table Body */
+/* Table Rows */
 .score-table tbody tr {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .table-row:hover {
-  background: linear-gradient(
-    to right,
-    rgba(102, 126, 234, 0.1),
-    rgba(118, 75, 162, 0.1)
-  ) !important;
-  transform: scale(1.01);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f8fafc !important;
 }
 
 .score-table tbody tr.row-even {
-  background-color: #f8f9fa;
+  background-color: #fafaf5; /* Soft cream/grey */
 }
 
 .score-table tbody tr.row-odd {
@@ -537,99 +584,40 @@ const getRankColor = (index: number) => {
 
 .score-table td {
   padding: 14px 10px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #e2e8f0;
   vertical-align: middle;
-  transition: all 0.2s ease;
 }
 
-.row-number {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  line-height: 28px;
-  border-radius: 50%;
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.student-name {
-  font-weight: 600;
-  color: #2c3e50;
-}
-
+.student-name,
 .score-cell {
-  font-weight: 600;
-  color: #495057;
-}
-
-.empty-score {
-  color: #adb5bd;
-  font-weight: 400;
+  color: #4a4036;
 }
 
 .total-cell {
-  background: linear-gradient(to right, #f8f9fa, #ffffff);
-  font-size: 16px;
-}
-
-.total-score {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 8px;
-  font-weight: 700;
-}
-
-.rank-cell {
-  background: linear-gradient(to left, #f8f9fa, #ffffff);
+  background: #f8fafc;
 }
 
 /* Signature Section */
 .signature-section {
-  background: linear-gradient(to top, #f8f9fa, #ffffff);
-  border-top: 2px solid #e9ecef;
-}
-
-.signature-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 40px;
-}
-
-.signature-box {
-  text-align: center;
-  min-width: 250px;
+  background-color: #fafaf5;
+  border-top: 1px solid #e2e8f0;
 }
 
 .signature-title {
   font-weight: 700;
-  color: #495057;
+  color: #64748b;
   font-size: 15px;
 }
 
 .signature-name {
   font-weight: 700;
-  color: #2c3e50;
+  color: #4a4036;
   font-size: 16px;
   margin-top: 8px;
 }
 
-/* Smooth scrollbar */
-.table-wrapper::-webkit-scrollbar {
-  height: 8px;
-}
-
-.table-wrapper::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #ccc;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+/* Typography & Utils */
+.tracking-wide {
+  letter-spacing: 0.05em;
 }
 </style>

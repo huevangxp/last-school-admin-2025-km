@@ -4,12 +4,12 @@
     <div class="d-flex justify-space-between align-center mb-8">
       <div>
         <h1
-          class="text-h4 font-weight-bold text-brown-darken-4"
+          class="text-h4 font-weight-bold text-secondary"
           style="letter-spacing: -0.5px"
         >
-          Dashboard
+          {{ $t("dashboard") }}
         </h1>
-        <p class="text-subtitle-1 text-brown-lighten-1 mt-1 font-weight-medium">
+        <p class="text-subtitle-1 text-grey-darken-1 mt-1 font-weight-medium">
           Welcome back, here's your daily overview.
         </p>
       </div>
@@ -17,7 +17,7 @@
         <v-btn
           prepend-icon="mdi-tray-arrow-down"
           variant="outlined"
-          color="brown-lighten-2"
+          color="grey-darken-1"
           class="text-none font-weight-bold px-4"
           rounded="xl"
           border
@@ -26,8 +26,8 @@
         </v-btn>
         <v-btn
           prepend-icon="mdi-plus"
-          color="brown-darken-3"
-          class="text-none font-weight-bold px-6"
+          color="primary"
+          class="text-none font-weight-bold px-6 text-white"
           rounded="xl"
           elevation="4"
         >
@@ -49,6 +49,7 @@
           elevation="0"
           rounded="xl"
           class="bean-card pa-5 h-100 d-flex flex-column justify-space-between"
+          color="white"
         >
           <div class="d-flex align-center justify-space-between mb-4">
             <v-avatar
@@ -87,10 +88,10 @@
             </div>
           </div>
           <div>
-            <div class="text-h4 font-weight-bold text-brown-darken-4 mb-1">
+            <div class="text-h4 font-weight-bold text-secondary mb-1">
               {{ stat.value }}
             </div>
-            <div class="text-body-2 text-brown-lighten-1 font-weight-medium">
+            <div class="text-body-2 text-grey-darken-1 font-weight-medium">
               {{ stat.title }}
             </div>
           </div>
@@ -108,11 +109,11 @@
             class="d-flex flex-wrap justify-space-between align-center mb-8 ga-4"
           >
             <div>
-              <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h2 class="text-h6 font-weight-bold text-secondary">
                 Analytics Overview
               </h2>
               <div
-                class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+                class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
               >
                 Project Performance
               </div>
@@ -121,7 +122,7 @@
               v-model="chartPeriod"
               density="compact"
               class="cream-toggle rounded-pill"
-              color="brown-darken-3"
+              color="primary"
               mandatory
               borderless
             >
@@ -148,22 +149,20 @@
 
         <!-- Projects Table -->
         <v-card elevation="0" rounded="xl" class="bean-card overflow-hidden">
-          <div
-            class="pa-6 border-b-cream d-flex justify-space-between align-center"
-          >
+          <div class="pa-6 border-b d-flex justify-space-between align-center">
             <div>
-              <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h2 class="text-h6 font-weight-bold text-secondary">
                 Recent Projects
               </h2>
               <div
-                class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+                class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
               >
                 {{ projects.length }} active tracks
               </div>
             </div>
             <v-btn
               variant="text"
-              color="brown-darken-2"
+              color="primary"
               class="text-none font-weight-bold px-0"
               append-icon="mdi-arrow-right"
             >
@@ -173,24 +172,24 @@
 
           <v-table class="projects-table">
             <thead>
-              <tr class="bg-cream-light">
+              <tr class="bg-grey-lighten-5">
                 <th
-                  class="text-caption font-weight-bold text-brown-lighten-1 pl-6 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-grey-darken-1 pl-6 py-4 text-uppercase"
                 >
                   Project Name
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
                 >
                   Lead
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
                 >
                   Status
                 </th>
                 <th
-                  class="text-caption font-weight-bold text-brown-lighten-1 py-4 text-uppercase"
+                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
                 >
                   Progress
                 </th>
@@ -203,24 +202,22 @@
                   <div class="d-flex align-center">
                     <v-sheet
                       rounded="lg"
-                      class="d-flex align-center justify-center mr-4 bg-cream-darken-1"
+                      class="d-flex align-center justify-center mr-4 bg-primary-lighten-5"
                       height="44"
                       width="44"
                     >
-                      <span
-                        class="text-brown-darken-3 text-h6 font-weight-bold"
-                      >
+                      <span class="text-primary text-h6 font-weight-bold">
                         {{ project.name.charAt(0) }}
                       </span>
                     </v-sheet>
                     <div>
                       <div
-                        class="text-subtitle-2 font-weight-bold text-brown-darken-4"
+                        class="text-subtitle-2 font-weight-bold text-secondary"
                       >
                         {{ project.name }}
                       </div>
                       <div
-                        class="text-caption text-brown-lighten-2 font-weight-medium"
+                        class="text-caption text-grey-darken-1 font-weight-medium"
                       >
                         {{ project.subtitle }}
                       </div>
@@ -228,9 +225,9 @@
                   </div>
                 </td>
                 <td>
-                  <v-avatar size="28" class="border-cream">
+                  <v-avatar size="28" class="border">
                     <v-img
-                      :src="`https://ui-avatars.com/api/?name=${project.owner}&background=D7CCC8&color=3E2723`"
+                      :src="`https://ui-avatars.com/api/?name=${project.owner}&background=random`"
                     ></v-img>
                   </v-avatar>
                 </td>
@@ -249,13 +246,13 @@
                     <v-progress-linear
                       :model-value="project.progress"
                       :color="project.progressColor"
-                      bg-color="brown-lighten-5"
+                      bg-color="grey-lighten-2"
                       height="8"
                       rounded
                       class="flex-grow-1 mr-3"
                     ></v-progress-linear>
                     <span
-                      class="text-caption text-brown-darken-3 font-weight-bold"
+                      class="text-caption text-grey-darken-4 font-weight-bold"
                       >{{ project.progress }}%</span
                     >
                   </div>
@@ -265,7 +262,7 @@
                     icon="mdi-dots-horizontal"
                     variant="text"
                     density="comfortable"
-                    color="brown-lighten-2"
+                    color="grey-darken-1"
                   ></v-btn>
                 </td>
               </tr>
@@ -279,34 +276,32 @@
         <!-- Deadlines -->
         <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
           <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
-              Schedule
-            </h2>
+            <h2 class="text-h6 font-weight-bold text-secondary">Schedule</h2>
             <v-btn
               icon="mdi-calendar-month"
               variant="text"
               density="comfortable"
-              color="brown-lighten-2"
+              color="grey-darken-1"
             ></v-btn>
           </div>
           <div class="d-flex flex-column ga-3">
             <div
               v-for="(deadline, i) in deadlines"
               :key="i"
-              class="d-flex align-center pa-4 rounded-xl transition-swing hover-scale bg-cream-soft"
+              class="d-flex align-center pa-4 rounded-xl transition-swing hover-scale bg-grey-lighten-5"
             >
               <div
                 class="d-flex flex-column align-center justify-center bg-white rounded-lg px-3 py-2 mr-4 shadow-sm"
                 style="min-width: 60px"
               >
                 <div
-                  class="text-h6 font-weight-black text-brown-darken-3"
+                  class="text-h6 font-weight-black text-secondary"
                   style="line-height: 1"
                 >
                   {{ deadline.day }}
                 </div>
                 <div
-                  class="text-caption font-weight-bold text-brown-lighten-2 text-uppercase mt-1"
+                  class="text-caption font-weight-bold text-grey text-uppercase mt-1"
                   style="font-size: 0.65rem !important"
                 >
                   {{ deadline.month }}
@@ -314,19 +309,17 @@
               </div>
               <div class="flex-grow-1" style="min-width: 0">
                 <div
-                  class="text-subtitle-2 font-weight-bold text-brown-darken-4 text-truncate"
+                  class="text-subtitle-2 font-weight-bold text-secondary text-truncate"
                 >
                   {{ deadline.title }}
                 </div>
                 <div class="d-flex align-center mt-1">
                   <span
                     class="status-dot mr-2"
-                    :class="
-                      deadline.urgent ? 'bg-red-accent-2' : 'bg-green-lighten-1'
-                    "
+                    :class="deadline.urgent ? 'bg-error' : 'bg-success'"
                   ></span>
                   <span
-                    class="text-caption text-brown-lighten-1 font-weight-medium"
+                    class="text-caption text-grey-darken-1 font-weight-medium"
                   >
                     {{ deadline.status }}
                   </span>
@@ -339,28 +332,26 @@
         <!-- Tasks Status -->
         <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
           <div class="mb-6">
-            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
-              Workload
-            </h2>
+            <h2 class="text-h6 font-weight-bold text-secondary">Workload</h2>
             <div
-              class="text-caption text-brown-lighten-1 font-weight-bold text-uppercase tracking-wide"
+              class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
             >
               Task Distribution
             </div>
           </div>
           <div v-for="(task, i) in taskStatus" :key="i" class="mb-5 last-mb-0">
             <div class="d-flex justify-space-between mb-2">
-              <span class="text-body-2 font-weight-bold text-brown-darken-3">{{
+              <span class="text-body-2 font-weight-bold text-secondary">{{
                 task.label
               }}</span>
-              <span class="text-caption font-weight-bold text-brown-lighten-2"
+              <span class="text-caption font-weight-bold text-grey-darken-1"
                 >{{ task.count }} tasks</span
               >
             </div>
             <v-progress-linear
               :model-value="task.percentage"
               :color="task.color"
-              bg-color="brown-lighten-5"
+              bg-color="grey-lighten-3"
               height="8"
               rounded
             ></v-progress-linear>
@@ -370,7 +361,7 @@
         <!-- Activity -->
         <v-card elevation="0" rounded="xl" class="bean-card pa-6">
           <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-brown-darken-4">
+            <h2 class="text-h6 font-weight-bold text-secondary">
               Latest Activity
             </h2>
           </div>
@@ -390,15 +381,15 @@
               </div>
               <div class="pt-1">
                 <div
-                  class="text-subtitle-2 text-brown-darken-4 mb-1"
+                  class="text-subtitle-2 text-secondary mb-1"
                   style="line-height: 1.4"
                 >
                   <span class="font-weight-black">{{ activity.user }}</span>
-                  <span class="font-weight-medium text-brown-darken-2">
+                  <span class="font-weight-medium text-grey-darken-2">
                     {{ activity.action }}</span
                   >
                 </div>
-                <div class="text-caption text-brown-lighten-2 font-weight-bold">
+                <div class="text-caption text-grey-lighten-1 font-weight-bold">
                   {{ activity.time }}
                 </div>
               </div>
@@ -413,6 +404,7 @@
 <script setup lang="ts">
 import DashboardChart from "~/components/DashboardChart.vue";
 import WorkloadChart from "~/components/WorkloadChart.vue";
+const { t } = useI18n();
 
 const chartPeriod = ref("weekly");
 
@@ -453,6 +445,15 @@ const stats = [
     bgColor: "green-lighten-5",
     iconColor: "green-darken-2",
   },
+  {
+    title: "Reports",
+    value: "45",
+    trendUp: true,
+    trendValue: "5%",
+    icon: "mdi-file-chart-outline",
+    bgColor: "purple-lighten-5",
+    iconColor: "purple-darken-2",
+  },
 ];
 
 const deadlines = [
@@ -484,15 +485,15 @@ const taskStatus = [
     label: "Design Phase",
     count: 45,
     percentage: 70,
-    color: "orange-darken-1",
+    color: "warning",
   },
   {
     label: "Development",
     count: 28,
     percentage: 45,
-    color: "blue-grey-darken-1",
+    color: "info",
   },
-  { label: "Testing", count: 12, percentage: 20, color: "teal-darken-1" },
+  { label: "Testing", count: 12, percentage: 20, color: "success" },
 ];
 
 const recentActivity = [
@@ -524,7 +525,7 @@ const projects = [
     status: "Active",
     statusColor: "green-lighten-4 text-green-darken-4",
     progress: 75,
-    progressColor: "green-darken-1",
+    progressColor: "success",
   },
   {
     name: "LMS Upgrade",
@@ -533,7 +534,7 @@ const projects = [
     status: "Review",
     statusColor: "orange-lighten-4 text-orange-darken-4",
     progress: 40,
-    progressColor: "orange-darken-2",
+    progressColor: "warning",
   },
   {
     name: "Mobile App",
@@ -551,7 +552,16 @@ const projects = [
     status: "Active",
     statusColor: "green-lighten-4 text-green-darken-4",
     progress: 55,
-    progressColor: "green-darken-1",
+    progressColor: "success",
+  },
+  {
+    name: "Library System",
+    subtitle: "Backend API",
+    owner: "Chen Wei",
+    status: "Active",
+    statusColor: "green-lighten-4 text-green-darken-4",
+    progress: 90,
+    progressColor: "success",
   },
 ];
 </script>
@@ -563,22 +573,24 @@ const projects = [
   --cream-bg: #fafaf5;
   --cream-card: #ffffff;
   --cream-border: #efebe0;
-  --text-primary: #4a4036;
-  --text-secondary: #8c847e;
 }
 
 /* Bean Card - The core component of the cream UI */
 .bean-card {
-  background-color: var(--cream-card);
-  border: 1px solid var(--cream-border) !important;
-  box-shadow: 0 6px 16px -4px rgba(166, 155, 140, 0.08) !important;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .bean-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -6px rgba(166, 155, 140, 0.15) !important;
-  border-color: #e6dccd !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(var(--v-theme-primary), 0.3) !important;
 }
 
 /* Typography Tools */
@@ -593,14 +605,14 @@ const projects = [
 .bg-cream-soft {
   background-color: #f9f7f5;
 }
-.bg-cream-darken-1 {
-  background-color: #f0eae2;
+.bg-primary-lighten-5 {
+  background-color: rgba(var(--v-theme-primary), 0.08) !important;
 }
-.border-cream {
-  border: 2px solid #ffffff !important;
+.border {
+  border: 1px solid #e2e8f0 !important;
 }
-.border-b-cream {
-  border-bottom: 1px solid var(--cream-border);
+.border-b {
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 .bg-green-light {
@@ -612,8 +624,8 @@ const projects = [
 
 /* Toggle Button Styling */
 .cream-toggle {
-  background-color: #f5f2eb !important;
-  border: 1px solid #e6e0d4;
+  background-color: #f8fafc !important;
+  border: 1px solid #e2e8f0;
 }
 
 :deep(.v-btn--active) {
@@ -623,7 +635,7 @@ const projects = [
 
 /* Table Enhancements */
 :deep(.projects-table tbody tr:hover) {
-  background-color: #fafaf8 !important;
+  background-color: #f8fafc !important;
 }
 
 .status-chip {
@@ -658,7 +670,7 @@ const projects = [
   bottom: 30px;
   left: 21px; /* Align with avatar center (42px / 2 = 21px) */
   width: 2px;
-  background-color: #f0eae2;
+  background-color: #e2e8f0;
   z-index: 0;
 }
 </style>

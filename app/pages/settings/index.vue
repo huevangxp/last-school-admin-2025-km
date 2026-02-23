@@ -8,12 +8,12 @@
     >
       <div>
         <h1
-          class="text-h4 font-weight-bold text-brown-darken-4 mb-1"
+          class="text-h4 font-weight-bold text-secondary mb-1"
           style="letter-spacing: -0.5px"
         >
           Settings
         </h1>
-        <p class="text-body-2 text-brown-lighten-1 font-weight-medium">
+        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
           Manage system preferences and configurations.
         </p>
       </div>
@@ -33,34 +33,34 @@
               <v-icon color="blue-darken-2" size="26">mdi-cog-outline</v-icon>
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h3 class="text-h6 font-weight-bold text-secondary">
                 General Settings
               </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 School information and system settings
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-school-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ຊື່ໂຮງຮຽນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ມ.ສ ກາງໃໝ່</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -68,7 +68,7 @@
                   icon="mdi-pencil-outline"
                   variant="text"
                   size="small"
-                  color="brown-lighten-2"
+                  color="grey"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -76,19 +76,19 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-map-marker-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ທີ່ຢູ່</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ບ້ານ ກາງໃໝ່, ເມືອງ ໄຊທານີ</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -96,7 +96,7 @@
                   icon="mdi-pencil-outline"
                   variant="text"
                   size="small"
-                  color="brown-lighten-2"
+                  color="grey"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -104,19 +104,17 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
-                    >mdi-phone-outline</v-icon
-                  >
+                  <v-icon color="secondary" size="20">mdi-phone-outline</v-icon>
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ເບີໂທລະສັບ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >+856 20 5555 5555</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -124,7 +122,7 @@
                   icon="mdi-pencil-outline"
                   variant="text"
                   size="small"
-                  color="brown-lighten-2"
+                  color="grey"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -146,34 +144,34 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h3 class="text-h6 font-weight-bold text-secondary">
                 ການຕັ້ງຄ່າວິຊາການ
               </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 ປີການສຶກສາ ແລະ ພາກຮຽນ
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-calendar-month-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ປີການສຶກສາ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >2024-2025</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -191,19 +189,19 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-calendar-range-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ພາກຮຽນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ພາກຮຽນ 1</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -211,7 +209,7 @@
                   icon="mdi-pencil-outline"
                   variant="text"
                   size="small"
-                  color="brown-lighten-2"
+                  color="grey"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -219,19 +217,19 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-clock-time-four-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ວັນເປີດຮຽນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >01/09/2024 - 30/06/2025</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -239,7 +237,7 @@
                   icon="mdi-pencil-outline"
                   variant="text"
                   size="small"
-                  color="brown-lighten-2"
+                  color="grey"
                 ></v-btn>
               </template>
             </v-list-item>
@@ -261,40 +259,38 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h3 class="text-h6 font-weight-bold text-secondary">
                 ການແຈ້ງເຕືອນ
               </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 ຕັ້ງຄ່າການແຈ້ງເຕືອນ
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
-                    >mdi-email-outline</v-icon
-                  >
+                  <v-icon color="secondary" size="20">mdi-email-outline</v-icon>
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ແຈ້ງເຕືອນອີເມວ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ຮັບການແຈ້ງເຕືອນທາງອີເມວ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-switch
                   v-model="emailNotifications"
-                  color="brown-darken-3"
+                  color="primary"
                   hide-details
                   density="compact"
                   inset
@@ -306,25 +302,25 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-message-text-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ແຈ້ງເຕືອນ SMS</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ຮັບການແຈ້ງເຕືອນທາງ SMS</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-switch
                   v-model="smsNotifications"
-                  color="brown-darken-3"
+                  color="primary"
                   hide-details
                   density="compact"
                   inset
@@ -336,25 +332,25 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-bell-ring-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ແຈ້ງເຕືອນໃນລະບົບ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ຮັບການແຈ້ງເຕືອນໃນລະບົບ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-switch
                   v-model="pushNotifications"
-                  color="brown-darken-3"
+                  color="primary"
                   hide-details
                   density="compact"
                   inset
@@ -380,40 +376,36 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
-                ຄວາມປອດໄພ
-              </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <h3 class="text-h6 font-weight-bold text-secondary">ຄວາມປອດໄພ</h3>
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 ການຕັ້ງຄ່າຄວາມປອດໄພ
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
-                    >mdi-key-outline</v-icon
-                  >
+                  <v-icon color="secondary" size="20">mdi-key-outline</v-icon>
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ປ່ຽນລະຫັດຜ່ານ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ປ່ຽນລະຫັດຜ່ານບັນຊີຂອງທ່ານ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-btn
                   variant="outlined"
-                  color="brown-darken-1"
+                  color="grey-darken-1"
                   size="small"
                   class="text-none font-weight-bold"
                   rounded="lg"
@@ -426,25 +418,25 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-two-factor-authentication</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ການຢືນຢັນ 2 ຂັ້ນຕອນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ເພີ່ມຄວາມປອດໄພໃຫ້ບັນຊີ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-switch
                   v-model="twoFactorAuth"
-                  color="brown-darken-3"
+                  color="primary"
                   hide-details
                   density="compact"
                   inset
@@ -456,23 +448,23 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20">mdi-history</v-icon>
+                  <v-icon color="secondary" size="20">mdi-history</v-icon>
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ປະຫວັດການເຂົ້າສູ່ລະບົບ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ເບິ່ງປະຫວັດການເຂົ້າສູ່ລະບົບ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-btn
                   variant="outlined"
-                  color="brown-darken-1"
+                  color="grey-darken-1"
                   size="small"
                   class="text-none font-weight-bold"
                   rounded="lg"
@@ -499,34 +491,32 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h3 class="text-h6 font-weight-bold text-secondary">
                 ພາສາ & ຮູບແບບ
               </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 ປັບແຕ່ງພາສາ ແລະ ຮູບແບບ
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
-                    >mdi-translate</v-icon
-                  >
+                  <v-icon color="secondary" size="20">mdi-translate</v-icon>
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ພາສາ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ເລືອກພາສາທີ່ໃຊ້ງານ</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -537,8 +527,8 @@
                   density="compact"
                   hide-details
                   rounded="lg"
-                  color="brown-darken-2"
-                  base-color="brown-lighten-3"
+                  color="primary"
+                  base-color="grey-lighten-1"
                   class="cream-select font-weight-bold"
                   style="width: 140px"
                 ></v-select>
@@ -548,25 +538,25 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-theme-light-dark</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ໂໝດມືດ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ເປີດ/ປິດ ໂໝດມືດ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-switch
                   v-model="darkMode"
-                  color="brown-darken-3"
+                  color="primary"
                   hide-details
                   density="compact"
                   inset
@@ -592,40 +582,40 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-h6 font-weight-bold text-brown-darken-4">
+              <h3 class="text-h6 font-weight-bold text-secondary">
                 ຂໍ້ມູນ & ສຳຮອງ
               </h3>
-              <p class="text-caption text-brown-lighten-1 font-weight-medium">
+              <p class="text-caption text-grey-darken-1 font-weight-medium">
                 ສຳຮອງ ແລະ ກູ້ຄືນຂໍ້ມູນ
               </p>
             </div>
           </div>
 
-          <v-divider class="mb-4 border-cream"></v-divider>
+          <v-divider class="mb-4 border-subtle"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-cloud-upload-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ສຳຮອງຂໍ້ມູນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ສຳຮອງລ້າສຸດ: 15/12/2024</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-btn
                   variant="outlined"
-                  color="brown-darken-1"
+                  color="grey-darken-1"
                   size="small"
                   class="text-none font-weight-bold"
                   rounded="lg"
@@ -638,25 +628,25 @@
             <v-list-item class="px-0 py-2">
               <template v-slot:prepend>
                 <div
-                  class="mr-4 d-flex align-center justify-center rounded bg-brown-lighten-5"
+                  class="mr-4 d-flex align-center justify-center rounded bg-grey-lighten-4"
                   style="width: 40px; height: 40px"
                 >
-                  <v-icon color="brown-darken-2" size="20"
+                  <v-icon color="secondary" size="20"
                     >mdi-cloud-download-outline</v-icon
                   >
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ກູ້ຄືນຂໍ້ມູນ</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ກູ້ຄືນຈາກໄຟລ໌ສຳຮອງ</v-list-item-subtitle
               >
               <template v-slot:append>
                 <v-btn
                   variant="outlined"
-                  color="brown-darken-1"
+                  color="grey-darken-1"
                   size="small"
                   class="text-none font-weight-bold"
                   rounded="lg"
@@ -678,10 +668,10 @@
                 </div>
               </template>
               <v-list-item-title
-                class="font-weight-bold text-brown-darken-3 text-body-2"
+                class="font-weight-bold text-secondary text-body-2"
                 >ລ້າງຂໍ້ມູນ Cache</v-list-item-title
               >
-              <v-list-item-subtitle class="text-caption text-brown-lighten-1"
+              <v-list-item-subtitle class="text-caption text-grey-darken-1"
                 >ລ້າງຂໍ້ມູນ cache ເພື່ອເພີ່ມປະສິດທິພາບ</v-list-item-subtitle
               >
               <template v-slot:append>
@@ -723,24 +713,25 @@ const selectedLanguage = ref("ລາວ");
 <style scoped>
 /* Cream UI Variables */
 .dashboard-container {
-  --cream-bg: #fafaf5;
-  --cream-card: #ffffff;
-  --cream-border: #efebe0;
-  --text-primary: #4a4036;
+  /* --cream-bg: #fafaf5; */
 }
 
 /* Bean Card Styling */
 .bean-card {
-  background-color: var(--cream-card);
-  border: 1px solid var(--cream-border) !important;
-  box-shadow: 0 4px 12px -2px rgba(166, 155, 140, 0.05) !important;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
   transition: all 0.3s ease;
 }
 
 .bean-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(166, 155, 140, 0.1) !important;
-  border-color: #e6dccd !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(var(--v-theme-primary), 0.3) !important;
 }
 
 /* List Item Styling */
@@ -755,27 +746,27 @@ const selectedLanguage = ref("ລາວ");
 }
 
 .cream-switch :deep(.v-switch__track) {
-  background-color: #efebe0 !important;
+  background-color: #e2e8f0 !important;
   opacity: 1 !important;
 }
 
 .cream-switch.v-switch--active :deep(.v-switch__track) {
-  background-color: #5d4037 !important; /* Brown darken 2 */
+  background-color: rgb(var(--v-theme-primary)) !important;
 }
 
 /* Select Customization */
 .cream-select :deep(.v-field__outline__start),
 .cream-select :deep(.v-field__outline__end),
 .cream-select :deep(.v-field__outline__notch) {
-  border-color: #e6e0d4 !important;
+  border-color: #e2e8f0 !important;
 }
 
 /* Divider */
-.border-cream {
-  border-color: #f5f2eb !important;
+.border-subtle {
+  border-color: #f1f5f9 !important;
 }
 
 .icon-box {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 </style>
