@@ -21,7 +21,7 @@
 
         <v-btn
           color="primary"
-          class="modern-action-btn primary elevation-4 ml-2"
+          class="modern-action-btn primary elevation-4 ml-4"
           height="32"
           prepend-icon="mdi-plus"
           to="/reports/add"
