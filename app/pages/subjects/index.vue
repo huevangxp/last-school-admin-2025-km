@@ -15,22 +15,23 @@
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
-          variant="outlined"
-          color="grey-darken-1"
+          variant="flat"
+          color="white"
           class="modern-action-btn secondary border"
-          height="32"
-          prepend-icon="mdi-tray-arrow-down"
+          height="36"
         >
+          <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
         </v-btn>
 
         <v-btn
+          variant="flat"
           color="primary"
           class="modern-action-btn primary elevation-4"
-          height="32"
-          prepend-icon="mdi-plus"
+          height="36"
           to="/subjects/add"
         >
+          <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ $t("add") }}
         </v-btn>
       </div>
@@ -313,19 +314,6 @@ const subjects = ref([
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.modern-action-btn {
-  border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
-  color: white !important;
 }
 
 .metric-card {
