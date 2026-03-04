@@ -180,10 +180,7 @@
                       >
                         {{ ethnicData.labels[i] }}
                       </div>
-                      <div
-                        class="text-title"
-                        style="font-size: 16px !important"
-                      >
+                      <div class="text-title">
                         {{ val }}
                         <span
                           class="text-detail"
@@ -381,6 +378,11 @@ const polarOptions = {
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+}
+
+.intelligence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
 }
 
 .chart-wrapper {
