@@ -387,33 +387,6 @@ const activities = [
 </script>
 
 <style scoped>
-/* Strict Font Size Enforcements */
-.text-title {
-  font-size: 14px !important;
-  font-weight: 800 !important;
-  color: #0f172a;
-}
-
-.text-title-small {
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  color: #0f172a;
-}
-
-.text-detail {
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  color: #64748b;
-}
-
-.text-detail-tiny {
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
 /* Core Layout */
 .dashboard-viewport {
   max-width: 1400px;
