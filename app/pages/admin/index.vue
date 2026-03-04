@@ -58,7 +58,7 @@
           </div>
           <div
             class="metric-footer-line"
-            :style="`background: var(--v-${stat.iconColor}-base)`"
+            :style="`background: var(--v-${stat.color}-base)`"
           ></div>
         </v-card>
       </v-col>
