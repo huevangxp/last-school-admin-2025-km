@@ -4,39 +4,32 @@
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1
-          class="text-h4 font-weight-bold text-secondary mb-1"
-          style="letter-spacing: -0.5px"
-        >
+        <h1 class="text-title mb-1">
           {{ t("management") }} {{ t("students") }}
         </h1>
-        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
+        <p class="text-detail">
           Manage your student database, enrollments, and statuses.
         </p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
+      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="grey-darken-1"
-          class="text-none font-weight-bold"
-          height="44"
-          rounded="xl"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-download"
-          border
         >
           {{ t("export") }}
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6 font-weight-bold"
-          height="44"
-          rounded="xl"
-          elevation="4"
+          class="modern-action-btn primary elevation-4"
+          height="32"
           prepend-icon="mdi-plus"
           to="/students/add"
         >
@@ -47,113 +40,27 @@
 
     <!-- Stats Cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
+      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in studentStats" :key="i">
         <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
+          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          rounded="xl"
         >
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                total students
+              <p class="text-detail-tiny mb-1">
+                {{ stat.label }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">3,450</h2>
+              <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
-              color="blue-lighten-5"
+              :color="`${stat.color}-lighten-5`"
               rounded="lg"
-              size="52"
-              class="icon-box"
+              size="40"
+              class="metric-icon-box"
             >
-              <v-icon color="blue-darken-2" size="26">mdi-account-group</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                active enrollment
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">3,200</h2>
-            </div>
-            <v-avatar
-              color="green-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="green-darken-2" size="26">mdi-check-circle</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                new enrollments
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">150</h2>
-            </div>
-            <v-avatar
-              color="purple-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="purple-darken-2" size="26"
-                >mdi-account-plus</v-icon
-              >
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                pending
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">45</h2>
-            </div>
-            <v-avatar
-              color="orange-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="orange-darken-2" size="26"
-                >mdi-clock-time-four-outline</v-icon
-              >
+              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
+                stat.icon
+              }}</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -161,27 +68,27 @@
     </v-row>
 
     <!-- Main Content Card -->
-    <v-card elevation="0" rounded="xl" class="bean-card pa-6">
+    <v-card elevation="0" class="intelligence-card pa-4">
       <!-- Search and Filter Section -->
       <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
           :placeholder="t('search')"
           variant="outlined"
-          density="comfortable"
+          density="compact"
           hide-details
           class="cream-input"
-          style="max-width: 380px"
+          style="max-width: 320px"
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
 
-        <div class="d-flex gap-3 align-center flex-wrap">
+        <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
             :items="[
               'All Grades',
@@ -194,9 +101,9 @@
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            style="min-width: 130px"
             prepend-inner-icon="mdi-filter-variant"
-            class="cream-select"
+            class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
@@ -207,8 +114,8 @@
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
-            class="cream-select"
+            style="min-width: 130px"
+            class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
@@ -216,11 +123,10 @@
           <v-btn
             variant="outlined"
             color="grey-darken-1"
-            class="text-none"
-            height="40"
-            rounded="lg"
+            class="modern-action-btn secondary border"
+            height="32"
+            width="32"
             icon="mdi-dots-horizontal"
-            border
           ></v-btn>
         </div>
       </div>
@@ -230,27 +136,23 @@
         :headers="headers"
         :items="students"
         :search="search"
-        class="student-table"
+        class="premium-table"
         hover
       >
         <!-- Student Name with Image Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
-            <v-avatar
-              size="48"
-              class="mr-3 border-cream shadow-sm"
-              rounded="lg"
-            >
+            <v-avatar size="32" class="mr-3 elevation-1 border-white">
               <v-img
-                :src="`https://i.pravatar.cc/150?img=${item.studentId}`"
+                :src="`https://i.pravatar.cc/150?img=${item.studentId.replace('#', '')}`"
                 cover
               ></v-img>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-secondary">
+              <div class="text-title-small">
                 {{ item.name }}
               </div>
-              <div class="text-caption text-grey-darken-1 font-weight-medium">
+              <div class="text-detail-tiny">
                 {{ item.email }}
               </div>
             </div>
@@ -259,19 +161,18 @@
 
         <!-- ID Number Slot -->
         <template v-slot:item.studentId="{ item }">
-          <span
-            class="font-weight-bold text-secondary bg-grey-lighten-4 px-2 py-1 rounded text-caption"
-            >{{ item.studentId }}</span
-          >
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+            {{ item.studentId }}
+          </span>
         </template>
 
         <!-- Grade/Class Slot -->
         <template v-slot:item.grade="{ item }">
           <div>
-            <div class="font-weight-bold text-secondary">
+            <div class="text-title-small">
               {{ item.grade }}
             </div>
-            <div class="text-caption text-grey-darken-1 font-weight-medium">
+            <div class="text-detail-tiny text-grey">
               {{ item.class || "Class A" }}
             </div>
           </div>
@@ -280,10 +181,10 @@
         <!-- Parent Contact Slot -->
         <template v-slot:item.parentContact="{ item }">
           <div>
-            <div class="text-body-2 font-weight-medium text-secondary">
+            <div class="text-title-small">
               {{ item.parentContact }}
             </div>
-            <div class="text-caption text-grey-darken-1">
+            <div class="text-detail-tiny text-grey">
               {{ item.parentName }}
             </div>
           </div>
@@ -293,42 +194,50 @@
         <template v-slot:item.status="{ item }">
           <v-chip
             :color="getStatusColor(item.status)"
-            size="small"
-            class="font-weight-bold text-uppercase"
-            label
+            size="x-small"
+            variant="flat"
+            class="font-weight-black text-uppercase px-2"
           >
             {{ item.status }}
           </v-chip>
         </template>
 
+        <!-- Actions Slot -->
+        <template v-slot:item.actions="{ item }">
+          <v-btn
+            icon="mdi-pencil-outline"
+            variant="text"
+            size="x-small"
+            color="primary"
+          ></v-btn>
+          <v-btn
+            icon="mdi-delete-outline"
+            variant="text"
+            size="x-small"
+            color="error"
+          ></v-btn>
+        </template>
+
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-8 border-t">
-            <div class="text-caption text-grey-darken-1 font-weight-bold">
-              {{ t("showing") }} <strong class="text-secondary">1</strong>
-              {{ t("to") }}
-              <strong class="text-secondary">{{ students.length }}</strong>
-              {{ t("of") }} <strong class="text-secondary">3,450</strong>
-              {{ t("results") }}
+          <div class="d-flex align-center justify-space-between pt-4 border-t">
+            <div class="text-detail-tiny">
+              Showing 1 to {{ students.length }} of 3,450 results
             </div>
-            <div class="d-flex gap-2 align-center">
+            <div class="d-flex gap-1 align-center">
               <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-              >
-                <v-icon>mdi-chevron-left</v-icon>
-              </v-btn>
+                icon="mdi-chevron-left"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
 
               <v-btn
                 color="primary"
-                size="small"
-                elevation="2"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
+                size="x-small"
+                variant="flat"
+                class="font-weight-black rounded-md"
+                style="min-width: 24px; height: 24px"
               >
                 1
               </v-btn>
@@ -336,47 +245,19 @@
               <v-btn
                 variant="text"
                 color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
+                size="x-small"
+                class="font-weight-black"
+                style="min-width: 24px; height: 24px"
               >
                 2
               </v-btn>
 
               <v-btn
+                icon="mdi-chevron-right"
                 variant="text"
                 color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
-              >
-                3
-              </v-btn>
-
-              <span class="text-grey mx-2 font-weight-bold">...</span>
-
-              <v-btn
-                variant="text"
-                color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
-              >
-                128
-              </v-btn>
-
-              <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-              >
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
+                size="x-small"
+              ></v-btn>
             </div>
           </div>
         </template>
@@ -396,6 +277,33 @@ const breadcrumbs = [
   { title: t("students"), disabled: true, to: "/students" },
 ];
 
+const studentStats = [
+  {
+    label: "total students",
+    value: "3,450",
+    icon: "mdi-account-group",
+    color: "blue",
+  },
+  {
+    label: "active enrollment",
+    value: "3,200",
+    icon: "mdi-check-circle",
+    color: "green",
+  },
+  {
+    label: "new enrollments",
+    value: "150",
+    icon: "mdi-account-plus",
+    color: "purple",
+  },
+  {
+    label: "pending",
+    value: "45",
+    icon: "mdi-clock-time-four-outline",
+    color: "orange",
+  },
+];
+
 const headers = [
   {
     title: t("firstname"),
@@ -403,12 +311,7 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
-  {
-    title: t("id"),
-    key: "studentId",
-    align: "start" as const,
-    sortable: true,
-  },
+  { title: t("id"), key: "studentId", align: "start" as const, sortable: true },
   {
     title: t("classes"),
     key: "grade",
@@ -427,10 +330,10 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
-  class:
-    "text-caption font-weight-bold text-grey-darken-1 pb-4 text-uppercase tracking-wider",
+  class: "text-detail-tiny pb-2",
 }));
 
 const students = ref([
@@ -441,7 +344,7 @@ const students = ref([
     grade: "Grade 10",
     class: "Class 10-A",
     parentContact: "+1 (555) 123-4567",
-    parentName: "Sarah Johnson (Mother)",
+    parentName: "Sarah Johnson",
     status: "Active",
   },
   {
@@ -451,7 +354,7 @@ const students = ref([
     grade: "Grade 11",
     class: "Class 11-B",
     parentContact: "+1 (555) 987-6543",
-    parentName: "John Smith (Father)",
+    parentName: "John Smith",
     status: "Active",
   },
   {
@@ -461,7 +364,7 @@ const students = ref([
     grade: "Grade 9",
     class: "Class 9-C",
     parentContact: "+1 (555) 234-5678",
-    parentName: "Mary Williams (Mother)",
+    parentName: "Mary Williams",
     status: "Active",
   },
   {
@@ -471,7 +374,7 @@ const students = ref([
     grade: "Grade 12",
     class: "Class 12-A",
     parentContact: "+1 (555) 456-7890",
-    parentName: "David Scott (Father)",
+    parentName: "David Scott",
     status: "Inactive",
   },
   {
@@ -481,7 +384,7 @@ const students = ref([
     grade: "Grade 10",
     class: "Class 10-C",
     parentContact: "+1 (555) 789-0123",
-    parentName: "Robert Davis (Father)",
+    parentName: "Robert Davis",
     status: "Active",
   },
 ]);
@@ -501,9 +404,9 @@ const getStatusColor = (status: string) => {
 </script>
 
 <style scoped>
-/* Cream UI Variables */
 .dashboard-container {
-  /* --cream-bg: #fafaf5; */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .gap-4 {
@@ -515,58 +418,63 @@ const getStatusColor = (status: string) => {
 .gap-2 {
   gap: 8px;
 }
-
-/* Bean Card Styling */
-.bean-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s ease;
+.gap-1 {
+  gap: 4px;
 }
 
-.bean-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+/* Reusing Global Styles locally as well for stability */
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
 }
 
-/* Table Styling */
-:deep(.v-data-table) {
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
+}
+
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.metric-icon-box {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+/* Table Customization */
+.premium-table {
   background: transparent !important;
 }
 
-:deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #f8fafc !important; /* Soft Slate Hover */
-}
-
 :deep(.v-data-table__th) {
-  background-color: transparent !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 48px !important;
 }
 
 :deep(.v-data-table__td) {
   border-bottom: 1px solid #f1f5f9 !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  height: 72px !important;
+  height: 60px !important;
 }
 
-/* Input Customization */
 .cream-input :deep(.v-field__outline__start),
 .cream-input :deep(.v-field__outline__end),
 .cream-input :deep(.v-field__outline__notch) {
   border-color: #e2e8f0 !important;
-}
-
-.cream-input :deep(.v-field--focused .v-field__outline__start),
-.cream-input :deep(.v-field--focused .v-field__outline__end),
-.cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1px !important;
 }
 
 .cream-select :deep(.v-field__outline__start),
@@ -575,21 +483,11 @@ const getStatusColor = (status: string) => {
   border-color: #e2e8f0 !important;
 }
 
-/* Typography Tools */
-.tracking-wide {
-  letter-spacing: 0.05em;
-}
-.tracking-wider {
-  letter-spacing: 0.08em;
+.border-white {
+  border: 1.5px solid #ffffff;
 }
 
-.border-cream {
-  border: 2px solid #ffffff;
-}
 .border-t {
-  border-top: 1px solid #e2e8f0;
-}
-.shadow-sm {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid #f1f5f9;
 }
 </style>
