@@ -14,13 +14,16 @@
                   color="white"
                 ></v-icon>
               </div>
-              <h1 class="text-h3 font-weight-black text-white mb-4">
+              <div
+                class="text-title text-white mb-4"
+                style="font-size: 24px !important"
+              >
                 EduAdmin
-              </h1>
-              <p class="text-h6 text-white opacity-90 font-weight-regular">
+              </div>
+              <div class="text-detail text-white opacity-90">
                 Managing education with precision and style. Experience the next
                 generation of school administration.
-              </p>
+              </div>
 
               <div class="mt-auto decoration-line"></div>
             </div>
@@ -56,12 +59,15 @@
                   ></v-icon>
                 </v-avatar>
               </div>
-              <h2 class="text-h4 font-weight-black text-slate-900 mb-2">
+              <div
+                class="text-title text-slate-900 mb-2"
+                style="font-size: 18px !important"
+              >
                 Welcome Back
-              </h2>
-              <p class="text-body-1 text-grey-darken-1">
+              </div>
+              <div class="text-detail">
                 Please sign in to your admin account
-              </p>
+              </div>
             </div>
 
             <v-form @submit.prevent="loginBtn" class="login-form">
