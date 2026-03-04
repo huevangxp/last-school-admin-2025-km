@@ -20,20 +20,20 @@
           variant="flat"
           color="white"
           class="modern-action-btn secondary border"
-          height="32"
+          height="36"
         >
-          <v-icon icon="mdi-printer-outline" start size="16"></v-icon>
-          Print Overview
+          <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
+          Export
         </v-btn>
 
         <v-btn
           variant="flat"
           color="primary"
           class="modern-action-btn primary elevation-4"
-          height="32"
+          height="36"
         >
-          <v-icon icon="mdi-refresh" start size="16"></v-icon>
-          Sync Intelligence
+          <v-icon icon="mdi-plus" start size="18"></v-icon>
+          Action
         </v-btn>
       </div>
     </div>
@@ -361,9 +361,11 @@ const polarOptions = {
 .modern-action-btn {
   border-radius: 8px !important;
   text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  padding: 0 16px !important;
+  font-family: "Volkhov", serif !important;
+  letter-spacing: 0px !important;
 }
 
 .modern-action-btn.primary {
