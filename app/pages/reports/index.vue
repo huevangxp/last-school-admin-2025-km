@@ -178,6 +178,9 @@ import {
   RadialLinearScale,
   Filler,
   PolarAreaController,
+  LineController,
+  BarController,
+  DoughnutController,
 } from "chart.js";
 import { Line, Doughnut, Bar, PolarArea } from "vue-chartjs";
 
@@ -194,6 +197,9 @@ ChartJS.register(
   RadialLinearScale,
   Filler,
   PolarAreaController,
+  LineController,
+  BarController,
+  DoughnutController,
 );
 
 const { t } = useI18n();
@@ -268,7 +274,7 @@ const ethnicData = {
 };
 
 // Chart Options
-const lineOptions = {
+const lineOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
@@ -278,14 +284,14 @@ const lineOptions = {
   },
 };
 
-const doughnutOptions = {
+const doughnutOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   cutout: "70%",
   plugins: { legend: { display: false } },
 };
 
-const barOptions = {
+const barOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
@@ -295,7 +301,7 @@ const barOptions = {
   },
 };
 
-const horizontalBarOptions = {
+const horizontalBarOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   indexAxis: "y" as const,
@@ -306,7 +312,7 @@ const horizontalBarOptions = {
   },
 };
 
-const polarOptions = {
+const polarOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
