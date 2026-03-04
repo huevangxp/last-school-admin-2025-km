@@ -59,7 +59,7 @@
           </div>
           <div class="chart-wrapper" style="height: 300px">
             <ClientOnly>
-              <Line :data="studentData" :options="lineOptions" />
+              <!-- <Line :data="studentData" :options="lineOptions" /> -->
             </ClientOnly>
           </div>
         </v-card>
