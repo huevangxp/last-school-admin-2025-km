@@ -320,21 +320,6 @@ const polarOptions = {
   margin: 0 auto;
 }
 
-.modern-action-btn {
-  border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 700 !important;
-  font-size: 14px !important;
-  padding: 0 16px !important;
-  font-family: "Volkhov", serif !important;
-  letter-spacing: 0px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
-  color: white !important;
-}
-
 .intelligence-card {
   border-radius: 16px !important;
   background: white;
