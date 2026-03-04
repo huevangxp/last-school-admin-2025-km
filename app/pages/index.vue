@@ -83,10 +83,10 @@
           <div class="pa-6">
             <div class="d-flex justify-space-between align-center mb-6">
               <div>
-                <h3 class="text-title mb-1">Academic Pulse</h3>
-                <p class="text-detail">
+                <div class="text-title mb-1">Academic Pulse</div>
+                <div class="text-detail">
                   Global performance metrics across all faculties
-                </p>
+                </div>
               </div>
               <div class="chart-controls d-flex ga-1">
                 <v-btn
@@ -121,10 +121,10 @@
             class="pa-6 d-flex justify-space-between align-center border-b"
           >
             <div>
-              <h3 class="text-title mb-1">Response Queue</h3>
-              <p class="text-detail">
-                Matters requiring administrative sign-off
-              </p>
+              <div class="text-title mb-1">Response Queue</div>
+              <div class="text-detail">
+                Administrative threads requiring immediate attention
+              </div>
             </div>
             <v-chip
               color="rose"
