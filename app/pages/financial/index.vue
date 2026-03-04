@@ -4,39 +4,30 @@
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1
-          class="text-h4 font-weight-bold text-secondary mb-1"
-          style="letter-spacing: -0.5px"
-        >
-          Manage Financial
-        </h1>
-        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
+        <h1 class="text-title mb-1">Financial Management</h1>
+        <p class="text-detail">
           Track revenue, expenses, and transaction history.
         </p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
+      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="grey-darken-1"
-          class="text-none font-weight-bold"
-          height="44"
-          rounded="xl"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-tray-arrow-down"
-          border
         >
           Export
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6 font-weight-bold"
-          height="44"
-          rounded="xl"
-          elevation="4"
+          class="modern-action-btn primary elevation-4"
+          height="32"
           prepend-icon="mdi-plus"
           to="/financial/add"
         >
@@ -47,146 +38,41 @@
 
     <!-- Stats Cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
+      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in financeStats" :key="i">
         <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
+          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          rounded="xl"
         >
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ລາຍຮັບທັງໝົດ
+              <p class="text-detail-tiny mb-1">
+                {{ stat.label }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">₭45.2M</h2>
+              <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
-              color="green-lighten-5"
+              :color="`${stat.color}-lighten-5`"
               rounded="lg"
-              size="52"
-              class="icon-box"
+              size="40"
+              class="metric-icon-box"
             >
-              <v-icon color="green-darken-2" size="26">mdi-cash-plus</v-icon>
+              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
+                stat.icon
+              }}</v-icon>
             </v-avatar>
           </div>
-          <div class="d-flex align-center mt-2">
+          <div class="d-flex align-center mt-2" v-if="stat.trend">
             <v-icon
-              icon="mdi-arrow-up-right"
-              color="green-darken-1"
-              size="16"
+              :icon="
+                stat.trendUp ? 'mdi-arrow-up-right' : 'mdi-arrow-down-right'
+              "
+              :color="stat.trendUp ? 'green-darken-1' : 'red-darken-1'"
+              size="12"
               class="mr-1"
             ></v-icon>
-            <span class="text-caption font-weight-bold text-green-darken-2"
-              >+12.5% this month</span
-            >
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ລາຍຈ່າຍທັງໝົດ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">₭28.7M</h2>
-            </div>
-            <v-avatar
-              color="red-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="red-darken-2" size="26">mdi-cash-minus</v-icon>
-            </v-avatar>
-          </div>
-          <div class="d-flex align-center mt-2">
-            <v-icon
-              icon="mdi-arrow-down-right"
-              color="red-darken-1"
-              size="16"
-              class="mr-1"
-            ></v-icon>
-            <span class="text-caption font-weight-bold text-red-darken-2"
-              >+5.2% vs last month</span
-            >
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ຍອດຄົງເຫຼືອ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">₭16.5M</h2>
-            </div>
-            <v-avatar
-              color="purple-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="purple-darken-2" size="26"
-                >mdi-wallet-outline</v-icon
-              >
-            </v-avatar>
-          </div>
-          <div class="d-flex align-center mt-2">
-            <span class="text-caption font-weight-medium text-grey-darken-1"
-              >Available balance</span
-            >
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ຄ້າງຊຳລະ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">15</h2>
-            </div>
-            <v-avatar
-              color="orange-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="orange-darken-2" size="26"
-                >mdi-clock-time-four-outline</v-icon
-              >
-            </v-avatar>
-          </div>
-          <div class="d-flex align-center mt-2">
             <span
-              class="text-caption font-weight-medium text-grey-darken-1 text-decoration-underline cursor-pointer"
-              >View details</span
+              :class="`text-detail-tiny font-weight-black text-${stat.trendUp ? 'green' : 'red'}-darken-2`"
+              >{{ stat.trend }}</span
             >
           </div>
         </v-card>
@@ -194,60 +80,47 @@
     </v-row>
 
     <!-- Main Content Card -->
-    <v-card elevation="0" rounded="xl" class="bean-card pa-6">
+    <v-card elevation="0" class="intelligence-card pa-4">
       <!-- Search and Filter Section -->
       <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
           placeholder="Search transactions..."
           variant="outlined"
-          density="comfortable"
+          density="compact"
           hide-details
           class="cream-input"
-          style="max-width: 380px"
+          style="max-width: 320px"
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
 
-        <div class="d-flex gap-3 align-center flex-wrap">
+        <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="['ທັງໝົດ', 'ລາຍຮັບ', 'ລາຍຈ່າຍ']"
+            :items="['Total', 'Income', 'Expense']"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            color="primary"
-            base-color="grey-lighten-1"
-            class="cream-select"
-            style="min-width: 160px"
+            style="min-width: 130px"
             prepend-inner-icon="mdi-filter-variant"
-          ></v-select>
-
-          <v-select
-            :items="['ທັງໝົດ', 'ຊຳລະແລ້ວ', 'ຄ້າງຊຳລະ', 'ຍົກເລີກ']"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
+            class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
-            class="cream-select"
-            style="min-width: 160px"
           ></v-select>
 
           <v-btn
             variant="outlined"
             color="grey-darken-1"
-            class="text-none"
-            height="40"
-            rounded="lg"
+            class="modern-action-btn secondary border"
+            height="32"
+            width="32"
             icon="mdi-dots-horizontal"
-            border
           ></v-btn>
         </div>
       </div>
@@ -257,15 +130,14 @@
         :headers="headers"
         :items="transactions"
         :search="search"
-        class="financial-table"
+        class="premium-table"
         hover
       >
-        <!-- Transaction ID Slot -->
+        <!-- ID Slot -->
         <template v-slot:item.id="{ item }">
-          <span
-            class="font-weight-bold text-secondary bg-grey-lighten-4 px-2 py-1 rounded text-caption"
-            >{{ item.id }}</span
-          >
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+            {{ item.id }}
+          </span>
         </template>
 
         <!-- Description Slot -->
@@ -275,15 +147,14 @@
               :color="
                 item.type === 'income' ? 'green-lighten-5' : 'red-lighten-5'
               "
-              size="42"
-              class="mr-3 border-cream shadow-sm"
-              rounded="lg"
+              size="32"
+              class="mr-3 elevation-1 border-white"
             >
               <v-icon
                 :color="
                   item.type === 'income' ? 'green-darken-1' : 'red-darken-1'
                 "
-                size="22"
+                size="16"
               >
                 {{
                   item.type === "income"
@@ -293,10 +164,10 @@
               </v-icon>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-secondary">
+              <div class="text-title-small">
                 {{ item.description }}
               </div>
-              <div class="text-caption text-grey-darken-1 font-weight-medium">
+              <div class="text-detail-tiny text-grey">
                 {{ item.category }}
               </div>
             </div>
@@ -311,7 +182,7 @@
                 ? 'text-green-darken-2'
                 : 'text-red-darken-2'
             "
-            class="font-weight-black text-body-1"
+            class="text-title-small"
           >
             {{ item.type === "income" ? "+" : "-" }}₭{{ item.amount }}
           </span>
@@ -320,10 +191,10 @@
         <!-- Date Slot -->
         <template v-slot:item.date="{ item }">
           <div>
-            <div class="font-weight-bold text-secondary">
+            <div class="text-title-small">
               {{ item.date }}
             </div>
-            <div class="text-caption text-grey-darken-1 font-weight-medium">
+            <div class="text-detail-tiny text-grey">
               {{ item.time }}
             </div>
           </div>
@@ -339,10 +210,9 @@
                   ? 'warning'
                   : 'grey'
             "
-            size="small"
-            class="font-weight-bold"
+            size="x-small"
             variant="flat"
-            label
+            class="font-weight-black text-uppercase px-2"
           >
             {{ item.status }}
           </v-chip>
@@ -350,86 +220,18 @@
 
         <!-- Actions Slot -->
         <template v-slot:item.actions="{ item }">
-          <div class="d-flex gap-1 justify-end">
-            <v-btn
-              icon="mdi-eye-outline"
-              variant="text"
-              color="grey-darken-1"
-              size="small"
-            ></v-btn>
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              color="grey-darken-1"
-              size="small"
-            ></v-btn>
-          </div>
-        </template>
-
-        <!-- Bottom Pagination Slot -->
-        <template v-slot:bottom>
-          <div
-            class="d-flex flex-column flex-md-row align-center justify-space-between pt-8 border-t"
-          >
-            <div
-              class="text-caption text-grey-darken-1 font-weight-bold mb-4 mb-md-0"
-            >
-              Showing
-              <span class="text-secondary">1-{{ transactions.length }}</span>
-              of
-              <span class="text-secondary">{{ transactions.length }}</span>
-              results
-            </div>
-            <div class="d-flex gap-2 align-center">
-              <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-                class="mr-2"
-              >
-                <v-icon>mdi-chevron-left</v-icon>
-              </v-btn>
-              <v-btn
-                color="primary"
-                size="small"
-                elevation="2"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 36px; height: 36px"
-                >1</v-btn
-              >
-              <v-btn
-                variant="text"
-                color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 36px; height: 36px"
-                >2</v-btn
-              >
-              <v-btn
-                variant="text"
-                color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 36px; height: 36px"
-                >3</v-btn
-              >
-              <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-                class="ml-2"
-              >
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
-            </div>
-          </div>
+          <v-btn
+            icon="mdi-eye-outline"
+            variant="text"
+            size="x-small"
+            color="primary"
+          ></v-btn>
+          <v-btn
+            icon="mdi-pencil-outline"
+            variant="text"
+            size="x-small"
+            color="secondary"
+          ></v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -437,6 +239,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 const { t } = useI18n();
 const search = ref("");
 
@@ -445,39 +248,59 @@ const breadcrumbs = [
   { title: "Financial", disabled: true, to: "/financial" },
 ];
 
-const headers = [
-  { title: "ລະຫັດ", key: "id", align: "start" as const, sortable: true },
+const financeStats = [
   {
-    title: "ລາຍລະອຽດ",
+    label: "Total Income",
+    value: "₭45.2M",
+    icon: "mdi-cash-plus",
+    color: "green",
+    trend: "+12.5%",
+    trendUp: true,
+  },
+  {
+    label: "Total Expense",
+    value: "₭28.7M",
+    icon: "mdi-cash-minus",
+    color: "red",
+    trend: "+5.2%",
+    trendUp: false,
+  },
+  {
+    label: "Balance",
+    value: "₭16.5M",
+    icon: "mdi-wallet-outline",
+    color: "purple",
+  },
+  {
+    label: "Pending",
+    value: "15",
+    icon: "mdi-clock-time-four-outline",
+    color: "orange",
+  },
+];
+
+const headers = [
+  { title: "ID", key: "id", align: "start" as const, sortable: true },
+  {
+    title: "Description",
     key: "description",
     align: "start" as const,
     sortable: true,
   },
-  {
-    title: "ຈຳນວນເງິນ",
-    key: "amount",
-    align: "start" as const,
-    sortable: true,
-  },
-  { title: "ວັນທີ", key: "date", align: "start" as const, sortable: true },
-  { title: "ສະຖານະ", key: "status", align: "start" as const, sortable: true },
-  {
-    title: "Actions",
-    key: "actions",
-    align: "end" as const,
-    sortable: false,
-  },
+  { title: "Amount", key: "amount", align: "start" as const, sortable: true },
+  { title: "Date", key: "date", align: "start" as const, sortable: true },
+  { title: "Status", key: "status", align: "start" as const, sortable: true },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
-  class:
-    "text-caption font-weight-bold text-grey-darken-1 pb-4 text-uppercase tracking-wider",
+  class: "text-detail-tiny pb-2",
 }));
 
 const transactions = ref([
   {
     id: "#TXN-001",
     description: "ຄ່າຮຽນ - ນັກຮຽນໃໝ່",
-    category: "ຄ່າຮຽນ",
+    category: "Tuition",
     type: "income",
     amount: "2,500,000",
     date: "15/12/2024",
@@ -487,7 +310,7 @@ const transactions = ref([
   {
     id: "#TXN-002",
     description: "ເງິນເດືອນຄູ",
-    category: "ເງິນເດືອນ",
+    category: "Salary",
     type: "expense",
     amount: "8,000,000",
     date: "14/12/2024",
@@ -497,7 +320,7 @@ const transactions = ref([
   {
     id: "#TXN-003",
     description: "ຄ່າອຸປະກອນການສອນ",
-    category: "ອຸປະກອນ",
+    category: "Supplies",
     type: "expense",
     amount: "1,200,000",
     date: "13/12/2024",
@@ -507,7 +330,7 @@ const transactions = ref([
   {
     id: "#TXN-004",
     description: "ຄ່າຮຽນ - ພາກຮຽນ 2",
-    category: "ຄ່າຮຽນ",
+    category: "Tuition",
     type: "income",
     amount: "3,000,000",
     date: "12/12/2024",
@@ -517,7 +340,7 @@ const transactions = ref([
   {
     id: "#TXN-005",
     description: "ຄ່າໄຟຟ້າ",
-    category: "ສາທາລະນູປະໂພກ",
+    category: "Utilities",
     type: "expense",
     amount: "500,000",
     date: "11/12/2024",
@@ -528,89 +351,69 @@ const transactions = ref([
 </script>
 
 <style scoped>
-/* Cream UI Variables */
 .dashboard-container {
-  /* --cream-bg: #fafaf5; */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.gap-4 {
-  gap: 16px;
-}
-.gap-3 {
-  gap: 12px;
-}
-.gap-2 {
-  gap: 8px;
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
 }
 
-/* Bean Card Styling */
-.bean-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s ease;
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
 }
 
-.bean-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
 
-/* Table Styling */
-:deep(.v-data-table) {
+.metric-icon-box {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.premium-table {
   background: transparent !important;
 }
 
-:deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #f8fafc !important; /* Soft Slate Hover */
-}
-
 :deep(.v-data-table__th) {
-  background-color: transparent !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 48px !important;
 }
 
 :deep(.v-data-table__td) {
   border-bottom: 1px solid #f1f5f9 !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  height: 72px !important;
+  height: 60px !important;
 }
 
-/* Input Customization */
 .cream-input :deep(.v-field__outline__start),
 .cream-input :deep(.v-field__outline__end),
 .cream-input :deep(.v-field__outline__notch) {
   border-color: #e2e8f0 !important;
 }
 
-.cream-input :deep(.v-field--focused .v-field__outline__start),
-.cream-input :deep(.v-field--focused .v-field__outline__end),
-.cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1px !important;
+.border-white {
+  border: 1.5px solid #ffffff;
 }
 
-/* Typography Tools */
-.tracking-wide {
-  letter-spacing: 0.05em;
-}
-.tracking-wider {
-  letter-spacing: 0.08em;
-}
-
-.border-cream {
-  border: 2px solid #ffffff;
-}
 .border-t {
-  border-top: 1px solid #e2e8f0;
-}
-.shadow-sm {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid #f1f5f9;
 }
 </style>
