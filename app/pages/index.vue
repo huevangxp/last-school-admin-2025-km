@@ -393,20 +393,6 @@ const activities = [
   margin: 0 auto;
 }
 
-/* Header & Buttons */
-.modern-action-btn {
-  border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
-  color: white !important;
-}
-
 /* Metric Cards */
 .metric-card {
   border-radius: 16px !important;
