@@ -1,166 +1,152 @@
 <template>
-  <v-container fluid class="h-100">
-    <!-- Breadcrumbs -->
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
+  <v-container fluid class="pa-6 dashboard-container">
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
 
-    <v-card elevation="0" class="rounded-xl">
+    <v-card elevation="0" class="intelligence-card pa-6">
       <v-form ref="formRef" @submit.prevent="save">
-        <v-card-text class="px-6 pb-0 pt-6">
-          <!-- Header -->
-          <div class="mb-6">
-            <h3
-              class="text-h6 font-weight-bold mb-4 d-flex align-center text-secondary"
-            >
-              <v-icon start color="primary" class="mr-2"
-                >mdi-school-outline</v-icon
-              >
-              <span>{{ $t("academic") }}</span>
-            </h3>
-            <p class="text-body-2 text-medium-emphasis mb-6">
-              <!-- <span>{{ $t('create') }} {{ $t('academic') }} {{ $t('year') }} {{ $t('records') }}.</span> -->
-            </p>
-
-            <v-row>
-              <!-- Title -->
-              <v-col cols="12" md="6">
-                <v-label class="mb-2 font-weight-medium">{{
-                  $t("title")
-                }}</v-label>
-                <v-text-field
-                  v-model="form.title"
-                  placeholder="e.g. 2023-2024"
-                  variant="outlined"
-                  color="primary"
-                  rounded="lg"
-                  density="comfortable"
-                  hide-details="auto"
-                  prepend-inner-icon="mdi-format-title"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col>
-
-              <!-- Status -->
-              <v-col cols="12" md="6">
-                <v-label class="mb-2 font-weight-medium">{{
-                  $t("status")
-                }}</v-label>
-                <v-select
-                  v-model="form.status"
-                  :items="statusOptions"
-                  density="comfortable"
-                  placeholder="Select status"
-                  variant="outlined"
-                  rounded="lg"
-                  color="primary"
-                  hide-details="auto"
-                  prepend-inner-icon="mdi-list-status"
-                  :rules="[rules.required]"
-                ></v-select>
-              </v-col>
-
-              <!-- Start Date -->
-              <v-col cols="12" md="6">
-                <v-label class="mb-2 font-weight-medium">{{
-                  $t("start_date")
-                }}</v-label>
-                <DialogDate
-                  v-model="showStartDatePicker"
-                  :date="form.startDate"
-                  @update:date="form.startDate = $event"
-                />
-                <v-text-field
-                  v-model="form.startDate"
-                  variant="outlined"
-                  density="comfortable"
-                  placeholder="Select start date"
-                  rounded="lg"
-                  color="primary"
-                  hide-details="auto"
-                  :rules="[rules.required]"
-                  prepend-inner-icon="mdi-calendar-blank-outline"
-                  readonly
-                  @click="showStartDatePicker = true"
-                  @click:prepend-inner="showStartDatePicker = true"
-                ></v-text-field>
-              </v-col>
-
-              <!-- End Date -->
-              <v-col cols="12" md="6">
-                <v-label class="mb-2 font-weight-medium">{{
-                  $t("end_date")
-                }}</v-label>
-                <DialogDate
-                  v-model="showEndDatePicker"
-                  :date="form.endDate"
-                  @update:date="form.endDate = $event"
-                />
-                <v-text-field
-                  v-model="form.endDate"
-                  variant="outlined"
-                  density="comfortable"
-                  placeholder="Select end date"
-                  rounded="lg"
-                  color="primary"
-                  hide-details="auto"
-                  :rules="[rules.required]"
-                  prepend-inner-icon="mdi-calendar-blank-outline"
-                  readonly
-                  @click="showEndDatePicker = true"
-                  @click:prepend-inner="showEndDatePicker = true"
-                ></v-text-field>
-              </v-col>
-
-              <!-- Description -->
-              <v-col cols="12">
-                <v-label class="mb-2 font-weight-medium">{{
-                  $t("description")
-                }}</v-label>
-                <v-textarea
-                  v-model="form.description"
-                  :placeholder="$t('description')"
-                  variant="outlined"
-                  density="comfortable"
-                  rounded="lg"
-                  color="primary"
-                  rows="3"
-                  hide-details="auto"
-                  prepend-inner-icon="mdi-text"
-                ></v-textarea>
-              </v-col>
-            </v-row>
+        <div class="d-flex align-center mb-6">
+          <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-icon color="primary" size="20">mdi-school-outline</v-icon>
+          </v-avatar>
+          <div>
+            <h2 class="text-title">{{ $t("academic") }} Registration</h2>
+            <p class="text-detail">Configure new academic session parameters</p>
           </div>
-        </v-card-text>
+        </div>
 
-        <v-card-actions class="pa-6 d-flex justify-end">
+        <v-row class="ga-y-2">
+          <!-- Title -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">SESSION TITLE</label>
+            <v-text-field
+              v-model="form.title"
+              placeholder="e.g. 2023-2024"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+
+          <!-- Status -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >LIFECYCLE STATUS</label
+            >
+            <v-select
+              v-model="form.status"
+              :items="statusOptions"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
+            ></v-select>
+          </v-col>
+
+          <!-- Start Date -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >COMMENCEMENT DATE</label
+            >
+            <DialogDate
+              v-model="showStartDatePicker"
+              :date="form.startDate"
+              @update:date="form.startDate = $event"
+            />
+            <v-text-field
+              v-model="form.startDate"
+              variant="outlined"
+              density="compact"
+              placeholder="Select start date"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showStartDatePicker = true"
+            ></v-text-field>
+          </v-col>
+
+          <!-- End Date -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">CONCLUSION DATE</label>
+            <DialogDate
+              v-model="showEndDatePicker"
+              :date="form.endDate"
+              @update:date="form.endDate = $event"
+            />
+            <v-text-field
+              v-model="form.endDate"
+              variant="outlined"
+              density="compact"
+              placeholder="Select end date"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showEndDatePicker = true"
+            ></v-text-field>
+          </v-col>
+
+          <!-- Description -->
+          <v-col cols="12">
+            <label class="text-detail-tiny mb-2 d-block"
+              >ADDITIONAL CONTEXT</label
+            >
+            <v-textarea
+              v-model="form.description"
+              placeholder="Enter session details or notes..."
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              rows="3"
+              hide-details="auto"
+            ></v-textarea>
+          </v-col>
+        </v-row>
+
+        <div class="d-flex justify-end ga-3 pt-8">
           <v-btn
-            variant="outlined"
-            color="red"
-            class="mr-3 text-none px-6"
-            height="45"
+            variant="flat"
+            color="grey-lighten-4"
+            class="modern-action-btn secondary border text-slate-700"
+            height="40"
             @click="$router.push('/academic')"
           >
             {{ $t("cancel") }}
           </v-btn>
           <v-btn
-            color="primary"
             variant="flat"
-            rounded="lg"
-            class="text-none px-8"
-            height="45"
+            color="primary"
+            class="modern-action-btn primary elevation-4"
+            height="40"
             type="submit"
-            elevation="2"
             :loading="loading"
           >
             {{ $t("save") }}
           </v-btn>
-        </v-card-actions>
+        </div>
       </v-form>
     </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 const { t } = useI18n();
 
 const loading = ref(false);
@@ -199,12 +185,9 @@ const save = async () => {
 
   loading.value = true;
   try {
-    // TODO: Implement API call
     console.log("Form submitted:", form.value);
-
     const { $axios } = useNuxtApp();
     await $axios.post("/add-academic-year", form.value).then((res) => {
-      console.log(res);
       form.value = {
         title: "",
         status: "active",
@@ -213,13 +196,7 @@ const save = async () => {
         description: "",
       };
       loading.value = false;
-      // router.push("/academic");
     });
-
-    // // Simulate API delay
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // router.push("/academic");
   } catch (error) {
     console.error(error);
   } finally {
@@ -229,5 +206,44 @@ const save = async () => {
 </script>
 
 <style scoped>
-/* Add any specific styles here if needed */
+.dashboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  padding: 0 16px !important;
+}
+
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
+}
+
+.premium-input :deep(.v-field__outline__start),
+.premium-input :deep(.v-field__outline__end),
+.premium-input :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
+}
+
+.premium-input :deep(.v-field--focused .v-field__outline__start),
+.premium-input :deep(.v-field--focused .v-field__outline__end),
+.premium-input :deep(.v-field--focused .v-field__outline__notch) {
+  border-color: rgb(var(--v-theme-primary)) !important;
+  border-width: 1.5px !important;
+}
+
+.text-slate-700 {
+  color: #334155 !important;
+}
 </style>
