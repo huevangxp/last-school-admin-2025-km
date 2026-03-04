@@ -1,27 +1,27 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 export default defineNuxtConfig({
+  css: ["~/assets/css/global.css"],
   app: {
     head: {
-      title: 'Admin',
+      title: "Admin",
       link: [
         {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@100..900&family=Teko:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap',
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Lao:wght@100..900&family=Teko:wght@300..700&family=Volkhov:ital,wght@0,400;0,700;1,400;1,700&display=swap",
         },
       ],
     },
   },
-  compatibilityDate: '2025-012-16',
+  compatibilityDate: "2025-012-16",
   devtools: { enabled: true },
   build: {
     transpile: ["vuetify"],
   },
-  plugins: ['~/plugins/axios.ts'
-  ],
+  plugins: ["~/plugins/axios.ts"],
   modules: [
-    '@pinia/nuxt',
-    '@nuxtjs/i18n',
+    "@pinia/nuxt",
+    "@nuxtjs/i18n",
     (_options, nuxt) => {
       nuxt.hooks.hook("vite:extendConfig", (config) => {
         // @ts-expect-error
@@ -30,13 +30,13 @@ export default defineNuxtConfig({
     },
   ],
 
-   i18n: {
+  i18n: {
     locales: [
-      { code: 'en', name: 'English' , file: 'en.json', flag: '/eng.png'  },
-      { code: 'la', name: 'Lao' , file: 'la.json', flag: '/lao.png'},
+      { code: "en", name: "English", file: "en.json", flag: "/eng.png" },
+      { code: "la", name: "Lao", file: "la.json", flag: "/lao.png" },
     ],
-    defaultLocale: 'en',
-    vueI18n: './i18n.config.ts'
+    defaultLocale: "en",
+    vueI18n: "./i18n.config.ts",
   },
 
   vite: {
@@ -46,12 +46,12 @@ export default defineNuxtConfig({
       },
     },
     define: {
-      'chrome': 'undefined',
-      'browser': 'undefined'
-    }
+      chrome: "undefined",
+      browser: "undefined",
+    },
   },
   devServer: {
     port: 3000,
-    host: '0.0.0.0',
+    host: "0.0.0.0",
   },
-})
+});
