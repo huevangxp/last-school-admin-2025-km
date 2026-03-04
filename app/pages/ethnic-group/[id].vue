@@ -1,57 +1,57 @@
 <template>
-  <v-container fluid class="pa-6">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" />
+  <v-container fluid class="pa-6 dashboard-container">
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
 
-    <v-card flat class="rounded-xl pa-6" color="white" elevation="0">
-      <div class="d-flex align-center justify-space-between mb-6">
-        <h1 class="text-h5 font-weight-bold text-grey-darken-4">
-          {{ $t("edit") }} {{ $t("ethnic_group") }}
-        </h1>
+    <v-card elevation="0" class="intelligence-card pa-6">
+      <div class="d-flex align-center mb-6">
+        <v-avatar color="indigo-lighten-5" size="40" class="mr-3 rounded-lg">
+          <v-icon color="indigo-darken-2" size="20">mdi-pencil-outline</v-icon>
+        </v-avatar>
+        <div>
+          <h2 class="text-title">{{ $t("edit") }} {{ $t("ethnic_group") }}</h2>
+          <p class="text-detail">Modify existing classification parameters</p>
+        </div>
       </div>
 
-      <v-form ref="form" v-model="valid" @submit.prevent="submit">
-        <v-row>
+      <v-form ref="formRef" v-model="valid" @submit.prevent="submit">
+        <v-row class="ga-y-2">
           <v-col cols="12">
-            <label
-              class="text-body-2 text-grey-darken-1 font-weight-medium mb-2 d-block"
+            <label class="text-detail-tiny mb-2 d-block"
+              >CLASSIFICATION NAME</label
             >
-              {{ $t("name") }} <span class="text-error">*</span>
-            </label>
             <v-text-field
               v-model="form.title"
               :rules="[rules.required]"
               variant="outlined"
-              density="comfortable"
+              density="compact"
               color="primary"
               rounded="lg"
+              class="premium-input"
               :placeholder="$t('name')"
+              hide-details="auto"
             ></v-text-field>
           </v-col>
         </v-row>
 
-        <div class="d-flex gap-3 mt-6 justify-end">
+        <div class="d-flex justify-end ga-3 pt-8">
           <v-btn
-            variant="outlined"
-            color="red"
-            class="text-red px-6"
-            height="44"
-            rounded="lg"
+            variant="flat"
+            color="grey-lighten-4"
+            class="modern-action-btn secondary border text-slate-700"
+            height="40"
             to="/ethnic-group"
           >
-            <v-icon icon="mdi-close" class="mr-2"></v-icon>
             {{ $t("cancel") }}
           </v-btn>
 
           <v-btn
+            variant="flat"
             color="primary"
-            class="text-none px-8"
-            height="44"
-            rounded="lg"
-            elevation="0"
+            class="modern-action-btn primary elevation-4"
+            height="40"
             type="submit"
             :loading="loading"
           >
-            <v-icon icon="mdi-content-save" class="mr-2"></v-icon>
             {{ $t("save") }}
           </v-btn>
         </div>
@@ -62,8 +62,6 @@
 
 <script setup lang="ts">
 import { useEthnicGroupStore } from "@/stores/apiEthnicGroup";
-import { useI18n } from "vue-i18n";
-
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -87,14 +85,11 @@ const breadcrumbs = [
 
 const id = route.params.id as string;
 
-onMounted(async () => {});
-
 const submit = async () => {
-  if (!valid.value) return;
-
   loading.value = true;
   try {
     await ethnicGroupStore.updateEthnicGroup(Number(id), form);
+    router.push("/ethnic-group");
   } catch (error) {
     console.error(error);
   } finally {
@@ -104,7 +99,44 @@ const submit = async () => {
 </script>
 
 <style scoped>
-.gap-3 {
-  gap: 12px;
+.dashboard-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 13px !important;
+  padding: 0 16px !important;
+}
+
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
+}
+
+.premium-input :deep(.v-field__outline__start),
+.premium-input :deep(.v-field__outline__end),
+.premium-input :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
+}
+
+.premium-input :deep(.v-field--focused .v-field__outline__start),
+.premium-input :deep(.v-field--focused .v-field__outline__end),
+.premium-input :deep(.v-field--focused .v-field__outline__notch) {
+  border-color: rgb(var(--v-theme-primary)) !important;
+  border-width: 1.5px !important;
+}
+
+.text-slate-700 {
+  color: #334155 !important;
 }
 </style>
