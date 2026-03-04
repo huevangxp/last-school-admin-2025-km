@@ -2,37 +2,45 @@
   <v-container fluid class="pa-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
-    <!-- Header Section -->
+    <!-- Header Section: Intelligence Style -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
     >
-      <div></div>
+      <div>
+        <h1 class="text-title mb-1">
+          {{ t("management") }} {{ t("reports") }}
+        </h1>
+        <p class="text-detail">
+          Monitor institutional performance through automated data aggregation.
+        </p>
+      </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
-          variant="outlined"
-          color="grey-darken-1"
+          variant="flat"
+          color="white"
           class="modern-action-btn secondary border"
           height="32"
-          prepend-icon="mdi-download"
         >
-          Export
+          <v-icon icon="mdi-file-export-outline" start size="16"></v-icon>
+          {{ t("export") }}
         </v-btn>
 
         <v-btn
+          variant="flat"
           color="primary"
-          class="modern-action-btn primary elevation-4 ml-4"
+          class="modern-action-btn primary elevation-4"
           height="32"
-          prepend-icon="mdi-plus"
           to="/reports/add"
         >
-          Add
+          <v-icon icon="mdi-plus" start size="16"></v-icon>
+          {{ t("add") }}
         </v-btn>
       </div>
     </div>
 
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
+    <!-- Analytics Dashboard: High Signal Metrics -->
+    <v-row class="mb-8 ga-y-4">
       <v-col cols="12" sm="6" md="3" v-for="(stat, i) in reportStats" :key="i">
         <v-card
           class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
@@ -40,9 +48,7 @@
         >
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
+              <p class="text-detail-tiny mb-1">{{ stat.label }}</p>
               <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
@@ -60,16 +66,16 @@
       </v-col>
     </v-row>
 
-    <!-- Main Content Card -->
+    <!-- Main Repository: Intelligence Area -->
     <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search and Filter Section -->
+      <!-- Search & Contextual Filters -->
       <div
         class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
-          placeholder="Search reports..."
+          placeholder="Query report archives..."
           variant="outlined"
           density="compact"
           hide-details
@@ -83,12 +89,12 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="['Total', 'Grades', 'Finance', 'Students']"
+            :items="['All Domains', 'Academic', 'Financial', 'Operational']"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 140px"
+            style="min-width: 150px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
             color="primary"
@@ -98,15 +104,17 @@
           <v-btn
             variant="outlined"
             color="grey-darken-1"
-            class="modern-action-btn secondary border"
+            class="modern-action-btn secondary border p-0"
             height="32"
             width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
+            min-width="32"
+          >
+            <v-icon icon="mdi-dots-horizontal" size="16"></v-icon>
+          </v-btn>
         </div>
       </div>
 
-      <!-- Data Table -->
+      <!-- Data Intelligence Grid -->
       <v-data-table
         :headers="headers"
         :items="reports"
@@ -114,54 +122,43 @@
         class="premium-table"
         hover
       >
-        <!-- Report Name Slot -->
+        <!-- Audit Descriptor Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar
               :color="getReportColor(item.type)"
               size="32"
               class="mr-3 elevation-1 border-white"
+              rounded="lg"
             >
               <v-icon color="white" size="16">{{
                 getReportIcon(item.type)
               }}</v-icon>
             </v-avatar>
             <div>
-              <div class="text-title-small">
-                {{ item.name }}
-              </div>
-              <div class="text-detail-tiny">
-                {{ item.type }}
-              </div>
+              <div class="text-title-small">{{ item.name }}</div>
+              <div class="text-detail-tiny">{{ item.type }}</div>
             </div>
           </div>
         </template>
 
-        <!-- Date Slot -->
+        <!-- Generation Timestamp Slot -->
         <template v-slot:item.date="{ item }">
-          <div class="text-title-small">
-            {{ item.date }}
-          </div>
-          <div class="text-detail-tiny text-grey">
-            {{ item.time }}
-          </div>
+          <div class="text-title-small">{{ item.date }}</div>
+          <div class="text-detail-tiny text-grey">{{ item.time }}</div>
         </template>
 
-        <!-- Size Slot -->
+        <!-- Payload Specification Slot -->
         <template v-slot:item.size="{ item }">
-          <span class="text-detail font-weight-black">{{ item.size }}</span>
+          <span class="text-detail font-weight-black text-slate-700">{{
+            item.size
+          }}</span>
         </template>
 
-        <!-- Status Slot -->
+        <!-- Lifecycle Status Slot -->
         <template v-slot:item.status="{ item }">
           <v-chip
-            :color="
-              item.status === 'ສຳເລັດ'
-                ? 'success'
-                : item.status === 'ກຳລັງປະມວນຜົນ'
-                  ? 'info'
-                  : 'error'
-            "
+            :color="getStatusColor(item.status)"
             size="x-small"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
@@ -170,33 +167,59 @@
           </v-chip>
         </template>
 
-        <!-- Actions Slot -->
+        <!-- Intelligence Actions Slot -->
         <template v-slot:item.actions="{ item }">
-          <v-btn
-            icon="mdi-download"
-            variant="text"
-            color="primary"
-            size="x-small"
-            :disabled="item.status !== 'ສຳເລັດ'"
-          ></v-btn>
-          <v-btn
-            icon="mdi-eye-outline"
-            variant="text"
-            color="grey-darken-1"
-            size="x-small"
-          ></v-btn>
-          <v-btn
-            icon="mdi-trash-can-outline"
-            variant="text"
-            color="error"
-            size="x-small"
-          ></v-btn>
+          <div class="d-flex ga-1 justify-end">
+            <v-btn
+              icon="mdi-download"
+              variant="text"
+              color="primary"
+              size="x-small"
+              :disabled="item.status !== 'ສຳເລັດ'"
+            ></v-btn>
+            <v-btn
+              icon="mdi-eye-outline"
+              variant="text"
+              color="grey-darken-1"
+              size="x-small"
+            ></v-btn>
+            <v-btn
+              icon="mdi-trash-can-outline"
+              variant="text"
+              color="error"
+              size="x-small"
+            ></v-btn>
+          </div>
         </template>
 
+        <!-- Navigation Architecture Slot -->
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Showing 1-{{ reports.length }} of {{ reports.length }} results
+              Displaying 1-{{ reports.length }} of 1,240 archive entries
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <v-btn
+                icon="mdi-chevron-left"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
+              <v-btn
+                color="primary"
+                size="x-small"
+                variant="flat"
+                class="font-weight-black rounded-md"
+                style="min-width: 24px; height: 24px"
+              >
+                1
+              </v-btn>
+              <v-btn
+                icon="mdi-chevron-right"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
             </div>
           </div>
         </template>
@@ -211,42 +234,52 @@ const { t } = useI18n();
 const search = ref("");
 
 const breadcrumbs = [
-  { title: "Dashboard", disabled: false, to: "/" },
-  { title: "Reports", disabled: true, to: "/reports" },
+  { title: t("dashboard"), disabled: false, to: "/" },
+  { title: t("reports"), disabled: true, to: "/reports" },
 ];
 
 const reportStats = [
   {
-    label: "Total Reports",
-    value: "84",
-    icon: "mdi-file-document-multiple",
+    label: "Total Archives",
+    value: "1,240",
+    icon: "mdi-file-cabinet",
     color: "blue",
   },
-  { label: "Completed", value: "72", icon: "mdi-check-circle", color: "green" },
   {
-    label: "Processing",
-    value: "2",
-    icon: "mdi-progress-clock",
-    color: "purple",
+    label: "Verified Audits",
+    value: "982",
+    icon: "mdi-shield-check-outline",
+    color: "green",
   },
-  { label: "Downloads", value: "156", icon: "mdi-download", color: "orange" },
+  { label: "Query Threads", value: "12", icon: "mdi-pulse", color: "purple" },
+  {
+    label: "Data Egress",
+    value: "45.2 GB",
+    icon: "mdi-database-export-outline",
+    color: "orange",
+  },
 ];
 
 const headers = [
   {
-    title: "Description",
+    title: "DOMAIN DESCRIPTION",
     key: "name",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: "Generated At",
+    title: "GENERATION PERIOD",
     key: "date",
     align: "start" as const,
     sortable: true,
   },
-  { title: "Size", key: "size", align: "start" as const, sortable: true },
-  { title: "Status", key: "status", align: "start" as const, sortable: true },
+  { title: "PAYLOAD", key: "size", align: "start" as const, sortable: true },
+  {
+    title: "LIFECYCLE",
+    key: "status",
+    align: "start" as const,
+    sortable: true,
+  },
   { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
@@ -309,10 +342,21 @@ const getReportColor = (type: string) => {
 };
 
 const getReportIcon = (type: string) => {
-  if (type.includes("Grade")) return "mdi-chart-bar";
-  if (type.includes("Finance")) return "mdi-cash";
-  if (type.includes("Student")) return "mdi-account-group";
-  return "mdi-account-tie";
+  if (type.includes("Grade")) return "mdi-chart-areaspline";
+  if (type.includes("Finance")) return "mdi-wallet-outline";
+  if (type.includes("Student")) return "mdi-account-multiple-outline";
+  return "mdi-account-tie-outline";
+};
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "ສຳເລັດ":
+      return "success";
+    case "ກຳລັງປະມວນຜົນ":
+      return "info";
+    default:
+      return "error";
+  }
 };
 </script>
 
@@ -381,5 +425,19 @@ const getReportIcon = (type: string) => {
 
 .border-t {
   border-top: 1px solid #f1f5f9;
+}
+
+.text-slate-700 {
+  color: #334155 !important;
+}
+
+.gap-3 {
+  gap: 12px;
+}
+.gap-2 {
+  gap: 8px;
+}
+.gap-1 {
+  gap: 4px;
 }
 </style>
