@@ -1,39 +1,33 @@
 <template>
-  <v-container fluid class="pa-6">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" />
+  <v-container fluid class="pa-6 dashboard-container">
+    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header Section -->
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-h4 font-weight-bold text-grey-darken-4 mb-2">
-          {{ t("management") }} {{ t("admin") }}
-        </h1>
-        <p class="text-body-2 text-grey-darken-1">
-          Manage system administrators and permissions
+        <h1 class="text-title mb-1">{{ t("management") }} {{ t("admin") }}</h1>
+        <p class="text-detail">
+          Manage system administrators and security permissions.
         </p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap">
+      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="grey-darken-1"
-          class="text-none"
-          height="40"
-          rounded="lg"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-download"
-          style="border-color: #e0e0e0"
         >
           {{ t("export") }}
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6"
-          height="40"
-          rounded="lg"
-          elevation="0"
+          class="modern-action-btn primary elevation-4"
+          height="32"
           prepend-icon="mdi-plus"
           to="/admin/add"
         >
@@ -44,101 +38,27 @@
 
     <!-- Stats Cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
+      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in adminStats" :key="i">
         <v-card
-          class="rounded-xl pa-4"
+          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          style="border: 1px solid #e0e0e0"
         >
-          <div class="d-flex align-center justify-space-between">
+          <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                {{ t("total_admins") }}
+              <p class="text-detail-tiny mb-1">
+                {{ stat.label }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
-                {{ admins.length }}
-              </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-shield-check</v-icon>
-                {{ t("system_users") }}
-              </p>
+              <h2 class="text-title">{{ stat.value }}</h2>
             </div>
-            <v-avatar color="blue-lighten-5" size="56">
-              <v-icon color="blue" size="28">mdi-shield-account</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="rounded-xl pa-4"
-          elevation="0"
-          style="border: 1px solid #e0e0e0"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                {{ t("active_admins") }}
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">
-                {{ admins.filter((a) => a.status === "Active").length }}
-              </h2>
-              <p class="text-caption text-success mt-1">
-                <v-icon size="14" color="success">mdi-check-circle</v-icon>
-                {{ t("online") }}
-              </p>
-            </div>
-            <v-avatar color="green-lighten-5" size="56">
-              <v-icon color="green" size="28">mdi-check-circle</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="rounded-xl pa-4"
-          elevation="0"
-          style="border: 1px solid #e0e0e0"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                {{ t("super_admins") }}
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">2</h2>
-              <p class="text-caption text-purple mt-1">
-                <v-icon size="14" color="purple">mdi-crown</v-icon>
-                {{ t("full_access") }}
-              </p>
-            </div>
-            <v-avatar color="purple-lighten-5" size="56">
-              <v-icon color="purple" size="28">mdi-crown</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="rounded-xl pa-4"
-          elevation="0"
-          style="border: 1px solid #e0e0e0"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-caption text-grey-darken-1 mb-1">
-                {{ t("pending_approval") }}
-              </p>
-              <h2 class="text-h4 font-weight-bold text-grey-darken-4">0</h2>
-              <p class="text-caption text-orange mt-1">
-                <v-icon size="14" color="orange">mdi-clock-outline</v-icon>
-                {{ t("requires_action") }}
-              </p>
-            </div>
-            <v-avatar color="orange-lighten-5" size="56">
-              <v-icon color="orange" size="28">mdi-clock-outline</v-icon>
+            <v-avatar
+              :color="`${stat.color}-lighten-5`"
+              rounded="lg"
+              size="40"
+              class="metric-icon-box"
+            >
+              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
+                stat.icon
+              }}</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -146,10 +66,10 @@
     </v-row>
 
     <!-- Main Content Card -->
-    <v-card flat class="rounded-xl border pa-6" color="white">
+    <v-card elevation="0" class="intelligence-card pa-4">
       <!-- Search and Filter Section -->
       <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-4"
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
         <v-text-field
           v-model="search"
@@ -158,22 +78,26 @@
           variant="outlined"
           density="compact"
           hide-details
-          class="search-field"
-          style="max-width: 400px"
+          class="cream-input"
+          style="max-width: 320px"
           bg-color="white"
           color="primary"
+          base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
 
-        <div class="d-flex gap-3 align-center flex-wrap">
+        <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
             :items="['All Roles', 'Super Admin', 'Admin', 'Moderator']"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            style="min-width: 140px"
             prepend-inner-icon="mdi-filter-variant"
+            class="cream-select text-detail"
+            color="primary"
+            base-color="grey-lighten-1"
           ></v-select>
 
           <v-select
@@ -182,17 +106,19 @@
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            style="min-width: 130px"
+            class="cream-select text-detail"
+            color="primary"
+            base-color="grey-lighten-1"
           ></v-select>
 
           <v-btn
             variant="outlined"
             color="grey-darken-1"
-            class="text-none"
-            height="40"
-            rounded="lg"
+            class="modern-action-btn secondary border"
+            height="32"
+            width="32"
             icon="mdi-dots-horizontal"
-            style="border-color: #e0e0e0"
           ></v-btn>
         </div>
       </div>
@@ -202,20 +128,20 @@
         :headers="headers"
         :items="admins"
         :search="search"
-        class="admin-table"
+        class="premium-table"
         hover
       >
         <!-- Admin Name with Image Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
-            <v-avatar size="48" class="mr-3">
+            <v-avatar size="32" class="mr-3 elevation-1 border-white">
               <v-img :src="item.image" cover></v-img>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-grey-darken-4">
+              <div class="text-title-small">
                 {{ item.name }}
               </div>
-              <div class="text-caption text-grey-darken-1">
+              <div class="text-detail-tiny">
                 {{ item.email }}
               </div>
             </div>
@@ -224,18 +150,18 @@
 
         <!-- ID Number Slot -->
         <template v-slot:item.id="{ item }">
-          <span class="font-weight-medium text-grey-darken-3">{{
-            item.id
-          }}</span>
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+            {{ item.id }}
+          </span>
         </template>
 
         <!-- Role Slot -->
         <template v-slot:item.role="{ item }">
           <div>
-            <div class="font-weight-medium text-grey-darken-3">
+            <div class="text-title-small">
               {{ item.role }}
             </div>
-            <div class="text-caption text-grey-darken-1">
+            <div class="text-detail-tiny text-grey">
               {{ item.department }}
             </div>
           </div>
@@ -243,9 +169,8 @@
 
         <!-- Contact Slot -->
         <template v-slot:item.phone="{ item }">
-          <div>
-            <div class="text-body-2 text-grey-darken-3">{{ item.phone }}</div>
-            <div class="text-caption text-grey-darken-1">(Phone)</div>
+          <div class="text-title-small">
+            {{ item.phone }}
           </div>
         </template>
 
@@ -253,50 +178,58 @@
         <template v-slot:item.status="{ item }">
           <v-chip
             :color="item.status === 'Active' ? 'success' : 'grey'"
-            size="small"
-            class="font-weight-medium"
-            label
+            size="x-small"
+            variant="flat"
+            class="font-weight-black text-uppercase px-2"
           >
             {{ item.status }}
           </v-chip>
         </template>
 
+        <!-- Actions Slot -->
+        <template v-slot:item.actions="{ item }">
+          <v-btn
+            icon="mdi-pencil-outline"
+            variant="text"
+            size="x-small"
+            color="primary"
+          ></v-btn>
+          <v-btn
+            icon="mdi-delete-outline"
+            variant="text"
+            size="x-small"
+            color="error"
+          ></v-btn>
+        </template>
+
         <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-6">
-            <div class="text-body-2 text-grey-darken-1">
-              {{ t("showing") }} <strong>1</strong> {{ t("to") }}
-              <strong>{{ admins.length }}</strong> {{ t("of") }}
-              <strong>{{ admins.length }}</strong> {{ t("results") }}
+          <div class="d-flex align-center justify-space-between pt-4 border-t">
+            <div class="text-detail-tiny">
+              Showing 1 to {{ admins.length }} of {{ admins.length }} results
             </div>
-            <div class="d-flex gap-2 align-center">
-              <v-btn icon variant="text" color="grey-darken-1" size="small">
-                <v-icon>mdi-chevron-left</v-icon>
-              </v-btn>
-
+            <div class="d-flex gap-1 align-center">
+              <v-btn
+                icon="mdi-chevron-left"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
               <v-btn
                 color="primary"
-                size="small"
-                elevation="0"
-                class="font-weight-bold"
-                style="min-width: 32px; height: 32px"
+                size="x-small"
+                variant="flat"
+                class="font-weight-black rounded-md"
+                style="min-width: 24px; height: 24px"
               >
                 1
               </v-btn>
-
               <v-btn
+                icon="mdi-chevron-right"
                 variant="text"
                 color="grey-darken-1"
-                size="small"
-                class="font-weight-medium"
-                style="min-width: 32px; height: 32px"
-              >
-                2
-              </v-btn>
-
-              <v-btn icon variant="text" color="grey-darken-1" size="small">
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
+                size="x-small"
+              ></v-btn>
             </div>
           </div>
         </template>
@@ -320,6 +253,28 @@ const breadcrumbs = [
   { title: t("admin"), disabled: true, to: "/admin" },
 ];
 
+const adminStats = [
+  {
+    label: "Total Admins",
+    value: "14",
+    icon: "mdi-shield-account",
+    color: "blue",
+  },
+  {
+    label: "Active online",
+    value: "3",
+    icon: "mdi-check-circle",
+    color: "green",
+  },
+  { label: "Super Admins", value: "2", icon: "mdi-crown", color: "purple" },
+  {
+    label: "Access Requests",
+    value: "0",
+    icon: "mdi-clock-outline",
+    color: "orange",
+  },
+];
+
 const headers = [
   {
     title: t("admin_name"),
@@ -341,9 +296,10 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
-  class: "text-caption font-weight-bold text-grey-darken-1 pb-4",
+  class: "text-detail-tiny pb-2",
 }));
 
 const admins = ref([
@@ -381,41 +337,79 @@ const admins = ref([
 </script>
 
 <style scoped>
-.gap-4 {
-  gap: 16px;
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
 }
+
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
+}
+
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
+}
+
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.metric-icon-box {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.premium-table {
+  background: transparent !important;
+}
+
+:deep(.v-data-table__th) {
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 48px !important;
+}
+
+:deep(.v-data-table__td) {
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 60px !important;
+}
+
+.cream-input :deep(.v-field__outline__start),
+.cream-input :deep(.v-field__outline__end),
+.cream-input :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
+}
+
+.border-white {
+  border: 1.5px solid #ffffff;
+}
+
+.border-t {
+  border-top: 1px solid #f1f5f9;
+}
+
 .gap-3 {
   gap: 12px;
 }
 .gap-2 {
   gap: 8px;
 }
-
-/* Customizing Table Styles */
-:deep(.v-data-table) {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #f5f7fa !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: transparent !important;
-  border-bottom: 1px solid #eeeeee !important;
-  font-size: 12px !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f5f5f5 !important;
-  padding-top: 12px !important;
-  padding-bottom: 12px !important;
-  height: 60px !important;
-}
-
-:deep(.v-field__outline) {
-  --v-field-border-opacity: 0.15;
+.gap-1 {
+  gap: 4px;
 }
 </style>
