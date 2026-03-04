@@ -4,39 +4,28 @@
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1
-          class="text-h4 font-weight-bold text-secondary mb-1"
-          style="letter-spacing: -0.5px"
-        >
-          Management Reports
-        </h1>
-        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
-          Generate and manage school reports
-        </p>
+        <h1 class="text-title mb-1">Management Reports</h1>
+        <p class="text-detail">Generate and manage school reports.</p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
+      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="grey-darken-1"
-          class="text-none font-weight-bold"
-          height="44"
-          rounded="xl"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-download"
-          border
         >
           Export
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6 font-weight-bold"
-          height="44"
-          rounded="xl"
-          elevation="4"
+          class="modern-action-btn primary elevation-4"
+          height="32"
           prepend-icon="mdi-plus"
           to="/reports/add"
         >
@@ -47,117 +36,27 @@
 
     <!-- Stats Cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
+      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in reportStats" :key="i">
         <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
+          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          rounded="xl"
         >
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ລາຍງານທັງໝົດ
+              <p class="text-detail-tiny mb-1">
+                {{ stat.label }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">
-                {{ reports.length }}
-              </h2>
+              <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
-              color="blue-lighten-5"
+              :color="`${stat.color}-lighten-5`"
               rounded="lg"
-              size="52"
-              class="icon-box"
+              size="40"
+              class="metric-icon-box"
             >
-              <v-icon color="blue-darken-2" size="26"
-                >mdi-file-document-multiple</v-icon
-              >
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ລາຍງານສຳເລັດ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">
-                {{ reports.filter((r) => r.status === "ສຳເລັດ").length }}
-              </h2>
-            </div>
-            <v-avatar
-              color="green-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="green-darken-2" size="26">mdi-check-circle</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ກຳລັງປະມວນຜົນ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">2</h2>
-            </div>
-            <v-avatar
-              color="purple-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="purple-darken-2" size="26"
-                >mdi-progress-clock</v-icon
-              >
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ດາວໂຫຼດທັງໝົດ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">156</h2>
-            </div>
-            <v-avatar
-              color="orange-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="orange-darken-2" size="26">mdi-download</v-icon>
+              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
+                stat.icon
+              }}</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -165,54 +64,36 @@
     </v-row>
 
     <!-- Main Content Card -->
-    <v-card elevation="0" rounded="xl" class="bean-card pa-6">
+    <v-card elevation="0" class="intelligence-card pa-4">
       <!-- Search and Filter Section -->
       <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
-          placeholder="Search"
+          placeholder="Search reports..."
           variant="outlined"
-          density="comfortable"
+          density="compact"
           hide-details
           class="cream-input"
-          style="max-width: 380px"
+          style="max-width: 320px"
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
           rounded="lg"
         ></v-text-field>
 
-        <div class="d-flex gap-3 align-center flex-wrap">
+        <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="[
-              'ທັງໝົດ',
-              'ລາຍງານຄະແນນ',
-              'ລາຍງານການເງິນ',
-              'ລາຍງານນັກຮຽນ',
-              'ລາຍງານຄູ',
-            ]"
+            :items="['Total', 'Grades', 'Finance', 'Students']"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 180px"
+            style="min-width: 140px"
             prepend-inner-icon="mdi-filter-variant"
-            class="cream-select"
-            color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-select
-            :items="['ທັງໝົດ', 'ສຳເລັດ', 'ກຳລັງປະມວນຜົນ', 'ລົ້ມເຫຼວ']"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 150px"
-            class="cream-select"
+            class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
@@ -220,11 +101,10 @@
           <v-btn
             variant="outlined"
             color="grey-darken-1"
-            class="text-none"
-            height="40"
-            rounded="lg"
+            class="modern-action-btn secondary border"
+            height="32"
+            width="32"
             icon="mdi-dots-horizontal"
-            border
           ></v-btn>
         </div>
       </div>
@@ -234,7 +114,7 @@
         :headers="headers"
         :items="reports"
         :search="search"
-        class="reports-table"
+        class="premium-table"
         hover
       >
         <!-- Report Name Slot -->
@@ -242,35 +122,37 @@
           <div class="d-flex align-center py-2">
             <v-avatar
               :color="getReportColor(item.type)"
-              size="40"
-              class="mr-3 shadow-sm border-white"
+              size="32"
+              class="mr-3 elevation-1 border-white"
             >
-              <v-icon color="white" size="20">{{
+              <v-icon color="white" size="16">{{
                 getReportIcon(item.type)
               }}</v-icon>
             </v-avatar>
             <div>
-              <div class="font-weight-bold text-secondary">
+              <div class="text-title-small">
                 {{ item.name }}
               </div>
-              <div class="text-caption text-grey-darken-1">{{ item.type }}</div>
+              <div class="text-detail-tiny">
+                {{ item.type }}
+              </div>
             </div>
           </div>
         </template>
 
         <!-- Date Slot -->
         <template v-slot:item.date="{ item }">
-          <div>
-            <div class="font-weight-medium text-secondary">
-              {{ item.date }}
-            </div>
-            <div class="text-caption text-grey-darken-1">{{ item.time }}</div>
+          <div class="text-title-small">
+            {{ item.date }}
+          </div>
+          <div class="text-detail-tiny text-grey">
+            {{ item.time }}
           </div>
         </template>
 
         <!-- Size Slot -->
         <template v-slot:item.size="{ item }">
-          <span class="font-weight-medium text-secondary">{{ item.size }}</span>
+          <span class="text-detail font-weight-black">{{ item.size }}</span>
         </template>
 
         <!-- Status Slot -->
@@ -283,9 +165,9 @@
                   ? 'info'
                   : 'error'
             "
-            size="small"
-            class="font-weight-bold"
-            label
+            size="x-small"
+            variant="flat"
+            class="font-weight-black text-uppercase px-2"
           >
             {{ item.status }}
           </v-chip>
@@ -293,75 +175,31 @@
 
         <!-- Actions Slot -->
         <template v-slot:item.actions="{ item }">
-          <div class="d-flex gap-2 justify-end">
-            <v-btn
-              icon="mdi-download"
-              variant="text"
-              color="primary"
-              size="small"
-              :disabled="item.status !== 'ສຳເລັດ'"
-            ></v-btn>
-            <v-btn
-              icon="mdi-eye-outline"
-              variant="text"
-              color="grey-darken-1"
-              size="small"
-            ></v-btn>
-            <v-btn
-              icon="mdi-trash-can-outline"
-              variant="text"
-              color="error"
-              size="small"
-            ></v-btn>
-          </div>
+          <v-btn
+            icon="mdi-download"
+            variant="text"
+            color="primary"
+            size="x-small"
+            :disabled="item.status !== 'ສຳເລັດ'"
+          ></v-btn>
+          <v-btn
+            icon="mdi-eye-outline"
+            variant="text"
+            color="grey-darken-1"
+            size="x-small"
+          ></v-btn>
+          <v-btn
+            icon="mdi-trash-can-outline"
+            variant="text"
+            color="error"
+            size="x-small"
+          ></v-btn>
         </template>
 
-        <!-- Bottom Pagination Slot -->
         <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-8 border-t">
-            <div class="text-caption text-grey-darken-1 font-weight-bold">
-              Showing <strong class="text-secondary">1</strong> to
-              <strong class="text-secondary">{{ reports.length }}</strong> of
-              <strong class="text-secondary">{{ reports.length }}</strong>
-              results
-            </div>
-            <div class="d-flex gap-2 align-center">
-              <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-              >
-                <v-icon>mdi-chevron-left</v-icon>
-              </v-btn>
-              <v-btn
-                color="primary"
-                size="small"
-                elevation="2"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
-                >1</v-btn
-              >
-              <v-btn
-                variant="text"
-                color="grey-darken-1"
-                size="small"
-                class="font-weight-bold"
-                rounded="lg"
-                style="min-width: 32px; height: 32px"
-                >2</v-btn
-              >
-              <v-btn
-                icon
-                variant="outlined"
-                color="grey-lighten-1"
-                size="small"
-                rounded="lg"
-              >
-                <v-icon>mdi-chevron-right</v-icon>
-              </v-btn>
+          <div class="d-flex align-center justify-space-between pt-4 border-t">
+            <div class="text-detail-tiny">
+              Showing 1-{{ reports.length }} of {{ reports.length }} results
             </div>
           </div>
         </template>
@@ -371,6 +209,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 const { t } = useI18n();
 const search = ref("");
 
@@ -379,28 +218,49 @@ const breadcrumbs = [
   { title: "Reports", disabled: true, to: "/reports" },
 ];
 
-const headers = [
-  { title: "ລາຍລະອຽດ", key: "name", align: "start" as const, sortable: true },
-  { title: "ວັນທີສ້າງ", key: "date", align: "start" as const, sortable: true },
-  { title: "ຂະໜາດ", key: "size", align: "start" as const, sortable: true },
-  { title: "ສະຖານະ", key: "status", align: "start" as const, sortable: true },
+const reportStats = [
   {
-    title: t("actions"),
-    key: "actions",
-    align: "end" as const,
-    sortable: false,
+    label: "Total Reports",
+    value: "84",
+    icon: "mdi-file-document-multiple",
+    color: "blue",
   },
+  { label: "Completed", value: "72", icon: "mdi-check-circle", color: "green" },
+  {
+    label: "Processing",
+    value: "2",
+    icon: "mdi-progress-clock",
+    color: "purple",
+  },
+  { label: "Downloads", value: "156", icon: "mdi-download", color: "orange" },
+];
+
+const headers = [
+  {
+    title: "Description",
+    key: "name",
+    align: "start" as const,
+    sortable: true,
+  },
+  {
+    title: "Generated At",
+    key: "date",
+    align: "start" as const,
+    sortable: true,
+  },
+  { title: "Size", key: "size", align: "start" as const, sortable: true },
+  { title: "Status", key: "status", align: "start" as const, sortable: true },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
-  class:
-    "text-caption font-weight-bold text-grey-darken-1 pb-4 text-uppercase tracking-wider",
+  class: "text-detail-tiny pb-2",
 }));
 
 const reports = ref([
   {
     id: 1,
     name: "ລາຍງານຄະແນນ ພາກຮຽນ 1",
-    type: "ລາຍງານຄະແນນ",
+    type: "Grade Report",
     date: "15/12/2024",
     time: "09:30",
     size: "2.5 MB",
@@ -409,7 +269,7 @@ const reports = ref([
   {
     id: 2,
     name: "ລາຍງານການເງິນ ເດືອນ 12",
-    type: "ລາຍງານການເງິນ",
+    type: "Finance Report",
     date: "14/12/2024",
     time: "14:00",
     size: "1.8 MB",
@@ -418,7 +278,7 @@ const reports = ref([
   {
     id: 3,
     name: "ລາຍງານນັກຮຽນ ປະຈຳປີ",
-    type: "ລາຍງານນັກຮຽນ",
+    type: "Student Report",
     date: "13/12/2024",
     time: "11:15",
     size: "5.2 MB",
@@ -427,7 +287,7 @@ const reports = ref([
   {
     id: 4,
     name: "ລາຍງານຄູ ປະຈຳເດືອນ",
-    type: "ລາຍງານຄູ",
+    type: "Teacher Report",
     date: "12/12/2024",
     time: "10:00",
     size: "1.2 MB",
@@ -436,7 +296,7 @@ const reports = ref([
   {
     id: 5,
     name: "ລາຍງານຄະແນນ ພາກຮຽນ 2",
-    type: "ລາຍງານຄະແນນ",
+    type: "Grade Report",
     date: "11/12/2024",
     time: "16:30",
     size: "0 MB",
@@ -445,110 +305,84 @@ const reports = ref([
 ]);
 
 const getReportColor = (type: string) => {
-  if (type === "ລາຍງານຄະແນນ") return "primary";
-  if (type === "ລາຍງານການເງິນ") return "success";
-  if (type === "ລາຍງານນັກຮຽນ") return "purple";
+  if (type.includes("Grade")) return "primary";
+  if (type.includes("Finance")) return "success";
+  if (type.includes("Student")) return "purple";
   return "orange";
 };
 
 const getReportIcon = (type: string) => {
-  if (type === "ລາຍງານຄະແນນ") return "mdi-chart-bar";
-  if (type === "ລາຍງານການເງິນ") return "mdi-cash";
-  if (type === "ລາຍງານນັກຮຽນ") return "mdi-account-group";
+  if (type.includes("Grade")) return "mdi-chart-bar";
+  if (type.includes("Finance")) return "mdi-cash";
+  if (type.includes("Student")) return "mdi-account-group";
   return "mdi-account-tie";
 };
 </script>
 
 <style scoped>
-/* Cream UI Variables */
 .dashboard-container {
-  /* --cream-bg: #fafaf5; */
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.gap-4 {
-  gap: 16px;
-}
-.gap-3 {
-  gap: 12px;
-}
-.gap-2 {
-  gap: 8px;
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
 }
 
-/* Bean Card Styling */
-.bean-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s ease;
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
 }
 
-.bean-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
 
-/* Table Styling */
-:deep(.v-data-table) {
+.metric-icon-box {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.premium-table {
   background: transparent !important;
 }
 
-:deep(.v-data-table__tr:hover .v-data-table__td) {
-  background-color: #f8fafc !important; /* Soft Slate Hover */
-}
-
 :deep(.v-data-table__th) {
-  background-color: transparent !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 48px !important;
 }
 
 :deep(.v-data-table__td) {
   border-bottom: 1px solid #f1f5f9 !important;
-  padding-top: 16px !important;
-  padding-bottom: 16px !important;
-  height: 72px !important;
+  height: 60px !important;
 }
 
-/* Input Customization */
 .cream-input :deep(.v-field__outline__start),
 .cream-input :deep(.v-field__outline__end),
 .cream-input :deep(.v-field__outline__notch) {
   border-color: #e2e8f0 !important;
 }
 
-.cream-input :deep(.v-field--focused .v-field__outline__start),
-.cream-input :deep(.v-field--focused .v-field__outline__end),
-.cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1px !important;
+.border-white {
+  border: 1.5px solid #ffffff;
 }
 
-.cream-select :deep(.v-field__outline__start),
-.cream-select :deep(.v-field__outline__end),
-.cream-select :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-/* Typography Tools */
-.tracking-wide {
-  letter-spacing: 0.05em;
-}
-.tracking-wider {
-  letter-spacing: 0.08em;
-}
-
-.border-cream {
-  border: 2px solid #ffffff;
-}
 .border-t {
-  border-top: 1px solid #e2e8f0;
-}
-.shadow-sm {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid #f1f5f9;
 }
 </style>
