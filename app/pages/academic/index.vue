@@ -7,8 +7,8 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-title mb-1">Academic Management</h1>
-        <p class="text-detail">Manage academic years and terms</p>
+        <div class="text-title mb-1">Academic Management</div>
+        <div class="text-detail">Manage academic years and terms</div>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
