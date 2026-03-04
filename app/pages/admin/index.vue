@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container bg-red">
+  <v-container fluid class="pa-6 dashboard-container">
     <!-- Quick Actions Bar: Intelligence Style -->
     <div class="d-flex justify-end mb-6 fade-in">
       <div class="action-stack d-flex ga-2">
