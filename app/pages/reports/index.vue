@@ -2,7 +2,7 @@
   <v-container fluid class="pa-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
-    <!-- Header Section: Intelligence Style -->
+    <!-- Header Section: School Intelligence -->
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
     >
@@ -11,7 +11,8 @@
           {{ t("management") }} {{ t("reports") }}
         </div>
         <div class="text-detail">
-          Monitor institutional performance through automated data aggregation.
+          Generate comprehensive analytics for students, faculty, and academic
+          performance.
         </div>
       </div>
 
@@ -34,12 +35,12 @@
           to="/reports/add"
         >
           <v-icon icon="mdi-plus" start size="16"></v-icon>
-          {{ t("add") }}
+          Generate Report
         </v-btn>
       </div>
     </div>
 
-    <!-- Analytics Dashboard: High Signal Metrics -->
+    <!-- Analytics Dashboard: Academic & Faculty KPIs -->
     <v-row class="mb-8 ga-y-4">
       <v-col cols="12" sm="6" md="3" v-for="(stat, i) in reportStats" :key="i">
         <v-card
@@ -75,7 +76,7 @@
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
-          placeholder="Query report archives..."
+          placeholder="Search by student, teacher or class..."
           variant="outlined"
           density="compact"
           hide-details
@@ -89,12 +90,18 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="['All Domains', 'Academic', 'Financial', 'Operational']"
+            :items="[
+              'All Reports',
+              'Student Analytics',
+              'Teacher Workload',
+              'Class Performance',
+              'Subject Audit',
+            ]"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 150px"
+            style="min-width: 180px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
             color="primary"
@@ -122,7 +129,7 @@
         class="premium-table"
         hover
       >
-        <!-- Audit Descriptor Slot -->
+        <!-- Report Descriptor Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar
@@ -148,11 +155,11 @@
           <div class="text-detail-tiny text-grey">{{ item.time }}</div>
         </template>
 
-        <!-- Payload Specification Slot -->
-        <template v-slot:item.size="{ item }">
-          <span class="text-detail font-weight-black text-slate-700">{{
-            item.size
-          }}</span>
+        <!-- Payload Slot (Using logic for target audience) -->
+        <template v-slot:item.target="{ item }">
+          <div class="text-detail-tiny font-weight-black text-slate-700">
+            {{ item.target }}
+          </div>
         </template>
 
         <!-- Lifecycle Status Slot -->
@@ -196,7 +203,7 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Displaying 1-{{ reports.length }} of 1,240 archive entries
+              Displaying 1-{{ reports.length }} of 82 school analytics reports
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn
@@ -240,40 +247,45 @@ const breadcrumbs = [
 
 const reportStats = [
   {
-    label: "Total Archives",
-    value: "1,240",
-    icon: "mdi-file-cabinet",
+    label: "Active Students",
+    value: "3,250",
+    icon: "mdi-account-school",
     color: "blue",
   },
+  { label: "Total Faculty", value: "148", icon: "mdi-teach", color: "green" },
   {
-    label: "Verified Audits",
-    value: "982",
-    icon: "mdi-shield-check-outline",
-    color: "green",
+    label: "Active Classes",
+    value: "84",
+    icon: "mdi-google-classroom",
+    color: "purple",
   },
-  { label: "Query Threads", value: "12", icon: "mdi-pulse", color: "purple" },
   {
-    label: "Data Egress",
-    value: "45.2 GB",
-    icon: "mdi-database-export-outline",
+    label: "Subject Count",
+    value: "32",
+    icon: "mdi-book-open-variant",
     color: "orange",
   },
 ];
 
 const headers = [
   {
-    title: "DOMAIN DESCRIPTION",
+    title: "ANALYTICS DESCRIPTION",
     key: "name",
     align: "start" as const,
     sortable: true,
   },
   {
-    title: "GENERATION PERIOD",
+    title: "GENERATION TIMESTAMP",
     key: "date",
     align: "start" as const,
     sortable: true,
   },
-  { title: "PAYLOAD", key: "size", align: "start" as const, sortable: true },
+  {
+    title: "TARGET DOMAIN",
+    key: "target",
+    align: "start" as const,
+    sortable: true,
+  },
   {
     title: "LIFECYCLE",
     key: "status",
@@ -289,63 +301,67 @@ const headers = [
 const reports = ref([
   {
     id: 1,
-    name: "ລາຍງານຄະແນນ ພາກຮຽນ 1",
-    type: "Grade Report",
-    date: "15/12/2024",
+    name: "Student Group Performance Audit",
+    type: "Student Analytics",
+    date: "04/03/2026",
     time: "09:30",
-    size: "2.5 MB",
+    target: "All Students",
     status: "ສຳເລັດ",
   },
   {
     id: 2,
-    name: "ລາຍງານການເງິນ ເດືອນ 12",
-    type: "Finance Report",
-    date: "14/12/2024",
+    name: "Teacher Monthly Workload Review",
+    type: "Faculty Insights",
+    date: "04/03/2026",
     time: "14:00",
-    size: "1.8 MB",
+    target: "Teachers Only",
     status: "ສຳເລັດ",
   },
   {
     id: 3,
-    name: "ລາຍງານນັກຮຽນ ປະຈຳປີ",
-    type: "Student Report",
-    date: "13/12/2024",
+    name: "Class Utilization & Scheduling",
+    type: "Academic Ops",
+    date: "03/03/2026",
     time: "11:15",
-    size: "5.2 MB",
+    target: "Class Blocks",
     status: "ກຳລັງປະມວນຜົນ",
   },
   {
     id: 4,
-    name: "ລາຍງານຄູ ປະຈຳເດືອນ",
-    type: "Teacher Report",
-    date: "12/12/2024",
+    name: "Subject Strength & Failure Rates",
+    type: "Curriculum Audit",
+    date: "02/03/2026",
     time: "10:00",
-    size: "1.2 MB",
+    target: "Subjects",
     status: "ສຳເລັດ",
   },
   {
     id: 5,
-    name: "ລາຍງານຄະແນນ ພາກຮຽນ 2",
-    type: "Grade Report",
-    date: "11/12/2024",
+    name: "Ethnic Group Demographic Pulse",
+    type: "Student Groups",
+    date: "02/03/2026",
     time: "16:30",
-    size: "0 MB",
+    target: "Minority Groups",
     status: "ກຳລັງປະມວນຜົນ",
   },
 ]);
 
 const getReportColor = (type: string) => {
-  if (type.includes("Grade")) return "primary";
-  if (type.includes("Finance")) return "success";
-  if (type.includes("Student")) return "purple";
-  return "orange";
+  if (type.includes("Student")) return "primary";
+  if (type.includes("Faculty") || type.includes("Teacher")) return "success";
+  if (type.includes("Academic") || type.includes("Class")) return "purple";
+  if (type.includes("Curriculum") || type.includes("Subject")) return "orange";
+  return "blue";
 };
 
 const getReportIcon = (type: string) => {
-  if (type.includes("Grade")) return "mdi-chart-areaspline";
-  if (type.includes("Finance")) return "mdi-wallet-outline";
-  if (type.includes("Student")) return "mdi-account-multiple-outline";
-  return "mdi-account-tie-outline";
+  if (type.includes("Student")) return "mdi-account-group-outline";
+  if (type.includes("Faculty") || type.includes("Teacher")) return "mdi-teach";
+  if (type.includes("Academic") || type.includes("Class"))
+    return "mdi-google-classroom";
+  if (type.includes("Curriculum") || type.includes("Subject"))
+    return "mdi-book-multiple-outline";
+  return "mdi-file-chart-outline";
 };
 
 const getStatusColor = (status: string) => {
