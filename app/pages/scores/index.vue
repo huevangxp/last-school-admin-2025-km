@@ -1,32 +1,25 @@
 <template>
-  <v-container fluid class="pa-6 min-h-screen dashboard-container">
+  <v-container fluid class="pa-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header Section -->
     <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
+      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1
-          class="text-h4 font-weight-bold text-secondary mb-1"
-          style="letter-spacing: -0.5px"
-        >
+        <h1 class="text-title mb-1">
           {{ $t("management") }} {{ $t("scores") }}
         </h1>
-        <p class="text-body-2 text-grey-darken-1 font-weight-medium">
-          Manage student grades and performance.
-        </p>
+        <p class="text-detail">Manage student grades and performance.</p>
       </div>
 
-      <div class="d-flex gap-3 align-center flex-wrap mt-4 mt-md-0">
+      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
           color="success"
-          class="text-none font-weight-bold"
-          height="44"
-          rounded="xl"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-file-excel"
-          border
         >
           Excel
         </v-btn>
@@ -34,21 +27,17 @@
         <v-btn
           variant="outlined"
           color="error"
-          class="text-none font-weight-bold"
-          height="44"
-          rounded="xl"
+          class="modern-action-btn secondary border"
+          height="32"
           prepend-icon="mdi-file-pdf-box"
-          border
         >
           PDF
         </v-btn>
 
         <v-btn
           color="primary"
-          class="text-none px-6 font-weight-bold"
-          height="44"
-          rounded="xl"
-          elevation="4"
+          class="modern-action-btn primary elevation-4"
+          height="32"
           prepend-icon="mdi-plus"
         >
           {{ $t("add") }}
@@ -58,113 +47,27 @@
 
     <!-- Stats Cards -->
     <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
+      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in scoreStats" :key="i">
         <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
+          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
           elevation="0"
-          rounded="xl"
         >
           <div class="d-flex align-center justify-space-between mb-2">
             <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                total students
+              <p class="text-detail-tiny mb-1">
+                {{ stat.label }}
               </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">
-                {{ students.length }}
-              </h2>
+              <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
-              color="blue-lighten-5"
+              :color="`${stat.color}-lighten-5`"
               rounded="lg"
-              size="52"
-              class="icon-box"
+              size="40"
+              class="metric-icon-box"
             >
-              <v-icon color="blue-darken-2" size="26">mdi-account-group</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ຄະແນນສະເລ່ຍ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">83.2</h2>
-            </div>
-            <v-avatar
-              color="green-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="green-darken-2" size="26">mdi-chart-line</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ອັດຕາຜ່ານ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">92%</h2>
-            </div>
-            <v-avatar
-              color="purple-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="purple-darken-2" size="26">mdi-trophy</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" sm="6" md="3">
-        <v-card
-          class="bean-card pa-5 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-          rounded="xl"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p
-                class="text-caption font-weight-bold text-grey text-uppercase mb-1 tracking-wide"
-              >
-                ຍັງບໍ່ປ້ອນຄະແນນ
-              </p>
-              <h2 class="text-h4 font-weight-bold text-secondary">3</h2>
-            </div>
-            <v-avatar
-              color="orange-lighten-5"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon color="orange-darken-2" size="26"
-                >mdi-clock-time-four-outline</v-icon
-              >
+              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
+                stat.icon
+              }}</v-icon>
             </v-avatar>
           </div>
         </v-card>
@@ -172,226 +75,196 @@
     </v-row>
 
     <!-- Main Content Card -->
-    <div>
-      <v-card class="rounded-xl bean-card" elevation="0">
-        <!-- Filter Section -->
-        <div class="pa-6 pb-0">
-          <div
-            class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-4 gap-4"
-          >
-            <!-- Search Field -->
-            <v-text-field
-              v-model="search"
-              prepend-inner-icon="mdi-magnify"
-              :placeholder="$t('search')"
-              variant="outlined"
-              density="comfortable"
-              hide-details
-              style="max-width: 300px"
-              bg-color="white"
-              color="primary"
-              rounded="lg"
-              class="cream-input"
-            ></v-text-field>
+    <v-card elevation="0" class="intelligence-card pa-4">
+      <!-- Filter Section -->
+      <div
+        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
+      >
+        <v-text-field
+          v-model="search"
+          prepend-inner-icon="mdi-magnify"
+          :placeholder="$t('search')"
+          variant="outlined"
+          density="compact"
+          hide-details
+          class="cream-input"
+          style="max-width: 280px"
+          bg-color="white"
+          color="primary"
+          base-color="grey-lighten-1"
+          rounded="lg"
+        ></v-text-field>
 
-            <!-- Filter Dropdowns -->
-            <div class="d-flex gap-3 align-center flex-wrap">
-              <!-- Academic Year Filter -->
-              <v-select
-                v-model="selectedYear"
-                :items="academicYears"
-                placeholder="ປີຮຽນ"
-                prepend-inner-icon="mdi-calendar"
-                variant="outlined"
-                density="comfortable"
-                hide-details
-                rounded="lg"
-                style="min-width: 140px"
-                class="cream-select"
-                color="primary"
-              ></v-select>
+        <div class="d-flex gap-2 align-center flex-wrap">
+          <v-select
+            v-model="selectedYear"
+            :items="academicYears"
+            placeholder="Year"
+            variant="outlined"
+            density="compact"
+            hide-details
+            rounded="lg"
+            style="min-width: 110px"
+            class="cream-select text-detail"
+            color="primary"
+            base-color="grey-lighten-1"
+          ></v-select>
 
-              <!-- Semester Filter -->
-              <v-select
-                v-model="selectedSemester"
-                :items="semesters"
-                placeholder="ພາກຮຽນ"
-                prepend-inner-icon="mdi-school"
-                variant="outlined"
-                density="comfortable"
-                hide-details
-                rounded="lg"
-                style="min-width: 140px"
-                class="cream-select"
-                color="primary"
-              ></v-select>
+          <v-select
+            v-model="selectedClass"
+            :items="classes"
+            placeholder="Class"
+            variant="outlined"
+            density="compact"
+            hide-details
+            rounded="lg"
+            style="min-width: 110px"
+            class="cream-select text-detail"
+            color="primary"
+            base-color="grey-lighten-1"
+          ></v-select>
 
-              <!-- Class Filter -->
-              <v-select
-                v-model="selectedClass"
-                :items="classes"
-                placeholder="ຫ້ອງຮຽນ"
-                prepend-inner-icon="mdi-google-classroom"
-                variant="outlined"
-                density="comfortable"
-                hide-details
-                rounded="lg"
-                style="min-width: 140px"
-                class="cream-select"
-                color="primary"
-              ></v-select>
-
-              <!-- Subject Filter -->
-              <v-select
-                v-model="selectedSubject"
-                :items="subjects"
-                placeholder="ວິຊາ"
-                prepend-inner-icon="mdi-book-open-variant"
-                variant="outlined"
-                density="comfortable"
-                hide-details
-                rounded="lg"
-                style="min-width: 140px"
-                class="cream-select"
-                color="primary"
-              ></v-select>
-            </div>
-          </div>
+          <v-btn
+            variant="outlined"
+            color="grey-darken-1"
+            class="modern-action-btn secondary border"
+            height="32"
+            width="32"
+            icon="mdi-dots-horizontal"
+          ></v-btn>
         </div>
+      </div>
 
-        <!-- Score Table -->
-        <div class="pa-6">
-          <div class="table-wrapper">
-            <table class="score-table">
-              <thead>
-                <tr>
-                  <th class="col-no">ລ/ດ</th>
-                  <th class="col-name">ຊື່ ແລະ ນາມສະກຸນ</th>
-                  <th class="col-score">
-                    <div class="rotate-text">ຄະນິດສາດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ຟີຊິກສາດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ເຄມີສາດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ຊີວະວິທະຍາ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ພາສາລາວ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ພາສາອັງກິດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ປະຫວັດສາດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ພູມສາດ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ສັງຄົມສຶກສາ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ພະລະ</div>
-                  </th>
-                  <th class="col-score">
-                    <div class="rotate-text">ຄອມພິວເຕີ</div>
-                  </th>
-                  <th class="col-total">ລວມ</th>
-                  <th class="col-rank">ຈັດລຳດັບ</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(student, index) in students"
-                  :key="index"
-                  :class="index % 2 === 0 ? 'row-even' : 'row-odd'"
-                  class="table-row"
+      <!-- Score Table -->
+      <div class="table-wrapper">
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th class="col-no text-detail-tiny">NO.</th>
+              <th class="col-name text-detail-tiny text-left">STUDENT NAME</th>
+              <th
+                class="col-score text-detail-tiny"
+                v-for="subj in subjects"
+                :key="subj"
+              >
+                {{ subj }}
+              </th>
+              <th class="col-total text-detail-tiny">TOTAL</th>
+              <th class="col-rank text-detail-tiny">RANK</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(student, index) in students"
+              :key="index"
+              class="table-row"
+            >
+              <td class="text-center text-detail-tiny">
+                {{ index + 1 }}
+              </td>
+              <td class="text-left px-4 text-detail font-weight-black">
+                {{ student.name }}
+              </td>
+              <td
+                class="text-center score-cell text-detail"
+                v-for="n in 4"
+                :key="n"
+              >
+                {{
+                  n === 1
+                    ? student.lao
+                    : n === 2
+                      ? student.eng
+                      : n === 3
+                        ? student.math
+                        : student.science
+                }}
+              </td>
+              <td
+                class="text-center score-cell text-detail"
+                v-for="n in subjects.length - 4"
+                :key="'empty-' + n"
+              >
+                -
+              </td>
+              <td
+                class="text-center font-weight-black total-cell text-detail text-primary"
+              >
+                {{ student.total }}
+              </td>
+              <td class="text-center rank-cell">
+                <v-chip
+                  size="x-small"
+                  :color="getRankColor(index)"
+                  variant="flat"
+                  class="font-weight-black"
                 >
-                  <td class="text-center">
-                    <span class="row-number">{{ index + 1 }}</span>
-                  </td>
-                  <td class="text-left px-4">
-                    <span class="student-name">{{ student.name }}</span>
-                  </td>
-                  <td class="text-center score-cell">{{ student.lao }}</td>
-                  <td class="text-center score-cell">{{ student.eng }}</td>
-                  <td class="text-center score-cell">{{ student.math }}</td>
-                  <td class="text-center score-cell">{{ student.science }}</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center score-cell empty-score">-</td>
-                  <td class="text-center font-weight-bold total-cell">
-                    <span class="total-score">{{ student.total }}</span>
-                  </td>
-                  <td class="text-center rank-cell">
-                    <v-chip
-                      size="small"
-                      :color="getRankColor(index)"
-                      variant="flat"
-                    >
-                      {{ index + 1 }}
-                    </v-chip>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+                  {{ index + 1 }}
+                </v-chip>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Enhanced Footer Signatures -->
-        <div class="signature-section pa-8">
-          <div class="signature-container">
-            <div class="signature-box">
-              <div class="signature-title mb-6">ອາຈານປະຈຳວິຊາ</div>
-              <div class="signature-name">ປຕ ບຸນຕາ ແຄນສິງວິ</div>
+      <!-- Enhanced Footer Signatures -->
+      <div class="signature-section mt-8 pa-4 rounded-lg">
+        <div class="d-flex justify-space-between">
+          <div class="text-center">
+            <div class="text-detail-tiny mb-6 opacity-60">
+              COURSE INSTRUCTOR
             </div>
-            <div class="signature-box">
-              <div class="signature-title mb-6">ລາຍເຊັ່ນ ອາຈານປະຈຳວິຊາ</div>
-              <div class="signature-name"></div>
-            </div>
+            <div class="text-title-small">ປຕ ບຸນຕາ ແຄນສິງວິ</div>
+          </div>
+          <div class="text-center">
+            <div class="text-detail-tiny mb-6 opacity-60">SIGNATURE</div>
+            <div class="signature-line"></div>
           </div>
         </div>
-      </v-card>
-    </div>
+      </div>
+    </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
-// Search and Filter State
+import { ref } from "vue";
+const { t } = useI18n();
+
 const search = ref("");
-const selectedYear = ref("");
-const selectedSemester = ref("");
-const selectedClass = ref("");
-const selectedSubject = ref("");
+const selectedYear = ref("2024-2025");
+const selectedClass = ref("ມ1/1");
 
-// Filter Options
 const academicYears = ["2023-2024", "2024-2025", "2025-2026"];
-const semesters = ["ພາກຮຽນ 1", "ພາກຮຽນ 2"];
 const classes = ["ມ1/1", "ມ1/2", "ມ2/1", "ມ2/2", "ມ3/1", "ມ3/2"];
-const subjects = [
-  "ຄະນິດສາດ",
-  "ພາສາລາວ",
-  "ພາສາອັງກິດ",
-  "ຟິຊິກສາດ",
-  "ເຄມີສາດ",
-  "ຊີວະວິທະຍາ",
-];
+const subjects = ["MATH", "PHYS", "CHEM", "BIO", "LAO", "ENG", "HIST", "GEO"];
 
-// Breadcrumbs
 const breadcrumbs = [
-  { title: $t("dashboard"), disabled: false, to: "/" },
-  { title: $t("scores"), disabled: true, to: "/scores" },
+  { title: t("dashboard"), disabled: false, to: "/" },
+  { title: t("scores"), disabled: true, to: "/scores" },
 ];
 
-// Student Score Data
+const scoreStats = [
+  {
+    label: "Total Students",
+    value: "148",
+    icon: "mdi-account-group",
+    color: "blue",
+  },
+  {
+    label: "Average Score",
+    value: "83.2",
+    icon: "mdi-chart-line",
+    color: "green",
+  },
+  { label: "Pass Rate", value: "92%", icon: "mdi-trophy", color: "purple" },
+  {
+    label: "Pending",
+    value: "3",
+    icon: "mdi-clock-time-four-outline",
+    color: "orange",
+  },
+];
+
 const students = ref([
   {
     name: "ນາງ ຄຳພອນ ແກ້ວມະນີ",
@@ -475,149 +348,105 @@ const students = ref([
   },
 ]);
 
-// Get rank color based on position
 const getRankColor = (index: number) => {
   if (index === 0) return "amber-darken-2";
-  if (index === 1) return "grey";
-  if (index === 2) return "brown";
-  return "blue-grey";
+  if (index === 1) return "grey-darken-1";
+  if (index === 2) return "brown-darken-1";
+  return "blue-grey-lighten-2";
 };
 </script>
 
 <style scoped>
-/* Cream UI Variables */
 .dashboard-container {
-  /* --cream-bg: #fafaf5; */
-}
-.min-h-screen {
-  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.gap-3 {
-  gap: 12px;
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
 }
 
-.gap-4 {
-  gap: 16px;
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
 }
 
-/* Bean Card Styling */
-.bean-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s ease;
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
 
-.bean-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+.metric-icon-box {
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Input/Select Customization */
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
 
-.cream-input :deep(.v-field--focused .v-field__outline__start),
-.cream-input :deep(.v-field--focused .v-field__outline__end),
-.cream-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1px !important;
-}
-
-.cream-select :deep(.v-field__outline__start),
-.cream-select :deep(.v-field__outline__end),
-.cream-select :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-/* Table Wrapper */
 .table-wrapper {
   overflow-x: auto;
   border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #f1f5f9;
 }
 
-/* Score Table Styling */
 .score-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  font-size: 14px;
 }
 
 .score-table th {
-  padding: 16px 12px;
-  border: 1px solid #e2e8f0;
-  font-weight: 700;
-  text-align: center;
-  vertical-align: middle;
-  position: relative;
+  padding: 12px;
+  border: 1px solid #f1f5f9;
   background-color: #f8fafc;
-  color: #4a4036; /* Primary text color match */
+  color: #64748b;
+  height: 48px;
 }
 
-/* Table Rows */
-.score-table tbody tr {
-  transition: all 0.2s ease;
+.score-table td {
+  padding: 10px;
+  border: 1px solid #f1f5f9;
+  height: 52px;
 }
 
 .table-row:hover {
   background-color: #f8fafc !important;
 }
 
-.score-table tbody tr.row-even {
-  background-color: #fafaf5; /* Soft cream/grey */
-}
-
-.score-table tbody tr.row-odd {
-  background-color: white;
-}
-
-.score-table td {
-  padding: 14px 10px;
-  border: 1px solid #e2e8f0;
-  vertical-align: middle;
-}
-
-.student-name,
-.score-cell {
-  color: #4a4036;
-}
-
 .total-cell {
-  background: #f8fafc;
+  background: #f1f5f9;
 }
 
-/* Signature Section */
 .signature-section {
-  background-color: #fafaf5;
-  border-top: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  border: 1px dashed #e2e8f0;
 }
 
-.signature-title {
-  font-weight: 700;
-  color: #64748b;
-  font-size: 15px;
+.signature-line {
+  border-bottom: 2px solid #e2e8f0;
+  width: 160px;
+  margin: 0 auto;
+  height: 32px;
 }
 
-.signature-name {
-  font-weight: 700;
-  color: #4a4036;
-  font-size: 16px;
-  margin-top: 8px;
+.cream-input :deep(.v-field__outline__start),
+.cream-input :deep(.v-field__outline__end),
+.cream-input :deep(.v-field__outline__notch) {
+  border-color: #e2e8f0 !important;
 }
 
-/* Typography & Utils */
-.tracking-wide {
-  letter-spacing: 0.05em;
+.border-t {
+  border-top: 1px solid #f1f5f9;
 }
 </style>
