@@ -1,269 +1,192 @@
 <template>
-  <div class="dashboard-container">
-    <!-- Header Section -->
-    <div class="d-flex justify-space-between align-center mb-8">
-      <div>
-        <h1
-          class="text-h4 font-weight-bold text-secondary"
-          style="letter-spacing: -0.5px"
-        >
-          {{ $t("dashboard") }}
-        </h1>
-        <p class="text-subtitle-1 text-grey-darken-1 mt-1 font-weight-medium">
-          Welcome back, here's your daily overview.
-        </p>
-      </div>
-      <div class="d-flex ga-3">
+  <div class="dashboard-viewport pb-12">
+    <!-- Quick Actions Bar (Replacement for large header) -->
+    <div class="d-flex justify-end mb-6 fade-in">
+      <div class="action-stack d-flex ga-2">
         <v-btn
-          prepend-icon="mdi-tray-arrow-down"
-          variant="outlined"
-          color="grey-darken-1"
-          class="text-none font-weight-bold px-4"
-          rounded="xl"
-          border
+          variant="flat"
+          color="white"
+          class="modern-action-btn secondary border"
+          height="36"
         >
+          <v-icon icon="mdi-file-download-outline" start size="16"></v-icon>
           Export
         </v-btn>
         <v-btn
-          prepend-icon="mdi-plus"
+          variant="flat"
           color="primary"
-          class="text-none font-weight-bold px-6 text-white"
-          rounded="xl"
-          elevation="4"
+          class="modern-action-btn primary elevation-4"
+          height="36"
         >
-          New Project
+          <v-icon icon="mdi-plus" start size="16"></v-icon>
+          Action
         </v-btn>
       </div>
     </div>
 
-    <!-- Stats Row -->
-    <v-row class="mb-6">
+    <!-- Section: High-Signal Metrics -->
+    <v-row class="mb-6 ga-y-4">
       <v-col
         cols="12"
         sm="6"
-        md="3"
+        lg="3"
         v-for="(stat, index) in stats"
         :key="index"
       >
-        <v-card
-          elevation="0"
-          rounded="xl"
-          class="bean-card pa-5 h-100 d-flex flex-column justify-space-between"
-          color="white"
-        >
-          <div class="d-flex align-center justify-space-between mb-4">
-            <v-avatar
-              :color="stat.bgColor"
-              rounded="lg"
-              size="52"
-              class="icon-box"
-            >
-              <v-icon
-                :icon="stat.icon"
-                size="26"
-                :color="stat.iconColor"
-              ></v-icon>
-            </v-avatar>
-            <div
-              v-if="stat.trendValue"
-              class="d-flex align-center px-3 py-1 rounded-pill trend-badge"
-              :class="stat.trendUp ? 'bg-green-light' : 'bg-red-light'"
-            >
-              <v-icon
-                :icon="
-                  stat.trendUp ? 'mdi-arrow-up-right' : 'mdi-arrow-down-right'
-                "
-                size="16"
-                :color="stat.trendUp ? 'green-darken-2' : 'red-darken-2'"
-                class="mr-1"
-              ></v-icon>
-              <span
-                class="text-caption font-weight-bold"
-                :class="
-                  stat.trendUp ? 'text-green-darken-3' : 'text-red-darken-3'
-                "
-              >
+        <v-card elevation="0" class="metric-card h-100 overflow-hidden">
+          <div class="pa-4">
+            <div class="d-flex justify-space-between align-center mb-4">
+              <div :class="`metric-icon-box bg-${stat.iconColor}-lighten-5`">
+                <v-icon
+                  :icon="stat.icon"
+                  :color="stat.iconColor"
+                  size="18"
+                ></v-icon>
+              </div>
+              <div class="trend-badge" :class="stat.trendUp ? 'up' : 'down'">
+                <v-icon
+                  :icon="
+                    stat.trendUp
+                      ? 'mdi-arrow-top-right'
+                      : 'mdi-arrow-bottom-left'
+                  "
+                  size="10"
+                  class="mr-1"
+                ></v-icon>
                 {{ stat.trendValue }}
-              </span>
+              </div>
+            </div>
+
+            <div class="metric-info">
+              <div class="text-detail mb-1">
+                {{ stat.title }}
+              </div>
+              <div class="text-title">
+                {{ stat.value }}
+              </div>
             </div>
           </div>
-          <div>
-            <div class="text-h4 font-weight-bold text-secondary mb-1">
-              {{ stat.value }}
-            </div>
-            <div class="text-body-2 text-grey-darken-1 font-weight-medium">
-              {{ stat.title }}
-            </div>
-          </div>
+          <div
+            class="metric-footer-line"
+            :style="`background: var(--v-${stat.iconColor}-base)`"
+          ></div>
         </v-card>
       </v-col>
     </v-row>
 
-    <!-- Main Content Grid -->
+    <!-- Section: Primary Intelligence Area -->
     <v-row>
-      <!-- Left Column (Charts & Tables) -->
+      <!-- Intelligence Column -->
       <v-col cols="12" lg="8">
-        <!-- Project Progress Chart -->
-        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
-          <div
-            class="d-flex flex-wrap justify-space-between align-center mb-8 ga-4"
-          >
-            <div>
-              <h2 class="text-h6 font-weight-bold text-secondary">
-                Analytics Overview
-              </h2>
-              <div
-                class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
-              >
-                Project Performance
+        <!-- Academic Performance Visualization -->
+        <v-card elevation="0" class="intelligence-card mb-6">
+          <div class="pa-6">
+            <div class="d-flex justify-space-between align-center mb-6">
+              <div>
+                <h3 class="text-title mb-1">Academic Pulse</h3>
+                <p class="text-detail">
+                  Global performance metrics across all faculties
+                </p>
+              </div>
+              <div class="chart-controls d-flex ga-1">
+                <v-btn
+                  v-for="p in ['Daily', 'Weekly', 'Monthly']"
+                  :key="p"
+                  variant="flat"
+                  :color="
+                    chartPeriod === p.toLowerCase()
+                      ? 'primary'
+                      : 'grey-lighten-4'
+                  "
+                  height="28"
+                  class="rounded-lg text-none text-detail font-weight-bold"
+                  @click="chartPeriod = p.toLowerCase()"
+                >
+                  {{ p }}
+                </v-btn>
               </div>
             </div>
-            <v-btn-toggle
-              v-model="chartPeriod"
-              density="compact"
-              class="cream-toggle rounded-pill"
-              color="primary"
-              mandatory
-              borderless
-            >
-              <v-btn
-                value="weekly"
-                size="small"
-                class="text-none font-weight-bold px-5"
-                >Weekly</v-btn
-              >
-              <v-btn
-                value="monthly"
-                size="small"
-                class="text-none font-weight-bold px-5"
-                >Monthly</v-btn
-              >
-            </v-btn-toggle>
-          </div>
-          <div style="height: 320px" class="w-100 chart-container rounded-lg">
-            <ClientOnly>
-              <DashboardChart />
-            </ClientOnly>
+
+            <div class="chart-container" style="height: 300px">
+              <ClientOnly>
+                <DashboardChart />
+              </ClientOnly>
+            </div>
           </div>
         </v-card>
 
-        <!-- Projects Table -->
-        <v-card elevation="0" rounded="xl" class="bean-card overflow-hidden">
-          <div class="pa-6 border-b d-flex justify-space-between align-center">
+        <!-- Attention Required Hub -->
+        <v-card elevation="0" class="intelligence-card overflow-hidden">
+          <header
+            class="pa-6 d-flex justify-space-between align-center border-b"
+          >
             <div>
-              <h2 class="text-h6 font-weight-bold text-secondary">
-                Recent Projects
-              </h2>
-              <div
-                class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
-              >
-                {{ projects.length }} active tracks
-              </div>
+              <h3 class="text-title mb-1">Response Queue</h3>
+              <p class="text-detail">
+                Matters requiring administrative sign-off
+              </p>
             </div>
-            <v-btn
-              variant="text"
-              color="primary"
-              class="text-none font-weight-bold px-0"
-              append-icon="mdi-arrow-right"
+            <v-chip
+              color="rose"
+              variant="flat"
+              size="x-small"
+              class="font-weight-black px-2"
             >
-              View All
-            </v-btn>
-          </div>
+              {{ flaggedStudents.length }} PENDING
+            </v-chip>
+          </header>
 
-          <v-table class="projects-table">
+          <v-table class="premium-table">
             <thead>
-              <tr class="bg-grey-lighten-5">
-                <th
-                  class="text-caption font-weight-bold text-grey-darken-1 pl-6 py-4 text-uppercase"
-                >
-                  Project Name
-                </th>
-                <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
-                >
-                  Lead
-                </th>
-                <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
-                >
-                  Status
-                </th>
-                <th
-                  class="text-caption font-weight-bold text-grey-darken-1 py-4 text-uppercase"
-                >
-                  Progress
-                </th>
-                <th class="text-right pr-6 py-4"></th>
+              <tr>
+                <th class="text-detail">Stakeholder</th>
+                <th class="text-detail">Context</th>
+                <th class="text-detail">Alert</th>
+                <th class="text-right text-detail pr-6">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(project, i) in projects" :key="i" class="project-row">
-                <td class="pl-6 py-5">
-                  <div class="d-flex align-center">
-                    <v-sheet
-                      rounded="lg"
-                      class="d-flex align-center justify-center mr-4 bg-primary-lighten-5"
-                      height="44"
-                      width="44"
-                    >
-                      <span class="text-primary text-h6 font-weight-bold">
-                        {{ project.name.charAt(0) }}
-                      </span>
-                    </v-sheet>
+              <tr
+                v-for="(student, i) in flaggedStudents"
+                :key="i"
+                class="table-row-hover"
+              >
+                <td class="pl-6">
+                  <div class="d-flex align-center py-3">
+                    <v-avatar size="32" class="mr-3 elevation-1 border-white">
+                      <v-img
+                        :src="`https://ui-avatars.com/api/?name=${student.name}&background=random`"
+                      ></v-img>
+                    </v-avatar>
                     <div>
-                      <div
-                        class="text-subtitle-2 font-weight-bold text-secondary"
-                      >
-                        {{ project.name }}
-                      </div>
-                      <div
-                        class="text-caption text-grey-darken-1 font-weight-medium"
-                      >
-                        {{ project.subtitle }}
-                      </div>
+                      <div class="text-title-small">{{ student.name }}</div>
+                      <div class="text-detail-tiny">{{ student.id }}</div>
                     </div>
                   </div>
                 </td>
                 <td>
-                  <v-avatar size="28" class="border">
-                    <v-img
-                      :src="`https://ui-avatars.com/api/?name=${project.owner}&background=random`"
-                    ></v-img>
-                  </v-avatar>
+                  <div class="text-title-small">{{ student.grade }}</div>
                 </td>
                 <td>
-                  <v-chip
-                    :color="project.statusColor"
-                    size="small"
-                    variant="flat"
-                    class="font-weight-bold text-uppercase status-chip"
-                  >
-                    {{ project.status }}
-                  </v-chip>
-                </td>
-                <td style="min-width: 140px">
                   <div class="d-flex align-center">
-                    <v-progress-linear
-                      :model-value="project.progress"
-                      :color="project.progressColor"
-                      bg-color="grey-lighten-2"
-                      height="8"
-                      rounded
-                      class="flex-grow-1 mr-3"
-                    ></v-progress-linear>
+                    <div :class="`status-dot bg-${student.statusColor}`"></div>
                     <span
-                      class="text-caption text-grey-darken-4 font-weight-bold"
-                      >{{ project.progress }}%</span
+                      :class="`text-detail-tiny font-weight-black text-uppercase text-${student.statusColor}`"
                     >
+                      {{ student.status }}
+                    </span>
                   </div>
                 </td>
                 <td class="text-right pr-6">
                   <v-btn
-                    icon="mdi-dots-horizontal"
-                    variant="text"
-                    density="comfortable"
-                    color="grey-darken-1"
-                  ></v-btn>
+                    variant="tonal"
+                    color="primary"
+                    size="x-small"
+                    class="rounded-md font-weight-bold text-none"
+                    height="28"
+                  >
+                    Action
+                  </v-btn>
                 </td>
               </tr>
             </tbody>
@@ -271,126 +194,74 @@
         </v-card>
       </v-col>
 
-      <!-- Right Column (Sidebar Widgets) -->
+      <!-- Contextual Utilities Column -->
       <v-col cols="12" lg="4">
-        <!-- Deadlines -->
-        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
-          <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-secondary">Schedule</h2>
-            <v-btn
-              icon="mdi-calendar-month"
-              variant="text"
-              density="comfortable"
-              color="grey-darken-1"
-            ></v-btn>
-          </div>
-          <div class="d-flex flex-column ga-3">
-            <div
-              v-for="(deadline, i) in deadlines"
-              :key="i"
-              class="d-flex align-center pa-4 rounded-xl transition-swing hover-scale bg-grey-lighten-5"
-            >
-              <div
-                class="d-flex flex-column align-center justify-center bg-white rounded-lg px-3 py-2 mr-4 shadow-sm"
-                style="min-width: 60px"
-              >
-                <div
-                  class="text-h6 font-weight-black text-secondary"
-                  style="line-height: 1"
-                >
-                  {{ deadline.day }}
+        <!-- Unified Schedule Widget -->
+        <v-card elevation="0" class="utility-card dark mb-6 overflow-hidden">
+          <div class="pa-6 relative-z">
+            <div class="d-flex justify-space-between align-center mb-6">
+              <h3 class="text-title text-white">Critical Dates</h3>
+              <v-btn
+                icon="mdi-calendar"
+                variant="text"
+                color="white"
+                size="x-small"
+              ></v-btn>
+            </div>
+
+            <div class="schedule-list ga-3 d-flex flex-column">
+              <div v-for="(event, i) in events" :key="i" class="schedule-item">
+                <div class="date-shard">
+                  <span class="day">{{ event.day }}</span>
+                  <span class="month">{{ event.month }}</span>
                 </div>
-                <div
-                  class="text-caption font-weight-bold text-grey text-uppercase mt-1"
-                  style="font-size: 0.65rem !important"
-                >
-                  {{ deadline.month }}
-                </div>
-              </div>
-              <div class="flex-grow-1" style="min-width: 0">
-                <div
-                  class="text-subtitle-2 font-weight-bold text-secondary text-truncate"
-                >
-                  {{ deadline.title }}
-                </div>
-                <div class="d-flex align-center mt-1">
-                  <span
-                    class="status-dot mr-2"
-                    :class="deadline.urgent ? 'bg-error' : 'bg-success'"
-                  ></span>
-                  <span
-                    class="text-caption text-grey-darken-1 font-weight-medium"
-                  >
-                    {{ deadline.status }}
-                  </span>
+                <div class="details flex-grow-1">
+                  <div class="title">{{ event.title }}</div>
+                  <div class="time d-flex align-center">
+                    <v-icon
+                      icon="mdi-clock-outline"
+                      size="12"
+                      class="mr-1"
+                    ></v-icon>
+                    {{ event.time }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </v-card>
 
-        <!-- Tasks Status -->
-        <v-card elevation="0" rounded="xl" class="bean-card pa-6 mb-6">
-          <div class="mb-6">
-            <h2 class="text-h6 font-weight-bold text-secondary">Workload</h2>
-            <div
-              class="text-caption text-grey-darken-1 font-weight-bold text-uppercase tracking-wide"
-            >
-              Task Distribution
-            </div>
-          </div>
-          <div v-for="(task, i) in taskStatus" :key="i" class="mb-5 last-mb-0">
-            <div class="d-flex justify-space-between mb-2">
-              <span class="text-body-2 font-weight-bold text-secondary">{{
-                task.label
-              }}</span>
-              <span class="text-caption font-weight-bold text-grey-darken-1"
-                >{{ task.count }} tasks</span
-              >
-            </div>
-            <v-progress-linear
-              :model-value="task.percentage"
-              :color="task.color"
-              bg-color="grey-lighten-3"
-              height="8"
-              rounded
-            ></v-progress-linear>
-          </div>
-        </v-card>
+        <!-- System Intelligence Feed -->
+        <v-card elevation="0" class="utility-card pb-4">
+          <div class="pa-6 pb-2">
+            <h3 class="text-title mb-1">System Feed</h3>
+            <p class="text-detail mb-6">Automation & audit logs</p>
 
-        <!-- Activity -->
-        <v-card elevation="0" rounded="xl" class="bean-card pa-6">
-          <div class="d-flex justify-space-between align-center mb-6">
-            <h2 class="text-h6 font-weight-bold text-secondary">
-              Latest Activity
-            </h2>
-          </div>
-
-          <div class="activity-timeline pl-2">
-            <div
-              v-for="(activity, i) in recentActivity"
-              :key="i"
-              class="d-flex align-start mb-6 last-mb-0 relative activity-item"
-            >
-              <div class="mr-4 relative z-10">
-                <v-avatar
-                  :image="activity.avatar"
-                  size="42"
-                  class="border-2 border-white shadow-sm"
-                ></v-avatar>
-              </div>
-              <div class="pt-1">
-                <div
-                  class="text-subtitle-2 text-secondary mb-1"
-                  style="line-height: 1.4"
-                >
-                  <span class="font-weight-black">{{ activity.user }}</span>
-                  <span class="font-weight-medium text-grey-darken-2">
-                    {{ activity.action }}</span
-                  >
+            <div class="feed-container">
+              <div v-for="(log, i) in activities" :key="i" class="feed-item">
+                <div class="feed-indicator">
+                  <div :class="`feed-icon bg-${log.color}-lighten-5`">
+                    <v-icon
+                      :icon="log.icon"
+                      :color="log.color"
+                      size="14"
+                    ></v-icon>
+                  </div>
+                  <div
+                    class="feed-line"
+                    v-if="i !== activities.length - 1"
+                  ></div>
                 </div>
-                <div class="text-caption text-grey-lighten-1 font-weight-bold">
-                  {{ activity.time }}
+                <div class="feed-content">
+                  <div class="message text-detail mb-1">
+                    <span class="font-weight-black text-slate-800">{{
+                      log.user
+                    }}</span>
+                    <span class="text-grey-darken-1 ml-1">{{
+                      log.action
+                    }}</span>
+                  </div>
+                  <div class="meta text-detail-tiny">{{ log.time }}</div>
                 </div>
               </div>
             </div>
@@ -403,274 +274,338 @@
 
 <script setup lang="ts">
 import DashboardChart from "~/components/DashboardChart.vue";
-import WorkloadChart from "~/components/WorkloadChart.vue";
 const { t } = useI18n();
 
-const chartPeriod = ref("weekly");
+const chartPeriod = ref("monthly");
 
 const stats = [
   {
-    title: "Total Faculty",
-    value: "24",
+    title: "Student Growth",
+    value: "+154",
     trendUp: true,
-    trendValue: "12%",
-    icon: "mdi-human-lecturer",
-    bgColor: "orange-lighten-5",
-    iconColor: "orange-darken-2",
+    trendValue: "14.2%",
+    icon: "mdi-account-multiple-plus",
+    iconColor: "primary",
   },
   {
-    title: "Students Enrolled",
-    value: "1,204",
+    title: "Efficiency IQ",
+    value: "84.5%",
     trendUp: true,
-    trendValue: "8%",
-    icon: "mdi-school-outline",
-    bgColor: "blue-lighten-5",
-    iconColor: "blue-darken-2",
+    trendValue: "3.1%",
+    icon: "mdi-brain",
+    iconColor: "indigo",
   },
   {
-    title: "Pending Tasks",
-    value: "13",
+    title: "Capacity",
+    value: "92%",
     trendUp: false,
-    trendValue: "2%",
-    icon: "mdi-clipboard-text-clock-outline",
-    bgColor: "red-lighten-5",
-    iconColor: "red-darken-2",
+    trendValue: "-1.2%",
+    icon: "mdi-office-building-marker",
+    iconColor: "amber-darken-2",
   },
   {
     title: "Revenue",
-    value: "$42k",
+    value: "$428,500",
     trendUp: true,
-    trendValue: "15%",
-    icon: "mdi-currency-usd",
-    bgColor: "green-lighten-5",
-    iconColor: "green-darken-2",
-  },
-  {
-    title: "Reports",
-    value: "45",
-    trendUp: true,
-    trendValue: "5%",
-    icon: "mdi-file-chart-outline",
-    bgColor: "purple-lighten-5",
-    iconColor: "purple-darken-2",
+    trendValue: "18.5%",
+    icon: "mdi-bank-transfer",
+    iconColor: "emerald-darken-1",
   },
 ];
 
-const deadlines = [
+const flaggedStudents = [
   {
-    day: "12",
-    month: "May",
-    title: "UX Research Review",
-    status: "Urgent",
-    urgent: true,
+    id: "ST-0941",
+    name: "Lucas Vance",
+    grade: "12-A",
+    status: "Probation",
+    statusColor: "amber",
+    attendance: 65,
   },
   {
-    day: "14",
-    month: "May",
-    title: "Library API Integration",
-    status: "In Progress",
-    urgent: false,
+    id: "ST-1022",
+    name: "Elena Gilbert",
+    grade: "11-C",
+    status: "Critical",
+    statusColor: "rose",
+    attendance: 42,
   },
   {
-    day: "18",
-    month: "May",
-    title: "Marketing Strategy",
-    status: "Upcoming",
-    urgent: false,
-  },
-];
-
-const taskStatus = [
-  {
-    label: "Design Phase",
-    count: 45,
-    percentage: 70,
-    color: "warning",
+    id: "ST-0814",
+    name: "Damon Salvatore",
+    grade: "10-B",
+    status: "Resolving",
+    statusColor: "primary",
+    attendance: 88,
   },
   {
-    label: "Development",
-    count: 28,
-    percentage: 45,
-    color: "info",
-  },
-  { label: "Testing", count: 12, percentage: 20, color: "success" },
-];
-
-const recentActivity = [
-  {
-    user: "Sarah M.",
-    action: "completed the wireframes for the new portal.",
-    time: "2 mins ago",
-    avatar: "https://i.pravatar.cc/150?img=35",
-  },
-  {
-    user: "David K.",
-    action: "commented on the API documentation.",
-    time: "1 hour ago",
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    user: "Elena R.",
-    action: "added 3 new tasks to the backlog.",
-    time: "3 hours ago",
-    avatar: "https://i.pravatar.cc/150?img=5",
+    id: "ST-1109",
+    name: "Caroline Forbes",
+    grade: "12-E",
+    status: "Validated",
+    statusColor: "emerald",
+    attendance: 99,
   },
 ];
 
-const projects = [
+const events = [
+  { day: "08", month: "MAR", title: "Faculty Workshop", time: "09:00 AM" },
+  { day: "12", month: "MAR", title: "Board Meeting", time: "10:30 AM" },
+  { day: "20", month: "MAR", title: "Semester Finals", time: "08:30 AM" },
+];
+
+const activities = [
   {
-    name: "Student Portal",
-    subtitle: "Web Development",
-    owner: "Alex Kim",
-    status: "Active",
-    statusColor: "green-lighten-4 text-green-darken-4",
-    progress: 75,
-    progressColor: "success",
+    user: "Sarah",
+    action: "approved leave",
+    time: "2m ago",
+    icon: "mdi-check-decagram",
+    color: "emerald",
   },
   {
-    name: "LMS Upgrade",
-    subtitle: "System Architecture",
-    owner: "Jordan Lee",
-    status: "Review",
-    statusColor: "orange-lighten-4 text-orange-darken-4",
-    progress: 40,
-    progressColor: "warning",
+    user: "Finance",
+    action: "processed scholarship",
+    time: "1h ago",
+    icon: "mdi-shield-check",
+    color: "indigo",
   },
   {
-    name: "Mobile App",
-    subtitle: "React Native",
-    owner: "Priya Patel",
-    status: "On Hold",
-    statusColor: "grey-lighten-3 text-grey-darken-3",
-    progress: 15,
-    progressColor: "grey-darken-1",
+    user: "System",
+    action: "attendance logs",
+    time: "4h ago",
+    icon: "mdi-robot-confused",
+    color: "primary",
   },
   {
-    name: "Analytics D.B",
-    subtitle: "Data Science",
-    owner: "Samir Rao",
-    status: "Active",
-    statusColor: "green-lighten-4 text-green-darken-4",
-    progress: 55,
-    progressColor: "success",
-  },
-  {
-    name: "Library System",
-    subtitle: "Backend API",
-    owner: "Chen Wei",
-    status: "Active",
-    statusColor: "green-lighten-4 text-green-darken-4",
-    progress: 90,
-    progressColor: "success",
+    user: "Security",
+    action: "access protocol",
+    time: "6h ago",
+    icon: "mdi-lock-reset",
+    color: "amber",
   },
 ];
 </script>
 
 <style scoped>
-/* Cream Theme Variables */
-.dashboard-container {
-  /* This simulates the background if layout allows, or just applies to this component's area */
-  --cream-bg: #fafaf5;
-  --cream-card: #ffffff;
-  --cream-border: #efebe0;
+/* Strict Font Size Enforcements */
+.text-title {
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #0f172a;
 }
 
-/* Bean Card - The core component of the cream UI */
-.bean-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0 !important;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+.text-title-small {
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  color: #0f172a;
 }
 
-.bean-card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 10px 15px -3px rgba(0, 0, 0, 0.05),
-    0 4px 6px -2px rgba(0, 0, 0, 0.025) !important;
-  border-color: rgba(var(--v-theme-primary), 0.3) !important;
+.text-detail {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #64748b;
 }
 
-/* Typography Tools */
-.tracking-wide {
-  letter-spacing: 0.05em;
-}
-
-/* Custom Colors */
-.bg-cream-light {
-  background-color: #fcfbf9;
-}
-.bg-cream-soft {
-  background-color: #f9f7f5;
-}
-.bg-primary-lighten-5 {
-  background-color: rgba(var(--v-theme-primary), 0.08) !important;
-}
-.border {
-  border: 1px solid #e2e8f0 !important;
-}
-.border-b {
-  border-bottom: 1px solid #e2e8f0 !important;
-}
-
-.bg-green-light {
-  background-color: #e8f5e9;
-}
-.bg-red-light {
-  background-color: #ffebee;
-}
-
-/* Toggle Button Styling */
-.cream-toggle {
-  background-color: #f8fafc !important;
-  border: 1px solid #e2e8f0;
-}
-
-:deep(.v-btn--active) {
-  background-color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-/* Table Enhancements */
-:deep(.projects-table tbody tr:hover) {
-  background-color: #f8fafc !important;
-}
-
-.status-chip {
+.text-detail-tiny {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: #94a3b8;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.shadow-sm {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03) !important;
+/* Core Layout */
+.dashboard-viewport {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.hover-scale:hover {
-  transform: scale(1.02);
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+/* Header & Buttons */
+.modern-action-btn {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  padding: 0 12px !important;
+}
+
+.modern-action-btn.primary {
+  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  color: white !important;
+}
+
+/* Metric Cards */
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+.metric-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trend-badge {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.trend-badge.up {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.trend-badge.down {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.metric-footer-line {
+  height: 3px;
+  width: 100%;
+  opacity: 0.15;
+}
+
+/* Intelligence Cards */
+.intelligence-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
+}
+
+/* Premium Table */
+.premium-table {
+  background: transparent !important;
+}
+
+.premium-table :deep(th) {
+  background: #f8fafc !important;
+  height: 44px !important;
+  border: none !important;
+}
+
+.premium-table :deep(td) {
+  border-bottom: 1px solid #f1f5f9 !important;
+  height: 56px !important;
 }
 
 .status-dot {
-  height: 8px;
-  width: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  display: inline-block;
+  margin-right: 8px;
 }
 
-/* Activity Timeline Line */
-.activity-timeline {
-  position: relative;
+/* Utility Cards & Sidebar */
+.utility-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
-.activity-timeline::before {
-  content: "";
-  position: absolute;
-  top: 15px;
-  bottom: 30px;
-  left: 21px; /* Align with avatar center (42px / 2 = 21px) */
-  width: 2px;
-  background-color: #e2e8f0;
-  z-index: 0;
+
+.utility-card.dark {
+  background: #0f172a !important;
+}
+
+/* Schedule Items */
+.schedule-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.date-shard {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.date-shard .day {
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  color: white;
+}
+.date-shard .month {
+  font-size: 8px;
+  font-weight: 800;
+  opacity: 0.6;
+  color: white;
+}
+
+.schedule-item .title {
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 2px;
+}
+.schedule-item .time {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+}
+
+/* Feed System */
+.feed-item {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+
+.feed-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 24px;
+}
+
+.feed-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.feed-line {
+  width: 1.5px;
+  background: #f1f5f9;
+  flex-grow: 1;
+  margin-top: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 </style>
