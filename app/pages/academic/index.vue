@@ -1,41 +1,33 @@
 <template>
   <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header Section -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
-    >
-      <div>
-        <div class="text-title mb-1">Academic Management</div>
-        <div class="text-detail">Manage academic years and terms</div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
+    <!-- Quick Actions Bar: Intelligence Style -->
+    <div class="d-flex justify-end mb-6 fade-in">
+      <div class="action-stack d-flex ga-2">
         <v-btn
-          variant="outlined"
-          color="grey-darken-1"
+          variant="flat"
+          color="white"
           class="modern-action-btn secondary border"
-          height="32"
-          prepend-icon="mdi-download"
+          height="36"
         >
-          {{ $t("export") }}
+          <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
+          Export
         </v-btn>
 
         <v-btn
+          variant="flat"
           color="primary"
           class="modern-action-btn primary elevation-4"
-          height="32"
-          prepend-icon="mdi-plus"
+          height="36"
           to="/academic/add"
         >
+          <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ $t("add") }}
         </v-btn>
       </div>
     </div>
 
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
+    <!-- Stats Matrix: Academic KPIs -->
+    <v-row class="mb-6 ga-y-4">
       <v-col
         cols="12"
         sm="6"
@@ -69,9 +61,9 @@
       </v-col>
     </v-row>
 
-    <!-- Main Content Card -->
+    <!-- Main Repository: Intelligence Area -->
     <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search and Filter Section -->
+      <!-- Search & Contextual Filters -->
       <div
         class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
@@ -106,7 +98,7 @@
         </div>
       </div>
 
-      <!-- Data Table -->
+      <!-- Data Intelligence Grid -->
       <v-data-table
         :headers="headers"
         :items="academics"
@@ -120,13 +112,14 @@
           </span>
         </template>
 
-        <!-- Academic Year Slot -->
+        <!-- Academic Year Descriptor Slot -->
         <template v-slot:item.title="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar
               color="blue-lighten-5"
               size="32"
               class="mr-3 elevation-1 border-white"
+              rounded="lg"
             >
               <v-icon
                 icon="mdi-calendar-range"
@@ -141,7 +134,7 @@
           </div>
         </template>
 
-        <!-- Dates Slot -->
+        <!-- Dates Specification Slot -->
         <template v-slot:item.startDate="{ item }">
           <div class="text-title-small">{{ formatDate(item.start_date) }}</div>
         </template>
@@ -150,7 +143,7 @@
           <div class="text-title-small">{{ formatDate(item.end_date) }}</div>
         </template>
 
-        <!-- Status Slot -->
+        <!-- Lifecycle Status Slot -->
         <template v-slot:item.status="{ item }">
           <v-chip
             :color="
@@ -168,20 +161,53 @@
           </v-chip>
         </template>
 
-        <!-- Action Slot -->
+        <!-- Intelligence Actions Slot -->
         <template v-slot:item.action="{ item }">
-          <v-btn
-            icon="mdi-pencil-outline"
-            size="x-small"
-            variant="text"
-            color="primary"
-          ></v-btn>
+          <div class="d-flex ga-1 justify-end">
+            <v-btn
+              icon="mdi-pencil-outline"
+              size="x-small"
+              variant="text"
+              color="primary"
+            ></v-btn>
+            <v-btn
+              icon="mdi-trash-can-outline"
+              size="x-small"
+              variant="text"
+              color="error"
+            ></v-btn>
+          </div>
         </template>
 
+        <!-- Navigation Architecture Slot -->
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Showing 1-{{ academics.length }} of {{ academics.length }} results
+              Displaying 1-{{ academics.length }} of
+              {{ academics.length }} academic records
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <v-btn
+                icon="mdi-chevron-left"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
+              <v-btn
+                color="primary"
+                size="x-small"
+                variant="flat"
+                class="font-weight-black rounded-md"
+                style="min-width: 24px; height: 24px"
+              >
+                1
+              </v-btn>
+              <v-btn
+                icon="mdi-chevron-right"
+                variant="text"
+                color="grey-darken-1"
+                size="x-small"
+              ></v-btn>
             </div>
           </div>
         </template>
@@ -276,19 +302,6 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-.modern-action-btn {
-  border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
-  color: white !important;
-}
-
 .metric-card {
   border-radius: 16px !important;
   background: white;
@@ -306,6 +319,14 @@ onMounted(() => {
   border-radius: 16px !important;
   background: white;
   border: 1px solid #f1f5f9;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.intelligence-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
 }
 
 .premium-table {
