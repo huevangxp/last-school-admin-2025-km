@@ -199,6 +199,7 @@
                   height="44"
                   type="submit"
                   :loading="loading"
+                  :disabled="!isFormValid"
                 >
                   <v-icon icon="mdi-check-circle" start size="20"></v-icon>
                   Save Configuration
@@ -222,7 +223,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 const { t } = useI18n();
 
 const loading = ref(false);
@@ -234,6 +235,15 @@ const form = ref({
   startDate: "",
   endDate: "",
   description: "",
+});
+
+const isFormValid = computed(() => {
+  return (
+    !!form.value.title &&
+    !!form.value.status &&
+    !!form.value.startDate &&
+    !!form.value.endDate
+  );
 });
 
 const showStartDatePicker = ref(false);
