@@ -2,7 +2,7 @@
   <v-container fluid class="pa-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
-    <!-- Header Section: School Intelligence -->
+    <!-- Header Section: School Intelligence Dash -->
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
     >
@@ -11,8 +11,7 @@
           {{ t("management") }} {{ t("reports") }}
         </div>
         <div class="text-detail">
-          Generate comprehensive analytics for students, faculty, and academic
-          performance.
+          Visualizing institutional data for strategic decision making.
         </div>
       </div>
 
@@ -23,8 +22,8 @@
           class="modern-action-btn secondary border"
           height="32"
         >
-          <v-icon icon="mdi-file-export-outline" start size="16"></v-icon>
-          {{ t("export") }}
+          <v-icon icon="mdi-printer-outline" start size="16"></v-icon>
+          Print Overview
         </v-btn>
 
         <v-btn
@@ -32,347 +31,327 @@
           color="primary"
           class="modern-action-btn primary elevation-4"
           height="32"
-          to="/reports/add"
         >
-          <v-icon icon="mdi-plus" start size="16"></v-icon>
-          Generate Report
+          <v-icon icon="mdi-refresh" start size="16"></v-icon>
+          Sync Intelligence
         </v-btn>
       </div>
     </div>
 
-    <!-- Analytics Dashboard: Academic & Faculty KPIs -->
-    <v-row class="mb-8 ga-y-4">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in reportStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
+    <!-- Analytics Matrix -->
+    <v-row class="ga-y-6">
+      <!-- 1. Student Enrollment Trend (Line) -->
+      <v-col cols="12" lg="8">
+        <v-card elevation="0" class="intelligence-card h-100 pa-6">
+          <div class="d-flex justify-space-between align-center mb-6">
             <div>
-              <p class="text-detail-tiny mb-1">{{ stat.label }}</p>
-              <h2 class="text-title">{{ stat.value }}</h2>
+              <div class="text-title mb-1">Student Enrollment Trend</div>
+              <div class="text-detail">Annual enrollment growth trajectory</div>
             </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              rounded="lg"
-              size="40"
-              class="metric-icon-box"
+            <v-chip
+              color="primary-lighten-5"
+              class="text-primary font-weight-black"
+              size="x-small"
+              variant="flat"
             >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
+              +12.5% GROWTH
+            </v-chip>
+          </div>
+          <div class="chart-wrapper" style="height: 300px">
+            <ClientOnly>
+              <Line :data="studentData" :options="lineOptions" />
+            </ClientOnly>
           </div>
         </v-card>
       </v-col>
-    </v-row>
 
-    <!-- Main Repository: Intelligence Area -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search & Contextual Filters -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          placeholder="Search by student, teacher or class..."
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-          rounded="lg"
-        ></v-text-field>
-
-        <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            :items="[
-              'All Reports',
-              'Student Analytics',
-              'Teacher Workload',
-              'Class Performance',
-              'Subject Audit',
-            ]"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 180px"
-            prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
-            color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-btn
-            variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border p-0"
-            height="32"
-            width="32"
-            min-width="32"
+      <!-- 2. Teacher Distribution (Doughnut) -->
+      <v-col cols="12" lg="4">
+        <v-card elevation="0" class="intelligence-card h-100 pa-6">
+          <div class="text-title mb-1">Faculty Composition</div>
+          <div class="text-detail mb-6">Teacher distribution by department</div>
+          <div
+            class="chart-wrapper d-flex flex-column align-center"
+            style="height: 250px"
           >
-            <v-icon icon="mdi-dots-horizontal" size="16"></v-icon>
-          </v-btn>
-        </div>
-      </div>
-
-      <!-- Data Intelligence Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="reports"
-        :search="search"
-        class="premium-table"
-        hover
-      >
-        <!-- Report Descriptor Slot -->
-        <template v-slot:item.name="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              :color="getReportColor(item.type)"
-              size="32"
-              class="mr-3 elevation-1 border-white"
-              rounded="lg"
+            <ClientOnly>
+              <Doughnut :data="teacherData" :options="doughnutOptions" />
+            </ClientOnly>
+          </div>
+          <div class="mt-4">
+            <div
+              v-for="(label, i) in teacherData.labels"
+              :key="i"
+              class="d-flex align-center justify-space-between mb-1"
             >
-              <v-icon color="white" size="16">{{
-                getReportIcon(item.type)
-              }}</v-icon>
+              <div class="d-flex align-center">
+                <div
+                  class="status-dot mr-2"
+                  :style="`background: ${teacherData.datasets[0].backgroundColor[i]}`"
+                ></div>
+                <span class="text-detail-tiny">{{ label }}</span>
+              </div>
+              <span class="text-title-small" style="font-size: 10px !important"
+                >{{ teacherData.datasets[0].data[i] }}%</span
+              >
+            </div>
+          </div>
+        </v-card>
+      </v-col>
+
+      <!-- 3. Class Performance (Bar) -->
+      <v-col cols="12" md="6" lg="6">
+        <v-card elevation="0" class="intelligence-card pa-6">
+          <div class="text-title mb-1">Class Proficiency Audit</div>
+          <div class="text-detail mb-6">
+            Average score distribution across grades
+          </div>
+          <div class="chart-wrapper" style="height: 250px">
+            <ClientOnly>
+              <Bar :data="classData" :options="barOptions" />
+            </ClientOnly>
+          </div>
+        </v-card>
+      </v-col>
+
+      <!-- 4. Subject Popularity (Horizontal Bar) -->
+      <v-col cols="12" md="6" lg="6">
+        <v-card elevation="0" class="intelligence-card pa-6">
+          <div class="text-title mb-1">Subject Engagement</div>
+          <div class="text-detail mb-6">
+            Student enrollment volume by subject
+          </div>
+          <div class="chart-wrapper" style="height: 250px">
+            <ClientOnly>
+              <Bar :data="subjectData" :options="horizontalBarOptions" />
+            </ClientOnly>
+          </div>
+        </v-card>
+      </v-col>
+
+      <!-- 5. Group Student / Ethnic Diversity (Polar Area) -->
+      <v-col cols="12">
+        <v-card elevation="0" class="intelligence-card pa-6">
+          <div class="d-flex align-center mb-6">
+            <v-avatar
+              color="orange-lighten-5"
+              rounded="lg"
+              size="40"
+              class="mr-4"
+            >
+              <v-icon color="orange-darken-2" size="20"
+                >mdi-account-group-outline</v-icon
+              >
             </v-avatar>
             <div>
-              <div class="text-title-small">{{ item.name }}</div>
-              <div class="text-detail-tiny">{{ item.type }}</div>
+              <div class="text-title mb-1">Demographic Diversity</div>
+              <div class="text-detail">
+                Ethnic group distribution across the institution
+              </div>
             </div>
           </div>
-        </template>
-
-        <!-- Generation Timestamp Slot -->
-        <template v-slot:item.date="{ item }">
-          <div class="text-title-small">{{ item.date }}</div>
-          <div class="text-detail-tiny text-grey">{{ item.time }}</div>
-        </template>
-
-        <!-- Payload Slot (Using logic for target audience) -->
-        <template v-slot:item.target="{ item }">
-          <div class="text-detail-tiny font-weight-black text-slate-700">
-            {{ item.target }}
-          </div>
-        </template>
-
-        <!-- Lifecycle Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="getStatusColor(item.status)"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status }}
-          </v-chip>
-        </template>
-
-        <!-- Intelligence Actions Slot -->
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex ga-1 justify-end">
-            <v-btn
-              icon="mdi-download"
-              variant="text"
-              color="primary"
-              size="x-small"
-              :disabled="item.status !== 'ສຳເລັດ'"
-            ></v-btn>
-            <v-btn
-              icon="mdi-eye-outline"
-              variant="text"
-              color="grey-darken-1"
-              size="x-small"
-            ></v-btn>
-            <v-btn
-              icon="mdi-trash-can-outline"
-              variant="text"
-              color="error"
-              size="x-small"
-            ></v-btn>
-          </div>
-        </template>
-
-        <!-- Navigation Architecture Slot -->
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              Displaying 1-{{ reports.length }} of 82 school analytics reports
-            </div>
-            <div class="d-flex gap-1 align-center">
-              <v-btn
-                icon="mdi-chevron-left"
-                variant="text"
-                color="grey-darken-1"
-                size="x-small"
-              ></v-btn>
-              <v-btn
-                color="primary"
-                size="x-small"
-                variant="flat"
-                class="font-weight-black rounded-md"
-                style="min-width: 24px; height: 24px"
-              >
-                1
-              </v-btn>
-              <v-btn
-                icon="mdi-chevron-right"
-                variant="text"
-                color="grey-darken-1"
-                size="x-small"
-              ></v-btn>
-            </div>
-          </div>
-        </template>
-      </v-data-table>
-    </v-card>
+          <v-row>
+            <v-col cols="12" md="4" class="d-flex align-center justify-center">
+              <div style="height: 250px; width: 100%">
+                <ClientOnly>
+                  <PolarArea :data="ethnicData" :options="polarOptions" />
+                </ClientOnly>
+              </div>
+            </v-col>
+            <v-col cols="12" md="8">
+              <div class="grid-stats pa-4 rounded-xl bg-grey-lighten-4 h-100">
+                <div class="text-detail-tiny mb-4">
+                  DETAILED ENROLLMENT BREAKDOWN
+                </div>
+                <v-row>
+                  <v-col
+                    cols="6"
+                    sm="4"
+                    lg="3"
+                    v-for="(val, i) in ethnicData.datasets[0].data"
+                    :key="i"
+                  >
+                    <div
+                      class="pa-3 bg-white rounded-lg border border-slate-100 shadow-sm"
+                    >
+                      <div
+                        class="text-detail-tiny"
+                        :style="`color: ${ethnicData.datasets[0].backgroundColor[i]}`"
+                      >
+                        {{ ethnicData.labels[i] }}
+                      </div>
+                      <div
+                        class="text-title"
+                        style="font-size: 16px !important"
+                      >
+                        {{ val }}
+                        <span
+                          class="text-detail"
+                          style="font-size: 10px !important"
+                          >STDS</span
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement,
+  BarElement,
+  ArcElement,
+  RadialLinearScale,
+  Filler,
+  PolarAreaController,
+} from "chart.js";
+import { Line, Doughnut, Bar, PolarArea } from "vue-chartjs";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement,
+  BarElement,
+  ArcElement,
+  RadialLinearScale,
+  Filler,
+  PolarAreaController,
+);
+
 const { t } = useI18n();
-const search = ref("");
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("reports"), disabled: true, to: "/reports" },
 ];
 
-const reportStats = [
-  {
-    label: "Active Students",
-    value: "3,250",
-    icon: "mdi-account-school",
-    color: "blue",
-  },
-  { label: "Total Faculty", value: "148", icon: "mdi-teach", color: "green" },
-  {
-    label: "Active Classes",
-    value: "84",
-    icon: "mdi-google-classroom",
-    color: "purple",
-  },
-  {
-    label: "Subject Count",
-    value: "32",
-    icon: "mdi-book-open-variant",
-    color: "orange",
-  },
-];
-
-const headers = [
-  {
-    title: "ANALYTICS DESCRIPTION",
-    key: "name",
-    align: "start" as const,
-    sortable: true,
-  },
-  {
-    title: "GENERATION TIMESTAMP",
-    key: "date",
-    align: "start" as const,
-    sortable: true,
-  },
-  {
-    title: "TARGET DOMAIN",
-    key: "target",
-    align: "start" as const,
-    sortable: true,
-  },
-  {
-    title: "LIFECYCLE",
-    key: "status",
-    align: "start" as const,
-    sortable: true,
-  },
-  { title: "", key: "actions", align: "end" as const, sortable: false },
-].map((h) => ({
-  ...h,
-  class: "text-detail-tiny pb-2",
-}));
-
-const reports = ref([
-  {
-    id: 1,
-    name: "Student Group Performance Audit",
-    type: "Student Analytics",
-    date: "04/03/2026",
-    time: "09:30",
-    target: "All Students",
-    status: "ສຳເລັດ",
-  },
-  {
-    id: 2,
-    name: "Teacher Monthly Workload Review",
-    type: "Faculty Insights",
-    date: "04/03/2026",
-    time: "14:00",
-    target: "Teachers Only",
-    status: "ສຳເລັດ",
-  },
-  {
-    id: 3,
-    name: "Class Utilization & Scheduling",
-    type: "Academic Ops",
-    date: "03/03/2026",
-    time: "11:15",
-    target: "Class Blocks",
-    status: "ກຳລັງປະມວນຜົນ",
-  },
-  {
-    id: 4,
-    name: "Subject Strength & Failure Rates",
-    type: "Curriculum Audit",
-    date: "02/03/2026",
-    time: "10:00",
-    target: "Subjects",
-    status: "ສຳເລັດ",
-  },
-  {
-    id: 5,
-    name: "Ethnic Group Demographic Pulse",
-    type: "Student Groups",
-    date: "02/03/2026",
-    time: "16:30",
-    target: "Minority Groups",
-    status: "ກຳລັງປະມວນຜົນ",
-  },
-]);
-
-const getReportColor = (type: string) => {
-  if (type.includes("Student")) return "primary";
-  if (type.includes("Faculty") || type.includes("Teacher")) return "success";
-  if (type.includes("Academic") || type.includes("Class")) return "purple";
-  if (type.includes("Curriculum") || type.includes("Subject")) return "orange";
-  return "blue";
+// 1. Student Enrollment Data
+const studentData = {
+  labels: ["2020", "2021", "2022", "2023", "2024", "2025"],
+  datasets: [
+    {
+      label: "Total Students",
+      borderColor: "#14b8a6",
+      backgroundColor: "rgba(20, 184, 166, 0.1)",
+      data: [2100, 2450, 2800, 3100, 3250, 3500],
+      fill: true,
+      tension: 0.4,
+    },
+  ],
 };
 
-const getReportIcon = (type: string) => {
-  if (type.includes("Student")) return "mdi-account-group-outline";
-  if (type.includes("Faculty") || type.includes("Teacher")) return "mdi-teach";
-  if (type.includes("Academic") || type.includes("Class"))
-    return "mdi-google-classroom";
-  if (type.includes("Curriculum") || type.includes("Subject"))
-    return "mdi-book-multiple-outline";
-  return "mdi-file-chart-outline";
+// 2. Teacher Distribution Data
+const teacherData = {
+  labels: ["Science", "Math", "Language", "Arts", "IT"],
+  datasets: [
+    {
+      data: [25, 30, 20, 15, 10],
+      backgroundColor: ["#14b8a6", "#448AFF", "#6366f1", "#f43f5e", "#f59e0b"],
+      borderWidth: 0,
+    },
+  ],
 };
 
-const getStatusColor = (status: string) => {
-  switch (status) {
-    case "ສຳເລັດ":
-      return "success";
-    case "ກຳລັງປະມວນຜົນ":
-      return "info";
-    default:
-      return "error";
-  }
+// 3. Class Performance Data
+const classData = {
+  labels: ["G-9", "G-10", "G-11", "G-12"],
+  datasets: [
+    {
+      label: "Avg Score",
+      backgroundColor: "#6366f1",
+      borderRadius: 6,
+      data: [78, 85, 82, 91],
+    },
+  ],
+};
+
+// 4. Subject Enrollment Data
+const subjectData = {
+  labels: ["Physics", "Calculus", "English", "History", "Biology"],
+  datasets: [
+    {
+      label: "Enrollment",
+      backgroundColor: "rgba(20, 184, 166, 0.8)",
+      borderRadius: 4,
+      data: [420, 380, 560, 310, 480],
+    },
+  ],
+};
+
+// 5. Ethnic Group Data
+const ethnicData = {
+  labels: ["Lao-Loum", "Hmong", "Khmu", "Yao", "Others"],
+  datasets: [
+    {
+      data: [1800, 650, 420, 220, 160],
+      backgroundColor: ["#14b8a6", "#6366f1", "#f59e0b", "#f43f5e", "#94a3b8"],
+    },
+  ],
+};
+
+// Chart Options
+const lineOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    y: { grid: { color: "#f1f5f9" }, ticks: { color: "#94a3b8" } },
+    x: { grid: { display: false }, ticks: { color: "#94a3b8" } },
+  },
+};
+
+const doughnutOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  cutout: "70%",
+  plugins: { legend: { display: false } },
+};
+
+const barOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    y: { min: 0, max: 100, ticks: { color: "#94a3b8" } },
+    x: { grid: { display: false }, ticks: { color: "#94a3b8" } },
+  },
+};
+
+const horizontalBarOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  indexAxis: "y" as const,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { color: "#f1f5f9" }, ticks: { color: "#94a3b8" } },
+    y: { grid: { display: false }, ticks: { color: "#94a3b8" } },
+  },
+};
+
+const polarOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: { r: { ticks: { display: false } } },
 };
 </script>
 
@@ -395,65 +374,34 @@ const getStatusColor = (status: string) => {
   color: white !important;
 }
 
-.metric-card {
-  border-radius: 16px !important;
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.metric-icon-box {
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .intelligence-card {
   border-radius: 16px !important;
   background: white;
   border: 1px solid #f1f5f9;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.premium-table {
-  background: transparent !important;
+.chart-wrapper {
+  width: 100%;
 }
 
-:deep(.v-data-table__th) {
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bg-grey-lighten-4 {
   background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
 }
 
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
-}
-
-.text-slate-700 {
-  color: #334155 !important;
-}
-
-.gap-3 {
-  gap: 12px;
-}
-.gap-2 {
-  gap: 8px;
-}
-.gap-1 {
-  gap: 4px;
+.border-slate-100 {
+  border-color: #f1f5f9 !important;
 }
 </style>
