@@ -1,43 +1,5 @@
 <template>
   <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header Section: School Intelligence Dash -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8"
-    >
-      <div>
-        <div class="text-title mb-1">
-          {{ t("management") }} {{ t("reports") }}
-        </div>
-        <div class="text-detail">
-          Visualizing institutional data for strategic decision making.
-        </div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
-        <v-btn
-          variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
-        >
-          <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
-          Export
-        </v-btn>
-
-        <v-btn
-          variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
-        >
-          <v-icon icon="mdi-plus" start size="18"></v-icon>
-          Action
-        </v-btn>
-      </div>
-    </div>
-
     <!-- Analytics Matrix -->
     <v-row class="ga-y-6">
       <!-- 1. Student Enrollment Trend (Line) -->
