@@ -6,11 +6,6 @@
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
-      <div>
-        <h1 class="text-title mb-1">Management Reports</h1>
-        <p class="text-detail">Generate and manage school reports.</p>
-      </div>
-
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
