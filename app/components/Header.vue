@@ -502,20 +502,21 @@ const logoutButton = () => {
   padding-left: 28px !important;
 }
 
-/* Active item: solid white pill with teal text */
+/* Active item: soft light-teal tint pill with white text */
 .active-item {
-  background: #ffffff !important;
-  color: #0d9488 !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
   position: relative;
-  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 
 .active-item :deep(.v-icon) {
-  color: #0d9488 !important;
+  color: #ffffff !important;
 }
 
 .active-item :deep(.v-list-item-title) {
-  color: #0d9488 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
 }
 
 /* Search Input */
