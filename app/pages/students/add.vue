@@ -315,19 +315,19 @@ const breadcrumbs = [
 ];
 
 const form = ref({
-  firstName: "",
-  lastName: "",
-  username: "",
-  password: "",
-  gender: null,
-  dob: "",
-  phone: "",
-  bloodGroup: null,
+  firstName: "ສົມສະໜຸກ",
+  lastName: "ວົງສາ",
+  username: "somsanuk" + Math.floor(Math.random() * 10000),
+  password: "12345678",
+  gender: "male",
+  dob: "2010-05-15",
+  phone: "+856 20 5555 1234",
+  bloodGroup: "O+",
   ethnicity: "",
-  height: "",
-  weight: "",
-  parentName: "",
-  parentPhone: "",
+  height: "165",
+  weight: "55",
+  parentName: "ທ້າວ ວົງສາ",
+  parentPhone: "+856 20 5555 5678",
   classId: null,
 });
 
