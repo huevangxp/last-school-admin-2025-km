@@ -92,7 +92,16 @@
           </div>
         </div>
 
-        <div class="org-scroll pt-2" @wheel="onWheel">
+        <div
+          ref="viewport"
+          class="org-viewport"
+          :class="{ grabbing: isPanning }"
+          @wheel="onWheel"
+          @mousedown="startPan"
+          @mousemove="onPan"
+          @mouseup="endPan"
+          @mouseleave="endPan"
+        >
           <div v-if="teachers.length" class="tree" :style="treeStyle">
             <ul class="org-tree-root">
               <OrgNode :node="orgRoot" />
@@ -102,6 +111,9 @@
           <div v-else class="text-detail py-10 text-center">
             No faculty members to display yet.
           </div>
+        </div>
+        <div class="text-detail-tiny text-grey mt-2 text-center">
+          ລາກເພື່ອເລື່ອນ · ໝູນເມົາສ໌ເພື່ອຊູມ · Drag to pan · scroll to zoom
         </div>
       </template>
     </v-card>
