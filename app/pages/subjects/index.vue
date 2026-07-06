@@ -359,32 +359,39 @@ const subjectStats = computed(() => [
   },
 ]);
 
-const headers = [
-  {
-    title: t("subject"),
-    key: "title",
-    align: "start" as const,
-    sortable: true,
-  },
-  { title: t("grade"), key: "grade", align: "start" as const, sortable: true },
-  {
-    title: "COEFFICIENT",
-    key: "coefficient",
-    align: "start" as const,
-    sortable: true,
-  },
-  {
-    title: t("status"),
-    key: "status",
-    align: "start" as const,
-    sortable: true,
-  },
-  { title: "", key: "actions", align: "end" as const, sortable: false },
-].map((h) => ({
-  ...h,
-  class: "text-detail-tiny pb-2",
-}));
+// ---- View mode + pagination ----
+const viewMode = ref<"all" | "grouped">("all");
+const itemsPerPage = ref(10);
+const itemsPerPageOptions = [
+  { value: 10, title: "10" },
+  { value: 25, title: "25" },
+  { value: 50, title: "50" },
+  { value: 100, title: "100" },
+  { value: -1, title: "ທັງໝົດ (All)" },
+];
 
+const withHeaderClass = (arr: any[]) =>
+  arr.map((h) => ({ ...h, class: "text-detail-tiny pb-2" }));
+
+const allHeaders = withHeaderClass([
+  { title: t("subject"), key: "title", align: "start" as const, sortable: true },
+  { title: t("grade"), key: "grade", align: "start" as const, sortable: true },
+  { title: "COEFFICIENT", key: "coefficient", align: "start" as const, sortable: true },
+  { title: t("status"), key: "status", align: "start" as const, sortable: true },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
+]);
+
+const groupedHeaders = withHeaderClass([
+  { title: t("subject"), key: "title", align: "start" as const, sortable: true },
+  { title: "ຫ້ອງຮຽນ / CLASSES", key: "classes", align: "start" as const, sortable: false },
+  { title: "COEFFICIENT", key: "coefficient", align: "start" as const, sortable: true },
+]);
+
+const displayHeaders = computed(() =>
+  viewMode.value === "grouped" ? groupedHeaders : allHeaders
+);
+
+// Flat rows: one per subject-grade record.
 const subjects = computed(() =>
   subjectStore.subjects.map((s) => ({
     uuid: s.id,
@@ -399,6 +406,42 @@ const subjects = computed(() =>
     coefficientRaw: s.coefficient,
     gradeId: s.grade_id,
   }))
+);
+
+// Order grades by their position in the grade-level list (ປ.1 … ມ.7).
+const gradeOrder = computed<Record<string, number>>(() => {
+  const map: Record<string, number> = {};
+  classroomStore.gradeLevels.forEach((g: any, i: number) => (map[g.id] = i));
+  return map;
+});
+
+// Grouped rows: one per subject title, listing every grade it covers.
+const groupedSubjects = computed(() => {
+  const map = new Map<string, any>();
+  for (const s of subjectStore.subjects) {
+    const key = s.subject_name;
+    if (!map.has(key)) {
+      map.set(key, {
+        title: s.subject_name,
+        id: s.subject_code,
+        coefficient: s.coefficient,
+        grades: [] as { id: string; name: string }[],
+      });
+    }
+    map.get(key).grades.push({ id: s.grade_id, name: gradeName(s.grade_id) });
+  }
+  const rows = Array.from(map.values());
+  rows.forEach((r) =>
+    r.grades.sort(
+      (a: any, b: any) =>
+        (gradeOrder.value[a.id] ?? 999) - (gradeOrder.value[b.id] ?? 999)
+    )
+  );
+  return rows;
+});
+
+const displayItems = computed(() =>
+  viewMode.value === "grouped" ? groupedSubjects.value : subjects.value
 );
 
 // ---- Edit / Delete ----
