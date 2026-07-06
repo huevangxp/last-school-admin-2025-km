@@ -19,9 +19,15 @@ export interface Student {
   class_name?: string;
   grade?: string;
   section?: string;
+  blood_group?: string;
+  height?: string;
+  weight?: string;
+  ethnicity?: string;
+  mass_org?: string;
   father_name?: string;
   mother_name?: string;
   parent_name?: string;
+  parent_number?: string;
   parent_phone?: string;
   status?: string;
   [key: string]: unknown;
