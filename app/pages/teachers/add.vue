@@ -1,80 +1,74 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
+  <v-container fluid class="dashboard-container pa-6">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
 
     <v-form ref="formRef" @submit.prevent="save">
-      <v-row>
-        <!-- Left: Basic Info & Image -->
-        <v-col cols="12" lg="4">
-          <v-card class="intelligence-card pa-6 mb-6 text-center" elevation="0">
-            <div class="mb-6">
-              <h2 class="text-title mb-1">Teacher Identity</h2>
-              <p class="text-detail">Official faculty profile photograph</p>
-            </div>
+      <!-- Identity + Account -->
+      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
+        <div class="d-flex align-center mb-6">
+          <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-icon color="primary" size="20">mdi-account-tie-outline</v-icon>
+          </v-avatar>
+          <div>
+            <h2 class="text-title">{{ t("information") }}</h2>
+            <p class="text-detail">Teacher identity & login</p>
+          </div>
+        </div>
 
-            <div class="d-flex flex-column align-center position-relative">
-              <v-avatar
-                size="160"
-                color="slate-50"
-                class="border-dashed rounded-xl overflow-hidden"
-              >
-                <v-img v-if="previewImage" :src="previewImage" cover></v-img>
-                <v-icon v-else size="48" color="slate-300"
-                  >mdi-camera-plus-outline</v-icon
-                >
-              </v-avatar>
+        <v-row class="ga-y-2">
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("firstname") }} *</label
+            >
+            <v-text-field
+              v-model="form.firstName"
+              placeholder="e.g. ສົມໃຈ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("lastname") }} *</label
+            >
+            <v-text-field
+              v-model="form.lastName"
+              placeholder="e.g. ພົມມະ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
 
-              <v-btn
-                icon="mdi-pencil"
-                size="x-small"
-                color="primary"
-                class="position-absolute elevation-4"
-                style="bottom: 0px; right: 50%; transform: translateX(80px)"
-                @click="triggerFileInput"
-              ></v-btn>
-
-              <p class="text-detail-tiny mt-6 opacity-60">
-                Recomended: 400x400px
-              </p>
-              <input
-                type="file"
-                ref="fileInput"
-                class="d-none"
-                accept="image/*"
-                @change="handleFileChange"
-              />
-            </div>
-          </v-card>
-
-          <v-card class="intelligence-card pa-6" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="amber-lighten-5"
-                size="36"
-                class="mr-3 rounded-lg"
-              >
-                <v-icon color="amber-darken-2" size="18"
-                  >mdi-lock-outline</v-icon
-                >
-              </v-avatar>
-              <div>
-                <h3 class="text-title">Account Credentials</h3>
-                <p class="text-detail-tiny">Login username & password</p>
-              </div>
-            </div>
-
-            <label class="text-detail-tiny mb-2 d-block">USERNAME *</label>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("username") }} *</label
+            >
             <v-text-field
               v-model="form.username"
               placeholder="Login username"
               variant="outlined"
               density="compact"
               rounded="lg"
-              class="premium-input mb-4"
-              hide-details
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
-
-            <label class="text-detail-tiny mb-2 d-block">PASSWORD *</label>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("password") }} *</label
+            >
             <v-text-field
               v-model="form.password"
               type="password"
@@ -82,236 +76,102 @@
               variant="outlined"
               density="compact"
               rounded="lg"
-              class="premium-input mb-4"
-              hide-details
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
+          </v-col>
 
-            <label class="text-detail-tiny mb-2 d-block">DATE OF BIRTH *</label>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("gender") }} *</label
+            >
+            <v-select
+              v-model="form.gender"
+              :items="genderOptions"
+              placeholder="Select"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block">{{ t("dob") }} *</label>
             <v-text-field
               v-model="form.dob"
               type="date"
               variant="outlined"
               density="compact"
               rounded="lg"
+              hide-details="auto"
               class="premium-input"
-              hide-details
-            ></v-text-field>
-          </v-card>
-        </v-col>
-
-        <!-- Right: Comprehensive Data -->
-        <v-col cols="12" lg="8">
-          <!-- Section: Personal -->
-          <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="primary-lighten-5"
-                size="36"
-                class="mr-3 rounded-lg"
-              >
-                <v-icon color="primary" size="18"
-                  >mdi-account-details-outline</v-icon
-                >
-              </v-avatar>
-              <h2 class="text-title">Personal Information</h2>
-            </div>
-
-            <v-row class="ga-y-2">
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">FIRST NAME</label>
-                <v-text-field
-                  v-model="form.firstName"
-                  placeholder="Enter first name"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">LAST NAME</label>
-                <v-text-field
-                  v-model="form.lastName"
-                  placeholder="Enter last name"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">GENDER</label>
-                <v-select
-                  v-model="form.gender"
-                  :items="genderOptions"
-                  placeholder="Select gender"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-select>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >EXPERIENCE (YEARS)</label
-                >
-                <v-text-field
-                  v-model="form.experience"
-                  type="number"
-                  placeholder="e.g. 5"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card>
-
-          <!-- Section: Connectivity -->
-          <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="indigo-lighten-5"
-                size="36"
-                class="mr-3 rounded-lg"
-              >
-                <v-icon color="indigo-darken-1" size="18"
-                  >mdi-card-account-phone-outline</v-icon
-                >
-              </v-avatar>
-              <h2 class="text-title">Connectivity & Location</h2>
-            </div>
-
-            <v-row class="ga-y-2">
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >PHONE NUMBER</label
-                >
-                <v-text-field
-                  v-model="form.phone"
-                  placeholder="+856 20 ..."
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >EMAIL ADDRESS</label
-                >
-                <v-text-field
-                  v-model="form.email"
-                  placeholder="teacher@example.com"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >PRIMARY ADDRESS</label
-                >
-                <v-text-field
-                  v-model="form.address"
-                  placeholder="Full residential address"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card>
-
-          <!-- Section: Emergency -->
-          <v-card class="intelligence-card pa-6 mb-8" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="rose-lighten-5"
-                size="36"
-                class="mr-3 rounded-lg"
-              >
-                <v-icon color="rose-darken-1" size="18"
-                  >mdi-alert-circle-outline</v-icon
-                >
-              </v-avatar>
-              <h2 class="text-title">Safety & Emergency</h2>
-            </div>
-
-            <v-row class="ga-y-2">
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >CONTACT NAME</label
-                >
-                <v-text-field
-                  v-model="form.emergencyName"
-                  placeholder="Name"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block"
-                  >EMERGENCY PHONE</label
-                >
-                <v-text-field
-                  v-model="form.emergencyPhone"
-                  placeholder="Phone"
-                  variant="outlined"
-                  density="compact"
-                  rounded="lg"
-                  class="premium-input"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card>
-
-          <v-alert
-            v-if="errorMessage"
-            type="error"
-            variant="tonal"
-            density="compact"
-            class="mb-4"
-            >{{ errorMessage }}</v-alert
-          >
-
-          <div class="d-flex justify-end ga-3">
-            <v-btn
-              variant="flat"
-              color="grey-lighten-4"
-              class="modern-action-btn secondary border text-slate-700"
-              height="40"
-              @click="$router.back()"
-            >
-              {{ t("cancel") }}
-            </v-btn>
-            <v-btn
-              variant="flat"
               color="primary"
-              class="modern-action-btn primary elevation-4"
-              height="40"
-              type="submit"
-              :loading="loading"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block">{{ t("phone") }}</label>
+            <v-text-field
+              v-model="form.phone"
+              placeholder="+856 20 ..."
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("role") }} *</label
             >
-              {{ t("save") }}
-            </v-btn>
-          </div>
-        </v-col>
-      </v-row>
+            <v-select
+              v-model="form.role"
+              :items="roleOptions"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-select>
+          </v-col>
+
+          <v-col cols="12" v-if="errorMessage">
+            <v-alert type="error" variant="tonal" density="compact">{{
+              errorMessage
+            }}</v-alert>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <div class="d-flex justify-end ga-3">
+        <v-btn
+          variant="flat"
+          color="grey-lighten-4"
+          class="modern-action-btn secondary border text-slate-700"
+          height="42"
+          @click="$router.back()"
+        >
+          {{ t("cancel") }}
+        </v-btn>
+        <v-btn
+          variant="flat"
+          color="primary"
+          class="modern-action-btn primary elevation-4"
+          height="42"
+          type="submit"
+          :loading="loading"
+        >
+          {{ t("save") }}
+        </v-btn>
+      </div>
     </v-form>
   </v-container>
 </template>
@@ -324,9 +184,9 @@ import { useTeacherStore } from "~/stores/apiTeacher";
 const { t } = useI18n();
 const router = useRouter();
 const teacherStore = useTeacherStore();
-
 const loading = ref(false);
 const errorMessage = ref("");
+const formRef = ref();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
@@ -342,15 +202,7 @@ const form = ref({
   gender: null,
   dob: "",
   phone: "",
-  email: "",
-  address: "",
-  subject: null,
-  qualification: "",
-  experience: "",
-  joinDate: new Date().toISOString().substring(0, 10),
-  emergencyName: "",
-  emergencyRelation: "",
-  emergencyPhone: "",
+  role: "teacher",
 });
 
 const genderOptions = [
@@ -358,63 +210,32 @@ const genderOptions = [
   { title: "Female", value: "female" },
 ];
 
-const subjectOptions = [
-  { title: "Mathematics", value: "math" },
-  { title: "Physics", value: "physics" },
-  { title: "Chemistry", value: "chemistry" },
-  { title: "Biology", value: "biology" },
-  { title: "English", value: "english" },
-  { title: "History", value: "history" },
-  { title: "Geography", value: "geography" },
-  { title: "Computer Science", value: "cs" },
+const roleOptions = [
+  { title: "Teacher", value: "teacher" },
+  { title: "Admin", value: "admin" },
 ];
 
-const fileInput = ref<HTMLInputElement | null>(null);
-const previewImage = ref<string | null>(null);
-
-const triggerFileInput = () => {
-  fileInput.value?.click();
-};
-
-const handleFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    const file = target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.value = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
+const rules = {
+  required: (v: any) => !!v || t("required"),
 };
 
 const save = async () => {
   errorMessage.value = "";
-  const fullName = `${form.value.firstName} ${form.value.lastName}`.trim();
+  const { valid } = await formRef.value.validate();
+  if (!valid) return;
 
-  // Required by backend: full_name, gender, dob, password, username
-  if (
-    !fullName ||
-    !form.value.username ||
-    !form.value.password ||
-    !form.value.gender ||
-    !form.value.dob
-  ) {
-    errorMessage.value =
-      "Please fill Name, Username, Password, Gender and Date of Birth.";
-    return;
-  }
-
+  const f = form.value;
   loading.value = true;
   try {
     await teacherStore.createTeacher({
-      full_name: fullName,
-      username: form.value.username,
-      password: form.value.password,
-      gender: form.value.gender,
-      dob: form.value.dob,
-      phone_number: form.value.phone,
-      avatar: previewImage.value || "https://picsum.photos/200",
+      full_name: `${f.firstName} ${f.lastName}`.trim(),
+      username: f.username,
+      password: f.password,
+      gender: f.gender,
+      dob: f.dob,
+      phone_number: f.phone,
+      role: f.role,
+      avatar: "https://picsum.photos/200",
       status: "active",
     });
     router.push("/teachers");
@@ -430,7 +251,7 @@ const save = async () => {
 
 <style scoped>
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -445,7 +266,7 @@ const save = async () => {
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 13px !important;
-  padding: 0 16px !important;
+  padding: 0 20px !important;
 }
 
 .modern-action-btn.primary {
@@ -464,14 +285,6 @@ const save = async () => {
 .premium-input :deep(.v-field--focused .v-field__outline__notch) {
   border-color: rgb(var(--v-theme-primary)) !important;
   border-width: 1.5px !important;
-}
-
-.border-dashed {
-  border: 2px dashed #e2e8f0 !important;
-}
-
-.bg-slate-50 {
-  background-color: #f8fafc !important;
 }
 
 .text-slate-700 {
