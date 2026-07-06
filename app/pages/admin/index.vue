@@ -187,18 +187,14 @@
               variant="text"
               size="x-small"
               color="primary"
-            ></v-btn>
-            <v-btn
-              icon="mdi-shield-key-outline"
-              variant="text"
-              size="x-small"
-              color="warning"
+              @click="openEdit(item)"
             ></v-btn>
             <v-btn
               icon="mdi-trash-can-outline"
               variant="text"
               size="x-small"
               color="error"
+              @click="removeAdmin(item)"
             ></v-btn>
           </div>
         </template>
