@@ -160,7 +160,7 @@
               clearable
             ></v-combobox>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">{{
               t("department")
             }}</label>
@@ -177,7 +177,22 @@
               clearable
             ></v-combobox>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block">LAYER</label>
+            <v-select
+              v-model="form.layer"
+              :items="layerOptions"
+              placeholder="ເລືອກຊັ້ນ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              clearable
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">{{
               t("reports_to")
             }}</label>
@@ -201,20 +216,22 @@
               <v-icon color="teal-darken-1" size="18"
                 >mdi-file-tree-outline</v-icon
               >
-              <span class="text-detail-tiny">ຕຳແໜ່ງນີ້ຈະຢູ່ໃນ</span>
+              <span class="text-detail-tiny">ຊັ້ນຂອງຕຳແໜ່ງນີ້:</span>
               <v-chip
+                v-if="form.layer"
                 color="teal"
                 variant="flat"
                 size="small"
                 class="font-weight-black"
               >
-                Layer {{ newTeacherLayer }}
+                Layer {{ form.layer }}
               </v-chip>
-              <span v-if="form.managerId" class="text-detail-tiny">
-                — ຂຶ້ນກັບຄົນຢູ່ Layer {{ newTeacherLayer - 1 }}
-              </span>
-              <span v-else class="text-detail-tiny">
-                — ລະດັບສູງສຸດ (ບໍ່ຂຶ້ນກັບໃຜ)
+              <span v-else class="text-detail-tiny">ຍັງບໍ່ໄດ້ເລືອກ</span>
+              <span
+                v-if="form.managerId && suggestedLayer"
+                class="text-detail-tiny"
+              >
+                — ແນະນຳ Layer {{ suggestedLayer }} (ຕາມຫົວໜ້າທີ່ເລືອກ)
               </span>
             </div>
           </v-col>
