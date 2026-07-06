@@ -15,6 +15,13 @@
         }}</span>
       </v-avatar>
 
+      <div
+        v-if="!node.isRoot && node.layer"
+        class="org-layer-badge"
+      >
+        Layer {{ node.layer }}
+      </div>
+
       <div class="org-node-name">{{ node.name }}</div>
       <div class="org-node-role">{{ node.title }}</div>
 
