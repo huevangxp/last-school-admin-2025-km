@@ -421,4 +421,10 @@ const save = async () => {
 .text-slate-700 {
   color: #334155 !important;
 }
+
+.layer-hint {
+  background: #f0fdfa;
+  border: 1px dashed #99f6e4;
+  border-radius: 12px;
+}
 </style>
