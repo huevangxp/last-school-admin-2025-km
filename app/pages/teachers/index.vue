@@ -355,14 +355,67 @@
           hide-details
           class="mb-3"
         ></v-text-field>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("role") }}</label>
+            <v-select
+              v-model="editForm.role"
+              :items="['teacher', 'admin']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+            <v-select
+              v-model="editForm.status"
+              :items="['active', 'inactive']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <v-row class="mt-1">
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">POSITION</label>
+            <v-text-field
+              v-model="editForm.position"
+              placeholder="e.g. Head of Science"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">DEPARTMENT</label>
+            <v-text-field
+              v-model="editForm.department"
+              placeholder="e.g. Science"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <label class="text-detail-tiny mb-1 mt-3 d-block">REPORTS TO</label>
         <v-select
-          v-model="editForm.status"
-          :items="['active', 'inactive']"
+          v-model="editForm.manager_id"
+          :items="managerOptions.filter((m) => m.value !== editForm.uuid)"
+          placeholder="Select manager (optional)"
           variant="outlined"
           density="compact"
           rounded="lg"
           hide-details
+          clearable
+          no-data-text="No other faculty yet"
         ></v-select>
 
         <v-alert
