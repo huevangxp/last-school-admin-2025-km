@@ -355,40 +355,50 @@
 
         <v-row class="mt-1">
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">POSITION</label>
-            <v-text-field
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("position")
+            }}</label>
+            <v-combobox
               v-model="editForm.position"
-              placeholder="e.g. Head of Science"
+              :items="positionOptions"
+              placeholder="ເລືອກ ຫຼື ພິມ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details
-            ></v-text-field>
+              clearable
+            ></v-combobox>
           </v-col>
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">DEPARTMENT</label>
-            <v-text-field
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("department")
+            }}</label>
+            <v-combobox
               v-model="editForm.department"
-              placeholder="e.g. Science"
+              :items="departmentOptions"
+              placeholder="ເລືອກ ຫຼື ພິມ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details
-            ></v-text-field>
+              clearable
+            ></v-combobox>
           </v-col>
         </v-row>
 
-        <label class="text-detail-tiny mb-1 mt-3 d-block">REPORTS TO</label>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{
+          t("reports_to")
+        }}</label>
         <v-select
           v-model="editForm.manager_id"
           :items="managerOptions.filter((m) => m.value !== editForm.uuid)"
-          placeholder="Select manager (optional)"
+          placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
           variant="outlined"
           density="compact"
           rounded="lg"
           hide-details
           clearable
-          no-data-text="No other faculty yet"
+          no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
         ></v-select>
 
         <v-alert
