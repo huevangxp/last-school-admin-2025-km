@@ -119,6 +119,7 @@ const orgRoot = computed(() => {
         (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
       department: tc.department,
       status: tc.status,
+      explicitLayer: tc.layer, // admin-assigned Layer 1–5 (may be null)
       children: [],
     };
   });
