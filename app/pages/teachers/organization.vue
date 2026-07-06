@@ -268,4 +268,20 @@ const orgRoot = computed(() => {
   margin: 0;
   list-style: none;
 }
+
+/* Zoom control bar */
+.zoom-bar {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 2px 4px;
+  background: #f8fafc;
+}
+
+.zoom-label {
+  min-width: 44px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  color: #0d9488;
+}
 </style>
