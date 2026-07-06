@@ -342,6 +342,8 @@ const rules = {
 
 // Real classrooms for the optional class dropdown.
 const classOptions = ref<{ title: string; value: string }[]>([]);
+// Ethnic groups for the ethnicity dropdown.
+const ethnicityOptions = ref<string[]>([]);
 
 onMounted(async () => {
   const { $axios } = useNuxtApp();
@@ -354,6 +356,14 @@ onMounted(async () => {
     }));
   } catch (error) {
     console.error("Failed to load classrooms:", error);
+  }
+
+  try {
+    const res = await $axios.get("/ethnic-group?limit=100");
+    const groups = res.data?.data ?? [];
+    ethnicityOptions.value = groups.map((g: any) => g.title);
+  } catch (error) {
+    console.error("Failed to load ethnic groups:", error);
   }
 });
 
