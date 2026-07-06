@@ -220,7 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
@@ -230,6 +230,25 @@ const teacherStore = useTeacherStore();
 const loading = ref(false);
 const errorMessage = ref("");
 const formRef = ref();
+
+// Existing faculty for the "reports to" manager dropdown.
+const managerOptions = ref<{ title: string; value: string }[]>([]);
+
+onMounted(async () => {
+  const { $axios } = useNuxtApp();
+  try {
+    const res = await $axios.get("/get-all-teachers?limit=100&page=1");
+    const list = res.data?.data?.teachers ?? [];
+    managerOptions.value = list.map((tc: any) => ({
+      title: `${tc.full_name || tc.username}${
+        tc.position ? " — " + tc.position : ""
+      }`,
+      value: tc.id,
+    }));
+  } catch (error) {
+    console.error("Failed to load teachers:", error);
+  }
+});
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
