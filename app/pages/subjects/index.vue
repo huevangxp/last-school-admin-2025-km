@@ -112,10 +112,12 @@
 
       <!-- Data Table -->
       <v-data-table
-        :headers="headers"
-        :items="subjects"
+        :headers="displayHeaders"
+        :items="displayItems"
         :search="search"
         :loading="subjectStore.loading"
+        v-model:items-per-page="itemsPerPage"
+        :items-per-page-options="itemsPerPageOptions"
         class="premium-table"
         hover
       >
