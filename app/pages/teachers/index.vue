@@ -607,6 +607,9 @@ const editForm = ref({
   phone_number: "",
   role: "teacher",
   status: "active",
+  position: "",
+  department: "",
+  manager_id: null as string | null,
 });
 
 const openEdit = (item: any) => {
@@ -619,6 +622,9 @@ const openEdit = (item: any) => {
     phone_number: item.phone || "",
     role: item.role || "teacher",
     status: item.statusRaw || "active",
+    position: item.position || "",
+    department: item.department || "",
+    manager_id: item.managerId || null,
   };
   editDialog.value = true;
 };
