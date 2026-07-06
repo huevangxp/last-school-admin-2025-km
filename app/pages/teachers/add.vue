@@ -233,6 +233,7 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { positionOptions, departmentOptions } from "~/utils/orgPresets";
 
 const { t } = useI18n();
 const router = useRouter();
