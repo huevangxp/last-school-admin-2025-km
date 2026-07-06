@@ -49,23 +49,44 @@
             ></v-text-field>
           </v-col>
 
-          <!-- Grade Level -->
+          <!-- Grade Levels (multi-select) -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">GRADE LEVEL *</label>
+            <div class="d-flex align-center justify-space-between mb-2">
+              <label class="text-detail-tiny d-block">GRADE LEVELS *</label>
+              <div class="d-flex ga-2">
+                <button
+                  type="button"
+                  class="link-btn"
+                  @click="selectAllGrades"
+                >
+                  ເລືອກທັງໝົດ
+                </button>
+                <span class="text-grey-lighten-1">·</span>
+                <button type="button" class="link-btn" @click="clearGrades">
+                  ລ້າງ
+                </button>
+              </div>
+            </div>
             <v-select
-              v-model="form.gradeId"
+              v-model="form.gradeIds"
               :items="classroomStore.gradeLevels"
               item-title="grade_level_name"
               item-value="id"
-              placeholder="Select grade level"
+              multiple
+              chips
+              closable-chips
+              placeholder="ເລືອກຊັ້ນຮຽນທີ່ຕ້ອງມີວິຊານີ້ (ມ.1 - ມ.7)"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
-              :rules="[rules.required]"
+              :rules="[rules.requiredMany]"
             ></v-select>
+            <div class="text-detail-tiny text-grey mt-1">
+              ວິຊານີ້ຈະຖືກສ້າງໃຫ້ແຕ່ລະຊັ້ນທີ່ເລືອກ. ຊັ້ນທີ່ບໍ່ຕ້ອງການ ບໍ່ຕ້ອງເລືອກ.
+            </div>
           </v-col>
 
           <!-- Coefficient -->
