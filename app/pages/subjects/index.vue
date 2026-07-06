@@ -154,6 +154,23 @@
           <div class="text-title-small">{{ item.grade }}</div>
         </template>
 
+        <!-- Classes Slot (grouped view: all grades this subject covers) -->
+        <template v-slot:item.classes="{ item }">
+          <div class="d-flex flex-wrap ga-1 py-2">
+            <v-chip
+              v-for="g in item.grades"
+              :key="g.id"
+              size="x-small"
+              color="teal-lighten-5"
+              class="text-teal-darken-2 font-weight-bold"
+              variant="flat"
+            >
+              {{ g.name }}
+            </v-chip>
+            <span v-if="!item.grades?.length" class="text-detail-tiny">—</span>
+          </div>
+        </template>
+
         <!-- Coefficient Slot -->
         <template v-slot:item.coefficient="{ item }">
           <v-chip
