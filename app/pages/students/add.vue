@@ -364,15 +364,27 @@ const rules = {
   required: (v: any) => !!v || t("required"),
 };
 
-// Real classrooms for the optional class dropdown.
+// Grade levels (ຊັ້ນຮຽນ) — chosen first to filter classrooms.
+const gradeLevelOptions = ref<{ title: string; value: string }[]>([]);
+const selectedGradeLevel = ref<string | null>(null);
+// Classrooms (ຫ້ອງຮຽນ) — loaded after a grade level is picked.
 const classOptions = ref<{ title: string; value: string }[]>([]);
+const loadingClassrooms = ref(false);
 // Ethnic groups for the ethnicity dropdown.
 const ethnicityOptions = ref<string[]>([]);
 
-onMounted(async () => {
+// When the grade level changes, reset the classroom and load its rooms.
+const onGradeLevelChange = async () => {
+  form.value.classId = null;
+  classOptions.value = [];
+  if (!selectedGradeLevel.value) return;
+
   const { $axios } = useNuxtApp();
+  loadingClassrooms.value = true;
   try {
-    const res = await $axios.get("/get-all-classrooms?limit=100");
+    const res = await $axios.get("/get-all-classrooms", {
+      params: { grade_level_id: selectedGradeLevel.value, limit: 100 },
+    });
     const rooms = res.data?.data?.classrooms ?? [];
     classOptions.value = rooms.map((c: any) => ({
       title: c.classroom_name || c.classroom_code || c.id,
@@ -380,6 +392,22 @@ onMounted(async () => {
     }));
   } catch (error) {
     console.error("Failed to load classrooms:", error);
+  } finally {
+    loadingClassrooms.value = false;
+  }
+};
+
+onMounted(async () => {
+  const { $axios } = useNuxtApp();
+  try {
+    const res = await $axios.get("/get-all-grade-level");
+    const grades = res.data?.data ?? [];
+    gradeLevelOptions.value = grades.map((g: any) => ({
+      title: g.grade_level_name || g.grade_level_code || g.id,
+      value: g.id,
+    }));
+  } catch (error) {
+    console.error("Failed to load grade levels:", error);
   }
 
   try {
