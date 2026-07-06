@@ -270,7 +270,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
 import {
@@ -367,6 +367,16 @@ const roleOptions = [
 const rules = {
   required: (v: any) => !!v || t("required"),
 };
+
+// When a manager is chosen, auto-fill the layer if the admin hasn't set one.
+watch(
+  () => form.value.managerId,
+  () => {
+    if (!form.value.layer && suggestedLayer.value) {
+      form.value.layer = suggestedLayer.value;
+    }
+  }
+);
 
 const save = async () => {
   errorMessage.value = "";
