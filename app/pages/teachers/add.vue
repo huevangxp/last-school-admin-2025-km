@@ -265,6 +265,9 @@ const form = ref({
   dob: "",
   phone: "",
   role: "teacher",
+  position: "",
+  department: "",
+  managerId: null as string | null,
 });
 
 const genderOptions = [
