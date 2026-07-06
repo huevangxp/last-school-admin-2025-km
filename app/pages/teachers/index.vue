@@ -490,6 +490,9 @@ const teachers = computed(() =>
     phone: tc.phone_number,
     status: capitalize(tc.status),
     statusRaw: tc.status,
+    position: tc.position || "",
+    department: tc.department || "",
+    managerId: tc.manager_id || null,
   }))
 );
 
