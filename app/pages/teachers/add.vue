@@ -300,6 +300,9 @@ const save = async () => {
       dob: f.dob,
       phone_number: f.phone,
       role: f.role,
+      position: f.position || null,
+      department: f.department || null,
+      manager_id: f.managerId || null,
       avatar: "https://picsum.photos/200",
       status: "active",
     });
