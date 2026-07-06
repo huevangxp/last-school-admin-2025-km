@@ -23,11 +23,11 @@
           </div>
           <div class="brand-text">
             <div
-              class="text-subtitle-1 font-weight-black text-slate-900 tracking-tight line-height-1"
+              class="text-subtitle-1 font-weight-black text-white tracking-tight line-height-1"
             >
               {{ t("schoolmanagement") }}
             </div>
-            <div class="text-caption text-primary font-weight-bold">
+            <div class="text-caption brand-subtitle font-weight-bold">
               {{ t("management") }}
             </div>
           </div>
