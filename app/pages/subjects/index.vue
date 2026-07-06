@@ -88,33 +88,25 @@
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            :items="[
-              'All Grades',
-              'Grade 9',
-              'Grade 10',
-              'Grade 11',
-              'Grade 12',
-            ]"
-            variant="outlined"
+          <v-btn-toggle
+            v-model="viewMode"
+            mandatory
             density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 130px"
-            prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
             color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-btn
             variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border"
-            height="32"
-            width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
+            divided
+            rounded="lg"
+            class="view-toggle"
+          >
+            <v-btn value="all" size="small" class="text-none">
+              <v-icon start size="16">mdi-format-list-bulleted</v-icon>
+              ທັງໝົດ
+            </v-btn>
+            <v-btn value="grouped" size="small" class="text-none">
+              <v-icon start size="16">mdi-book-multiple-outline</v-icon>
+              ຕາມວິຊາ
+            </v-btn>
+          </v-btn-toggle>
         </div>
       </div>
 
