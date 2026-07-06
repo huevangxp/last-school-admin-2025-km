@@ -385,7 +385,7 @@ const barOptions: any = {
   maintainAspectRatio: false,
   plugins: { legend: { display: false } },
   scales: {
-    y: { min: 0, max: 100, ticks: { color: "#94a3b8" } },
+    y: { beginAtZero: true, ticks: { color: "#94a3b8", precision: 0 } },
     x: { grid: { display: false }, ticks: { color: "#94a3b8" } },
   },
 };
