@@ -166,12 +166,20 @@ onMounted(() => {
 const form = ref({
   name: "",
   code: "",
-  gradeId: null,
+  gradeIds: [] as string[],
   coefficient: "",
 });
 
 const rules = {
   required: (v: any) => !!v || t("required"),
+  requiredMany: (v: any) => (Array.isArray(v) && v.length > 0) || t("required"),
+};
+
+const selectAllGrades = () => {
+  form.value.gradeIds = classroomStore.gradeLevels.map((g: any) => g.id);
+};
+const clearGrades = () => {
+  form.value.gradeIds = [];
 };
 
 const save = async () => {
@@ -181,15 +189,22 @@ const save = async () => {
 
   loading.value = true;
   try {
-    await subjectStore.createSubject({
-      // subject_id is required by the backend but not auto-generated there.
+    const res = await subjectStore.createSubject({
+      // Base id/code — the backend suffixes them per grade to stay unique.
       subject_id: `SUBJ-${form.value.code}`,
       subject_name: form.value.name,
       subject_code: form.value.code,
       coefficient: Number(form.value.coefficient),
-      grade_id: form.value.gradeId,
+      grade_ids: form.value.gradeIds,
       subject_status: "active",
     });
+    // Warn if some grades were skipped because the title already existed.
+    const skipped = res?.data?.skipped?.length ?? 0;
+    if (skipped > 0) {
+      alert(
+        `ສ້າງສຳເລັດ ${res.data.created.length} ຊັ້ນ. ຂ້າມ ${skipped} ຊັ້ນ (ມີວິຊານີ້ຢູ່ແລ້ວ).`
+      );
+    }
     router.push("/subjects");
   } catch (error: any) {
     console.error(error);
