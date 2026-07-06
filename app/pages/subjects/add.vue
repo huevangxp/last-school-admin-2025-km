@@ -19,22 +19,23 @@
         <v-row class="ga-y-2">
           <!-- Subject Name -->
           <v-col cols="12" md="8">
-            <label class="text-detail-tiny mb-2 d-block">COURSE TITLE</label>
+            <label class="text-detail-tiny mb-2 d-block">SUBJECT NAME *</label>
             <v-text-field
-              v-model="form.title"
-              placeholder="e.g. Advanced Calculus"
+              v-model="form.name"
+              placeholder="e.g. ຄະນິດສາດ"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
           <!-- Subject Code -->
           <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">REGISTRY CODE</label>
+            <label class="text-detail-tiny mb-2 d-block">SUBJECT CODE *</label>
             <v-text-field
               v-model="form.code"
               placeholder="MATH-101"
@@ -44,64 +45,50 @@
               class="premium-input uppercase-text"
               color="primary"
               hide-details="auto"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
-          <!-- Category -->
+          <!-- Grade Level -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block"
-              >DEPARTMENT / CATEGORY</label
-            >
+            <label class="text-detail-tiny mb-2 d-block">GRADE LEVEL *</label>
             <v-select
-              v-model="form.category"
-              :items="[
-                'Science',
-                'Mathematics',
-                'Linguistics',
-                'Arts',
-                'Physical Ed',
-              ]"
+              v-model="form.gradeId"
+              :items="classroomStore.gradeLevels"
+              item-title="grade_level_name"
+              item-value="id"
+              placeholder="Select grade level"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
+              :rules="[rules.required]"
             ></v-select>
           </v-col>
 
-          <!-- Credits -->
+          <!-- Coefficient -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">CREDIT WEIGHT</label>
+            <label class="text-detail-tiny mb-2 d-block">COEFFICIENT *</label>
             <v-text-field
-              v-model="form.credits"
+              v-model="form.coefficient"
               type="number"
-              placeholder="e.g. 3"
+              placeholder="e.g. 2"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
-          <!-- Description -->
-          <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block"
-              >CURRICULUM OVERVIEW</label
-            >
-            <v-textarea
-              v-model="form.description"
-              placeholder="Enter course objectives and syllabus summary..."
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              class="premium-input"
-              color="primary"
-              rows="3"
-              hide-details="auto"
-            ></v-textarea>
+          <v-col cols="12" v-if="errorMessage">
+            <v-alert type="error" variant="tonal" density="compact">{{
+              errorMessage
+            }}</v-alert>
           </v-col>
         </v-row>
 
@@ -113,7 +100,7 @@
             height="40"
             @click="$router.push('/subjects')"
           >
-            Cancel
+            {{ t("cancel") }}
           </v-btn>
           <v-btn
             variant="flat"
@@ -121,8 +108,9 @@
             class="modern-action-btn primary elevation-4"
             height="40"
             type="submit"
+            :loading="loading"
           >
-            Register Subject
+            {{ t("save") }}
           </v-btn>
         </div>
       </v-form>
@@ -131,28 +119,64 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useSubjectStore } from "~/stores/apiSubject";
+import { useClassroomStore } from "~/stores/apiClassroom";
+
 const { t } = useI18n();
 const router = useRouter();
+const subjectStore = useSubjectStore();
+const classroomStore = useClassroomStore();
+const formRef = ref();
+const loading = ref(false);
+const errorMessage = ref("");
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("subjects"), disabled: false, to: "/subjects" },
-  { title: "Add Subject", disabled: true, to: "" },
+  { title: t("add"), disabled: true, to: "" },
 ];
 
-const form = ref({
-  title: "",
-  code: "",
-  category: "Mathematics",
-  credits: "",
-  description: "",
+onMounted(() => {
+  classroomStore.fetchGradeLevels();
 });
 
-const save = () => {
-  console.log("Saving subject record:", form.value);
-  router.push("/subjects");
+const form = ref({
+  name: "",
+  code: "",
+  gradeId: null,
+  coefficient: "",
+});
+
+const rules = {
+  required: (v: any) => !!v || t("required"),
+};
+
+const save = async () => {
+  errorMessage.value = "";
+  const { valid } = await formRef.value.validate();
+  if (!valid) return;
+
+  loading.value = true;
+  try {
+    await subjectStore.createSubject({
+      // subject_id is required by the backend but not auto-generated there.
+      subject_id: `SUBJ-${form.value.code}`,
+      subject_name: form.value.name,
+      subject_code: form.value.code,
+      coefficient: Number(form.value.coefficient),
+      grade_id: form.value.gradeId,
+      subject_status: "active",
+    });
+    router.push("/subjects");
+  } catch (error: any) {
+    console.error(error);
+    errorMessage.value =
+      error.response?.data?.message || "Failed to create subject.";
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 

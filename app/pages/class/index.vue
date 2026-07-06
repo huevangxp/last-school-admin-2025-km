@@ -122,9 +122,13 @@
         :headers="headers"
         :items="classes"
         :search="search"
+        :loading="classroomStore.loading"
         class="premium-table"
         hover
       >
+        <template v-slot:no-data>
+          <div class="text-detail py-8 text-center">No classrooms yet.</div>
+        </template>
         <!-- Class Name Slot -->
         <template v-slot:item.title="{ item }">
           <div class="d-flex align-center py-2">
@@ -149,9 +153,7 @@
         <!-- Grade Slot -->
         <template v-slot:item.grade="{ item }">
           <div class="text-title-small">{{ item.grade }}</div>
-          <div class="text-detail-tiny text-grey">
-            {{ item.students }} Students
-          </div>
+          <div class="text-detail-tiny text-grey">{{ item.year }}</div>
         </template>
 
         <!-- Teacher Slot -->
@@ -181,6 +183,26 @@
           </v-chip>
         </template>
 
+        <!-- Actions Slot -->
+        <template v-slot:item.actions="{ item }">
+          <div class="d-flex justify-end ga-1">
+            <v-btn
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="x-small"
+              color="primary"
+              @click="openEdit(item)"
+            ></v-btn>
+            <v-btn
+              icon="mdi-delete-outline"
+              variant="text"
+              size="x-small"
+              color="error"
+              @click="removeClassroom(item)"
+            ></v-btn>
+          </div>
+        </template>
+
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
@@ -190,46 +212,149 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit Classroom Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("classes") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+        <v-text-field
+          v-model="editForm.classroom_name"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">ROOM NO.</label>
+            <v-text-field
+              v-model="editForm.room_number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block"
+              >MAX STUDENTS (≤40)</label
+            >
+            <v-text-field
+              v-model="editForm.max_student"
+              type="number"
+              max="40"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">HOMEROOM TEACHER</label>
+        <v-select
+          v-model="editForm.homeroom_teacher_id"
+          :items="teacherStore.teachers"
+          item-title="full_name"
+          item-value="id"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-select>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <v-select
+          v-model="editForm.classroom_status"
+          :items="['active', 'inactive']"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useClassroomStore } from "~/stores/apiClassroom";
+import { useTeacherStore } from "~/stores/apiTeacher";
+
 const { t } = useI18n();
 
 const search = ref("");
+const classroomStore = useClassroomStore();
+const teacherStore = useTeacherStore();
+
+onMounted(() => {
+  classroomStore.fetchClassrooms(100);
+});
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("classes"), disabled: true, to: "/class" },
 ];
 
-const classStats = [
-  {
-    label: "Total Classes",
-    value: "24",
-    icon: "mdi-google-classroom",
-    color: "blue",
-  },
-  {
-    label: "Active Sections",
-    value: "22",
-    icon: "mdi-check-circle",
-    color: "green",
-  },
-  {
-    label: "Total Capacity",
-    value: "720",
-    icon: "mdi-account-group",
-    color: "purple",
-  },
-  {
-    label: "Avg Class Size",
-    value: "30",
-    icon: "mdi-account-multiple",
-    color: "orange",
-  },
-];
+const classStats = computed(() => {
+  const rooms = classroomStore.classrooms;
+  const capacity = rooms.reduce(
+    (sum, c) => sum + (Number(c.max_student) || 0),
+    0
+  );
+  return [
+    {
+      label: "Total Classes",
+      value: String(classroomStore.total),
+      icon: "mdi-google-classroom",
+      color: "blue",
+    },
+    {
+      label: "Active Sections",
+      value: String(
+        rooms.filter((c) => c.classroom_status === "active").length
+      ),
+      icon: "mdi-check-circle",
+      color: "green",
+    },
+    {
+      label: "Total Capacity",
+      value: String(capacity),
+      icon: "mdi-account-group",
+      color: "purple",
+    },
+    {
+      label: "Grade Levels",
+      value: String(new Set(rooms.map((c) => c.grade_level_id)).size),
+      icon: "mdi-account-multiple",
+      color: "orange",
+    },
+  ];
+});
 
 const headers = [
   {
@@ -251,58 +376,86 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
   class: "text-detail-tiny pb-2",
 }));
 
-const classes = ref([
-  {
-    classId: "#CLS-101",
-    title: "Mathematics 101",
-    grade: "Grade 10",
-    students: 30,
-    teacher: "Sarah Wilson",
-    teacherEmail: "s.wilson@school.com",
-    status: "Active",
-  },
-  {
-    classId: "#CLS-102",
-    title: "Physics Advanced",
-    grade: "Grade 11",
-    students: 28,
-    teacher: "James Miller",
-    teacherEmail: "j.miller@school.com",
-    status: "Active",
-  },
-  {
-    classId: "#CLS-103",
-    title: "English Literature",
-    grade: "Grade 10",
-    students: 32,
-    teacher: "Emily Davis",
-    teacherEmail: "e.davis@school.com",
-    status: "Active",
-  },
-  {
-    classId: "#CLS-104",
-    title: "History & Geography",
-    grade: "Grade 9",
-    students: 25,
-    teacher: "Robert Brown",
-    teacherEmail: "r.brown@school.com",
-    status: "Active",
-  },
-  {
-    classId: "#CLS-105",
-    title: "Computer Science",
-    grade: "Grade 12",
-    students: 35,
-    teacher: "Michael Chen",
-    teacherEmail: "m.chen@school.com",
-    status: "Active",
-  },
-]);
+const classes = computed(() =>
+  classroomStore.classrooms.map((c) => ({
+    uuid: c.id,
+    classId: c.classroom_code,
+    title: c.classroom_name,
+    roomNumber: c.room_number,
+    maxStudent: c.max_student,
+    homeroomTeacherId: c.homeroom_teacher_id,
+    statusRaw: c.classroom_status,
+    grade: c.gradeLevel?.grade_level_name || "—",
+    year: c.academicYear?.title || "—",
+    teacher: c.homeroomTeacher?.full_name || "Unassigned",
+    teacherEmail: c.homeroomTeacher?.username || "",
+    status: c.classroom_status === "active" ? "Active" : "Inactive",
+  }))
+);
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  uuid: "",
+  classroom_name: "",
+  room_number: "",
+  max_student: "",
+  homeroom_teacher_id: "",
+  classroom_status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  teacherStore.fetchTeachers(100, 1);
+  editForm.value = {
+    uuid: item.uuid,
+    classroom_name: item.title || "",
+    room_number: item.roomNumber || "",
+    max_student: item.maxStudent != null ? String(item.maxStudent) : "",
+    homeroom_teacher_id: item.homeroomTeacherId || "",
+    classroom_status: item.statusRaw || "active",
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await classroomStore.updateClassroom(editForm.value.uuid, {
+      classroom_name: editForm.value.classroom_name,
+      room_number: editForm.value.room_number,
+      max_student: editForm.value.max_student
+        ? Number(editForm.value.max_student)
+        : null,
+      homeroom_teacher_id: editForm.value.homeroom_teacher_id || null,
+      classroom_status: editForm.value.classroom_status,
+    });
+    editDialog.value = false;
+    await classroomStore.fetchClassrooms(100);
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeClassroom = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await classroomStore.deleteClassroom(item.uuid);
+    await classroomStore.fetchClassrooms(100);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>

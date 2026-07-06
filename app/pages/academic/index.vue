@@ -169,12 +169,14 @@
               size="x-small"
               variant="text"
               color="primary"
+              @click="openEdit(item)"
             ></v-btn>
             <v-btn
               icon="mdi-trash-can-outline"
               size="x-small"
               variant="text"
               color="error"
+              @click="removeAcademic(item)"
             ></v-btn>
           </div>
         </template>
@@ -213,6 +215,92 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit Academic Year Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("academic") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
+        <v-text-field
+          v-model="editForm.title"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("start_date")
+            }}</label>
+            <v-text-field
+              v-model="editForm.startDate"
+              type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("end_date")
+            }}</label>
+            <v-text-field
+              v-model="editForm.endDate"
+              type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{
+          t("description")
+        }}</label>
+        <v-text-field
+          v-model="editForm.description"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <v-select
+          v-model="editForm.status"
+          :items="['active', 'inactive']"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -231,6 +319,61 @@ const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("academic"), disabled: true, to: "/academic" },
 ];
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  id: "",
+  title: "",
+  startDate: "",
+  endDate: "",
+  description: "",
+  status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  editForm.value = {
+    id: item.id,
+    title: item.title || "",
+    startDate: item.start_date ? String(item.start_date).substring(0, 10) : "",
+    endDate: item.end_date ? String(item.end_date).substring(0, 10) : "",
+    description: item.description || "",
+    status: item.status || "active",
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await academicStore.updateAcademic(editForm.value.id, {
+      title: editForm.value.title,
+      startDate: editForm.value.startDate,
+      endDate: editForm.value.endDate,
+      description: editForm.value.description || "-",
+      status: editForm.value.status,
+    });
+    editDialog.value = false;
+    await fetchAcademics();
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeAcademic = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await academicStore.deleteAcademic(item.id);
+    await fetchAcademics();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const academicStats = [
   {

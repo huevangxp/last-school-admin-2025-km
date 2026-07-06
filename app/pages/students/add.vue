@@ -153,14 +153,14 @@
             <v-select
               v-model="form.classId"
               :items="classOptions"
-              placeholder="Select Grade"
+              placeholder="Select Class"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
-              :rules="[rules.required]"
+              no-data-text="No classrooms yet"
             ></v-select>
           </v-col>
           <v-col cols="12" md="4">
@@ -182,6 +182,108 @@
             <v-text-field
               v-model="form.admissionDate"
               type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <!-- Section: Account & Health -->
+      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
+        <div class="d-flex align-center mb-6">
+          <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-icon color="purple-darken-1" size="20"
+              >mdi-shield-account-outline</v-icon
+            >
+          </v-avatar>
+          <div>
+            <h2 class="text-title">Account & Health</h2>
+            <p class="text-detail">Login credentials and health record</p>
+          </div>
+        </div>
+
+        <v-row class="ga-y-2">
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">USERNAME *</label>
+            <v-text-field
+              v-model="form.username"
+              placeholder="Login username"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">PASSWORD *</label>
+            <v-text-field
+              v-model="form.password"
+              type="password"
+              placeholder="••••••••"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">BLOOD GROUP *</label>
+            <v-select
+              v-model="form.bloodGroup"
+              :items="['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']"
+              placeholder="Select"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">ETHNICITY *</label>
+            <v-text-field
+              v-model="form.ethnicity"
+              placeholder="e.g. Lao"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">HEIGHT (cm) *</label>
+            <v-text-field
+              v-model="form.height"
+              type="number"
+              placeholder="e.g. 165"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">WEIGHT (kg) *</label>
+            <v-text-field
+              v-model="form.weight"
+              type="number"
+              placeholder="e.g. 55"
               variant="outlined"
               density="compact"
               rounded="lg"
@@ -255,6 +357,12 @@
             ></v-text-field>
           </v-col>
 
+          <v-col cols="12" v-if="errorMessage" class="pt-4">
+            <v-alert type="error" variant="tonal" density="compact">{{
+              errorMessage
+            }}</v-alert>
+          </v-col>
+
           <v-col cols="12" class="d-flex justify-end ga-3 pt-6">
             <v-btn
               variant="flat"
@@ -283,11 +391,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useStudentStore } from "~/stores/apiStudent";
+
 const { t } = useI18n();
 const router = useRouter();
+const studentStore = useStudentStore();
 const loading = ref(false);
+const errorMessage = ref("");
 const formRef = ref();
 
 const breadcrumbs = [
@@ -299,11 +411,17 @@ const breadcrumbs = [
 const form = ref({
   firstName: "",
   lastName: "",
+  username: "",
+  password: "",
   gender: null,
   dob: "",
   phone: "",
   email: "",
   address: "",
+  bloodGroup: null,
+  ethnicity: "",
+  height: "",
+  weight: "",
   fatherName: "",
   motherName: "",
   parentPhone: "",
@@ -317,28 +435,80 @@ const genderOptions = [
   { title: "Female", value: "female" },
 ];
 
-const classOptions = [
-  { title: "Class 1/A", value: 1 },
-  { title: "Class 1/B", value: 2 },
-  { title: "Class 2/A", value: 3 },
-  { title: "Class 2/B", value: 4 },
-];
+// Real classrooms loaded from the backend (empty until classrooms are created).
+const classOptions = ref<{ title: string; value: string }[]>([]);
+
+onMounted(async () => {
+  const { $axios } = useNuxtApp();
+  try {
+    const res = await $axios.get("/get-all-classrooms?limit=100");
+    const rooms = res.data?.data?.classrooms ?? [];
+    classOptions.value = rooms.map((c: any) => ({
+      title: c.classroom_name || c.classroom_code || c.id,
+      value: c.id,
+    }));
+  } catch (error) {
+    console.error("Failed to load classrooms:", error);
+  }
+});
 
 const rules = {
   required: (v: any) => !!v || "Field is required",
 };
 
 const save = async () => {
+  errorMessage.value = "";
   const { valid } = await formRef.value.validate();
   if (!valid) return;
 
+  const f = form.value;
+  // All fields below are required by the backend.
+  if (
+    !f.firstName ||
+    !f.lastName ||
+    !f.username ||
+    !f.password ||
+    !f.gender ||
+    !f.dob ||
+    !f.phone ||
+    !f.bloodGroup ||
+    !f.ethnicity ||
+    !f.height ||
+    !f.weight ||
+    !f.fatherName ||
+    !f.parentPhone
+  ) {
+    errorMessage.value =
+      "Please fill all required (*) fields, including phone, blood group, ethnicity, height, weight and guardian info.";
+    return;
+  }
+
   loading.value = true;
   try {
-    console.log("Form submitted:", form.value);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await studentStore.createStudent({
+      username: f.username,
+      password: f.password,
+      role: "student",
+      avatar: "https://picsum.photos/200",
+      gender: f.gender,
+      status: "active",
+      phone_number: f.phone,
+      dob: f.dob,
+      blood_group: f.bloodGroup,
+      height: Number(f.height),
+      weight: Number(f.weight),
+      ethnicity: f.ethnicity,
+      first_name: f.firstName,
+      last_name: f.lastName,
+      parent_name: f.fatherName || f.motherName,
+      parent_number: f.parentPhone,
+      class_id: f.classId || null,
+    });
     router.push("/students");
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
+    errorMessage.value =
+      error.response?.data?.message || "Failed to create student.";
   } finally {
     loading.value = false;
   }

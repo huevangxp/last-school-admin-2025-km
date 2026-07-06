@@ -126,14 +126,27 @@
         </div>
       </div>
 
+      <v-alert
+        v-if="studentStore.error"
+        type="error"
+        variant="tonal"
+        density="compact"
+        class="mb-4"
+        >{{ studentStore.error }}</v-alert
+      >
+
       <!-- Data Intelligence Grid -->
       <v-data-table
         :headers="headers"
         :items="students"
         :search="search"
+        :loading="studentStore.loading"
         class="premium-table"
         hover
       >
+        <template v-slot:no-data>
+          <div class="text-detail py-8 text-center">No students found.</div>
+        </template>
         <!-- Student Identity Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
@@ -142,10 +155,7 @@
               class="mr-3 elevation-1 border-white"
               rounded="lg"
             >
-              <v-img
-                :src="`https://i.pravatar.cc/150?img=${item.studentId.replace('#', '')}`"
-                cover
-              ></v-img>
+              <v-img :src="item.avatar" cover></v-img>
             </v-avatar>
             <div>
               <div class="text-title-small">{{ item.name }}</div>
@@ -203,18 +213,14 @@
               variant="text"
               size="x-small"
               color="primary"
-            ></v-btn>
-            <v-btn
-              icon="mdi-clipboard-text-outline"
-              variant="text"
-              size="x-small"
-              color="info"
+              @click="openEdit(item)"
             ></v-btn>
             <v-btn
               icon="mdi-trash-can-outline"
               variant="text"
               size="x-small"
               color="error"
+              @click="removeStudent(item)"
             ></v-btn>
           </div>
         </template>
@@ -223,7 +229,8 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Displaying 1 to {{ students.length }} of 3,450 academic records
+              Displaying 1 to {{ students.length }} of
+              {{ studentStore.total }} academic records
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn
@@ -261,46 +268,148 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit Student Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("students") }}</div>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("firstname")
+            }}</label>
+            <v-text-field
+              v-model="editForm.first_name"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("lastname")
+            }}</label>
+            <v-text-field
+              v-model="editForm.last_name"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="mt-1">
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("gender") }}</label>
+            <v-select
+              v-model="editForm.gender"
+              :items="['male', 'female']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("phone") }}</label>
+            <v-text-field
+              v-model="editForm.phone_number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("status") }}</label>
+        <v-select
+          v-model="editForm.status"
+          :items="['active', 'inactive']"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useStudentStore } from "~/stores/apiStudent";
+
 const { t } = useI18n();
 
 const search = ref("");
+
+const studentStore = useStudentStore();
+
+onMounted(() => {
+  studentStore.fetchStudents();
+});
+
+const capitalize = (s?: string) =>
+  s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("students"), disabled: true, to: "/students" },
 ];
 
-const studentStats = [
+const studentStats = computed(() => [
   {
     label: "total students",
-    value: "3,450",
+    value: String(studentStore.total),
     icon: "mdi-account-group",
     color: "blue",
   },
   {
     label: "active enrollment",
-    value: "3,200",
+    value: String(studentStore.activeCount),
     icon: "mdi-check-circle",
     color: "green",
   },
   {
-    label: "new enrollments",
-    value: "150",
+    label: "inactive",
+    value: String(
+      studentStore.students.filter(
+        (s) => s.status && s.status.toLowerCase() !== "active"
+      ).length
+    ),
     icon: "mdi-account-plus",
     color: "purple",
   },
   {
-    label: "pending capture",
-    value: "45",
+    label: "loaded",
+    value: String(studentStore.students.length),
     icon: "mdi-clock-time-four-outline",
     color: "orange",
   },
-];
+]);
 
 const headers = [
   {
@@ -339,58 +448,36 @@ const headers = [
   class: "text-detail-tiny pb-2",
 }));
 
-const students = ref([
-  {
-    studentId: "#202301",
-    name: "Liam Johnson",
-    email: "liam.j@school.com",
-    grade: "Grade 10",
-    class: "Class 10-A",
-    parentContact: "+1 (555) 123-4567",
-    parentName: "Sarah Johnson",
-    status: "Active",
-  },
-  {
-    studentId: "#202302",
-    name: "Emma Smith",
-    email: "emma.s@school.com",
-    grade: "Grade 11",
-    class: "Class 11-B",
-    parentContact: "+1 (555) 987-6543",
-    parentName: "John Smith",
-    status: "Active",
-  },
-  {
-    studentId: "#202303",
-    name: "Noah Williams",
-    email: "noah.w@school.com",
-    grade: "Grade 9",
-    class: "Class 9-C",
-    parentContact: "+1 (555) 234-5678",
-    parentName: "Mary Williams",
-    status: "Active",
-  },
-  {
-    studentId: "#202304",
-    name: "Olivia Scott",
-    email: "olivia.s@school.com",
-    grade: "Grade 12",
-    class: "Class 12-A",
-    parentContact: "+1 (555) 456-7890",
-    parentName: "David Scott",
-    status: "Inactive",
-  },
-  {
-    studentId: "#202305",
-    name: "Ava Davis",
-    email: "ava.d@school.com",
-    grade: "Grade 10",
-    class: "Class 10-C",
-    parentContact: "+1 (555) 789-0123",
-    parentName: "Robert Davis",
-    status: "Active",
-  },
-]);
+// Map live API students into the shape this table expects. Field names are
+// resolved defensively because the backend list is currently empty.
+const students = computed(() =>
+  studentStore.students.map((s) => {
+    const fullName =
+      s.full_name ||
+      [s.first_name || s.firstName, s.last_name || s.lastName]
+        .filter(Boolean)
+        .join(" ") ||
+      "—";
+    const id = s.student_id || s.studentId || s.id || "";
+    return {
+      uuid: s.id,
+      studentId: id,
+      avatar: `https://i.pravatar.cc/150?u=${encodeURIComponent(String(id))}`,
+      name: fullName,
+      firstName: s.first_name || s.firstName || "",
+      lastName: s.last_name || s.lastName || "",
+      genderRaw: s.gender || "male",
+      email: s.email || "",
+      grade: s.grade || s.class_name || "—",
+      class: s.class_name || s.section || "",
+      parentContact: s.parent_phone || s.phone_number || s.phone || "",
+      phoneRaw: s.phone_number || s.phone || "",
+      parentName: s.parent_name || s.father_name || s.mother_name || "",
+      status: capitalize(s.status) || "Active",
+      statusRaw: s.status || "active",
+    };
+  })
+);
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
@@ -402,6 +489,61 @@ const getStatusColor = (status: string) => {
       return "grey";
     default:
       return "grey";
+  }
+};
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  uuid: "",
+  first_name: "",
+  last_name: "",
+  gender: "male",
+  phone_number: "",
+  status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  editForm.value = {
+    uuid: item.uuid,
+    first_name: item.firstName,
+    last_name: item.lastName,
+    gender: item.genderRaw,
+    phone_number: item.phoneRaw,
+    status: item.statusRaw,
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await studentStore.updateStudent(editForm.value.uuid, {
+      first_name: editForm.value.first_name,
+      last_name: editForm.value.last_name,
+      gender: editForm.value.gender,
+      phone_number: editForm.value.phone_number,
+      status: editForm.value.status,
+    });
+    editDialog.value = false;
+    await studentStore.fetchStudents();
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeStudent = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await studentStore.deleteStudent(item.uuid);
+    await studentStore.fetchStudents();
+  } catch (error) {
+    console.error(error);
   }
 };
 </script>

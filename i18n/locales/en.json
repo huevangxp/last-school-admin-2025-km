@@ -83,5 +83,19 @@
     "logout_message":"Are you sure you want to logout?",
     "ethnic_group": "Ethnic Group",
     "ethnic_groups": "Ethnic Groups",
-    "name": "Name"
+    "name": "Name",
+    "admin": "Administrators",
+    "enroll": "Enroll",
+    "addClass": "Add Class",
+    "addStudent": "Add Student",
+    "admin_name": "Administrator Name",
+    "role": "Role",
+    "subjects": "Subjects",
+    "are_you_sure_delete": "Are you sure you want to delete?",
+    "promotion": "Promotion",
+    "promote": "Promote",
+    "from": "From",
+    "type": "Type",
+    "overview": "Overview",
+    "homeroom_teacher": "Homeroom Teacher"
 }

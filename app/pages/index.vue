@@ -273,117 +273,139 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
 import DashboardChart from "~/components/DashboardChart.vue";
 const { t } = useI18n();
 
 const chartPeriod = ref("monthly");
 
-const stats = [
+const { $axios } = useNuxtApp();
+
+const studentCount = ref(0);
+const teacherCount = ref(0);
+const classCount = ref(0);
+const subjectCount = ref(0);
+const recentStudents = ref<any[]>([]);
+const academicYears = ref<any[]>([]);
+const recentClasses = ref<any[]>([]);
+
+const MONTHS = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
+
+onMounted(async () => {
+  try {
+    const [sRes, tRes, cRes, subRes, yRes] = await Promise.all([
+      $axios.get("/get-all-students"),
+      $axios.get("/get-all-teachers?limit=100"),
+      $axios.get("/get-all-classrooms?limit=100"),
+      $axios.get("/get-all-subjects?limit=100"),
+      $axios.get("/get-all-academic-year"),
+    ]);
+
+    const students = Array.isArray(sRes.data?.data)
+      ? sRes.data.data
+      : (sRes.data?.data?.students ?? []);
+    studentCount.value = students.length;
+    recentStudents.value = students.slice(0, 5);
+
+    teacherCount.value = tRes.data?.data?.pagination?.total ?? 0;
+
+    const classes = cRes.data?.data?.classrooms ?? [];
+    classCount.value = cRes.data?.data?.pagination?.total ?? classes.length;
+    recentClasses.value = classes.slice(0, 4);
+
+    subjectCount.value = subRes.data?.data?.pagination?.total ?? 0;
+
+    academicYears.value = yRes.data?.data ?? [];
+  } catch (error) {
+    console.error("dashboard load error:", error);
+  }
+});
+
+const stats = computed(() => [
   {
-    title: "Student Growth",
-    value: "+154",
+    title: t("students"),
+    value: String(studentCount.value),
     trendUp: true,
-    trendValue: "14.2%",
-    icon: "mdi-account-multiple-plus",
+    trendValue: "LIVE",
+    icon: "mdi-account-multiple",
     iconColor: "primary",
   },
   {
-    title: "Efficiency IQ",
-    value: "84.5%",
+    title: t("teachers"),
+    value: String(teacherCount.value),
     trendUp: true,
-    trendValue: "3.1%",
-    icon: "mdi-brain",
+    trendValue: "LIVE",
+    icon: "mdi-account-tie",
     iconColor: "indigo",
   },
   {
-    title: "Capacity",
-    value: "92%",
-    trendUp: false,
-    trendValue: "-1.2%",
-    icon: "mdi-office-building-marker",
+    title: t("classes"),
+    value: String(classCount.value),
+    trendUp: true,
+    trendValue: "LIVE",
+    icon: "mdi-google-classroom",
     iconColor: "amber-darken-2",
   },
   {
-    title: "Revenue",
-    value: "$428,500",
+    title: t("subject"),
+    value: String(subjectCount.value),
     trendUp: true,
-    trendValue: "18.5%",
-    icon: "mdi-bank-transfer",
+    trendValue: "LIVE",
+    icon: "mdi-book-open-variant",
     iconColor: "emerald-darken-1",
   },
-];
+]);
 
-const flaggedStudents = [
-  {
-    id: "ST-0941",
-    name: "Lucas Vance",
-    grade: "12-A",
-    status: "Probation",
-    statusColor: "amber",
-    attendance: 65,
-  },
-  {
-    id: "ST-1022",
-    name: "Elena Gilbert",
-    grade: "11-C",
-    status: "Critical",
-    statusColor: "rose",
-    attendance: 42,
-  },
-  {
-    id: "ST-0814",
-    name: "Damon Salvatore",
-    grade: "10-B",
-    status: "Resolving",
-    statusColor: "primary",
-    attendance: 88,
-  },
-  {
-    id: "ST-1109",
-    name: "Caroline Forbes",
-    grade: "12-E",
-    status: "Validated",
-    statusColor: "emerald",
-    attendance: 99,
-  },
-];
+const statusColorMap: Record<string, string> = {
+  active: "emerald",
+  inactive: "amber",
+  block: "rose",
+};
 
-const events = [
-  { day: "08", month: "MAR", title: "Faculty Workshop", time: "09:00 AM" },
-  { day: "12", month: "MAR", title: "Board Meeting", time: "10:30 AM" },
-  { day: "20", month: "MAR", title: "Semester Finals", time: "08:30 AM" },
-];
+const flaggedStudents = computed(() =>
+  recentStudents.value.map((s) => ({
+    id: s.student_id || "—",
+    name: `${s.first_name || ""} ${s.last_name || ""}`.trim() || "—",
+    grade: s.gender ? String(s.gender) : "—",
+    status: s.status || "active",
+    statusColor: statusColorMap[String(s.status)] || "primary",
+  }))
+);
 
-const activities = [
-  {
-    user: "Sarah",
-    action: "approved leave",
-    time: "2m ago",
-    icon: "mdi-check-decagram",
-    color: "emerald",
-  },
-  {
-    user: "Finance",
-    action: "processed scholarship",
-    time: "1h ago",
-    icon: "mdi-shield-check",
-    color: "indigo",
-  },
-  {
-    user: "System",
-    action: "attendance logs",
-    time: "4h ago",
-    icon: "mdi-robot-confused",
+const events = computed(() =>
+  academicYears.value.slice(0, 4).map((y) => {
+    const d = y.start_date ? new Date(y.start_date) : null;
+    return {
+      day: d ? String(d.getUTCDate()).padStart(2, "0") : "--",
+      month: d ? MONTHS[d.getUTCMonth()] : "--",
+      title: y.title || "—",
+      time: y.status || "",
+    };
+  })
+);
+
+const activities = computed(() =>
+  recentClasses.value.map((c) => ({
+    user: c.classroom_name || "—",
+    action: `· ${c.homeroomTeacher?.full_name || "no homeroom teacher"}`,
+    time: c.gradeLevel?.grade_level_name || "",
+    icon: "mdi-google-classroom",
     color: "primary",
-  },
-  {
-    user: "Security",
-    action: "access protocol",
-    time: "6h ago",
-    icon: "mdi-lock-reset",
-    color: "amber",
-  },
-];
+  }))
+);
 </script>
 
 <style scoped>

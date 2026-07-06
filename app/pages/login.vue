@@ -3,60 +3,16 @@
     <!-- Main Login Card -->
     <v-card class="login-card overflow-hidden" elevation="24">
       <v-row no-gutters class="fill-height">
-        <!-- Left Side - Image Core -->
-        <v-col cols="12" md="6" class="d-none d-md-flex image-side">
-          <div class="image-overlay">
-            <div class="overlay-content pa-10">
-              <div class="logo-box mb-6">
-                <v-icon
-                  icon="mdi-school-outline"
-                  size="48"
-                  color="white"
-                ></v-icon>
-              </div>
-              <div
-                class="text-title text-white mb-4"
-                style="font-size: 24px !important"
-              >
-                EduAdmin
-              </div>
-              <div class="text-detail text-white opacity-90">
-                Managing education with precision and style. Experience the next
-                generation of school administration.
-              </div>
-
-              <div class="mt-auto decoration-line"></div>
-            </div>
-          </div>
-          <v-img src="/login-hero.png" cover class="side-image">
-            <template v-slot:placeholder>
-              <div
-                class="d-flex align-center justify-center fill-height bg-grey-lighten-2"
-              >
-                <v-progress-circular
-                  indeterminate
-                  color="primary"
-                ></v-progress-circular>
-              </div>
-            </template>
-          </v-img>
-        </v-col>
-
-        <!-- Right Side - Login Form -->
+        <!-- Login Form (image removed) -->
         <v-col
           cols="12"
-          md="6"
-          class="form-side pa-8 pa-md-16 d-flex flex-column align-center justify-center"
+          class="form-side pa-8 pa-md-12 d-flex flex-column align-center justify-center"
         >
           <div class="w-100 max-width-form">
             <div class="text-center mb-10">
-              <div class="d-md-none mb-4">
-                <v-avatar color="primary-lighten-5" size="64">
-                  <v-icon
-                    icon="mdi-school-outline"
-                    color="primary"
-                    size="32"
-                  ></v-icon>
+              <div class="mb-4 d-flex justify-center">
+                <v-avatar color="primary-lighten-5" size="72" rounded="lg">
+                  <v-img src="/logo.png" alt="Logo" width="44" contain></v-img>
                 </v-avatar>
               </div>
               <div
@@ -71,6 +27,17 @@
             </div>
 
             <v-form @submit.prevent="loginBtn" class="login-form">
+              <v-alert
+                v-if="errorMessage"
+                type="error"
+                variant="tonal"
+                density="compact"
+                class="mb-5"
+                closable
+                @click:close="errorMessage = ''"
+                >{{ errorMessage }}</v-alert
+              >
+
               <div class="mb-5">
                 <label class="custom-label">Email or Username</label>
                 <v-text-field
@@ -170,17 +137,27 @@ const password = ref("admin");
 const rememberMe = ref(false);
 const showPassword = ref(false);
 const loading = ref(false);
+const errorMessage = ref("");
 
 const { login } = useApiAuthStore();
 
 const loginBtn = async () => {
-  if (!username.value || !password.value) return;
+  if (!username.value || !password.value) {
+    errorMessage.value = "Please enter your username and password.";
+    return;
+  }
 
   loading.value = true;
+  errorMessage.value = "";
   try {
-    await login(username.value, password.value);
+    const result = await login(username.value, password.value);
+    // The store returns { error, message } on a failed login.
+    if (result?.error) {
+      errorMessage.value = result.message;
+    }
   } catch (error) {
     console.error(error);
+    errorMessage.value = "Login failed. Please try again.";
   } finally {
     loading.value = false;
   }
@@ -201,8 +178,7 @@ const loginBtn = async () => {
 
 .login-card {
   width: 100%;
-  max-width: 1100px;
-  min-height: 650px;
+  max-width: 460px;
   border-radius: 24px !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }

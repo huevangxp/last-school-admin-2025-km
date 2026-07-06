@@ -19,10 +19,26 @@
         <v-row class="ga-y-2">
           <!-- Class Name -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">SECTION TITLE</label>
+            <label class="text-detail-tiny mb-2 d-block">CLASS NAME *</label>
             <v-text-field
               v-model="form.className"
-              placeholder="e.g. Mathematics 101"
+              placeholder="e.g. M1/A"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+
+          <!-- Class Code -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block">CLASS CODE *</label>
+            <v-text-field
+              v-model="form.code"
+              placeholder="e.g. M1A-2025"
               variant="outlined"
               density="compact"
               rounded="lg"
@@ -35,11 +51,13 @@
 
           <!-- Grade Level -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">ACADEMIC GRADE</label>
+            <label class="text-detail-tiny mb-2 d-block">GRADE LEVEL *</label>
             <v-select
-              v-model="form.grade"
-              :items="gradeOptions"
-              placeholder="Select grade"
+              v-model="form.gradeLevelId"
+              :items="classroomStore.gradeLevels"
+              item-title="grade_level_name"
+              item-value="id"
+              placeholder="Select grade level"
               variant="outlined"
               density="compact"
               rounded="lg"
@@ -50,30 +68,52 @@
             ></v-select>
           </v-col>
 
-          <!-- Teacher -->
+          <!-- Academic Year -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block"
-              >ASSIGNED FACULTY</label
-            >
+            <label class="text-detail-tiny mb-2 d-block">ACADEMIC YEAR *</label>
             <v-select
-              v-model="form.teacher"
-              :items="teacherOptions"
-              placeholder="Select an instructor"
+              v-model="form.academicYearId"
+              :items="classroomStore.academicYears"
+              item-title="title"
+              item-value="id"
+              placeholder="Select academic year"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
+              :rules="[rules.required]"
+            ></v-select>
+          </v-col>
+
+          <!-- Homeroom Teacher (required) -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >HOMEROOM TEACHER *</label
+            >
+            <v-select
+              v-model="form.homeroomTeacherId"
+              :items="teacherStore.teachers"
+              item-title="full_name"
+              item-value="id"
+              placeholder="Select homeroom teacher"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              class="premium-input"
+              color="primary"
+              hide-details="auto"
+              :rules="[rules.required]"
             ></v-select>
           </v-col>
 
           <!-- Room -->
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">FACILITY / ROOM</label>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block">ROOM NO.</label>
             <v-text-field
               v-model="form.room"
-              placeholder="e.g. A-101"
+              placeholder="e.g. 101"
               variant="outlined"
               density="compact"
               rounded="lg"
@@ -83,22 +123,26 @@
             ></v-text-field>
           </v-col>
 
-          <!-- Description -->
-          <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block"
-              >ADDITIONAL NOTES</label
-            >
-            <v-textarea
-              v-model="form.description"
-              placeholder="Enter optional description..."
+          <!-- Max students -->
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-2 d-block">MAX STUDENTS</label>
+            <v-text-field
+              v-model="form.maxStudent"
+              type="number"
+              placeholder="e.g. 40"
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
-              rows="3"
               hide-details="auto"
-            ></v-textarea>
+            ></v-text-field>
+          </v-col>
+
+          <v-col cols="12" v-if="errorMessage">
+            <v-alert type="error" variant="tonal" density="compact">{{
+              errorMessage
+            }}</v-alert>
           </v-col>
         </v-row>
 
@@ -129,43 +173,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useClassroomStore } from "~/stores/apiClassroom";
+import { useTeacherStore } from "~/stores/apiTeacher";
+
 const { t } = useI18n();
 const router = useRouter();
+const classroomStore = useClassroomStore();
+const teacherStore = useTeacherStore();
 const loading = ref(false);
+const errorMessage = ref("");
 const formRef = ref();
 
 const form = ref({
   className: "",
-  grade: null,
-  teacher: null,
+  code: "",
+  gradeLevelId: null,
+  academicYearId: null,
+  homeroomTeacherId: null,
   room: "",
-  description: "",
+  maxStudent: "",
 });
 
-const gradeOptions = [
-  "Grade 1",
-  "Grade 2",
-  "Grade 3",
-  "Grade 4",
-  "Grade 5",
-  "Grade 6",
-  "Grade 7",
-  "Grade 8",
-  "Grade 9",
-  "Grade 10",
-  "Grade 11",
-  "Grade 12",
-];
-
-const teacherOptions = [
-  "Sarah Wilson",
-  "James Miller",
-  "Emily Davis",
-  "Robert Brown",
-  "Michael Chen",
-];
+onMounted(() => {
+  classroomStore.fetchGradeLevels();
+  classroomStore.fetchAcademicYears();
+  teacherStore.fetchTeachers(100, 1);
+});
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
@@ -178,16 +213,26 @@ const rules = {
 };
 
 const save = async () => {
+  errorMessage.value = "";
   const { valid } = await formRef.value.validate();
   if (!valid) return;
 
   loading.value = true;
   try {
-    console.log("Form submitted:", form.value);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await classroomStore.createClassroom({
+      classroom_name: form.value.className,
+      classroom_code: form.value.code,
+      grade_level_id: form.value.gradeLevelId,
+      academic_year_id: form.value.academicYearId,
+      homeroom_teacher_id: form.value.homeroomTeacherId,
+      room_number: form.value.room,
+      max_student: form.value.maxStudent ? Number(form.value.maxStudent) : null,
+    });
     router.push("/class");
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
+    errorMessage.value =
+      error.response?.data?.message || "Failed to create classroom.";
   } finally {
     loading.value = false;
   }

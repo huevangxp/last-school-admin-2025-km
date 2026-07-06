@@ -134,13 +134,27 @@
       </div>
 
       <!-- Data Table -->
+      <v-alert
+        v-if="teacherStore.error"
+        type="error"
+        variant="tonal"
+        density="compact"
+        class="mb-4"
+        >{{ teacherStore.error }}</v-alert
+      >
+
       <v-data-table
         :headers="headers"
         :items="teachers"
         :search="search"
+        :loading="teacherStore.loading"
         class="premium-table"
         hover
       >
+        <template v-slot:no-data>
+          <div class="text-detail py-8 text-center">No teachers found.</div>
+        </template>
+
         <!-- Teacher Name with Image Slot -->
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
@@ -209,12 +223,14 @@
             variant="text"
             size="x-small"
             color="primary"
+            @click="openEdit(item)"
           ></v-btn>
           <v-btn
             icon="mdi-delete-outline"
             variant="text"
             size="x-small"
             color="error"
+            @click="removeTeacher(item)"
           ></v-btn>
         </template>
 
@@ -254,46 +270,143 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit Teacher Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("teachers") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+        <v-text-field
+          v-model="editForm.full_name"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("gender") }}</label>
+            <v-select
+              v-model="editForm.gender"
+              :items="['male', 'female']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("dob") }}</label>
+            <v-text-field
+              v-model="editForm.dob"
+              type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("phone") }}</label>
+        <v-text-field
+          v-model="editForm.phone_number"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <v-select
+          v-model="editForm.status"
+          :items="['active', 'inactive']"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useTeacherStore } from "~/stores/apiTeacher";
+
 const { t } = useI18n();
 
 const search = ref("");
+
+const teacherStore = useTeacherStore();
+
+onMounted(() => {
+  teacherStore.fetchTeachers(100, 1);
+});
+
+const capitalize = (s?: string) =>
+  s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("teachers"), disabled: true, to: "/teachers" },
 ];
 
-const teacherStats = [
+const teacherStats = computed(() => [
   {
     label: "Total Teachers",
-    value: "84",
+    value: String(teacherStore.total),
     icon: "mdi-account-group",
     color: "blue",
   },
   {
     label: "Active",
-    value: "72",
+    value: String(teacherStore.activeCount),
     icon: "mdi-check-circle-outline",
     color: "green",
   },
   {
-    label: "New Hires",
-    value: "2",
+    label: "Never Logged In",
+    value: String(
+      teacherStore.teachers.filter((tc) => !tc.last_login_at).length
+    ),
     icon: "mdi-account-star-outline",
     color: "purple",
   },
   {
-    label: "Applications",
-    value: "0",
+    label: "Inactive",
+    value: String(
+      teacherStore.teachers.filter(
+        (tc) => tc.status?.toLowerCase() !== "active"
+      ).length
+    ),
     icon: "mdi-clock-time-four-outline",
     color: "orange",
   },
-];
+]);
 
 const headers = [
   { title: t("id"), key: "id", align: "start" as const, sortable: true },
@@ -322,58 +435,83 @@ const headers = [
   class: "text-detail-tiny pb-2",
 }));
 
-const teachers = [
-  {
-    id: "#202301",
-    image: "https://i.pravatar.cc/150?img=1",
-    username: "Huevang",
-    email: "huevang@school.com",
-    teacherSubject: "ຄະນິດສາດ",
-    grade: "Grade 10-A",
-    phone: "+1 (555) 123-4567",
-    status: "Active",
-  },
-  {
-    id: "#202302",
-    image: "https://i.pravatar.cc/150?img=2",
-    username: "Chanthavong",
-    email: "chantha@school.com",
-    teacherSubject: "ຟິຊິກສາດ",
-    grade: "Grade 11-B",
-    phone: "+1 (555) 987-6543",
-    status: "Active",
-  },
-  {
-    id: "#202303",
-    image: "https://i.pravatar.cc/150?img=3",
-    username: "Vilayphone",
-    email: "vilay@school.com",
-    teacherSubject: "ຊີວະວິທະຍາຊາດ",
-    grade: "Grade 12-A",
-    phone: "+1 (555) 234-5678",
-    status: "Active",
-  },
-  {
-    id: "#202304",
-    image: "https://i.pravatar.cc/150?img=4",
-    username: "Khamla",
-    email: "khamla@school.com",
-    teacherSubject: "ເຄມີສາດ",
-    grade: "Grade 10-C",
-    phone: "+1 (555) 789-0123",
-    status: "Suspended",
-  },
-  {
-    id: "#202305",
-    image: "https://i.pravatar.cc/150?img=5",
-    username: "Xayphong",
-    email: "xay@school.com",
-    teacherSubject: "ພາສາອັງກິດ",
-    grade: "Grade 9-A",
-    phone: "+1 (555) 789-0123",
-    status: "Active",
-  },
-];
+// Map live API teachers into the shape this table expects.
+const teachers = computed(() =>
+  teacherStore.teachers.map((tc) => ({
+    uuid: tc.id,
+    id: tc.teacher_id,
+    image: tc.avatar,
+    username: tc.full_name || tc.username,
+    fullName: tc.full_name,
+    email: tc.username,
+    teacherSubject: capitalize(tc.role),
+    role: tc.role,
+    grade: tc.gender ? capitalize(tc.gender) : "",
+    genderRaw: tc.gender,
+    dob: tc.dob ? String(tc.dob).substring(0, 10) : "",
+    phone: tc.phone_number,
+    status: capitalize(tc.status),
+    statusRaw: tc.status,
+  }))
+);
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  uuid: "",
+  full_name: "",
+  gender: "",
+  dob: "",
+  phone_number: "",
+  role: "teacher",
+  status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  editForm.value = {
+    uuid: item.uuid,
+    full_name: item.fullName || item.username,
+    gender: item.genderRaw || "",
+    dob: item.dob || "",
+    phone_number: item.phone || "",
+    role: item.role || "teacher",
+    status: item.statusRaw || "active",
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await teacherStore.updateTeacher(editForm.value.uuid, {
+      full_name: editForm.value.full_name,
+      gender: editForm.value.gender,
+      dob: editForm.value.dob,
+      phone_number: editForm.value.phone_number,
+      role: editForm.value.role,
+      status: editForm.value.status,
+    });
+    editDialog.value = false;
+    await teacherStore.fetchTeachers(100, 1);
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeTeacher = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await teacherStore.deleteTeacher(item.uuid);
+    await teacherStore.fetchTeachers(100, 1);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>

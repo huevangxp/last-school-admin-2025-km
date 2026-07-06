@@ -81,6 +81,21 @@
     "action":"ຈັດການ",
     "logout":"ອອກຈາກລະບົບ",
     "logout_message":"ທ່ານຕ້ອງການອອກຈາກລະບົບແທ້ບໍ?",
-    "ethnic_group":"ຊົນເຜົ່າ"
-    
+    "ethnic_group":"ຊົນເຜົ່າ",
+    "ethnic_groups":"ຊົນເຜົ່າ",
+    "name":"ຊື່",
+    "admin":"ຜູ້ດູແລລະບົບ",
+    "enroll":"ລົງທະບຽນ",
+    "addClass":"ເພີ່ມຫ້ອງຮຽນ",
+    "addStudent":"ເພີ່ມນັກຮຽນ",
+    "admin_name":"ຊື່ຜູ້ດູແລ",
+    "role":"ບົດບາດ",
+    "subjects":"ວິຊາ",
+    "are_you_sure_delete":"ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລົບ?",
+    "promotion":"ເລື່ອນຫ້ອງ",
+    "promote":"ເລື່ອນຊັ້ນ",
+    "from":"ຈາກ",
+    "type":"ປະເພດ",
+    "overview":"ພາບລວມ",
+    "homeroom_teacher":"ຄູປະຈຳຫ້ອງ"
 }

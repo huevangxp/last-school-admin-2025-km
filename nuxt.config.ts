@@ -35,7 +35,7 @@ export default defineNuxtConfig({
       { code: "en", name: "English", file: "en.json", flag: "/eng.png" },
       { code: "la", name: "Lao", file: "la.json", flag: "/lao.png" },
     ],
-    defaultLocale: "en",
+    defaultLocale: "la",
     vueI18n: "./i18n.config.ts",
   },
 
@@ -45,13 +45,9 @@ export default defineNuxtConfig({
         transformAssetUrls,
       },
     },
-    define: {
-      chrome: "undefined",
-      browser: "undefined",
-    },
+  
   },
   devServer: {
     port: 3000,
-    host: "0.0.0.0",
   },
 });

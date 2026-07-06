@@ -30,11 +30,11 @@ export const useApiAuthStore = defineStore("apiAuth", {
         if (response.status === 200 && response.data) {
           // Set authentication state
           this.authenticated = true;
-          this.profile = response.data;
+          this.profile = response.data.data;
 
           // Define cookie options once
           const cookieOptions = {
-            maxAge: 60 * 3, // 3 - Removed to make it a session cookie
+            maxAge: 60 * 60, // 1 hour — matches the JWT token lifetime
             secure: false, // HTTPS only in production
             sameSite: "lax" as const, // 'strict' might cause issues with redirects
             path: "/",
@@ -55,7 +55,7 @@ export const useApiAuthStore = defineStore("apiAuth", {
           userId.value = String(response.data.data.id);
           userRole.value = String(response.data.data.role);
           userPhone.value = String(response.data.data.phone_number);
-          email.value = String(response.data.data.email);
+          email.value = String(response.data.data.email ?? "");
           avatar.value = String(response.data.data.avatar);
           username.value = String(response.data.data.username);
 

@@ -123,9 +123,13 @@
         :headers="headers"
         :items="subjects"
         :search="search"
+        :loading="subjectStore.loading"
         class="premium-table"
         hover
       >
+        <template v-slot:no-data>
+          <div class="text-detail py-8 text-center">No subjects yet.</div>
+        </template>
         <!-- Subject Name Slot -->
         <template v-slot:item.title="{ item }">
           <div class="d-flex align-center py-2">
@@ -154,23 +158,37 @@
         <!-- Grade Slot -->
         <template v-slot:item.grade="{ item }">
           <div class="text-title-small">{{ item.grade }}</div>
-          <div class="text-detail-tiny text-grey">
-            {{ item.students }} Students
-          </div>
         </template>
 
-        <!-- Teacher Slot -->
-        <template v-slot:item.teacher="{ item }">
-          <div class="d-flex align-center">
-            <v-avatar size="32" class="mr-2 elevation-1">
-              <v-img
-                :src="`https://ui-avatars.com/api/?name=${item.teacher}&background=random`"
-              ></v-img>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.teacher }}</div>
-              <div class="text-detail-tiny">{{ item.teacherEmail }}</div>
-            </div>
+        <!-- Coefficient Slot -->
+        <template v-slot:item.coefficient="{ item }">
+          <v-chip
+            size="x-small"
+            color="indigo-lighten-5"
+            class="text-indigo-darken-2 font-weight-black"
+            variant="flat"
+          >
+            × {{ item.coefficient }}
+          </v-chip>
+        </template>
+
+        <!-- Actions Slot -->
+        <template v-slot:item.actions="{ item }">
+          <div class="d-flex justify-end ga-1">
+            <v-btn
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="x-small"
+              color="primary"
+              @click="openEdit(item)"
+            ></v-btn>
+            <v-btn
+              icon="mdi-delete-outline"
+              variant="text"
+              size="x-small"
+              color="error"
+              @click="removeSubject(item)"
+            ></v-btn>
           </div>
         </template>
 
@@ -195,46 +213,147 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit Subject Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("subject") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+        <v-text-field
+          v-model="editForm.subject_name"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">CODE</label>
+            <v-text-field
+              v-model="editForm.subject_code"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">COEFFICIENT</label>
+            <v-text-field
+              v-model="editForm.coefficient"
+              type="number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("grade") }}</label>
+        <v-select
+          v-model="editForm.grade_id"
+          :items="classroomStore.gradeLevels"
+          item-title="grade_level_name"
+          item-value="id"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-select>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <v-select
+          v-model="editForm.subject_status"
+          :items="['active', 'inactive']"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useSubjectStore } from "~/stores/apiSubject";
+import { useClassroomStore } from "~/stores/apiClassroom";
+
 const { t } = useI18n();
 
 const search = ref("");
+const subjectStore = useSubjectStore();
+const classroomStore = useClassroomStore();
+
+onMounted(() => {
+  subjectStore.fetchSubjects();
+  classroomStore.fetchGradeLevels();
+});
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("subject"), disabled: true, to: "/subjects" },
 ];
 
-const subjectStats = [
+const gradeName = (id: string) =>
+  classroomStore.gradeLevels.find((g) => g.id === id)?.grade_level_name || "—";
+
+const subjectStats = computed(() => [
   {
     label: "Total Subjects",
-    value: "32",
+    value: String(subjectStore.subjects.length),
     icon: "mdi-book-open-page-variant-outline",
     color: "teal",
   },
   {
-    label: "Active Courses",
-    value: "28",
+    label: "Active",
+    value: String(
+      subjectStore.subjects.filter((s) => s.subject_status === "active").length
+    ),
     icon: "mdi-check-circle-outline",
     color: "green",
   },
   {
-    label: "Instructors",
-    value: "12",
-    icon: "mdi-account-tie-outline",
+    label: "Grade Levels",
+    value: String(
+      new Set(subjectStore.subjects.map((s) => s.grade_id)).size
+    ),
+    icon: "mdi-stairs",
     color: "purple",
   },
   {
-    label: "Enrollments",
-    value: "1,240",
-    icon: "mdi-account-group-outline",
+    label: "Inactive",
+    value: String(
+      subjectStore.subjects.filter((s) => s.subject_status !== "active").length
+    ),
+    icon: "mdi-close-circle-outline",
     color: "orange",
   },
-];
+]);
 
 const headers = [
   {
@@ -245,8 +364,8 @@ const headers = [
   },
   { title: t("grade"), key: "grade", align: "start" as const, sortable: true },
   {
-    title: t("teachers"),
-    key: "teacher",
+    title: "COEFFICIENT",
+    key: "coefficient",
     align: "start" as const,
     sortable: true,
   },
@@ -256,58 +375,82 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
+  { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
   class: "text-detail-tiny pb-2",
 }));
 
-const subjects = ref([
-  {
-    id: "#SUB-001",
-    title: "Mathematics",
-    grade: "Grade 10",
-    students: 280,
-    teacher: "Sarah Wilson",
-    teacherEmail: "s.wilson@school.com",
-    status: "Active",
-  },
-  {
-    id: "#SUB-002",
-    title: "Physics",
-    grade: "Grade 11",
-    students: 250,
-    teacher: "James Miller",
-    teacherEmail: "j.miller@school.com",
-    status: "Active",
-  },
-  {
-    id: "#SUB-003",
-    title: "English Literature",
-    grade: "Grade 10",
-    students: 300,
-    teacher: "Emily Davis",
-    teacherEmail: "e.davis@school.com",
-    status: "Active",
-  },
-  {
-    id: "#SUB-004",
-    title: "History",
-    grade: "Grade 9",
-    students: 220,
-    teacher: "Robert Brown",
-    teacherEmail: "r.brown@school.com",
-    status: "Active",
-  },
-  {
-    id: "#SUB-005",
-    title: "Computer Science",
-    grade: "Grade 12",
-    students: 350,
-    teacher: "Michael Chen",
-    teacherEmail: "m.chen@school.com",
-    status: "Active",
-  },
-]);
+const subjects = computed(() =>
+  subjectStore.subjects.map((s) => ({
+    uuid: s.id,
+    id: s.subject_code,
+    title: s.subject_name,
+    grade: gradeName(s.grade_id),
+    coefficient: s.coefficient,
+    status: s.subject_status === "active" ? "Active" : "Inactive",
+    subjectStatusRaw: s.subject_status,
+    subjectName: s.subject_name,
+    subjectCode: s.subject_code,
+    coefficientRaw: s.coefficient,
+    gradeId: s.grade_id,
+  }))
+);
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  uuid: "",
+  subject_name: "",
+  subject_code: "",
+  coefficient: "",
+  grade_id: "",
+  subject_status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  editForm.value = {
+    uuid: item.uuid,
+    subject_name: item.subjectName,
+    subject_code: item.subjectCode,
+    coefficient: String(item.coefficientRaw ?? ""),
+    grade_id: item.gradeId,
+    subject_status: item.subjectStatusRaw || "active",
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await subjectStore.updateSubject(editForm.value.uuid, {
+      subject_name: editForm.value.subject_name,
+      subject_code: editForm.value.subject_code,
+      coefficient: Number(editForm.value.coefficient),
+      grade_id: editForm.value.grade_id,
+      subject_status: editForm.value.subject_status,
+    });
+    editDialog.value = false;
+    await subjectStore.fetchSubjects();
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeSubject = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await subjectStore.deleteSubject(item.uuid);
+    await subjectStore.fetchSubjects();
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>

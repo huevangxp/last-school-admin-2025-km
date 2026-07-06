@@ -1,6 +1,147 @@
 <template>
   <div>
-    <!-- Top Modern Navigation Bar -->
+    <ClientOnly>
+      <v-navigation-drawer
+        v-model="drawer"
+        width="280"
+        class="modern-sidebar border-0"
+        elevation="0"
+        floating
+        color="white"
+      >
+        <!-- Sidebar Brand Wrapper -->
+        <div class="sidebar-brand-wrapper px-6 py-8 d-flex align-center">
+          <div class="brand-logo-container mr-3">
+            <v-img
+              src="/logo.png"
+              alt="Logo"
+              width="32"
+              height="32"
+              contain
+            ></v-img>
+          </div>
+          <div class="brand-text">
+            <div
+              class="text-subtitle-1 font-weight-black text-slate-900 tracking-tight line-height-1"
+            >
+              {{ t("schoolmanagement") }}
+            </div>
+            <div class="text-caption text-primary font-weight-bold">
+              {{ t("management") }}
+            </div>
+          </div>
+        </div>
+
+        <div class="px-4 py-2 scroll-container">
+          <!-- Navigation Sections -->
+          <div
+            v-for="(section, sIndex) in groupedMenuItems"
+            :key="sIndex"
+            class="mb-6"
+          >
+            <div
+              class="px-4 mb-2 text-uppercase text-caption font-weight-black text-grey-lighten-1 tracking-widest"
+            >
+              {{ section.label }}
+            </div>
+
+            <v-list nav class="pa-0">
+              <template v-for="item in section.items" :key="item.title">
+                <!-- Expandable item with children -->
+                <v-list-group v-if="item.children" :value="item.title">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      v-bind="props"
+                      class="mb-1 modern-nav-item"
+                      rounded="xl"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon size="20" class="mr-4">{{ item.icon }}</v-icon>
+                      </template>
+                      <v-list-item-title
+                        class="text-subtitle-2 font-weight-bold"
+                      >
+                        {{ t(item.title) }}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </template>
+
+                  <v-list-item
+                    v-for="child in item.children"
+                    :key="child.title"
+                    :to="child.to"
+                    class="mb-1 modern-nav-item modern-nav-child"
+                    rounded="xl"
+                    active-class="active-item"
+                  >
+                    <template v-slot:prepend>
+                      <v-icon size="18" class="mr-4">{{ child.icon }}</v-icon>
+                    </template>
+                    <v-list-item-title
+                      class="text-subtitle-2 font-weight-bold"
+                    >
+                      {{ t(child.title) }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
+
+                <!-- Flat item -->
+                <v-list-item
+                  v-else
+                  :to="item.to"
+                  class="mb-1 modern-nav-item"
+                  rounded="xl"
+                  active-class="active-item"
+                  :exact="item.to === '/'"
+                >
+                  <template v-slot:prepend>
+                    <v-icon size="20" class="mr-4">{{ item.icon }}</v-icon>
+                  </template>
+                  <v-list-item-title class="text-subtitle-2 font-weight-bold">
+                    {{ t(item.title) }}
+                  </v-list-item-title>
+                </v-list-item>
+              </template>
+            </v-list>
+          </div>
+        </div>
+
+        <!-- Upgrade / Help Card -->
+        <template v-slot:append>
+          <div class="pa-6">
+            <v-card
+              color="teal-lighten-5"
+              flat
+              rounded="xl"
+              class="pa-4 border-dashed"
+            >
+              <div class="d-flex align-center mb-3">
+                <v-avatar color="teal-darken-1" size="32" class="mr-2">
+                  <v-icon
+                    icon="mdi-lightning-bolt"
+                    size="18"
+                    color="white"
+                  ></v-icon>
+                </v-avatar>
+                <span class="text-body-2 font-weight-black text-teal-darken-4"
+                  >Pro Support</span
+                >
+              </div>
+              <div class="text-caption text-teal-darken-2 mb-3">
+                Get 24/7 priority assistance for your school.
+              </div>
+              <v-btn
+                block
+                size="small"
+                color="teal-darken-1"
+                class="text-none rounded-lg font-weight-bold"
+                >Contact Support</v-btn
+              >
+            </v-card>
+          </div>
+        </template>
+      </v-navigation-drawer>
+    </ClientOnly>
     <v-app-bar elevation="0" height="72" class="px-6 glass-header">
       <div class="d-flex align-center">
         <v-btn
@@ -28,7 +169,7 @@
       <!-- Global Search -->
       <div class="header-search d-none d-md-flex mr-8">
         <v-text-field
-          placeholder="Search records..."
+          :placeholder="t('search')"
           prepend-inner-icon="mdi-magnify"
           variant="solo-filled"
           density="compact"
@@ -105,17 +246,23 @@
             >
               <v-avatar
                 size="44"
+                color="primary-lighten-5"
                 class="elevation-2 border-2 border-white mr-3"
               >
-                <v-img src="https://i.pravatar.cc/150?img=11"></v-img>
+                <v-img v-if="userAvatar" :src="userAvatar" cover></v-img>
+                <span v-else class="text-primary font-weight-black">{{
+                  userInitial
+                }}</span>
               </v-avatar>
               <div class="d-none d-lg-block">
                 <div
-                  class="text-subtitle-2 font-weight-black line-height-1 mb-1"
+                  class="text-subtitle-2 font-weight-black line-height-1 mb-1 text-capitalize"
                 >
-                  Alex Admin
+                  {{ username }}
                 </div>
-                <div class="text-caption text-grey-darken-1">Principal</div>
+                <div class="text-caption text-grey-darken-1 text-capitalize">
+                  {{ role }}
+                </div>
               </div>
               <v-icon
                 icon="mdi-chevron-down"
@@ -124,24 +271,35 @@
               ></v-icon>
             </div>
           </template>
-          <v-list class="modern-dropdown pa-2" width="220" rounded="xl">
+          <v-list class="modern-dropdown pa-2" width="240" rounded="xl">
+            <div class="px-3 py-2">
+              <div class="text-subtitle-2 font-weight-black text-capitalize">
+                {{ username }}
+              </div>
+              <div class="text-caption text-grey-darken-1 text-capitalize">
+                {{ role }}
+              </div>
+            </div>
+            <v-divider class="mb-2"></v-divider>
             <v-list-item
               rounded="lg"
               class="mb-1"
               prepend-icon="mdi-account-outline"
+              to="/admin"
             >
-              <v-list-item-title class="text-subtitle-2"
-                >My Profile</v-list-item-title
-              >
+              <v-list-item-title class="text-subtitle-2">{{
+                t("information")
+              }}</v-list-item-title>
             </v-list-item>
             <v-list-item
               rounded="lg"
               class="mb-1"
               prepend-icon="mdi-cog-outline"
+              to="/settings"
             >
-              <v-list-item-title class="text-subtitle-2"
-                >Settings</v-list-item-title
-              >
+              <v-list-item-title class="text-subtitle-2">{{
+                t("settings")
+              }}</v-list-item-title>
             </v-list-item>
             <v-divider class="my-2"></v-divider>
             <v-list-item
@@ -156,123 +314,13 @@
               <v-list-item-title
                 class="text-subtitle-2 font-weight-bold text-error"
               >
-                Sign Out
+                {{ t("logout") }}
               </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </div>
     </v-app-bar>
-
-    <!-- Modern Sidebar Navigation -->
-    <ClientOnly>
-      <v-navigation-drawer
-        v-model="drawer"
-        width="280"
-        class="modern-sidebar border-0"
-        elevation="0"
-        floating
-        color="white"
-      >
-        <!-- Sidebar Brand Wrapper -->
-        <div class="sidebar-brand-wrapper px-8 py-8 d-flex align-center">
-          <div class="brand-logo-container mr-3">
-            <v-icon icon="mdi-school" color="white" size="24"></v-icon>
-          </div>
-          <div class="brand-text">
-            <div
-              class="text-h6 font-weight-black text-slate-900 tracking-tight line-height-1"
-            >
-              EduAdmin
-            </div>
-            <div class="text-caption text-primary font-weight-bold">
-              PRO DASHBOARD
-            </div>
-          </div>
-        </div>
-
-        <div class="px-4 py-2 scroll-container">
-          <!-- Navigation Sections -->
-          <div
-            v-for="(section, sIndex) in groupedMenuItems"
-            :key="sIndex"
-            class="mb-6"
-          >
-            <div
-              class="px-4 mb-2 text-uppercase text-caption font-weight-black text-grey-lighten-1 tracking-widest"
-            >
-              {{ section.label }}
-            </div>
-
-            <v-list nav class="pa-0">
-              <v-list-item
-                v-for="item in section.items"
-                :key="item.title"
-                :to="item.to"
-                class="mb-1 modern-nav-item"
-                rounded="xl"
-                active-class="active-item"
-                :exact="item.to === '/'"
-              >
-                <template v-slot:prepend>
-                  <v-icon size="20" class="mr-4">{{ item.icon }}</v-icon>
-                </template>
-                <v-list-item-title class="text-subtitle-2 font-weight-bold">
-                  {{ t(item.title) }}
-                </v-list-item-title>
-
-                <!-- Optional Badge for specific items -->
-                <template v-slot:append v-if="item.badge">
-                  <v-chip
-                    size="x-small"
-                    :color="item.badgeColor"
-                    class="font-weight-black"
-                  >
-                    {{ item.badge }}
-                  </v-chip>
-                </template>
-              </v-list-item>
-            </v-list>
-          </div>
-        </div>
-
-        <!-- Upgrade / Help Card -->
-        <template v-slot:append>
-          <div class="pa-6">
-            <v-card
-              color="teal-lighten-5"
-              flat
-              rounded="xl"
-              class="pa-4 border-dashed"
-            >
-              <div class="d-flex align-center mb-3">
-                <v-avatar color="teal-darken-1" size="32" class="mr-2">
-                  <v-icon
-                    icon="mdi-lightning-bolt"
-                    size="18"
-                    color="white"
-                  ></v-icon>
-                </v-avatar>
-                <span class="text-body-2 font-weight-black text-teal-darken-4"
-                  >Pro Support</span
-                >
-              </div>
-              <div class="text-caption text-teal-darken-2 mb-3">
-                Get 24/7 priority assistance for your school.
-              </div>
-              <v-btn
-                block
-                size="small"
-                color="teal-darken-1"
-                class="text-none rounded-lg font-weight-bold"
-                >Contact Support</v-btn
-              >
-            </v-card>
-          </div>
-        </template>
-      </v-navigation-drawer>
-    </ClientOnly>
-
     <!-- Logout Confirmation -->
     <v-dialog v-model="logoutDialog" width="400">
       <v-card rounded="xl" class="pa-4 overflow-hidden">
@@ -320,6 +368,21 @@ const langName = useCookie("lang_name", { default: () => "English" });
 const langFlag = useCookie("lang_flag", { default: () => "/eng.png" });
 const { locales, setLocale, t } = useI18n();
 
+// Logged-in user (set on login in apiAuth store)
+const username = useCookie<string>("username", { default: () => "Admin" });
+const role = useCookie<string>("role", { default: () => "Administrator" });
+const avatarCookie = useCookie<string>("avatar");
+
+const isEmpty = (v?: string | null) =>
+  !v || v === "null" || v === "undefined" || v === "";
+
+const userAvatar = computed(() =>
+  isEmpty(avatarCookie.value) ? "" : avatarCookie.value
+);
+const userInitial = computed(() =>
+  (username.value || "A").charAt(0).toUpperCase()
+);
+
 const logoutDialog = ref(false);
 const drawer = ref(true);
 
@@ -331,40 +394,70 @@ const setLanguage = (data: any) => {
   langFlag.value = data.flag;
 };
 
-// Grouped Menu for better UX
-const groupedMenuItems = ref([
+interface MenuItem {
+  title: string;
+  icon: string;
+  to?: string;
+  children?: MenuItem[];
+}
+
+interface MenuSection {
+  label: string;
+  items: MenuItem[];
+}
+
+// Grouped Menu — Academic on top, with the Type group first.
+const groupedMenuItems = ref<MenuSection[]>([
   {
     label: "Overview",
     items: [
-      { title: "dashboard", icon: "mdi-grid-large", to: "/" },
+      { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
       { title: "reports", icon: "mdi-chart-box-outline", to: "/reports" },
     ],
   },
   {
-    label: "Management",
+    label: "Academic",
     items: [
-      { title: "academic", icon: "mdi-calendar-check", to: "/academic" },
+      {
+        title: "overview",
+        icon: "mdi-chart-box-outline",
+        to: "/overview",
+      },
+      {
+        title: "type",
+        icon: "mdi-shape-outline",
+        children: [
+          { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
+          {
+            title: "ethnic_group",
+            icon: "mdi-account-group-outline",
+            to: "/ethnic-group",
+          },
+          { title: "classes", icon: "mdi-google-classroom", to: "/class" },
+        ],
+      },
       {
         title: "students",
         icon: "mdi-account-school-outline",
         to: "/students",
-        badge: "New",
-        badgeColor: "primary",
       },
+      { title: "enroll", icon: "mdi-account-plus-outline", to: "/enroll" },
       { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
-      { title: "classes", icon: "mdi-google-classroom", to: "/class" },
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects" },
+      { title: "scores", icon: "mdi-star-outline", to: "/scores" },
+      {
+        title: "promotion",
+        icon: "mdi-arrow-up-bold-box-outline",
+        to: "/promotion",
+      },
+      { title: "academic", icon: "mdi-calendar-check", to: "/academic" },
     ],
   },
+ 
   {
-    label: "Organization",
+    label: "Administration",
     items: [
-      {
-        title: "ethnic_group",
-        icon: "mdi-account-group-outline",
-        to: "/ethnic-group",
-      },
-      { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
+      { title: "admin", icon: "mdi-shield-account-outline", to: "/admin" },
       { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
     ],
   },
@@ -393,12 +486,14 @@ const logoutButton = () => {
 .sidebar-brand-wrapper .brand-logo-container {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  box-shadow: 0 8px 16px -4px rgba(20, 184, 166, 0.4);
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 8px 16px -6px rgba(15, 23, 42, 0.15);
+  padding: 6px;
 }
 
 /* Nav Item Styling */
@@ -412,6 +507,11 @@ const logoutButton = () => {
 .modern-nav-item:hover {
   background-color: #f1f5f9 !important;
   color: #0f172a !important;
+}
+
+/* Nested (child) items sit slightly indented under their parent group */
+.modern-nav-child {
+  padding-left: 28px !important;
 }
 
 .active-item {

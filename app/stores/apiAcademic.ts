@@ -15,5 +15,16 @@ export const useAcademicStore = defineStore('academic', {
                 console.error(error);
             }
         },
+        async updateAcademic(id: string, payload: Record<string, unknown>) {
+            const { $axios } = useNuxtApp();
+            // Backend requires: title, startDate, endDate, description, status
+            const response = await $axios.put(`/update-academic-year/${id}`, payload);
+            return response.data;
+        },
+        async deleteAcademic(id: string) {
+            const { $axios } = useNuxtApp();
+            const response = await $axios.delete(`/delete-academic-year/${id}`);
+            return response.data;
+        },
     },
 });
