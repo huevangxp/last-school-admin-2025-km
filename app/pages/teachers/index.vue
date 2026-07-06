@@ -271,44 +271,6 @@
       </v-data-table>
     </v-card>
 
-    <!-- Organization Chart -->
-    <v-card elevation="0" class="intelligence-card pa-4 mt-6">
-      <div class="d-flex align-center justify-space-between mb-2">
-        <div class="d-flex align-center">
-          <v-avatar color="teal-lighten-5" size="40" class="mr-3 rounded-lg">
-            <v-icon color="teal-darken-1" size="20"
-              >mdi-sitemap-outline</v-icon
-            >
-          </v-avatar>
-          <div>
-            <div class="text-title">Organization Chart</div>
-            <div class="text-detail">Faculty hierarchy & reporting structure</div>
-          </div>
-        </div>
-        <v-btn
-          :icon="showChart ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-          variant="text"
-          color="grey-darken-1"
-          size="small"
-          @click="showChart = !showChart"
-        ></v-btn>
-      </div>
-
-      <v-expand-transition>
-        <div v-show="showChart" class="org-scroll pt-4">
-          <div v-if="teachers.length" class="tree">
-            <ul class="org-tree-root">
-              <OrgNode :node="orgRoot" />
-            </ul>
-          </div>
-
-          <div v-else class="text-detail py-6 text-center">
-            No faculty members to display yet.
-          </div>
-        </div>
-      </v-expand-transition>
-    </v-card>
-
     <!-- Edit Teacher Dialog -->
     <v-dialog v-model="editDialog" width="560" scrollable>
       <v-card rounded="xl" class="pa-6">
