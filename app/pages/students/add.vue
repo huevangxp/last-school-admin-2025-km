@@ -167,17 +167,19 @@
           </v-col>
           <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">ETHNICITY *</label>
-            <v-text-field
+            <v-select
               v-model="form.ethnicity"
-              placeholder="e.g. ລາວລຸ່ມ"
+              :items="ethnicityOptions"
+              placeholder="Select"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              no-data-text="No ethnic groups yet"
               :rules="[rules.required]"
-            ></v-text-field>
+            ></v-select>
           </v-col>
           <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">HEIGHT (cm) *</label>
