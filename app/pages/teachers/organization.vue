@@ -217,8 +217,28 @@ const endPan = () => {
 const centerView = () => {
   const vp = viewport.value;
   if (!vp) return;
-  vp.scrollLeft = (vp.scrollWidth - vp.clientWidth) / 2;
-  vp.scrollTop = 0;
+  vp.scrollLeft = Math.max(0, (vp.scrollWidth - vp.clientWidth) / 2);
+  vp.scrollTop = Math.max(0, (vp.scrollHeight - vp.clientHeight) / 2);
+};
+
+// ---- Fit the whole tree into the viewport ----
+const fitToScreen = () => {
+  const vp = viewport.value;
+  const tree = vp?.querySelector(".tree") as HTMLElement | null;
+  if (!vp || !tree) return;
+  const z0 = zoom.value || 1;
+  const rect = tree.getBoundingClientRect();
+  const naturalW = rect.width / z0;
+  const naturalH = rect.height / z0;
+  if (naturalW <= 0 || naturalH <= 0) return;
+  const pad = 32;
+  const fit = Math.min(
+    (vp.clientWidth - pad) / naturalW,
+    (vp.clientHeight - pad) / naturalH
+  );
+  // Never blow a small tree past 100%; allow shrinking down to MIN_ZOOM.
+  zoom.value = Math.min(1, Math.max(MIN_ZOOM, Math.round(fit * 100) / 100));
+  nextTick(centerView);
 };
 
 // Center once the faculty data has rendered.
