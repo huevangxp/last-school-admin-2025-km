@@ -230,7 +230,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
 import { positionOptions, departmentOptions } from "~/utils/orgPresets";
@@ -242,24 +242,53 @@ const loading = ref(false);
 const errorMessage = ref("");
 const formRef = ref();
 
-// Existing faculty for the "reports to" manager dropdown.
-const managerOptions = ref<{ title: string; value: string }[]>([]);
+// Raw faculty list (for the manager dropdown + layer computation).
+const faculty = ref<any[]>([]);
 
 onMounted(async () => {
   const { $axios } = useNuxtApp();
   try {
     const res = await $axios.get("/get-all-teachers?limit=100&page=1");
-    const list = res.data?.data?.teachers ?? [];
-    managerOptions.value = list.map((tc: any) => ({
-      title: `${tc.full_name || tc.username}${
-        tc.position ? " — " + tc.position : ""
-      }`,
-      value: tc.id,
-    }));
+    faculty.value = res.data?.data?.teachers ?? [];
   } catch (error) {
     console.error("Failed to load teachers:", error);
   }
 });
+
+// Org layer of each existing teacher: no manager = Layer 1, otherwise
+// one deeper than their manager (cycle-safe).
+const layerById = computed<Record<string, number>>(() => {
+  const byId: Record<string, any> = {};
+  faculty.value.forEach((tc) => (byId[tc.id] = tc));
+  const cache: Record<string, number> = {};
+  const depth = (id: string, seen = new Set<string>()): number => {
+    if (cache[id] != null) return cache[id];
+    const node = byId[id];
+    if (!node || !node.manager_id || !byId[node.manager_id] || seen.has(id)) {
+      return (cache[id] = 1);
+    }
+    seen.add(id);
+    return (cache[id] = depth(node.manager_id, seen) + 1);
+  };
+  faculty.value.forEach((tc) => depth(tc.id));
+  return cache;
+});
+
+// Manager dropdown, labelled with each person's layer.
+const managerOptions = computed(() =>
+  faculty.value.map((tc) => ({
+    title: `${tc.full_name || tc.username}${
+      tc.position ? " — " + tc.position : ""
+    } · Layer ${layerById.value[tc.id] ?? 1}`,
+    value: tc.id,
+  }))
+);
+
+// The layer the new teacher will land on: top-level = 1, otherwise
+// one below the chosen manager.
+const newTeacherLayer = computed(() =>
+  form.value.managerId ? (layerById.value[form.value.managerId] ?? 1) + 1 : 1
+);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
