@@ -271,6 +271,130 @@
       </v-data-table>
     </v-card>
 
+    <!-- Organization Chart -->
+    <v-card elevation="0" class="intelligence-card pa-4 mt-6">
+      <div class="d-flex align-center justify-space-between mb-2">
+        <div class="d-flex align-center">
+          <v-avatar color="teal-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-icon color="teal-darken-1" size="20"
+              >mdi-sitemap-outline</v-icon
+            >
+          </v-avatar>
+          <div>
+            <div class="text-title">Organization Chart</div>
+            <div class="text-detail">Faculty hierarchy & reporting structure</div>
+          </div>
+        </div>
+        <v-btn
+          :icon="showChart ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+          variant="text"
+          color="grey-darken-1"
+          size="small"
+          @click="showChart = !showChart"
+        ></v-btn>
+      </div>
+
+      <v-expand-transition>
+        <div v-show="showChart" class="org-scroll pt-4">
+          <div class="tree">
+            <ul>
+              <li>
+                <!-- Root: School -->
+                <div class="org-node org-root">
+                  <v-avatar size="44" class="mb-1 org-root-logo">
+                    <v-img src="/logo.png" contain></v-img>
+                  </v-avatar>
+                  <div class="org-node-name">{{ t("schoolmanagement") }}</div>
+                  <div class="org-node-role">{{ t("management") }}</div>
+                </div>
+
+                <ul v-if="admins.length || staff.length">
+                  <!-- Administration branch -->
+                  <li v-if="admins.length">
+                    <div class="org-node org-dept">
+                      <v-avatar size="38" color="teal-lighten-4" class="mb-1">
+                        <v-icon color="teal-darken-2" size="20"
+                          >mdi-shield-account-outline</v-icon
+                        >
+                      </v-avatar>
+                      <div class="org-node-name">Administration</div>
+                      <div class="org-node-role">
+                        {{ admins.length }}
+                        {{ admins.length === 1 ? "member" : "members" }}
+                      </div>
+                    </div>
+                    <ul>
+                      <li v-for="a in admins" :key="a.uuid">
+                        <div class="org-node org-person">
+                          <v-avatar size="40" class="mb-1 border-white elevation-1">
+                            <v-img :src="a.image" cover></v-img>
+                          </v-avatar>
+                          <div class="org-node-name">{{ a.username }}</div>
+                          <div class="org-node-role">Admin</div>
+                          <v-chip
+                            :color="a.status === 'Active' ? 'success' : 'grey'"
+                            size="x-small"
+                            variant="tonal"
+                            class="font-weight-black text-uppercase mt-1"
+                          >
+                            {{ a.status }}
+                          </v-chip>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <!-- Teaching staff branch -->
+                  <li v-if="staff.length">
+                    <div class="org-node org-dept">
+                      <v-avatar size="38" color="teal-lighten-4" class="mb-1">
+                        <v-icon color="teal-darken-2" size="20"
+                          >mdi-account-tie-outline</v-icon
+                        >
+                      </v-avatar>
+                      <div class="org-node-name">Teaching Staff</div>
+                      <div class="org-node-role">
+                        {{ staff.length }}
+                        {{ staff.length === 1 ? "member" : "members" }}
+                      </div>
+                    </div>
+                    <ul>
+                      <li v-for="s in staff" :key="s.uuid">
+                        <div class="org-node org-person">
+                          <v-avatar size="40" class="mb-1 border-white elevation-1">
+                            <v-img :src="s.image" cover></v-img>
+                          </v-avatar>
+                          <div class="org-node-name">{{ s.username }}</div>
+                          <div class="org-node-role">
+                            {{ s.grade || "Teacher" }}
+                          </div>
+                          <v-chip
+                            :color="s.status === 'Active' ? 'success' : 'grey'"
+                            size="x-small"
+                            variant="tonal"
+                            class="font-weight-black text-uppercase mt-1"
+                          >
+                            {{ s.status }}
+                          </v-chip>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+
+          <div
+            v-if="!admins.length && !staff.length"
+            class="text-detail py-6 text-center"
+          >
+            No faculty members to display yet.
+          </div>
+        </div>
+      </v-expand-transition>
+    </v-card>
+
     <!-- Edit Teacher Dialog -->
     <v-dialog v-model="editDialog" width="480">
       <v-card rounded="xl" class="pa-6">
