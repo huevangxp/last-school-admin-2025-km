@@ -121,11 +121,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, nextTick, watch, onMounted } from "vue";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
 const { t } = useI18n();
 const teacherStore = useTeacherStore();
+
+const viewport = ref<HTMLElement | null>(null);
 
 onMounted(() => {
   teacherStore.fetchTeachers(100, 1);
@@ -139,19 +141,93 @@ const zoom = ref(1);
 
 const clampZoom = (v: number) =>
   Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.round(v * 100) / 100));
-const zoomIn = () => (zoom.value = clampZoom(zoom.value + ZOOM_STEP));
-const zoomOut = () => (zoom.value = clampZoom(zoom.value - ZOOM_STEP));
-const resetZoom = () => (zoom.value = 1);
-
-// Ctrl/⌘ + wheel zooms; plain wheel scrolls normally.
-const onWheel = (e: WheelEvent) => {
-  if (!e.ctrlKey && !e.metaKey) return;
-  e.preventDefault();
-  zoom.value = clampZoom(zoom.value + (e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP));
-};
 
 // `zoom` (CSS) scales layout so the scroll container tracks the new size.
 const treeStyle = computed(() => ({ zoom: zoom.value }));
+
+// Change zoom while keeping the point at (cx, cy) inside the viewport fixed.
+const zoomAt = (nextZoom: number, cx: number, cy: number) => {
+  const vp = viewport.value;
+  const z0 = zoom.value;
+  const z1 = clampZoom(nextZoom);
+  if (z1 === z0) return;
+  if (!vp) {
+    zoom.value = z1;
+    return;
+  }
+  const ratio = z1 / z0;
+  const left = vp.scrollLeft;
+  const top = vp.scrollTop;
+  zoom.value = z1;
+  nextTick(() => {
+    vp.scrollLeft = (left + cx) * ratio - cx;
+    vp.scrollTop = (top + cy) * ratio - cy;
+  });
+};
+
+// Buttons zoom toward the middle of the viewport.
+const zoomByCenter = (delta: number) => {
+  const vp = viewport.value;
+  zoomAt(
+    zoom.value + delta,
+    vp ? vp.clientWidth / 2 : 0,
+    vp ? vp.clientHeight / 2 : 0
+  );
+};
+const zoomIn = () => zoomByCenter(ZOOM_STEP);
+const zoomOut = () => zoomByCenter(-ZOOM_STEP);
+const resetZoom = () => {
+  zoom.value = 1;
+  nextTick(centerView);
+};
+
+// Plain mouse wheel zooms toward the cursor.
+const onWheel = (e: WheelEvent) => {
+  e.preventDefault();
+  const vp = viewport.value;
+  if (!vp) return;
+  const rect = vp.getBoundingClientRect();
+  zoomAt(
+    zoom.value + (e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP),
+    e.clientX - rect.left,
+    e.clientY - rect.top
+  );
+};
+
+// ---- Pan (click + drag) ----
+const isPanning = ref(false);
+let panStart = { x: 0, y: 0, left: 0, top: 0 };
+
+const startPan = (e: MouseEvent) => {
+  const vp = viewport.value;
+  if (!vp || e.button !== 0) return;
+  isPanning.value = true;
+  panStart = { x: e.clientX, y: e.clientY, left: vp.scrollLeft, top: vp.scrollTop };
+};
+const onPan = (e: MouseEvent) => {
+  if (!isPanning.value || !viewport.value) return;
+  viewport.value.scrollLeft = panStart.left - (e.clientX - panStart.x);
+  viewport.value.scrollTop = panStart.top - (e.clientY - panStart.y);
+};
+const endPan = () => {
+  isPanning.value = false;
+};
+
+// ---- Center the tree in the viewport ----
+const centerView = () => {
+  const vp = viewport.value;
+  if (!vp) return;
+  vp.scrollLeft = (vp.scrollWidth - vp.clientWidth) / 2;
+  vp.scrollTop = 0;
+};
+
+// Center once the faculty data has rendered.
+watch(
+  () => teacherStore.teachers.length,
+  (len) => {
+    if (len > 0) nextTick(centerView);
+  }
+);
 
 const capitalize = (s?: string) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
