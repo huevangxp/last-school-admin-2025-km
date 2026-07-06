@@ -148,6 +148,19 @@ ul::before {
   box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.3);
 }
 
+/* Layer badge (e.g. Layer 1, Layer 2) */
+.org-layer-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0d9488;
+  background: #ccfbf1;
+  border-radius: 999px;
+  padding: 1px 8px;
+  margin-bottom: 2px;
+}
+
 .org-node-name {
   font-weight: 800;
   font-size: 13px;
