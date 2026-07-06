@@ -196,6 +196,29 @@
             ></v-select>
           </v-col>
 
+          <v-col cols="12">
+            <div class="layer-hint d-flex align-center flex-wrap ga-2 pa-3">
+              <v-icon color="teal-darken-1" size="18"
+                >mdi-file-tree-outline</v-icon
+              >
+              <span class="text-detail-tiny">ຕຳແໜ່ງນີ້ຈະຢູ່ໃນ</span>
+              <v-chip
+                color="teal"
+                variant="flat"
+                size="small"
+                class="font-weight-black"
+              >
+                Layer {{ newTeacherLayer }}
+              </v-chip>
+              <span v-if="form.managerId" class="text-detail-tiny">
+                — ຂຶ້ນກັບຄົນຢູ່ Layer {{ newTeacherLayer - 1 }}
+              </span>
+              <span v-else class="text-detail-tiny">
+                — ລະດັບສູງສຸດ (ບໍ່ຂຶ້ນກັບໃຜ)
+              </span>
+            </div>
+          </v-col>
+
           <v-col cols="12" v-if="errorMessage">
             <v-alert type="error" variant="tonal" density="compact">{{
               errorMessage
