@@ -1,9 +1,9 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
+  <v-container fluid class="dashboard-container pa-6">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
 
     <v-form ref="formRef" @submit.prevent="save">
-      <!-- Section: Identity Context -->
+      <!-- Identity + Account -->
       <v-card class="intelligence-card pa-6 mb-6" elevation="0">
         <div class="d-flex align-center mb-6">
           <v-avatar color="teal-lighten-5" size="40" class="mr-3 rounded-lg">
@@ -13,203 +13,48 @@
           </v-avatar>
           <div>
             <h2 class="text-title">{{ t("information") }}</h2>
-            <p class="text-detail">Primary student identification details</p>
+            <p class="text-detail">Student identity & login</p>
           </div>
         </div>
 
         <v-row class="ga-y-2">
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">FIRST NAME</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("firstname") }} *</label
+            >
             <v-text-field
               v-model="form.firstName"
-              placeholder="e.g. John"
+              placeholder="e.g. ສົມສະໜຸກ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
-              persistent-placeholder
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">LAST NAME</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("lastname") }} *</label
+            >
             <v-text-field
               v-model="form.lastName"
-              placeholder="e.g. Doe"
+              placeholder="e.g. ວົງສາ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
-              persistent-placeholder
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">DATE OF BIRTH</label>
-            <v-text-field
-              v-model="form.dob"
-              type="date"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">GENDER</label>
-            <v-select
-              v-model="form.gender"
-              :items="genderOptions"
-              placeholder="Select Gender"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-card>
 
-      <!-- Section: Connectivity -->
-      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-        <div class="d-flex align-center mb-6">
-          <v-avatar color="indigo-lighten-5" size="40" class="mr-3 rounded-lg">
-            <v-icon color="indigo-darken-1" size="20">mdi-phone-outline</v-icon>
-          </v-avatar>
-          <div>
-            <h2 class="text-title">{{ t("contact") }}</h2>
-            <p class="text-detail">Access and communication channels</p>
-          </div>
-        </div>
-
-        <v-row class="ga-y-2">
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">EMAIL ADDRESS</label>
-            <v-text-field
-              v-model="form.email"
-              placeholder="student@example.com"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">PHONE NUMBER</label>
-            <v-text-field
-              v-model="form.phone"
-              placeholder="(555) 000-0000"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
             <label class="text-detail-tiny mb-2 d-block"
-              >RESIDENTIAL ADDRESS</label
+              >{{ t("username") }} *</label
             >
-            <v-text-field
-              v-model="form.address"
-              placeholder="Street address, City, Building"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <!-- Section: Academic Placement -->
-      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-        <div class="d-flex align-center mb-6">
-          <v-avatar color="amber-lighten-5" size="40" class="mr-3 rounded-lg">
-            <v-icon color="amber-darken-2" size="20">mdi-school-outline</v-icon>
-          </v-avatar>
-          <div>
-            <h2 class="text-title">{{ t("academic") }}</h2>
-            <p class="text-detail">Enrollment and curricular placement</p>
-          </div>
-        </div>
-
-        <v-row class="ga-y-2">
-          <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">GRADE / CLASS</label>
-            <v-select
-              v-model="form.classId"
-              :items="classOptions"
-              placeholder="Select Class"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-              no-data-text="No classrooms yet"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">SECTION</label>
-            <v-select
-              v-model="form.section"
-              :items="['A', 'B', 'C']"
-              placeholder="Select Section"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">ADMISSION DATE</label>
-            <v-text-field
-              v-model="form.admissionDate"
-              type="date"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <!-- Section: Account & Health -->
-      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-        <div class="d-flex align-center mb-6">
-          <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-lg">
-            <v-icon color="purple-darken-1" size="20"
-              >mdi-shield-account-outline</v-icon
-            >
-          </v-avatar>
-          <div>
-            <h2 class="text-title">Account & Health</h2>
-            <p class="text-detail">Login credentials and health record</p>
-          </div>
-        </div>
-
-        <v-row class="ga-y-2">
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">USERNAME *</label>
             <v-text-field
               v-model="form.username"
               placeholder="Login username"
@@ -223,7 +68,9 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">PASSWORD *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("password") }} *</label
+            >
             <v-text-field
               v-model="form.password"
               type="password"
@@ -237,7 +84,73 @@
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("gender") }} *</label
+            >
+            <v-select
+              v-model="form.gender"
+              :items="genderOptions"
+              placeholder="Select"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-2 d-block">{{ t("dob") }} *</label>
+            <v-text-field
+              v-model="form.dob"
+              type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("phone") }} *</label
+            >
+            <v-text-field
+              v-model="form.phone"
+              placeholder="+856 20 ..."
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :rules="[rules.required]"
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </v-card>
+
+      <!-- Health + Class + Guardian -->
+      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
+        <div class="d-flex align-center mb-6">
+          <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-icon color="purple-darken-1" size="20"
+              >mdi-heart-pulse</v-icon
+            >
+          </v-avatar>
+          <div>
+            <h2 class="text-title">Health, Class & Guardian</h2>
+            <p class="text-detail">Required school record details</p>
+          </div>
+        </div>
+
+        <v-row class="ga-y-2">
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">BLOOD GROUP *</label>
             <v-select
               v-model="form.bloodGroup"
@@ -249,143 +162,134 @@
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-select>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">ETHNICITY *</label>
             <v-text-field
               v-model="form.ethnicity"
-              placeholder="e.g. Lao"
+              placeholder="e.g. ລາວລຸ່ມ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">HEIGHT (cm) *</label>
             <v-text-field
               v-model="form.height"
               type="number"
-              placeholder="e.g. 165"
+              placeholder="165"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">WEIGHT (kg) *</label>
             <v-text-field
               v-model="form.weight"
               type="number"
-              placeholder="e.g. 55"
+              placeholder="55"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-        </v-row>
-      </v-card>
 
-      <!-- Section: Family Network -->
-      <v-card class="intelligence-card pa-6" elevation="0">
-        <div class="d-flex align-center mb-6">
-          <v-avatar color="rose-lighten-5" size="40" class="mr-3 rounded-lg">
-            <v-icon color="rose-darken-1" size="20"
-              >mdi-human-male-female-child</v-icon
-            >
-          </v-avatar>
-          <div>
-            <h2 class="text-title">Guardian Information</h2>
-            <p class="text-detail">Parental and emergency contact profiles</p>
-          </div>
-        </div>
-
-        <v-row class="ga-y-2">
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >FATHER'S FULL NAME</label
+              >GUARDIAN NAME *</label
             >
             <v-text-field
-              v-model="form.fatherName"
-              placeholder="Full Name"
+              v-model="form.parentName"
+              placeholder="Parent / guardian full name"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >MOTHER'S FULL NAME</label
-            >
-            <v-text-field
-              v-model="form.motherName"
-              placeholder="Full Name"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block"
-              >EMERGENCY CONTACT PHONE</label
+              >GUARDIAN PHONE *</label
             >
             <v-text-field
               v-model="form.parentPhone"
-              prepend-inner-icon="mdi-phone"
-              placeholder="e.g. +856 20 ..."
+              placeholder="+856 20 ..."
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
+              :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12" v-if="errorMessage" class="pt-4">
+          <v-col cols="12">
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("classes") }} (optional)</label
+            >
+            <v-select
+              v-model="form.classId"
+              :items="classOptions"
+              placeholder="Assign to a class"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              no-data-text="No classrooms yet"
+            ></v-select>
+          </v-col>
+
+          <v-col cols="12" v-if="errorMessage">
             <v-alert type="error" variant="tonal" density="compact">{{
               errorMessage
             }}</v-alert>
           </v-col>
-
-          <v-col cols="12" class="d-flex justify-end ga-3 pt-6">
-            <v-btn
-              variant="flat"
-              color="grey-lighten-4"
-              class="modern-action-btn secondary border text-slate-700"
-              height="40"
-              @click="$router.back()"
-            >
-              {{ t("cancel") }}
-            </v-btn>
-            <v-btn
-              variant="flat"
-              color="primary"
-              class="modern-action-btn primary elevation-4"
-              height="40"
-              @click="save"
-              :loading="loading"
-            >
-              {{ t("save") }}
-            </v-btn>
-          </v-col>
         </v-row>
       </v-card>
+
+      <div class="d-flex justify-end ga-3">
+        <v-btn
+          variant="flat"
+          color="grey-lighten-4"
+          class="modern-action-btn secondary border text-slate-700"
+          height="42"
+          @click="$router.back()"
+        >
+          {{ t("cancel") }}
+        </v-btn>
+        <v-btn
+          variant="flat"
+          color="primary"
+          class="modern-action-btn primary elevation-4"
+          height="42"
+          type="submit"
+          :loading="loading"
+        >
+          {{ t("save") }}
+        </v-btn>
+      </div>
     </v-form>
   </v-container>
 </template>
@@ -416,18 +320,13 @@ const form = ref({
   gender: null,
   dob: "",
   phone: "",
-  email: "",
-  address: "",
   bloodGroup: null,
   ethnicity: "",
   height: "",
   weight: "",
-  fatherName: "",
-  motherName: "",
+  parentName: "",
   parentPhone: "",
   classId: null,
-  section: null,
-  admissionDate: new Date().toISOString().substring(0, 10),
 });
 
 const genderOptions = [
@@ -435,7 +334,11 @@ const genderOptions = [
   { title: "Female", value: "female" },
 ];
 
-// Real classrooms loaded from the backend (empty until classrooms are created).
+const rules = {
+  required: (v: any) => !!v || t("required"),
+};
+
+// Real classrooms for the optional class dropdown.
 const classOptions = ref<{ title: string; value: string }[]>([]);
 
 onMounted(async () => {
@@ -452,37 +355,12 @@ onMounted(async () => {
   }
 });
 
-const rules = {
-  required: (v: any) => !!v || "Field is required",
-};
-
 const save = async () => {
   errorMessage.value = "";
   const { valid } = await formRef.value.validate();
   if (!valid) return;
 
   const f = form.value;
-  // All fields below are required by the backend.
-  if (
-    !f.firstName ||
-    !f.lastName ||
-    !f.username ||
-    !f.password ||
-    !f.gender ||
-    !f.dob ||
-    !f.phone ||
-    !f.bloodGroup ||
-    !f.ethnicity ||
-    !f.height ||
-    !f.weight ||
-    !f.fatherName ||
-    !f.parentPhone
-  ) {
-    errorMessage.value =
-      "Please fill all required (*) fields, including phone, blood group, ethnicity, height, weight and guardian info.";
-    return;
-  }
-
   loading.value = true;
   try {
     await studentStore.createStudent({
@@ -500,7 +378,7 @@ const save = async () => {
       ethnicity: f.ethnicity,
       first_name: f.firstName,
       last_name: f.lastName,
-      parent_name: f.fatherName || f.motherName,
+      parent_name: f.parentName,
       parent_number: f.parentPhone,
       class_id: f.classId || null,
     });
@@ -532,7 +410,7 @@ const save = async () => {
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 13px !important;
-  padding: 0 16px !important;
+  padding: 0 20px !important;
 }
 
 .modern-action-btn.primary {
