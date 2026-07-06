@@ -7,7 +7,8 @@
         class="modern-sidebar border-0"
         elevation="0"
         floating
-        color="white"
+        color="primary"
+        theme="dark"
       >
         <!-- Sidebar Brand Wrapper -->
         <div class="sidebar-brand-wrapper px-6 py-8 d-flex align-center">
