@@ -21,6 +21,17 @@
           color="white"
           class="modern-action-btn secondary border"
           height="36"
+          to="/teachers/organization"
+        >
+          <v-icon icon="mdi-sitemap-outline" start size="18"></v-icon>
+          Organization
+        </v-btn>
+
+        <v-btn
+          variant="flat"
+          color="white"
+          class="modern-action-btn secondary border"
+          height="36"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
