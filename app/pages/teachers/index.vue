@@ -310,7 +310,7 @@
     </v-card>
 
     <!-- Edit Teacher Dialog -->
-    <v-dialog v-model="editDialog" width="480">
+    <v-dialog v-model="editDialog" width="560" scrollable>
       <v-card rounded="xl" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("teachers") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
