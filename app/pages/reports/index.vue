@@ -203,75 +203,164 @@ ChartJS.register(
 );
 
 const { t } = useI18n();
+const { $axios } = useNuxtApp();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("reports"), disabled: true, to: "/reports" },
 ];
 
-// 1. Student Enrollment Data
-const studentData = {
-  labels: ["2020", "2021", "2022", "2023", "2024", "2025"],
+const PALETTE = [
+  "#14b8a6",
+  "#448AFF",
+  "#6366f1",
+  "#f43f5e",
+  "#f59e0b",
+  "#94a3b8",
+  "#10b981",
+  "#8b5cf6",
+];
+
+// All chart data below is populated from the live server in onMounted().
+const studentData = ref<any>({
+  labels: [],
   datasets: [
     {
-      label: "Total Students",
+      label: "Enrolled Students",
       borderColor: "#14b8a6",
       backgroundColor: "rgba(20, 184, 166, 0.1)",
-      data: [2100, 2450, 2800, 3100, 3250, 3500],
+      data: [],
       fill: true,
       tension: 0.4,
     },
   ],
-};
+});
 
-// 2. Teacher Distribution Data
-const teacherData = {
-  labels: ["Science", "Math", "Language", "Arts", "IT"],
+const teacherData = ref<any>({
+  labels: [],
+  datasets: [{ data: [], backgroundColor: PALETTE, borderWidth: 0 }],
+});
+
+const classData = ref<any>({
+  labels: [],
   datasets: [
-    {
-      data: [25, 30, 20, 15, 10],
-      backgroundColor: ["#14b8a6", "#448AFF", "#6366f1", "#f43f5e", "#f59e0b"],
-      borderWidth: 0,
-    },
+    { label: "Classes", backgroundColor: "#6366f1", borderRadius: 6, data: [] },
   ],
-};
+});
 
-// 3. Class Performance Data
-const classData = {
-  labels: ["G-9", "G-10", "G-11", "G-12"],
+const subjectData = ref<any>({
+  labels: [],
   datasets: [
     {
-      label: "Avg Score",
-      backgroundColor: "#6366f1",
-      borderRadius: 6,
-      data: [78, 85, 82, 91],
-    },
-  ],
-};
-
-// 4. Subject Enrollment Data
-const subjectData = {
-  labels: ["Physics", "Calculus", "English", "History", "Biology"],
-  datasets: [
-    {
-      label: "Enrollment",
+      label: "Coefficient",
       backgroundColor: "rgba(20, 184, 166, 0.8)",
       borderRadius: 4,
-      data: [420, 380, 560, 310, 480],
+      data: [],
     },
   ],
+});
+
+const ethnicData = ref<any>({
+  labels: [],
+  datasets: [{ data: [], backgroundColor: PALETTE }],
+});
+
+const countBy = (arr: any[], keyFn: (x: any) => string) => {
+  const m: Record<string, number> = {};
+  arr.forEach((x) => {
+    const k = keyFn(x) || "—";
+    m[k] = (m[k] || 0) + 1;
+  });
+  return m;
 };
 
-// 5. Ethnic Group Data
-const ethnicData = {
-  labels: ["Lao-Loum", "Hmong", "Khmu", "Yao", "Others"],
-  datasets: [
-    {
-      data: [1800, 650, 420, 220, 160],
-      backgroundColor: ["#14b8a6", "#6366f1", "#f59e0b", "#f43f5e", "#94a3b8"],
-    },
-  ],
-};
+onMounted(async () => {
+  try {
+    const [tRes, cRes, subRes, sRes, yRes] = await Promise.all([
+      $axios.get("/get-all-teachers?limit=100"),
+      $axios.get("/get-all-classrooms?limit=100"),
+      $axios.get("/get-all-subjects?limit=100"),
+      $axios.get("/get-all-students"),
+      $axios.get("/get-all-academic-year"),
+    ]);
+
+    const teachers = tRes.data?.data?.teachers ?? [];
+    const classes = cRes.data?.data?.classrooms ?? [];
+    const subjects = subRes.data?.data?.subjects ?? [];
+    const students = Array.isArray(sRes.data?.data)
+      ? sRes.data.data
+      : (sRes.data?.data?.students ?? []);
+    const years = yRes.data?.data ?? [];
+
+    // Teachers by role
+    const roles = countBy(teachers, (x) => x.role);
+    teacherData.value = {
+      labels: Object.keys(roles),
+      datasets: [
+        { data: Object.values(roles), backgroundColor: PALETTE, borderWidth: 0 },
+      ],
+    };
+
+    // Classrooms by grade level
+    const grades = countBy(classes, (x) => x.gradeLevel?.grade_level_name);
+    classData.value = {
+      labels: Object.keys(grades),
+      datasets: [
+        {
+          label: "Classes",
+          backgroundColor: "#6366f1",
+          borderRadius: 6,
+          data: Object.values(grades),
+        },
+      ],
+    };
+
+    // Subjects by coefficient
+    subjectData.value = {
+      labels: subjects.map((s: any) => s.subject_name),
+      datasets: [
+        {
+          label: "Coefficient",
+          backgroundColor: "rgba(20, 184, 166, 0.8)",
+          borderRadius: 4,
+          data: subjects.map((s: any) => Number(s.coefficient) || 0),
+        },
+      ],
+    };
+
+    // Students by ethnicity
+    const eth = countBy(students, (x) => x.ethnicity);
+    ethnicData.value = {
+      labels: Object.keys(eth),
+      datasets: [{ data: Object.values(eth), backgroundColor: PALETTE }],
+    };
+
+    // Enrolled students per academic year
+    const counts = await Promise.all(
+      years.map((y: any) =>
+        $axios
+          .get(`/enrollments?academic_year_id=${y.id}&status=active`)
+          .then((r) => (r.data?.data || []).length)
+          .catch(() => 0)
+      )
+    );
+    studentData.value = {
+      labels: years.map((y: any) => y.title),
+      datasets: [
+        {
+          label: "Enrolled Students",
+          borderColor: "#14b8a6",
+          backgroundColor: "rgba(20, 184, 166, 0.1)",
+          data: counts,
+          fill: true,
+          tension: 0.4,
+        },
+      ],
+    };
+  } catch (error) {
+    console.error("reports load error:", error);
+  }
+});
 
 // Chart Options
 const lineOptions: any = {
