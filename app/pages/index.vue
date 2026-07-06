@@ -198,7 +198,7 @@
         <v-card elevation="0" class="utility-card dark mb-6 overflow-hidden">
           <div class="pa-6 relative-z">
             <div class="d-flex justify-space-between align-center mb-6">
-              <div class="text-title text-white">Critical Dates</div>
+              <div class="text-title text-white">{{ t("academic") }}</div>
               <v-btn
                 icon="mdi-calendar"
                 variant="text"
