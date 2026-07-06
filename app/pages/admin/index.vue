@@ -318,38 +318,81 @@ const headers = [
   class: "text-detail-tiny pb-2",
 }));
 
-const admins = ref([
-  {
-    id: "#ADM-001",
-    name: "Alex Morgan",
-    email: "alex.m@school.com",
-    image: "https://i.pravatar.cc/150?img=10",
-    role: "Super Admin",
-    department: "IT Department",
-    phone: "+1 (555) 123-4567",
-    status: "Active",
-  },
-  {
-    id: "#ADM-002",
-    name: "Jessica Lee",
-    email: "jessica.l@school.com",
-    image: "https://i.pravatar.cc/150?img=20",
-    role: "Admin",
-    department: "Academic Affairs",
-    phone: "+1 (555) 987-6543",
-    status: "Active",
-  },
-  {
-    id: "#ADM-003",
-    name: "Michael Brown",
-    email: "michael.b@school.com",
-    image: "https://i.pravatar.cc/150?img=30",
-    role: "Moderator",
-    department: "Student Services",
-    phone: "+1 (555) 234-5678",
-    status: "Active",
-  },
-]);
+const admins = computed(() =>
+  teacherStore.teachers.map((u) => ({
+    uuid: u.id,
+    id: u.teacher_id,
+    name: u.full_name || u.username,
+    email: u.username,
+    image: u.avatar,
+    role: capitalize(u.role),
+    roleRaw: u.role,
+    department: "@" + u.username,
+    phone: u.phone_number,
+    genderRaw: u.gender,
+    dob: u.dob ? String(u.dob).substring(0, 10) : "",
+    status: capitalize(u.status),
+    statusRaw: u.status,
+  }))
+);
+
+// ---- Edit / Delete ----
+const editDialog = ref(false);
+const saving = ref(false);
+const editError = ref("");
+const editForm = ref({
+  uuid: "",
+  full_name: "",
+  gender: "",
+  dob: "",
+  phone_number: "",
+  role: "teacher",
+  status: "active",
+});
+
+const openEdit = (item: any) => {
+  editError.value = "";
+  editForm.value = {
+    uuid: item.uuid,
+    full_name: item.name,
+    gender: item.genderRaw || "male",
+    dob: item.dob || "",
+    phone_number: item.phone || "",
+    role: item.roleRaw || "teacher",
+    status: item.statusRaw || "active",
+  };
+  editDialog.value = true;
+};
+
+const saveEdit = async () => {
+  saving.value = true;
+  try {
+    await teacherStore.updateTeacher(editForm.value.uuid, {
+      full_name: editForm.value.full_name,
+      gender: editForm.value.gender,
+      dob: editForm.value.dob,
+      phone_number: editForm.value.phone_number,
+      role: editForm.value.role,
+      status: editForm.value.status,
+    });
+    editDialog.value = false;
+    await teacherStore.fetchTeachers(100, 1);
+  } catch (error: any) {
+    editError.value = error.response?.data?.message || "Failed to update.";
+  } finally {
+    saving.value = false;
+  }
+};
+
+const removeAdmin = async (item: any) => {
+  if (!confirm(t("are_you_sure_delete"))) return;
+  try {
+    await teacherStore.deleteTeacher(item.uuid);
+    await teacherStore.fetchTeachers(100, 1);
+  } catch (error) {
+    console.error(error);
+  }
+};
 </script>
 
 <style scoped>
