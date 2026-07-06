@@ -670,32 +670,4 @@ const removeTeacher = async (item: any) => {
 .border-t {
   border-top: 1px solid #f1f5f9;
 }
-
-/* ---- Organization Chart (node styles live in OrgNode.vue) ---- */
-.org-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.org-scroll::-webkit-scrollbar {
-  height: 6px;
-}
-.org-scroll::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
-  border-radius: 10px;
-}
-
-.tree {
-  display: inline-block;
-  min-width: 100%;
-  padding: 0 8px;
-}
-
-.org-tree-root {
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
 </style>
