@@ -144,37 +144,13 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">POSITION</label>
-            <v-text-field
+            <label class="text-detail-tiny mb-2 d-block">{{
+              t("position")
+            }}</label>
+            <v-combobox
               v-model="form.position"
-              placeholder="e.g. Head of Science"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">DEPARTMENT</label>
-            <v-text-field
-              v-model="form.department"
-              placeholder="e.g. Science"
-              variant="outlined"
-              density="compact"
-              rounded="lg"
-              hide-details="auto"
-              class="premium-input"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">REPORTS TO</label>
-            <v-select
-              v-model="form.managerId"
-              :items="managerOptions"
-              placeholder="Select manager (optional)"
+              :items="positionOptions"
+              placeholder="ເລືອກ ຫຼື ພິມ"
               variant="outlined"
               density="compact"
               rounded="lg"
@@ -182,7 +158,41 @@
               class="premium-input"
               color="primary"
               clearable
-              no-data-text="No other faculty yet"
+            ></v-combobox>
+          </v-col>
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-2 d-block">{{
+              t("department")
+            }}</label>
+            <v-combobox
+              v-model="form.department"
+              :items="departmentOptions"
+              placeholder="ເລືອກ ຫຼື ພິມ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              clearable
+            ></v-combobox>
+          </v-col>
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-2 d-block">{{
+              t("reports_to")
+            }}</label>
+            <v-select
+              v-model="form.managerId"
+              :items="managerOptions"
+              placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              clearable
+              no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
             ></v-select>
           </v-col>
 
