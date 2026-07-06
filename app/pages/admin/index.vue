@@ -241,7 +241,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useTeacherStore } from "~/stores/apiTeacher";
+
 const { t } = useI18n();
 
 definePageMeta({
@@ -249,28 +251,45 @@ definePageMeta({
 });
 
 const search = ref("");
+const teacherStore = useTeacherStore();
 
-const adminStats = [
+const capitalize = (s?: string) =>
+  s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+
+onMounted(() => {
+  teacherStore.fetchTeachers(100, 1);
+});
+
+const adminStats = computed(() => [
   {
-    label: "Total Admins",
-    value: "14",
+    label: "Total Users",
+    value: String(teacherStore.total),
     icon: "mdi-shield-account",
     color: "blue",
   },
   {
-    label: "Active online",
-    value: "3",
+    label: "Active",
+    value: String(teacherStore.activeCount),
     icon: "mdi-check-circle",
     color: "green",
   },
-  { label: "Super Admins", value: "2", icon: "mdi-crown", color: "purple" },
   {
-    label: "Access Requests",
-    value: "0",
+    label: "Admins",
+    value: String(
+      teacherStore.teachers.filter((u) => u.role === "admin").length
+    ),
+    icon: "mdi-crown",
+    color: "purple",
+  },
+  {
+    label: "Inactive",
+    value: String(
+      teacherStore.teachers.filter((u) => u.status !== "active").length
+    ),
     icon: "mdi-clock-outline",
     color: "orange",
   },
-];
+]);
 
 const headers = [
   {
