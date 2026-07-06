@@ -34,6 +34,12 @@ export const useStudentStore = defineStore("student", {
       }
     },
 
+    async fetchStudentById(id: string) {
+      const { $axios } = useNuxtApp();
+      const response = await $axios.get(`/get-student-by-id/${id}`);
+      return response.data?.data ?? null;
+    },
+
     async createStudent(payload: Record<string, unknown>) {
       const { $axios } = useNuxtApp();
       // Backend requires: username, password, role, avatar, gender, status,
