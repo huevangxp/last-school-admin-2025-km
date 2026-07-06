@@ -86,8 +86,8 @@
               icon="mdi-fit-to-screen-outline"
               variant="text"
               size="small"
-              title="Reset zoom"
-              @click="resetZoom"
+              title="Fit to screen"
+              @click="fitToScreen"
             ></v-btn>
           </div>
         </div>
