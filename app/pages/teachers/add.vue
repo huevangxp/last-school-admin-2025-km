@@ -350,6 +350,7 @@ const form = ref({
   role: "teacher",
   position: "",
   department: "",
+  layer: null as number | null,
   managerId: null as string | null,
 });
 
