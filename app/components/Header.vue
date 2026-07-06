@@ -551,16 +551,24 @@ const logoutButton = () => {
   border: 1.5px dashed rgba(20, 184, 166, 0.2) !important;
 }
 
+/* Sidebar body flows naturally — no nested scroll region. */
 .scroll-container {
-  height: calc(100vh - 180px);
-  overflow-y: auto;
+  height: auto;
+  overflow: visible;
 }
 
-.scroll-container::-webkit-scrollbar {
+/* Keep the drawer itself from scrolling; if the menu ever overflows on a very
+   short screen it falls back to a thin scrollbar rather than a nested one. */
+.modern-sidebar :deep(.v-navigation-drawer__content) {
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.modern-sidebar :deep(.v-navigation-drawer__content)::-webkit-scrollbar {
   width: 4px;
 }
 
-.scroll-container::-webkit-scrollbar-thumb {
+.modern-sidebar :deep(.v-navigation-drawer__content)::-webkit-scrollbar-thumb {
   background: #e2e8f0;
   border-radius: 10px;
 }
