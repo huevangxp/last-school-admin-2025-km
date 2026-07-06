@@ -8,6 +8,9 @@ export interface Teacher {
   phone_number: string;
   full_name: string;
   role: string;
+  position?: string | null;
+  department?: string | null;
+  manager_id?: string | null;
   login_count: number;
   last_login_at: string | null;
   status: string;
