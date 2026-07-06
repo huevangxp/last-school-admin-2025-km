@@ -579,6 +579,15 @@ const teachers = computed(() =>
   }))
 );
 
+// ---- Organization chart ----
+const showChart = ref(true);
+const admins = computed(() =>
+  teachers.value.filter((x) => (x.role || "").toLowerCase() === "admin")
+);
+const staff = computed(() =>
+  teachers.value.filter((x) => (x.role || "").toLowerCase() !== "admin")
+);
+
 // ---- Edit / Delete ----
 const editDialog = ref(false);
 const saving = ref(false);
