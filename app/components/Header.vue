@@ -441,7 +441,7 @@ const groupedMenuItems = ref<MenuSection[]>([
         icon: "mdi-account-school-outline",
         to: "/students",
       },
-      { title: "enroll", icon: "mdi-account-plus-outline", to: "/enroll" },
+      { title: "enroll", icon: "mdi-account-plus-outline", to: "/students/add" },
       { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects" },
       { title: "scores", icon: "mdi-star-outline", to: "/scores" },
