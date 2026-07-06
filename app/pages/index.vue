@@ -232,8 +232,8 @@
         <!-- System Intelligence Feed -->
         <v-card elevation="0" class="utility-card pb-4">
           <div class="pa-6 pb-2">
-            <h3 class="text-title mb-1">System Feed</h3>
-            <p class="text-detail mb-6">Automation & audit logs</p>
+            <h3 class="text-title mb-1">{{ t("classes") }}</h3>
+            <p class="text-detail mb-6">Recent classrooms</p>
 
             <div class="feed-container">
               <div v-for="(log, i) in activities" :key="i" class="feed-item">
