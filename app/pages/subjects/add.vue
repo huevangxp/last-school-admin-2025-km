@@ -261,4 +261,15 @@ const save = async () => {
 .text-slate-700 {
   color: #334155 !important;
 }
+
+.link-btn {
+  font-size: 11px;
+  font-weight: 800;
+  color: #0d9488;
+  background: transparent;
+  cursor: pointer;
+}
+.link-btn:hover {
+  text-decoration: underline;
+}
 </style>
