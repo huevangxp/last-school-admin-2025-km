@@ -57,17 +57,53 @@
         ></v-progress-circular>
       </div>
 
-      <div v-else class="org-scroll pt-2">
-        <div v-if="teachers.length" class="tree">
-          <ul class="org-tree-root">
-            <OrgNode :node="orgRoot" />
-          </ul>
+      <template v-else>
+        <!-- Zoom controls -->
+        <div v-if="teachers.length" class="d-flex justify-end mb-2">
+          <div class="zoom-bar d-flex align-center">
+            <v-btn
+              icon="mdi-minus"
+              variant="text"
+              size="small"
+              :disabled="zoom <= MIN_ZOOM"
+              @click="zoomOut"
+            ></v-btn>
+            <span
+              class="zoom-label text-detail-tiny font-weight-black"
+              @click="resetZoom"
+              title="Reset"
+              >{{ Math.round(zoom * 100) }}%</span
+            >
+            <v-btn
+              icon="mdi-plus"
+              variant="text"
+              size="small"
+              :disabled="zoom >= MAX_ZOOM"
+              @click="zoomIn"
+            ></v-btn>
+            <v-divider vertical class="mx-1"></v-divider>
+            <v-btn
+              icon="mdi-fit-to-screen-outline"
+              variant="text"
+              size="small"
+              title="Reset zoom"
+              @click="resetZoom"
+            ></v-btn>
+          </div>
         </div>
 
-        <div v-else class="text-detail py-10 text-center">
-          No faculty members to display yet.
+        <div class="org-scroll pt-2" @wheel="onWheel">
+          <div v-if="teachers.length" class="tree" :style="treeStyle">
+            <ul class="org-tree-root">
+              <OrgNode :node="orgRoot" />
+            </ul>
+          </div>
+
+          <div v-else class="text-detail py-10 text-center">
+            No faculty members to display yet.
+          </div>
         </div>
-      </div>
+      </template>
     </v-card>
   </v-container>
 </template>
