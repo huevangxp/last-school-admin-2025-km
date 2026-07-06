@@ -674,7 +674,7 @@ const removeTeacher = async (item: any) => {
   border-top: 1px solid #f1f5f9;
 }
 
-/* ---- Organization Chart ---- */
+/* ---- Organization Chart (node styles live in OrgNode.vue) ---- */
 .org-scroll {
   overflow-x: auto;
   overflow-y: hidden;
@@ -692,135 +692,13 @@ const removeTeacher = async (item: any) => {
   display: inline-block;
   min-width: 100%;
   padding: 0 8px;
-  white-space: nowrap;
 }
 
-.tree ul {
+.org-tree-root {
   display: flex;
   justify-content: center;
-  padding-top: 26px;
-  position: relative;
+  padding: 0;
   margin: 0;
-  padding-left: 0;
   list-style: none;
-}
-
-.tree li {
-  list-style: none;
-  text-align: center;
-  position: relative;
-  padding: 26px 14px 0;
-}
-
-/* Connector lines */
-.tree li::before,
-.tree li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 50%;
-  border-top: 2px solid #d9e2ec;
-  width: 50%;
-  height: 26px;
-}
-.tree li::after {
-  right: auto;
-  left: 50%;
-  border-left: 2px solid #d9e2ec;
-}
-.tree li:only-child::after,
-.tree li:only-child::before {
-  display: none;
-}
-.tree li:only-child {
-  padding-top: 0;
-}
-.tree li:first-child::before,
-.tree li:last-child::after {
-  border: 0 none;
-}
-.tree li:last-child::before {
-  border-right: 2px solid #d9e2ec;
-  border-radius: 0 6px 0 0;
-}
-.tree li:first-child::after {
-  border-radius: 6px 0 0 0;
-}
-.tree ul ul::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  border-left: 2px solid #d9e2ec;
-  width: 0;
-  height: 26px;
-}
-.tree > ul {
-  padding-top: 0;
-}
-
-/* Node card */
-.org-node {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 132px;
-  padding: 14px 16px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-  white-space: normal;
-  vertical-align: top;
-}
-
-.org-node:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.3);
-}
-
-.org-node-name {
-  font-weight: 800;
-  font-size: 13px;
-  color: #0f172a;
-  line-height: 1.2;
-}
-
-.org-node-role {
-  font-size: 10.5px;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
-}
-
-/* Root (school) node */
-.org-root {
-  background: linear-gradient(135deg, #14b8a5 0%, #0d9488 100%);
-  border: 0;
-  box-shadow: 0 10px 24px -10px rgba(13, 148, 136, 0.5);
-}
-.org-root .org-node-name {
-  color: #ffffff;
-}
-.org-root .org-node-role {
-  color: rgba(255, 255, 255, 0.8);
-}
-.org-root-logo {
-  background: #ffffff;
-  padding: 6px;
-}
-
-/* Department nodes */
-.org-dept {
-  background: #f0fdfa;
-  border-color: #99f6e4;
-}
-.org-dept .org-node-name {
-  color: #0d9488;
 }
 </style>
