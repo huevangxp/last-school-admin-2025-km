@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
 const { t } = useI18n();
@@ -118,6 +118,28 @@ const teacherStore = useTeacherStore();
 onMounted(() => {
   teacherStore.fetchTeachers(100, 1);
 });
+
+// ---- Zoom ----
+const MIN_ZOOM = 0.4;
+const MAX_ZOOM = 1.6;
+const ZOOM_STEP = 0.1;
+const zoom = ref(1);
+
+const clampZoom = (v: number) =>
+  Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.round(v * 100) / 100));
+const zoomIn = () => (zoom.value = clampZoom(zoom.value + ZOOM_STEP));
+const zoomOut = () => (zoom.value = clampZoom(zoom.value - ZOOM_STEP));
+const resetZoom = () => (zoom.value = 1);
+
+// Ctrl/⌘ + wheel zooms; plain wheel scrolls normally.
+const onWheel = (e: WheelEvent) => {
+  if (!e.ctrlKey && !e.metaKey) return;
+  e.preventDefault();
+  zoom.value = clampZoom(zoom.value + (e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP));
+};
+
+// `zoom` (CSS) scales layout so the scroll container tracks the new size.
+const treeStyle = computed(() => ({ zoom: zoom.value }));
 
 const capitalize = (s?: string) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
