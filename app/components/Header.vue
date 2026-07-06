@@ -106,40 +106,6 @@
           </div>
         </div>
 
-        <!-- Upgrade / Help Card -->
-        <template v-slot:append>
-          <div class="pa-6">
-            <v-card
-              color="teal-lighten-5"
-              flat
-              rounded="xl"
-              class="pa-4 border-dashed"
-            >
-              <div class="d-flex align-center mb-3">
-                <v-avatar color="teal-darken-1" size="32" class="mr-2">
-                  <v-icon
-                    icon="mdi-lightning-bolt"
-                    size="18"
-                    color="white"
-                  ></v-icon>
-                </v-avatar>
-                <span class="text-body-2 font-weight-black text-teal-darken-4"
-                  >Pro Support</span
-                >
-              </div>
-              <div class="text-caption text-teal-darken-2 mb-3">
-                Get 24/7 priority assistance for your school.
-              </div>
-              <v-btn
-                block
-                size="small"
-                color="teal-darken-1"
-                class="text-none rounded-lg font-weight-bold"
-                >Contact Support</v-btn
-              >
-            </v-card>
-          </div>
-        </template>
       </v-navigation-drawer>
     </ClientOnly>
     <v-app-bar elevation="0" height="72" class="px-6 glass-header">
