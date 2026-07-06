@@ -41,7 +41,7 @@
             class="mb-6"
           >
             <div
-              class="px-4 mb-2 text-uppercase text-caption font-weight-black text-grey-lighten-1 tracking-widest"
+              class="px-4 mb-2 text-uppercase text-caption font-weight-black sidebar-section-label tracking-widest"
             >
               {{ section.label }}
             </div>
