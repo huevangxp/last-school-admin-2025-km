@@ -12,7 +12,10 @@ export const useSubjectStore = defineStore("subject", {
       this.loading = true;
       this.error = "";
       try {
-        const res = await $axios.get("/get-all-subjects");
+        // Backend defaults to limit=10; request everything for the list view.
+        const res = await $axios.get("/get-all-subjects", {
+          params: { limit: 1000, page: 1 },
+        });
         const payload = res.data?.data;
         this.subjects = Array.isArray(payload)
           ? payload
