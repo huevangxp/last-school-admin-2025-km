@@ -121,18 +121,16 @@
             class="pa-6 d-flex justify-space-between align-center border-b"
           >
             <div>
-              <div class="text-title mb-1">Response Queue</div>
-              <div class="text-detail">
-                Administrative threads requiring immediate attention
-              </div>
+              <div class="text-title mb-1">{{ t("students") }}</div>
+              <div class="text-detail">Latest registered students</div>
             </div>
             <v-chip
-              color="rose"
+              color="primary"
               variant="flat"
               size="x-small"
               class="font-weight-black px-2"
             >
-              {{ flaggedStudents.length }} PENDING
+              {{ studentCount }} TOTAL
             </v-chip>
           </header>
 
