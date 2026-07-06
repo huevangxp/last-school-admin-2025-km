@@ -11,6 +11,7 @@ export interface Teacher {
   position?: string | null;
   department?: string | null;
   manager_id?: string | null;
+  layer?: number | null;
   login_count: number;
   last_login_at: string | null;
   status: string;
