@@ -639,6 +639,9 @@ const saveEdit = async () => {
       phone_number: editForm.value.phone_number,
       role: editForm.value.role,
       status: editForm.value.status,
+      position: editForm.value.position,
+      department: editForm.value.department,
+      manager_id: editForm.value.manager_id,
     });
     editDialog.value = false;
     await teacherStore.fetchTeachers(100, 1);
