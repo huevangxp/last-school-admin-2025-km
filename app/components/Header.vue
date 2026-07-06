@@ -444,10 +444,15 @@ const logoutButton = () => {
   z-index: 100 !important;
 }
 
-/* Sidebar Styling */
+/* Sidebar Styling — primary (teal) gradient background */
 .modern-sidebar {
-  border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+  background: linear-gradient(180deg, #14b8a5 0%, #0d9488 55%, #0b7d72 100%) !important;
+  border-right: 0 !important;
   z-index: 101 !important;
+}
+
+.sidebar-brand-wrapper {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .sidebar-brand-wrapper .brand-logo-container {
@@ -458,22 +463,38 @@ const logoutButton = () => {
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 8px 16px -6px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.25);
   padding: 6px;
+}
+
+.brand-subtitle {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Section header labels */
+.sidebar-section-label {
+  color: rgba(255, 255, 255, 0.55) !important;
 }
 
 /* Nav Item Styling */
 .modern-nav-item {
-  color: #64748b !important;
+  color: rgba(255, 255, 255, 0.85) !important;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0 16px !important;
   min-height: 44px !important;
 }
 
+.modern-nav-item :deep(.v-icon) {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
 .modern-nav-item:hover {
-  background-color: #f1f5f9 !important;
-  color: #0f172a !important;
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+.modern-nav-item:hover :deep(.v-icon) {
+  color: #ffffff !important;
 }
 
 /* Nested (child) items sit slightly indented under their parent group */
@@ -481,25 +502,20 @@ const logoutButton = () => {
   padding-left: 28px !important;
 }
 
+/* Active item: solid white pill with teal text */
 .active-item {
-  background: linear-gradient(
-    135deg,
-    rgba(20, 184, 166, 0.1) 0%,
-    rgba(13, 148, 136, 0.05) 100%
-  ) !important;
+  background: #ffffff !important;
   color: #0d9488 !important;
   position: relative;
+  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.35);
 }
 
-.active-item::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 12px;
-  bottom: 12px;
-  width: 4px;
-  background: #14b8a6;
-  border-radius: 0 4px 4px 0;
+.active-item :deep(.v-icon) {
+  color: #0d9488 !important;
+}
+
+.active-item :deep(.v-list-item-title) {
+  color: #0d9488 !important;
 }
 
 /* Search Input */
