@@ -586,7 +586,7 @@ const logoutButton = () => {
 }
 
 .modern-sidebar :deep(.v-navigation-drawer__content)::-webkit-scrollbar-thumb {
-  background: #e2e8f0;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
 </style>
