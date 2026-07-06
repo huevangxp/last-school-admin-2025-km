@@ -329,16 +329,31 @@ const orgRoot = computed(() => {
   gap: 8px;
 }
 
-/* Org chart wrapper (node styles live in OrgNode.vue) */
-.org-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
+/* Pannable / zoomable viewport (node styles live in OrgNode.vue) */
+.org-viewport {
+  position: relative;
+  overflow: auto;
+  height: 68vh;
+  min-height: 420px;
+  cursor: grab;
+  background:
+    radial-gradient(circle, #e2e8f0 1px, transparent 1px) 0 0 / 22px 22px;
+  border-radius: 12px;
+}
+.org-viewport.grabbing {
+  cursor: grabbing;
+}
+/* Don't select text while dragging to pan. */
+.org-viewport.grabbing,
+.org-viewport.grabbing * {
+  user-select: none;
 }
 
-.org-scroll::-webkit-scrollbar {
-  height: 6px;
+.org-viewport::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
-.org-scroll::-webkit-scrollbar-thumb {
+.org-viewport::-webkit-scrollbar-thumb {
   background: #e2e8f0;
   border-radius: 10px;
 }
@@ -346,7 +361,7 @@ const orgRoot = computed(() => {
 .tree {
   display: inline-block;
   min-width: 100%;
-  padding: 0 8px;
+  padding: 24px 16px;
 }
 
 .org-tree-root {
