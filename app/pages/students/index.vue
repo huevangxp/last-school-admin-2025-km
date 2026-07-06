@@ -213,7 +213,7 @@
               variant="text"
               size="x-small"
               color="primary"
-              @click="openEdit(item)"
+              :to="`/students/edit/${item.uuid}`"
             ></v-btn>
             <v-btn
               icon="mdi-trash-can-outline"
