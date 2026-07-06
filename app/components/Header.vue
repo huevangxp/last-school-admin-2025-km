@@ -497,9 +497,30 @@ const logoutButton = () => {
   color: #ffffff !important;
 }
 
+/* Expand / collapse chevron on group headers stays legible on teal */
+.modern-sidebar :deep(.v-list-group__header .v-list-item__append .v-icon) {
+  color: rgba(255, 255, 255, 0.7) !important;
+  opacity: 1;
+}
+
 /* Nested (child) items sit slightly indented under their parent group */
 .modern-nav-child {
   padding-left: 28px !important;
+}
+
+/* Faint guide line down the open child group */
+.modern-sidebar :deep(.v-list-group__items) {
+  position: relative;
+}
+
+.modern-sidebar :deep(.v-list-group__items)::before {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Active item: soft light-teal tint pill with white text */
