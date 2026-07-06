@@ -233,6 +233,76 @@
         </template>
       </v-data-table>
     </v-card>
+
+    <!-- Edit User Dialog -->
+    <v-dialog v-model="editDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="text-title mb-4">{{ t("edit") }} {{ t("admin") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+        <v-text-field
+          v-model="editForm.full_name"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <v-row>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("role") }}</label>
+            <v-select
+              v-model="editForm.role"
+              :items="['teacher', 'admin']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+            <v-select
+              v-model="editForm.status"
+              :items="['active', 'inactive']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+        </v-row>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("phone") }}</label>
+        <v-text-field
+          v-model="editForm.phone_number"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-text-field>
+
+        <v-alert
+          v-if="editError"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ editError }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="editDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveEdit"
+            >{{ t("save") }}</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
