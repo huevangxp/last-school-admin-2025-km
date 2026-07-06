@@ -133,10 +133,11 @@ const orgRoot = computed(() => {
     else roots.push(node);
   });
 
-  // Assign org layer: top-level people = Layer 1, each level deeper +1.
+  // Layer per node: use the admin-assigned layer when set, otherwise fall back
+  // to the depth in the reporting tree (top-level = 1, each level deeper +1).
   const assignLayers = (nodes: any[], layer: number) => {
     nodes.forEach((n) => {
-      n.layer = layer;
+      n.layer = n.explicitLayer ?? layer;
       if (n.children?.length) assignLayers(n.children, layer + 1);
     });
   };
