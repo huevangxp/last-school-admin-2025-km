@@ -429,6 +429,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
+import { positionOptions, departmentOptions } from "~/utils/orgPresets";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
 const { t } = useI18n();
