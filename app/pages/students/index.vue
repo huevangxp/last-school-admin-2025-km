@@ -270,11 +270,13 @@
     </v-card>
 
     <!-- Edit Student Dialog -->
-    <v-dialog v-model="editDialog" width="480">
+    <v-dialog v-model="editDialog" width="720" scrollable>
       <v-card rounded="xl" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("students") }}</div>
-        <v-row>
-          <v-col cols="6">
+
+        <v-row class="ga-y-2">
+          <!-- Identity -->
+          <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-1 d-block">{{
               t("firstname")
             }}</label>
@@ -286,7 +288,7 @@
               hide-details
             ></v-text-field>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-1 d-block">{{
               t("lastname")
             }}</label>
@@ -298,9 +300,8 @@
               hide-details
             ></v-text-field>
           </v-col>
-        </v-row>
-        <v-row class="mt-1">
-          <v-col cols="6">
+
+          <v-col cols="12" md="4">
             <label class="text-detail-tiny mb-1 d-block">{{ t("gender") }}</label>
             <v-select
               v-model="editForm.gender"
@@ -311,7 +312,18 @@
               hide-details
             ></v-select>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" md="4">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("dob") }}</label>
+            <v-text-field
+              v-model="editForm.dob"
+              type="date"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
             <label class="text-detail-tiny mb-1 d-block">{{ t("phone") }}</label>
             <v-text-field
               v-model="editForm.phone_number"
@@ -321,16 +333,127 @@
               hide-details
             ></v-text-field>
           </v-col>
+
+          <!-- Health -->
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-1 d-block">BLOOD GROUP</label>
+            <v-select
+              v-model="editForm.blood_group"
+              :items="bloodGroups"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-1 d-block">ETHNICITY</label>
+            <v-select
+              v-model="editForm.ethnicity"
+              :items="ethnicityOptions"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+              no-data-text="No ethnic groups yet"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-1 d-block">HEIGHT (cm)</label>
+            <v-text-field
+              v-model="editForm.height"
+              type="number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <label class="text-detail-tiny mb-1 d-block">WEIGHT (kg)</label>
+            <v-text-field
+              v-model="editForm.weight"
+              type="number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+
+          <!-- Guardian -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-1 d-block">GUARDIAN NAME</label>
+            <v-text-field
+              v-model="editForm.parent_name"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-1 d-block">GUARDIAN PHONE</label>
+            <v-text-field
+              v-model="editForm.parent_number"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-text-field>
+          </v-col>
+
+          <!-- Class: grade level → classroom cascade -->
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-1 d-block"
+              >ຊັ້ນຮຽນ / GRADE LEVEL</label
+            >
+            <v-select
+              v-model="selectedGradeLevel"
+              :items="gradeLevelOptions"
+              placeholder="ເລືອກຊັ້ນຮຽນກ່ອນ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+              no-data-text="No grade levels yet"
+              @update:model-value="onGradeLevelChange"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-1 d-block"
+              >ຫ້ອງຮຽນ / CLASSROOM</label
+            >
+            <v-select
+              v-model="editForm.class_id"
+              :items="classOptions"
+              :disabled="!selectedGradeLevel"
+              :loading="loadingClassrooms"
+              placeholder="ເລືອກຫ້ອງຮຽນ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+              :no-data-text="
+                selectedGradeLevel
+                  ? 'No classrooms for this grade level'
+                  : 'ເລືອກຊັ້ນຮຽນກ່ອນ'
+              "
+            ></v-select>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+            <v-select
+              v-model="editForm.status"
+              :items="['active', 'inactive']"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+            ></v-select>
+          </v-col>
         </v-row>
-        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("status") }}</label>
-        <v-select
-          v-model="editForm.status"
-          :items="['active', 'inactive']"
-          variant="outlined"
-          density="compact"
-          rounded="lg"
-          hide-details
-        ></v-select>
 
         <v-alert
           v-if="editError"
