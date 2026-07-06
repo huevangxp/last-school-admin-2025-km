@@ -386,20 +386,37 @@
           </v-col>
         </v-row>
 
-        <label class="text-detail-tiny mb-1 mt-3 d-block">{{
-          t("reports_to")
-        }}</label>
-        <v-select
-          v-model="editForm.manager_id"
-          :items="managerOptions.filter((m) => m.value !== editForm.uuid)"
-          placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
-          variant="outlined"
-          density="compact"
-          rounded="lg"
-          hide-details
-          clearable
-          no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
-        ></v-select>
+        <v-row class="mt-1">
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">LAYER</label>
+            <v-select
+              v-model="editForm.layer"
+              :items="layerOptions"
+              placeholder="ເລືອກຊັ້ນ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+              clearable
+            ></v-select>
+          </v-col>
+          <v-col cols="6">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("reports_to")
+            }}</label>
+            <v-select
+              v-model="editForm.manager_id"
+              :items="managerOptions.filter((m) => m.value !== editForm.uuid)"
+              placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details
+              clearable
+              no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
+            ></v-select>
+          </v-col>
+        </v-row>
 
         <v-alert
           v-if="editError"
