@@ -522,51 +522,13 @@ const teachers = computed(() =>
   }))
 );
 
-// ---- Organization chart ----
-const showChart = ref(true);
-
-// Teachers available as "reports to" managers in the forms.
+// Teachers available as "reports to" managers in the edit form.
 const managerOptions = computed(() =>
   teachers.value.map((tc) => ({
     title: `${tc.username}${tc.position ? " — " + tc.position : ""}`,
     value: tc.uuid,
   }))
 );
-
-// Build a real reporting tree from manager_id, under a synthetic school root.
-const orgRoot = computed(() => {
-  const byId: Record<string, any> = {};
-  teachers.value.forEach((tc) => {
-    byId[tc.uuid] = {
-      uuid: tc.uuid,
-      name: tc.username,
-      image: tc.image,
-      title:
-        tc.position ||
-        (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
-      department: tc.department,
-      status: tc.status,
-      children: [],
-    };
-  });
-
-  const roots: any[] = [];
-  teachers.value.forEach((tc) => {
-    const node = byId[tc.uuid];
-    const manager = tc.managerId ? byId[tc.managerId] : null;
-    // Guard against a node being its own manager / broken references.
-    if (manager && manager !== node) manager.children.push(node);
-    else roots.push(node);
-  });
-
-  return {
-    uuid: "__school__",
-    isRoot: true,
-    name: t("schoolmanagement"),
-    title: t("management"),
-    children: roots,
-  };
-});
 
 // ---- Edit / Delete ----
 const editDialog = ref(false);
