@@ -593,6 +593,7 @@ const openEdit = (item: any) => {
     status: item.statusRaw || "active",
     position: item.position || "",
     department: item.department || "",
+    layer: item.layer ?? null,
     manager_id: item.managerId || null,
   };
   editDialog.value = true;
