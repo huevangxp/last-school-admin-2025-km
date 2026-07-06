@@ -215,13 +215,6 @@
           </v-chip>
         </template>
 
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              Showing 1-{{ subjects.length }} of {{ subjects.length }} results
-            </div>
-          </div>
-        </template>
       </v-data-table>
     </v-card>
 
