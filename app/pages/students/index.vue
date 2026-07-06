@@ -388,14 +388,6 @@ const students = computed(() =>
       parentName: s.parent_name || s.father_name || s.mother_name || "",
       status: capitalize(s.status) || "Active",
       statusRaw: s.status || "active",
-      // Raw fields needed to fully edit the record.
-      dobRaw: (s.dob || "").slice(0, 10),
-      bloodGroupRaw: s.blood_group || "",
-      ethnicityRaw: s.ethnicity || "",
-      heightRaw: s.height || "",
-      weightRaw: s.weight || "",
-      parentNumberRaw: s.parent_number || s.parent_phone || "",
-      classIdRaw: s.class_id || null,
     };
   })
 );
