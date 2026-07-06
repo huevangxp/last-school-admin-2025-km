@@ -394,7 +394,6 @@ const save = async () => {
       parent_number: f.parentPhone,
       class_id: f.classId || null,
     });
-    router.push("/students");
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
