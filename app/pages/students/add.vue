@@ -245,21 +245,45 @@
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12">
+          <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >{{ t("classes") }} (optional)</label
+              >ຊັ້ນຮຽນ / GRADE LEVEL (optional)</label
             >
             <v-select
-              v-model="form.classId"
-              :items="classOptions"
-              placeholder="Assign to a class"
+              v-model="selectedGradeLevel"
+              :items="gradeLevelOptions"
+              placeholder="ເລືອກຊັ້ນຮຽນກ່ອນ"
               variant="outlined"
               density="compact"
               rounded="lg"
               hide-details="auto"
               class="premium-input"
               color="primary"
-              no-data-text="No classrooms yet"
+              no-data-text="No grade levels yet"
+              @update:model-value="onGradeLevelChange"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="text-detail-tiny mb-2 d-block"
+              >ຫ້ອງຮຽນ / CLASSROOM (optional)</label
+            >
+            <v-select
+              v-model="form.classId"
+              :items="classOptions"
+              :disabled="!selectedGradeLevel"
+              :loading="loadingClassrooms"
+              placeholder="ເລືອກຫ້ອງຮຽນ"
+              variant="outlined"
+              density="compact"
+              rounded="lg"
+              hide-details="auto"
+              class="premium-input"
+              color="primary"
+              :no-data-text="
+                selectedGradeLevel
+                  ? 'No classrooms for this grade level'
+                  : 'ເລືອກຊັ້ນຮຽນກ່ອນ'
+              "
             ></v-select>
           </v-col>
 
