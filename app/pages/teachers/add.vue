@@ -328,10 +328,9 @@ const managerOptions = computed(() =>
   }))
 );
 
-// The layer the new teacher will land on: top-level = 1, otherwise
-// one below the chosen manager.
-const newTeacherLayer = computed(() =>
-  form.value.managerId ? (layerById.value[form.value.managerId] ?? 1) + 1 : 1
+// Suggested layer based on the chosen manager (one deeper than them).
+const suggestedLayer = computed(() =>
+  form.value.managerId ? (layerById.value[form.value.managerId] ?? 1) + 1 : null
 );
 
 const breadcrumbs = [
