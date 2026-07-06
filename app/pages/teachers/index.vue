@@ -611,6 +611,7 @@ const saveEdit = async () => {
       status: editForm.value.status,
       position: editForm.value.position,
       department: editForm.value.department,
+      layer: editForm.value.layer,
       manager_id: editForm.value.manager_id,
     });
     editDialog.value = false;
