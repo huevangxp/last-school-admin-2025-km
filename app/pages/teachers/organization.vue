@@ -132,6 +132,15 @@ const orgRoot = computed(() => {
     else roots.push(node);
   });
 
+  // Assign org layer: top-level people = Layer 1, each level deeper +1.
+  const assignLayers = (nodes: any[], layer: number) => {
+    nodes.forEach((n) => {
+      n.layer = layer;
+      if (n.children?.length) assignLayers(n.children, layer + 1);
+    });
+  };
+  assignLayers(roots, 1);
+
   return {
     uuid: "__school__",
     isRoot: true,
