@@ -238,7 +238,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >GUARDIAN PHONE *</label
+              >{{ t("guardian-phone") }} *</label
             >
             <v-text-field
               v-model="form.parentPhone"

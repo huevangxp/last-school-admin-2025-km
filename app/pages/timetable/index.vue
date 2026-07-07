@@ -312,7 +312,7 @@ const clearCell = async (cell: any) => {
     await scheduleStore.deleteCell(cell.id);
     await scheduleStore.fetchSchedule(classId.value!, yearId.value!);
   } catch (error) {
-    ui.notify("Failed to clear.", "error");
+    ui.notify(t("failed-to-clear"), "error");
   }
 };
 </script>
