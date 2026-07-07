@@ -126,7 +126,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No classrooms yet.</div>
+          <div class="text-detail py-8 text-center">{{ t("no_classrooms") }}</div>
         </template>
         <!-- Class Name Slot -->
         <template v-slot:item.title="{ item }">
@@ -205,7 +205,8 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Showing 1-{{ classes.length }} of {{ classes.length }} results
+              {{ t("showing") }} 1-{{ classes.length }} {{ t("of") }}
+              {{ classes.length }} {{ t("results") }}
             </div>
           </div>
         </template>
