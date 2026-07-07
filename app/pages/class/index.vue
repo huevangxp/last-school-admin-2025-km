@@ -502,7 +502,9 @@ const headers = [
 }));
 
 const classes = computed(() =>
-  classroomStore.classrooms.map((c) => ({
+  classroomStore.classrooms
+    .filter((c) => !selectedGrade.value || c.grade_level_id === selectedGrade.value)
+    .map((c) => ({
     uuid: c.id,
     classId: c.classroom_code,
     title: c.classroom_name,
