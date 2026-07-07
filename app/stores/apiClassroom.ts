@@ -9,6 +9,26 @@ export const useClassroomStore = defineStore("classroom", {
     loading: false,
     error: "" as string,
   }),
+  getters: {
+    // The most recent academic year: prefer an "active" one, otherwise the one
+    // with the latest start_date. Used to default selectors to the current year.
+    latestAcademicYear: (state): any => {
+      if (!state.academicYears.length) return null;
+      const sorted = [...state.academicYears].sort((a: any, b: any) => {
+        const activeA = a.status === "active" ? 1 : 0;
+        const activeB = b.status === "active" ? 1 : 0;
+        if (activeA !== activeB) return activeB - activeA;
+        return (
+          new Date(b.start_date || 0).getTime() -
+          new Date(a.start_date || 0).getTime()
+        );
+      });
+      return sorted[0];
+    },
+    latestAcademicYearId(): string | null {
+      return this.latestAcademicYear?.id ?? null;
+    },
+  },
   actions: {
     async fetchClassrooms(limit = 100) {
       const { $axios } = useNuxtApp();
