@@ -294,12 +294,16 @@ const dialog = ref(false);
 const isEdit = ref(false);
 const saving = ref(false);
 const formError = ref("");
+
+// New activities default their date to today.
+const todayStr = () => new Date().toISOString().substring(0, 10);
+
 const form = ref({
   id: "",
   title: "",
   description: "",
   location: "",
-  activity_date: "",
+  activity_date: todayStr(),
   activity_status: "active",
 });
 
@@ -309,7 +313,7 @@ const resetForm = () => {
     title: "",
     description: "",
     location: "",
-    activity_date: "",
+    activity_date: todayStr(),
     activity_status: "active",
   };
   formError.value = "";
