@@ -333,10 +333,17 @@ const orgRoots = computed(() => {
       .sort((a, b) => b.length - a.length)
       .forEach((group) => {
         let idx = 0;
-        for (let i = 1; i < counts.length; i++)
-          if (counts[i] < counts[idx]) idx = i;
-        group.forEach((tc) => deputyNodes[idx].children.push(mk(tc)));
-        counts[idx] += group.length;
+        let min = counts[0] ?? 0;
+        for (let i = 1; i < counts.length; i++) {
+          const c = counts[i] ?? 0;
+          if (c < min) {
+            min = c;
+            idx = i;
+          }
+        }
+        const deputy = deputyNodes[idx];
+        if (deputy) group.forEach((tc) => deputy.children.push(mk(tc)));
+        counts[idx] = min + group.length;
       });
   }
 
