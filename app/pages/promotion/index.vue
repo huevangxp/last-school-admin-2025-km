@@ -185,10 +185,12 @@ const breadcrumbs = [
   { title: t("promotion"), disabled: true, to: "/promotion" },
 ];
 
-onMounted(() => {
+onMounted(async () => {
   classroomStore.fetchClassrooms(100);
-  classroomStore.fetchAcademicYears();
   studentStore.fetchStudents();
+  // Load academic years and default the target to the latest (current) one.
+  await classroomStore.fetchAcademicYears();
+  targetYearId.value = classroomStore.latestAcademicYearId;
 });
 
 const classLabel = (c: any) =>
