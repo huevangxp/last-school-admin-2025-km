@@ -108,5 +108,11 @@
     "content":"ເນື້ອຫາ",
     "location":"ສະຖານທີ່",
     "activity_date":"ວັນທີກິດຈະກຳ",
-    "new_academic_year":"ເປີດສົກຮຽນໃໝ່"
+    "new_academic_year":"ເປີດສົກຮຽນໃໝ່",
+    "class_organization":"ໂຄງສ້າງຫ້ອງຮຽນ",
+    "assign_roles":"ກຳນົດໜ້າທີ່",
+    "saved":"ບັນທຶກສຳເລັດ",
+    "semester":"ພາກຮຽນ",
+    "month":"ເດືອນ",
+    "teacher":"ອາຈານ"
 }
