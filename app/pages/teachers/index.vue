@@ -221,6 +221,18 @@
         <!-- Actions Slot -->
         <template v-slot:item.actions="{ item }">
           <v-btn
+            :icon="
+              item.statusRaw === 'active'
+                ? 'mdi-account-cancel-outline'
+                : 'mdi-account-check-outline'
+            "
+            variant="text"
+            size="x-small"
+            :color="item.statusRaw === 'active' ? 'warning' : 'success'"
+            :title="item.statusRaw === 'active' ? 'ປິດ (close)' : 'ເປີດ (open)'"
+            @click="toggleStatus(item)"
+          ></v-btn>
+          <v-btn
             icon="mdi-pencil-outline"
             variant="text"
             size="x-small"
