@@ -177,7 +177,7 @@
             rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status === 'Active' ? t('ເປິດ') : t('ປິດ') }}
+            {{ item.status === 'Active' ? t('open') : t('closed') }}
           </v-chip>
         </template>
 
@@ -514,7 +514,7 @@ const classes = computed(() =>
     statusRaw: c.classroom_status,
     grade: c.gradeLevel?.grade_level_name || "—",
     year: c.academicYear?.title || "—",
-    teacher: c.homeroomTeacher?.full_name || "Unassigned",
+    teacher: c.homeroomTeacher?.full_name || t("unassigned"),
     teacherEmail: c.homeroomTeacher?.username || "",
     status: c.classroom_status === "active" ? "Active" : "Inactive",
   }))
