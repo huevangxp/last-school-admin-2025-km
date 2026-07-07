@@ -19,10 +19,10 @@
                 class="text-title text-slate-900 mb-2"
                 style="font-size: 18px !important"
               >
-                Welcome Back
+                {{ t("welcome") }}
               </div>
               <div class="text-detail">
-                Please sign in to your admin account
+                {{ t("welcomeText") }}
               </div>
             </div>
 
