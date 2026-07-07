@@ -106,7 +106,7 @@
             </v-form>
           </div>
 
-          <div class="form-footer mt-16 text-caption text-grey-lighten-1">
+          <div class="form-footer mt-2 text-caption text-grey-lighten-1">
             &copy; {{ new Date().getFullYear() }} EduAdmin Professional
             Management
           </div>
