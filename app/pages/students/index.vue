@@ -188,6 +188,7 @@
           <v-chip
             :color="getStatusColor(item.status)"
             size="x-small"
+            rounded="0"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
