@@ -446,6 +446,7 @@ const save = async () => {
     });
     hydrateForm();
     saveOk.value = true;
+    manageDialog.value = false; // close popup to reveal the updated chart
   } catch (error: any) {
     saveError.value = error.response?.data?.message || "Failed to save roles.";
   } finally {
