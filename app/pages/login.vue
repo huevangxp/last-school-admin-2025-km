@@ -135,7 +135,7 @@ const { login } = useApiAuthStore();
 
 const loginBtn = async () => {
   if (!username.value || !password.value) {
-    errorMessage.value = "Please enter your username and password.";
+    errorMessage.value = t("enter_credentials");
     return;
   }
 
