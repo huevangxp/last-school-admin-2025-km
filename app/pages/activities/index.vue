@@ -39,7 +39,7 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -69,7 +69,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
       </div>
 
@@ -91,7 +91,7 @@
               color="purple-lighten-5"
               size="32"
               class="mr-3 elevation-1 border-white"
-              rounded="lg"
+              rounded="0"
             >
               <v-icon icon="mdi-calendar-star" size="16" color="purple-darken-2"></v-icon>
             </v-avatar>
@@ -148,7 +148,7 @@
 
     <!-- Create / Edit Dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="text-title mb-4">
           {{ isEdit ? t("edit") : t("add") }} {{ $t("activities") }}
         </div>
@@ -158,7 +158,7 @@
           v-model="form.title"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -168,7 +168,7 @@
           v-model="form.description"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           rows="4"
           hide-details
           class="mb-3"
@@ -181,7 +181,7 @@
               v-model="form.location"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -192,7 +192,7 @@
               type="date"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -206,7 +206,7 @@
           item-value="value"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
         ></v-select>
 

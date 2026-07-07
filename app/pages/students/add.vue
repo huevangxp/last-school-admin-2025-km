@@ -6,7 +6,7 @@
       <!-- Identity + Account -->
       <v-card class="intelligence-card pa-6 mb-6" elevation="0">
         <div class="d-flex align-center mb-6">
-          <v-avatar color="teal-lighten-5" size="40" class="mr-3 rounded-lg">
+          <v-avatar color="teal-lighten-5" size="40" class="mr-3 rounded-0">
             <v-icon color="teal-darken-1" size="20"
               >mdi-account-plus-outline</v-icon
             >
@@ -27,7 +27,7 @@
               placeholder="e.g. ສົມສະໜຸກ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -43,7 +43,7 @@
               placeholder="e.g. ວົງສາ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -60,7 +60,7 @@
               placeholder="Login username"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -77,7 +77,7 @@
               placeholder="••••••••"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -95,7 +95,7 @@
               placeholder="Select"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -109,7 +109,7 @@
               type="date"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -125,7 +125,7 @@
               placeholder="+856 20 ..."
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -138,7 +138,7 @@
       <!-- Health + Class + Guardian -->
       <v-card class="intelligence-card pa-6 mb-6" elevation="0">
         <div class="d-flex align-center mb-6">
-          <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-lg">
+          <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-0">
             <v-icon color="purple-darken-1" size="20"
               >mdi-heart-pulse</v-icon
             >
@@ -158,7 +158,7 @@
               placeholder="Select"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -173,7 +173,7 @@
               placeholder="Select"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -189,7 +189,7 @@
               placeholder="165"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -204,7 +204,7 @@
               placeholder="55"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -221,7 +221,7 @@
               placeholder="Parent / guardian full name"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -237,7 +237,7 @@
               placeholder="+856 20 ..."
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -255,7 +255,7 @@
               placeholder="ເລືອກຊັ້ນຮຽນກ່ອນ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
@@ -275,7 +275,7 @@
               placeholder="ເລືອກຫ້ອງຮຽນ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details="auto"
               class="premium-input"
               color="primary"
