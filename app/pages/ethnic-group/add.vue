@@ -101,7 +101,7 @@ const submit = async () => {
 
 <style scoped>
 .dashboard-container {
-  max-width: 600px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 

@@ -240,7 +240,7 @@ const save = async () => {
 
 <style scoped>
 .dashboard-container {
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 

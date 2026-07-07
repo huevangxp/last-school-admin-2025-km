@@ -309,7 +309,7 @@ const save = () => {
 
 <style scoped>
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
