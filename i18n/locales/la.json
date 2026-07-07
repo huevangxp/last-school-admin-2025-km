@@ -123,5 +123,22 @@
     "academic_section":"ວິຊາການ",
     "faculty":"ຄະນະອາຈານ",
     "configuration":"ການຕັ້ງຄ່າ",
-    "administration":"ການບໍລິຫານ"
+    "administration":"ການບໍລິຫານ",
+    "manage_classes_desc":"ຈັດການຫ້ອງຮຽນ ແລະ ຕາຕະລາງ.",
+    "copy_to_new_year":"ກ໊ອບປີ້ໄປສົກໃໝ່",
+    "total_classes":"ຫ້ອງຮຽນທັງໝົດ",
+    "active_sections":"ຫ້ອງທີ່ເປີດ",
+    "total_capacity":"ຄວາມຈຸທັງໝົດ",
+    "grade_levels":"ຊັ້ນຮຽນ",
+    "no_classrooms":"ຍັງບໍ່ມີຫ້ອງຮຽນ.",
+    "all_grades":"ທຸກຊັ້ນ",
+    "room_number":"ຫ້ອງເລກທີ",
+    "max_students":"ນັກຮຽນສູງສຸດ",
+    "copy_classrooms_title":"ກ໊ອບປີ້ຫ້ອງຮຽນໄປສົກໃໝ່",
+    "copy_classrooms_desc":"ກ໊ອບປີ້ຫ້ອງຮຽນທັງໝົດຈາກສົກໜຶ່ງ ໄປໃສ່ອີກສົກໜຶ່ງ ໂດຍບໍ່ຕ້ອງພິມໃໝ່.",
+    "from_year":"ຈາກສົກຮຽນ",
+    "to_year":"ໄປສົກຮຽນ",
+    "select_source_year":"ເລືອກສົກຕົ້ນທາງ",
+    "select_target_year":"ເລືອກສົກປາຍທາງ",
+    "copy":"ກ໊ອບປີ້"
 }
