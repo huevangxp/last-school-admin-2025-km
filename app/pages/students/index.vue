@@ -129,7 +129,7 @@
       <!-- Data Intelligence Grid -->
       <v-data-table
         :headers="headers"
-        :items="students"
+        :items="filteredStudents"
         :search="search"
         :loading="studentStore.loading"
         class="premium-table"
@@ -199,6 +199,18 @@
         <!-- Intelligence Actions Slot -->
         <template v-slot:item.actions="{ item }">
           <div class="d-flex justify-end ga-1">
+            <v-btn
+              :icon="
+                item.statusRaw === 'active'
+                  ? 'mdi-account-cancel-outline'
+                  : 'mdi-account-check-outline'
+              "
+              variant="text"
+              size="x-small"
+              :color="item.statusRaw === 'active' ? 'warning' : 'success'"
+              :title="item.statusRaw === 'active' ? 'ປິດ (close)' : 'ເປີດ (open)'"
+              @click="toggleStatus(item)"
+            ></v-btn>
             <v-btn
               icon="mdi-pencil-outline"
               variant="text"
