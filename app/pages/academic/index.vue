@@ -307,11 +307,13 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useAcademicStore } from "@/stores/apiAcademic";
+import { useUiStore } from "~/stores/ui";
 import { formatDate, hiddenId } from "@/utils/formatDate";
 const { t } = useI18n();
 
 const search = ref("");
 const academicStore = useAcademicStore();
+const ui = useUiStore();
 const { fetchAcademics } = academicStore;
 const { academics } = storeToRefs(academicStore);
 
