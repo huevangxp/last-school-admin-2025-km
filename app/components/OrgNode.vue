@@ -121,13 +121,15 @@ ul::before {
   height: 26px;
 }
 
-/* Node card */
+/* Node card — fixed width & height so every card is identical in size. */
 .org-node {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   gap: 2px;
-  min-width: 136px;
+  width: 168px;
+  height: 168px;
   padding: 14px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -137,6 +139,7 @@ ul::before {
     box-shadow 0.2s ease;
   white-space: normal;
   vertical-align: top;
+  overflow: hidden;
 }
 .org-node:hover {
   transform: translateY(-3px);
