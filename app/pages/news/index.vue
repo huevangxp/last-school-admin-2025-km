@@ -330,7 +330,7 @@ const save = async () => {
     dialog.value = false;
     await announcementStore.fetchAnnouncements();
   } catch (error: any) {
-    formError.value = error.response?.data?.message || "Failed to save.";
+    formError.value = error.response?.data?.message || t("failed-to-save");
   } finally {
     saving.value = false;
   }

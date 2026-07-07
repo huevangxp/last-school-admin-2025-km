@@ -208,7 +208,7 @@
                   height="40"
                   @click="$router.push('/academic')"
                 >
-                  Discard Draft
+                  {{ $t("discard-draft") }}
                 </v-btn>
               </div>
             </div>
@@ -248,9 +248,9 @@ const showStartDatePicker = ref(false);
 const showEndDatePicker = ref(false);
 
 const statusOptions = [
-  { title: "Active", value: "active" },
-  { title: "Upcoming", value: "upcoming" },
-  { title: "Archived", value: "archived" },
+  { title: t("active"), value: "active" },
+  { title: t("upcoming"), value: "upcoming" },
+  { title: t("archived"), value: "archived" },
 ];
 
 const rules = {

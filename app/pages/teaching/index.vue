@@ -30,7 +30,7 @@
     </div>
 
     <div v-if="!isAdmin" class="text-detail text-center py-10">
-      ສະເພາະຜູ້ດູແລລະບົບ · Administrators only.
+      {{ $t("administrators-only") }}
     </div>
 
     <template v-else>

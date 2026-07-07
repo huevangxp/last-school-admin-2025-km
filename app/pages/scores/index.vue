@@ -358,10 +358,10 @@ const saveAll = async () => {
       score: Number(r.score) || 0,
     }));
     const res = await scoreStore.bulkUpsertScores(payload);
-    ui.notify(res?.message || "Scores saved successfully.", "success");
+    ui.notify(res?.message || t("scores-saved-successfully"), "success");
   } catch (error: any) {
     ui.notify(
-      error.response?.data?.message || "Failed to save scores.",
+      error.response?.data?.message || t("failed-to-save-scores"),
       "error"
     );
   }

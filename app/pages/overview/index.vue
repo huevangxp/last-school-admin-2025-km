@@ -9,7 +9,7 @@
       <div>
         <div class="text-title mb-1">{{ t("overview") }}</div>
         <div class="text-detail">
-          Select an academic year to see its students, teachers and classes.
+          {{ t("overview-year-hint") }}
         </div>
       </div>
 

@@ -114,20 +114,20 @@
             >
               {{
                 selected.length === sourceStudents.length
-                  ? "Clear all"
-                  : "Select all (passed)"
+                  ? t("clear-all")
+                  : t("select-all-passed")
               }}
             </v-btn>
           </div>
 
           <div v-if="!sourceClassId" class="text-detail py-8 text-center">
-            Select a source class to list its students.
+            {{ t("select-source-class-hint") }}
           </div>
           <div
             v-else-if="!sourceStudents.length"
             class="text-detail py-8 text-center"
           >
-            No students in this class.
+            {{ t("no-students-in-class") }}
           </div>
 
           <v-list v-else class="pa-0">
