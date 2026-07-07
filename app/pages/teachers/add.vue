@@ -216,7 +216,7 @@
               <v-icon color="teal-darken-1" size="18"
                 >mdi-file-tree-outline</v-icon
               >
-              <span class="text-detail-tiny">ຊັ້ນຂອງຕຳແໜ່ງນີ້:</span>
+              <span class="text-detail-tiny">{{ t("layer-of-position") }}</span>
               <v-chip
                 v-if="form.layer"
                 color="teal"
@@ -224,14 +224,14 @@
                 size="small"
                 class="font-weight-black"
               >
-                Layer {{ form.layer }}
+                {{ t("layer") }} {{ form.layer }}
               </v-chip>
-              <span v-else class="text-detail-tiny">ຍັງບໍ່ໄດ້ເລືອກ</span>
+              <span v-else class="text-detail-tiny">{{ t("not-selected-yet") }}</span>
               <span
                 v-if="form.managerId && suggestedLayer"
                 class="text-detail-tiny"
               >
-                — ແນະນຳ Layer {{ suggestedLayer }} (ຕາມຫົວໜ້າທີ່ເລືອກ)
+                {{ t("suggested-layer-hint", { n: suggestedLayer }) }}
               </span>
             </div>
           </v-col>
@@ -358,13 +358,13 @@ const form = ref({
 });
 
 const genderOptions = [
-  { title: "Male", value: "male" },
-  { title: "Female", value: "female" },
+  { title: t("male"), value: "male" },
+  { title: t("female"), value: "female" },
 ];
 
 const roleOptions = [
-  { title: "Teacher", value: "teacher" },
-  { title: "Admin", value: "admin" },
+  { title: t("teacher"), value: "teacher" },
+  { title: t("admin"), value: "admin" },
 ];
 
 const rules = {
@@ -408,7 +408,7 @@ const save = async () => {
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
-      error.response?.data?.message || "Failed to create teacher.";
+      error.response?.data?.message || t("failed-create-teacher");
   } finally {
     loading.value = false;
   }
