@@ -655,24 +655,31 @@ const logoutButton = () => {
   border: 1.5px dashed rgba(20, 184, 166, 0.2) !important;
 }
 
-/* Sidebar body flows naturally — no nested scroll region. */
-.scroll-container {
-  height: auto;
-  overflow: visible;
+/* Drawer is a flex column: the brand stays fixed and the nav list scrolls, so
+   every menu item stays reachable no matter how many dropdowns are open. */
+.modern-sidebar :deep(.v-navigation-drawer__content) {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Keep the drawer itself from scrolling; if the menu ever overflows on a very
-   short screen it falls back to a thin scrollbar rather than a nested one. */
-.modern-sidebar :deep(.v-navigation-drawer__content) {
+.sidebar-brand-wrapper {
+  flex: 0 0 auto;
+}
+
+.scroll-container {
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
 }
 
-.modern-sidebar :deep(.v-navigation-drawer__content)::-webkit-scrollbar {
-  width: 4px;
+.scroll-container::-webkit-scrollbar {
+  width: 5px;
 }
 
-.modern-sidebar :deep(.v-navigation-drawer__content)::-webkit-scrollbar-thumb {
+.scroll-container::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
