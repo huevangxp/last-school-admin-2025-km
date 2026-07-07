@@ -151,7 +151,7 @@
                 ? 'success'
                 : item.status === 'upcoming'
                   ? 'info'
-                  : 'warning'
+                  : 'red'
             "
             size="x-small"
             rounded="0"
