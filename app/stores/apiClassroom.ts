@@ -73,6 +73,16 @@ export const useClassroomStore = defineStore("classroom", {
       return res.data;
     },
 
+    // Copy every classroom from one academic year into another (one click).
+    async cloneClassrooms(sourceYearId: string, targetYearId: string) {
+      const { $axios } = useNuxtApp();
+      const res = await $axios.post("/clone-classrooms", {
+        source_academic_year_id: sourceYearId,
+        target_academic_year_id: targetYearId,
+      });
+      return res.data;
+    },
+
     async updateClassroom(id: string, payload: Record<string, unknown>) {
       const { $axios } = useNuxtApp();
       const res = await $axios.put(`/update-classroom/${id}`, payload);
