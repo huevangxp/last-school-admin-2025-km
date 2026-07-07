@@ -492,6 +492,29 @@ const removeAdmin = async (item: any) => {
   justify-content: center;
 }
 
+.trend-badge {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.trend-badge.up {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+.trend-badge.down {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.metric-footer-line {
+  height: 3px;
+  width: 100%;
+  opacity: 0.15;
+}
+
 .intelligence-card {
   background: white;
   border: 1px solid #f1f5f9;
