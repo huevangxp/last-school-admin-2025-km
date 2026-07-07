@@ -8,11 +8,15 @@
       >
         <v-img src="/logo.png" contain></v-img>
       </v-avatar>
-      <v-avatar v-else size="42" class="mb-1 border-white elevation-1">
+      <v-avatar
+        v-else
+        size="42"
+        color="white"
+        rounded="0"
+        class="mb-1 border-white elevation-1"
+      >
         <v-img v-if="node.image" :src="node.image" cover></v-img>
-        <span v-else class="text-primary font-weight-black">{{
-          initial
-        }}</span>
+        <v-icon v-else color="primary">mdi-account</v-icon>
       </v-avatar>
 
       <div
