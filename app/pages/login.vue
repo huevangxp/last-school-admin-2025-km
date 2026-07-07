@@ -132,8 +132,8 @@ definePageMeta({
   layout: false,
 });
 
-const username = ref("admin");
-const password = ref("admin");
+const username = ref("deputy_academic");
+const password = ref("123456");
 const rememberMe = ref(false);
 const showPassword = ref(false);
 const loading = ref(false);
