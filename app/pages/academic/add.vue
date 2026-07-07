@@ -63,14 +63,14 @@
               class="pa-6 rounded-0 bg-slate-50 border border-slate-100 mb-6"
             >
               <div class="text-detail-tiny mb-6 text-primary">
-                PRIMARY CONFIGURATION
+                {{ $t("primary-configuration") }}
               </div>
               <v-row>
                 <v-col cols="12" md="6">
-                  <div class="text-detail-tiny mb-2">SESSION IDENTIFIER</div>
+                  <div class="text-detail-tiny mb-2">{{ $t("session-identifier") }}</div>
                   <v-text-field
                     v-model="form.title"
-                    placeholder="e.g. 2024-2025"
+                    :placeholder="$t('session-identifier-placeholder')"
                     variant="outlined"
                     density="compact"
                     rounded="0"

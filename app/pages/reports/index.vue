@@ -7,8 +7,8 @@
         <v-card elevation="0" class="intelligence-card h-100 pa-6">
           <div class="d-flex justify-space-between align-center mb-6">
             <div>
-              <div class="text-title mb-1">Student Enrollment Trend</div>
-              <div class="text-detail">Annual enrollment growth trajectory</div>
+              <div class="text-title mb-1">{{ t("student-enrollment-trend") }}</div>
+              <div class="text-detail">{{ t("annual-enrollment-growth") }}</div>
             </div>
             <v-chip
               color="primary-lighten-5"
@@ -16,7 +16,7 @@
               size="x-small"
               variant="flat"
             >
-              +12.5% GROWTH
+              {{ t("enrollment-growth-badge") }}
             </v-chip>
           </div>
           <div class="chart-wrapper" style="height: 300px">

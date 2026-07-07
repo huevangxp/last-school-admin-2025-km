@@ -19,7 +19,7 @@
           height="36"
         >
           <v-icon icon="mdi-plus" start size="16"></v-icon>
-          Action
+          {{ t("action") }}
         </v-btn>
       </div>
     </div>

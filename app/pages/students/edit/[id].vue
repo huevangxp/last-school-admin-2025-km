@@ -158,8 +158,8 @@
             <v-icon color="purple-darken-1" size="20">mdi-heart-pulse</v-icon>
           </v-avatar>
           <div>
-            <h2 class="text-title">Health, Class & Guardian</h2>
-            <p class="text-detail">Required school record details</p>
+            <h2 class="text-title">{{ t("health-class-guardian") }}</h2>
+            <p class="text-detail">{{ t("required-school-record-details") }}</p>
           </div>
         </div>
 
@@ -167,7 +167,9 @@
 
         <v-row v-else class="ga-y-2">
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">BLOOD GROUP *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("blood-group") }} *</label
+            >
             <v-select
               v-model="form.bloodGroup"
               :items="['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']"

@@ -147,8 +147,13 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Showing {{ offset + 1 }}-{{ Math.min(offset + limit, total) }} of
-              {{ total }} results
+              {{
+                t("showing-results", {
+                  from: offset + 1,
+                  to: Math.min(offset + limit, total),
+                  total,
+                })
+              }}
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn

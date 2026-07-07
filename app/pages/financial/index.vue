@@ -88,7 +88,7 @@
         <v-text-field
           v-model="search"
           prepend-inner-icon="mdi-magnify"
-          placeholder="Search transactions..."
+          :placeholder="$t('search-transactions')"
           variant="outlined"
           density="compact"
           hide-details
