@@ -380,12 +380,14 @@
 import { ref, computed, onMounted } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 
 const search = ref("");
 const classroomStore = useClassroomStore();
 const teacherStore = useTeacherStore();
+const ui = useUiStore();
 
 onMounted(() => {
   classroomStore.fetchClassrooms(100);
