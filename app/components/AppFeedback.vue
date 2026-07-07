@@ -2,7 +2,7 @@
   <div>
     <!-- Confirm card -->
     <v-dialog v-model="showConfirm" width="420" persistent>
-      <v-card rounded="lg" class="overflow-hidden feedback-card">
+      <v-card rounded="0" class="overflow-hidden feedback-card">
         <div class="text-center pt-8 px-6">
           <v-avatar :color="`${c.color}-lighten-5`" size="76" class="mb-4">
             <v-icon :icon="c.icon" :color="c.color" size="38"></v-icon>
@@ -19,7 +19,7 @@
             block
             variant="text"
             color="grey-darken-1"
-            class="rounded-lg font-weight-bold"
+            class="rounded-0 font-weight-bold"
             height="46"
             @click="ui.resolveConfirm(false)"
           >
@@ -29,7 +29,7 @@
             block
             variant="flat"
             :color="c.color"
-            class="rounded-lg font-weight-bold"
+            class="rounded-0 font-weight-bold"
             height="46"
             @click="ui.resolveConfirm(true)"
           >
@@ -45,7 +45,7 @@
       :color="snackColor"
       location="top right"
       :timeout="3200"
-      rounded="lg"
+      rounded="0"
       elevation="8"
       class="feedback-snack"
     >

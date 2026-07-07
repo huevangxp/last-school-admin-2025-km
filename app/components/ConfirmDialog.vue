@@ -4,7 +4,7 @@
     width="420"
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <v-card rounded="lg" class="pa-4 overflow-hidden">
+    <v-card rounded="0" class="pa-4 overflow-hidden">
       <div class="text-center py-6">
         <v-avatar :color="`${color}-lighten-5`" size="72" class="mb-4">
           <v-icon :icon="icon" :color="color" size="36"></v-icon>
@@ -17,7 +17,7 @@
           block
           variant="flat"
           :color="color"
-          class="rounded-lg font-weight-bold"
+          class="rounded-0 font-weight-bold"
           height="44"
           :loading="loading"
           @click="$emit('confirm')"
