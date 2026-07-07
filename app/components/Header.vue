@@ -718,7 +718,7 @@ const logoutButton = () => {
 }
 
 .scroll-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(15, 23, 42, 0.15);
   border-radius: 10px;
 }
 </style>
