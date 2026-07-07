@@ -57,14 +57,7 @@
               </div>
             </div>
 
-            <div class="metric-info">
-              <div class="text-detail mb-1">
-                {{ stat.title }}
-              </div>
-              <div class="text-title">
-                {{ stat.value }}
-              </div>
-            </div>
+         
           </div>
           <div
             class="metric-footer-line"
