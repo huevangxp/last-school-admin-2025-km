@@ -81,7 +81,7 @@
               <div class="d-flex align-center mb-2">
                 <v-checkbox
                   v-model="rememberMe"
-                  label="Remember me"
+                  :label="t('remember_me')"
                   color="primary"
                   density="compact"
                   hide-details
