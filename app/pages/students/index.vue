@@ -97,7 +97,7 @@
             style="min-width: 170px"
             prepend-inner-icon="mdi-google-classroom"
             class="cream-select text-detail"
-            no-data-text="No classrooms yet"
+            :no-data-text="t('no-classrooms')"
           ></v-select>
 
           <v-select
@@ -135,7 +135,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No students found.</div>
+          <div class="text-detail py-8 text-center">{{ t("no-students-found") }}</div>
         </template>
         <!-- Student Identity Slot -->
         <template v-slot:item.name="{ item }">
