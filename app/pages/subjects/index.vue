@@ -306,12 +306,14 @@
 import { ref, computed, onMounted } from "vue";
 import { useSubjectStore } from "~/stores/apiSubject";
 import { useClassroomStore } from "~/stores/apiClassroom";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 
 const search = ref("");
 const subjectStore = useSubjectStore();
 const classroomStore = useClassroomStore();
+const ui = useUiStore();
 
 onMounted(() => {
   subjectStore.fetchSubjects();
@@ -490,12 +492,18 @@ const saveEdit = async () => {
 };
 
 const removeSubject = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
   try {
     await subjectStore.deleteSubject(item.uuid);
     await subjectStore.fetchSubjects();
+    ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    console.error(error);
+    ui.notify("Failed to delete.", "error");
   }
 };
 </script>
