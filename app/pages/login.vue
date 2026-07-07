@@ -179,7 +179,6 @@ const loginBtn = async () => {
 .login-card {
   width: 100%;
   max-width: 460px;
-  border-radius: 12px !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -221,7 +220,6 @@ const loginBtn = async () => {
   height: 80px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,7 +230,6 @@ const loginBtn = async () => {
   height: 4px;
   width: 60px;
   background: white;
-  border-radius: 2px;
 }
 
 /* Right Side Styling */
@@ -253,7 +250,6 @@ const loginBtn = async () => {
 }
 
 .rounded-input :deep(.v-field) {
-  border-radius: 12px !important;
   border-color: #e2e8f0 !important;
   transition: all 0.2s ease;
 }
@@ -267,7 +263,6 @@ const loginBtn = async () => {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
   height: 60px !important;
-  border-radius: 12px !important;
   text-transform: none !important;
   font-weight: 700 !important;
   font-size: 1.1rem !important;

@@ -416,7 +416,6 @@ const polarOptions: any = {
 }
 
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition:
@@ -436,7 +435,6 @@ const polarOptions: any = {
 .status-dot {
   width: 8px;
   height: 8px;
-  border-radius: 2px;
 }
 
 .shadow-sm {

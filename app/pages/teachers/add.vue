@@ -419,13 +419,11 @@ const save = async () => {
 }
 
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
 
 .modern-action-btn {
-  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 13px !important;
@@ -457,6 +455,5 @@ const save = async () => {
 .layer-hint {
   background: #f0fdfa;
   border: 1px dashed #99f6e4;
-  border-radius: 12px;
 }
 </style>

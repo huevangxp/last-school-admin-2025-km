@@ -476,7 +476,6 @@ const removeAdmin = async (item: any) => {
 }
 
 .metric-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition: transform 0.3s ease;
@@ -489,14 +488,12 @@ const removeAdmin = async (item: any) => {
 .metric-icon-box {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .intelligence-card {
-  border-radius: 12px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition:

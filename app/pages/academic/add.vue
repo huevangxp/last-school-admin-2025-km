@@ -284,7 +284,6 @@ const save = async () => {
 }
 
 .intelligence-card {
-  border-radius: 12px !important;
   background: white;
   border: 1px solid #f1f5f9;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04) !important;

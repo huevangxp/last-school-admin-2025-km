@@ -512,12 +512,10 @@ const unitColumns = computed(() => {
   margin: 0 auto;
 }
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
 .modern-action-btn {
-  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 13px !important;
@@ -532,7 +530,6 @@ const unitColumns = computed(() => {
   overflow: auto;
   min-height: 320px;
   background: radial-gradient(circle, #e2e8f0 1px, transparent 1px) 0 0 / 22px 22px;
-  border-radius: 12px;
 }
 
 /* Layered chart */
@@ -556,7 +553,6 @@ const unitColumns = computed(() => {
   text-transform: uppercase;
   color: #0d9488;
   background: #ccfbf1;
-  border-radius: 999px;
   padding: 2px 12px;
   margin-bottom: 10px;
 }
@@ -577,7 +573,6 @@ const unitColumns = computed(() => {
   padding: 12px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
 }
@@ -627,7 +622,6 @@ const unitColumns = computed(() => {
   font-weight: 800;
   color: #7c3aed;
   background: #ede9fe;
-  border-radius: 999px;
   padding: 1px 8px;
   display: inline-block;
 }
@@ -663,7 +657,6 @@ const unitColumns = computed(() => {
   color: #334155;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
   padding: 5px 10px;
   text-align: center;
 }

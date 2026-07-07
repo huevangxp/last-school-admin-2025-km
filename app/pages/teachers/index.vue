@@ -751,20 +751,17 @@ const saveEdit = async () => {
 }
 
 .metric-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
 
 .metric-icon-box {
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

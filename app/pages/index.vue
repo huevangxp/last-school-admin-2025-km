@@ -453,7 +453,6 @@ const activities = computed(() =>
 
 /* Intelligence Cards */
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -477,13 +476,11 @@ const activities = computed(() =>
 .status-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
   margin-right: 8px;
 }
 
 /* Utility Cards & Sidebar */
 .utility-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -498,7 +495,6 @@ const activities = computed(() =>
   align-items: center;
   padding: 10px;
   background: rgba(255, 255, 255, 0.04);
-  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -506,7 +502,6 @@ const activities = computed(() =>
   width: 36px;
   height: 36px;
   background: rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -556,7 +551,6 @@ const activities = computed(() =>
 .feed-icon {
   width: 24px;
   height: 24px;
-  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;

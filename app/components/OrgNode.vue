@@ -97,10 +97,8 @@ li:last-child::after {
 }
 li:last-child::before {
   border-right: 2px solid #d9e2ec;
-  border-radius: 0 6px 0 0;
 }
 li:first-child::after {
-  border-radius: 6px 0 0 0;
 }
 
 /* Children container + vertical drop line from parent node */
@@ -133,7 +131,6 @@ ul::before {
   padding: 14px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
   box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
   transition:
     transform 0.2s ease,
@@ -154,7 +151,6 @@ ul::before {
   text-transform: uppercase;
   color: #0d9488;
   background: #ccfbf1;
-  border-radius: 999px;
   padding: 1px 8px;
   margin-bottom: 2px;
 }

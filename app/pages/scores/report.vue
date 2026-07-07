@@ -212,12 +212,10 @@ const rankColor = (index: number) => {
   margin: 0 auto;
 }
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
 .modern-action-btn {
-  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 12px !important;
@@ -225,7 +223,6 @@ const rankColor = (index: number) => {
 }
 .table-wrapper {
   overflow-x: auto;
-  border-radius: 12px;
   border: 1px solid #f1f5f9;
 }
 .score-table {

@@ -327,13 +327,11 @@ const orgRoot = computed(() => {
 }
 
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
 
 .modern-action-btn {
-  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 13px !important;
@@ -358,7 +356,6 @@ const orgRoot = computed(() => {
   cursor: grab;
   background:
     radial-gradient(circle, #e2e8f0 1px, transparent 1px) 0 0 / 22px 22px;
-  border-radius: 12px;
 }
 .org-viewport.grabbing {
   cursor: grabbing;
@@ -375,7 +372,6 @@ const orgRoot = computed(() => {
 }
 .org-viewport::-webkit-scrollbar-thumb {
   background: #e2e8f0;
-  border-radius: 10px;
 }
 
 .tree {
@@ -395,7 +391,6 @@ const orgRoot = computed(() => {
 /* Zoom control bar */
 .zoom-bar {
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
   padding: 2px 4px;
   background: #f8fafc;
 }
