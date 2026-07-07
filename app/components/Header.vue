@@ -437,6 +437,11 @@ const groupedMenuItems = ref<MenuSection[]>([
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects" },
       { title: "scores", icon: "mdi-star-outline", to: "/scores" },
       {
+        title: "class_organization",
+        icon: "mdi-account-supervisor-outline",
+        to: "/class/organization",
+      },
+      {
         title: "promotion",
         icon: "mdi-arrow-up-bold-box-outline",
         to: "/promotion",
