@@ -309,6 +309,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 
@@ -318,6 +319,7 @@ definePageMeta({
 
 const search = ref("");
 const teacherStore = useTeacherStore();
+const ui = useUiStore();
 
 const capitalize = (s?: string) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
