@@ -275,11 +275,18 @@ const form = ref({
   id: "",
   title: "",
   content: "",
+  image_url: "",
   announcement_status: "active",
 });
 
 const resetForm = () => {
-  form.value = { id: "", title: "", content: "", announcement_status: "active" };
+  form.value = {
+    id: "",
+    title: "",
+    content: "",
+    image_url: "",
+    announcement_status: "active",
+  };
   formError.value = "";
 };
 
