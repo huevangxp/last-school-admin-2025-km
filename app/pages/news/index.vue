@@ -324,12 +324,18 @@ const save = async () => {
 };
 
 const removeItem = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
   try {
     await announcementStore.deleteAnnouncement(item.id);
     await announcementStore.fetchAnnouncements();
+    ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    console.error(error);
+    ui.notify("Failed to delete.", "error");
   }
 };
 
