@@ -102,11 +102,14 @@
                 <v-icon icon="mdi-arrow-right" end class="ml-2"></v-icon>
               </v-btn>
 
-             
+           
             </v-form>
           </div>
 
-           
+          <div class="form-footer mt-16 text-caption text-grey-lighten-1">
+            &copy; {{ new Date().getFullYear() }} EduAdmin Professional
+            Management
+          </div>
         </v-col>
       </v-row>
     </v-card>
