@@ -359,6 +359,7 @@ const save = async () => {
       description: form.value.description,
       location: form.value.location || null,
       activity_date: form.value.activity_date || null,
+      image_url: form.value.image_url || null,
       activity_status: form.value.activity_status,
     };
     if (isEdit.value) {
