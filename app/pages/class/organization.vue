@@ -156,14 +156,22 @@
         </div>
       </v-card>
 
-      <!-- Assignment panel -->
-      <v-card elevation="0" class="intelligence-card pa-6">
+      <!-- Assignment panel (dialog) -->
+      <v-dialog v-model="manageDialog" width="560" scrollable>
+        <v-card rounded="xl" class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div class="text-title-small">{{ t("assign_roles") }}</div>
-          <div class="text-detail-tiny">
-            {{ students.length }} {{ t("students") }} · {{ t("homeroom_teacher") }}:
-            <strong>{{ homeroomTeacherName || "—" }}</strong>
-          </div>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            @click="manageDialog = false"
+          ></v-btn>
+        </div>
+        <div class="text-detail-tiny mb-4">
+          {{ selectedClass?.classroom_name }} · {{ students.length }}
+          {{ t("students") }} · {{ t("homeroom_teacher") }}:
+          <strong>{{ homeroomTeacherName || "—" }}</strong>
         </div>
 
         <!-- Monitor -->
