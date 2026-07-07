@@ -57,13 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-
 const props = defineProps<{ node: any }>();
-
-const initial = computed(() =>
-  (props.node?.name || "?").charAt(0).toUpperCase()
-);
 </script>
 
 <style scoped>
