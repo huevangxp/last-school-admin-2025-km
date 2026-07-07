@@ -257,6 +257,7 @@ const { t } = useI18n();
 const galleryStore = useGalleryStore();
 const ui = useUiStore();
 const { uploadImages } = useUpload();
+const { mediaUrl } = useMedia();
 
 const roleCookie = useCookie<string>("role");
 const isAdmin = computed(
