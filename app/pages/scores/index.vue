@@ -83,7 +83,7 @@
             color="primary"
           ></v-select>
         </v-col>
-        <v-col cols="12" sm="4" md="2">
+        <v-col v-if="isAdmin" cols="12" sm="4" md="2">
           <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
           <v-select
             v-model="selectedTeacherId"
