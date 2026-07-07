@@ -123,5 +123,22 @@
     "academic_section": "Academic",
     "faculty": "Faculty",
     "configuration": "Configuration",
-    "administration": "Administration"
+    "administration": "Administration",
+    "manage_classes_desc": "Manage class sections and schedules.",
+    "copy_to_new_year": "Copy to new year",
+    "total_classes": "Total Classes",
+    "active_sections": "Active Sections",
+    "total_capacity": "Total Capacity",
+    "grade_levels": "Grade Levels",
+    "no_classrooms": "No classrooms yet.",
+    "all_grades": "All Grades",
+    "room_number": "Room No.",
+    "max_students": "Max Students",
+    "copy_classrooms_title": "Copy classrooms to a new year",
+    "copy_classrooms_desc": "Copy every classroom from one year into another without retyping.",
+    "from_year": "From year",
+    "to_year": "To year",
+    "select_source_year": "Select source year",
+    "select_target_year": "Select target year",
+    "copy": "Copy"
 }
