@@ -205,7 +205,7 @@ const selectedYearId = ref<string>("");
 
 onMounted(async () => {
   await Promise.all([
-    classroomStore.fetchClassrooms(200),
+    classroomStore.fetchMyClassrooms(),
     classroomStore.fetchAcademicYears(),
     teacherStore.fetchTeachers(200, 1),
   ]);
@@ -213,7 +213,7 @@ onMounted(async () => {
 });
 
 const classOptions = computed(() =>
-  classroomStore.classrooms.map((c: any) => ({
+  classroomStore.myClassrooms.map((c: any) => ({
     id: c.id,
     label: c.classroom_name,
   }))
@@ -221,7 +221,7 @@ const classOptions = computed(() =>
 const yearOptions = computed(() => classroomStore.academicYears);
 
 const selectedClass = computed(() =>
-  classroomStore.classrooms.find((c: any) => c.id === selectedClassId.value)
+  classroomStore.myClassrooms.find((c: any) => c.id === selectedClassId.value)
 );
 
 const homeroomTeacherName = computed(() => {

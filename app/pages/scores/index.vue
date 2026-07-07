@@ -183,6 +183,14 @@ const breadcrumbs = [
   { title: t("scores"), disabled: true, to: "/scores" },
 ];
 
+// Logged-in user: admins may pick any teacher; teachers are locked to self and
+// only see the classes they homeroom (enforced again on the server).
+const roleCookie = useCookie<string>("role");
+const idCookie = useCookie<string>("id");
+const isAdmin = computed(
+  () => (roleCookie.value || "").toLowerCase() === "admin"
+);
+
 const selectedClassId = ref("");
 const selectedSubjectId = ref("");
 const selectedSemester = ref("1");
@@ -193,22 +201,30 @@ const semesterOptions = ["1", "2"];
 const monthOptions = Array.from({ length: 12 }, (_, i) => `ເດືອນ ${i + 1}`);
 
 onMounted(async () => {
-  await Promise.all([
-    classroomStore.fetchClassrooms(200),
+  const tasks = [
+    classroomStore.fetchMyClassrooms(),
     classroomStore.fetchAcademicYears(),
     subjectStore.fetchSubjects(),
-    teacherStore.fetchTeachers(200, 1),
-  ]);
+  ];
+  // Only admins need the full teacher list for the selector.
+  if (isAdmin.value) tasks.push(teacherStore.fetchTeachers(200, 1));
+  await Promise.all(tasks);
+
+  // Teachers always enter scores under their own account.
+  if (!isAdmin.value && idCookie.value) selectedTeacherId.value = idCookie.value;
 });
 
 const yearId = computed(() => classroomStore.latestAcademicYearId || "");
 
 const classOptions = computed(() =>
-  classroomStore.classrooms.map((c: any) => ({ id: c.id, label: c.classroom_name }))
+  classroomStore.myClassrooms.map((c: any) => ({
+    id: c.id,
+    label: c.classroom_name,
+  }))
 );
 
 const selectedClass = computed(() =>
-  classroomStore.classrooms.find((c: any) => c.id === selectedClassId.value)
+  classroomStore.myClassrooms.find((c: any) => c.id === selectedClassId.value)
 );
 
 // Only subjects for this class's grade (falls back to all if grade unknown).
