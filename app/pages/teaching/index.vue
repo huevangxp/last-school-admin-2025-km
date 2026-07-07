@@ -6,10 +6,15 @@
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
-      <div>
-        <div class="text-title mb-1">{{ $t("teaching_assignments") }}</div>
-        <div class="text-detail">
-          ກຳນົດອາຈານສອນແຕ່ລະວິຊາໃນແຕ່ລະຫ້ອງ · Assign a teacher to each subject per class.
+      <div class="d-flex align-center">
+        <v-avatar color="indigo-lighten-5" size="44" class="mr-3 rounded-lg">
+          <v-icon color="indigo-darken-2" size="22">mdi-clipboard-account-outline</v-icon>
+        </v-avatar>
+        <div>
+          <div class="text-title">{{ $t("teaching_assignments") }}</div>
+          <div class="text-detail">
+            ອາຈານຄົນໃດສອນວິຊາໃດ ໃນຫ້ອງໃດ · Who teaches what, in each class.
+          </div>
         </div>
       </div>
       <v-btn
