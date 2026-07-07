@@ -8,7 +8,7 @@
     >
       <div>
         <div class="text-title mb-1">{{ $t("news") }}</div>
-        <div class="text-detail">Publish and manage school news & announcements.</div>
+        <div class="text-detail">{{ $t("manage-news-subtitle") }}</div>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">

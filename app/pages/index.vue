@@ -142,10 +142,10 @@
           <v-table class="premium-table">
             <thead>
               <tr>
-                <th class="text-detail">Stakeholder</th>
-                <th class="text-detail">Context</th>
-                <th class="text-detail">Alert</th>
-                <th class="text-right text-detail pr-6">Action</th>
+                <th class="text-detail">{{ t("stakeholder") }}</th>
+                <th class="text-detail">{{ t("context") }}</th>
+                <th class="text-detail">{{ t("alert") }}</th>
+                <th class="text-right text-detail pr-6">{{ t("action") }}</th>
               </tr>
             </thead>
             <tbody>

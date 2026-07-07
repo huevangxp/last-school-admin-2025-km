@@ -117,7 +117,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <div class="text-detail-tiny mb-2">CONCLUSION DATE</div>
+                  <div class="text-detail-tiny mb-2">{{ $t("conclusion-date") }}</div>
                   <DialogDate
                     v-model="showEndDatePicker"
                     :date="form.endDate"
@@ -127,7 +127,7 @@
                     v-model="form.endDate"
                     variant="outlined"
                     density="compact"
-                    placeholder="Select end date"
+                    :placeholder="$t('select-end-date')"
                     rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"

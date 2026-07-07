@@ -86,7 +86,7 @@
         <table class="score-table">
           <thead>
             <tr>
-              <th class="col-no text-detail-tiny">NO.</th>
+              <th class="col-no text-detail-tiny">{{ t("column-no") }}</th>
               <th class="col-name text-detail-tiny text-left">{{ t("students") }}</th>
               <th
                 v-for="subj in subjects"

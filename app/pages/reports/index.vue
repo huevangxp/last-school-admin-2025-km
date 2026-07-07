@@ -106,9 +106,9 @@
               >
             </v-avatar>
             <div>
-              <div class="text-title mb-1">Demographic Diversity</div>
+              <div class="text-title mb-1">{{ t("demographic-diversity") }}</div>
               <div class="text-detail">
-                Ethnic group distribution across the institution
+                {{ t("ethnic-group-distribution") }}
               </div>
             </div>
           </div>
