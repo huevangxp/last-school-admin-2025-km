@@ -175,7 +175,11 @@
             rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status }}
+            {{ item.status === 'Active'
+              ? t('ເປີດ')
+              : item.status === 'Suspended'
+                ? t('ປິດ')
+                : t('Inactive') }}
           </v-chip>
         </template>
 
