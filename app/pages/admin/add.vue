@@ -9,7 +9,7 @@
           <v-card class="intelligence-card pa-6 mb-6 text-center" elevation="0">
             <div class="mb-6">
               <h2 class="text-title mb-1">{{ t("admin") }}</h2>
-              <p class="text-detail">Administrator profile photo</p>
+              <p class="text-detail">{{ t("admin-profile-photo") }}</p>
             </div>
 
             <div class="d-flex flex-column align-center position-relative">

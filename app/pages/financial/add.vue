@@ -55,7 +55,7 @@
           <!-- Date -->
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >TRANSACTION DATE</label
+              >{{ $t("transaction-date") }}</label
             >
             <v-text-field
               v-model="form.date"

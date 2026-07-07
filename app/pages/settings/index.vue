@@ -106,7 +106,7 @@
                   size="x-small"
                   variant="flat"
                   label
-                  >ACTIVE</v-chip
+                  >{{ $t("active") }}</v-chip
                 >
               </template>
             </v-list-item>
