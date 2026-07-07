@@ -36,7 +36,7 @@
         <v-card elevation="0" class="metric-card h-100 overflow-hidden">
           <div class="pa-4">
             <div class="d-flex justify-space-between align-center mb-4">
-          <div>
+          <div class="d-flex align-center ga-3">
             <div :class="`metric-icon-box bg-${stat.iconColor}-lighten-5`">
                 <v-icon
                   :icon="stat.icon"
