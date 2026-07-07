@@ -199,7 +199,7 @@
             <v-select
               v-model="form.managerId"
               :items="managerOptions"
-              placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
+              :placeholder="t('select-manager-optional')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -207,7 +207,7 @@
               class="premium-input"
               color="primary"
               clearable
-              no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
+              :no-data-text="t('no-other-staff')"
             ></v-select>
           </v-col>
 

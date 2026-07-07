@@ -232,8 +232,8 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Displaying 1 to {{ students.length }} of
-              {{ studentStore.total }} academic records
+              {{ t("showing") }} 1 {{ t("to") }} {{ students.length }}
+              {{ t("of") }} {{ studentStore.total }} {{ t("records") }}
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn
@@ -321,7 +321,7 @@ const classroomMap = computed<Record<string, { name: string; grade: string }>>(
 
 // Class filter dropdown (real classrooms).
 const classOptions = computed(() => [
-  { title: "ທຸກຫ້ອງ / All Classes", value: null },
+  { title: t("all-classes"), value: null },
   ...classroomStore.classrooms.map((c: any) => ({
     title: c.classroom_name || c.classroom_code,
     value: c.id,
