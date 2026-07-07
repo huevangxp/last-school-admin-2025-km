@@ -156,7 +156,7 @@
               <v-icon
                 icon="mdi-chevron-down"
                 size="16"
-                color="grey-darken-1"
+                color="white"
               ></v-icon>
             </v-btn>
           </template>
@@ -318,6 +318,7 @@
 </template>
 
 <script setup lang="ts">
+import { useDisplay } from "vuetify";
 import { useApiAuthStore } from "~/stores/apiAuth";
 import { useClassroomStore } from "~/stores/apiClassroom";
 
