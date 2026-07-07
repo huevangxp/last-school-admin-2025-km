@@ -42,6 +42,14 @@
                   :color="stat.iconColor"
                   size="18"
                 ></v-icon>
+                <div class="metric-info">
+              <div class="text-detail mb-1">
+                {{ stat.title }}
+              </div>
+              <div class="text-title">
+                {{ stat.value }}
+              </div>
+            </div>
               </div>
               <div class="trend-badge" :class="stat.trendUp ? 'up' : 'down'">
                 <v-icon
