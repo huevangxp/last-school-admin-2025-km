@@ -457,7 +457,9 @@ const memberStudents = computed(() =>
 // so each ໜ່ວຍ gets an equal share.
 const splitEven = <T,>(arr: T[], n: number): T[][] => {
   const groups: T[][] = Array.from({ length: n }, () => []);
-  arr.forEach((item, i) => groups[i % n].push(item));
+  arr.forEach((item, i) => {
+    (groups[i % n] as T[]).push(item);
+  });
   return groups;
 };
 
