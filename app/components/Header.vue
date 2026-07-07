@@ -209,13 +209,12 @@
             >
               <v-avatar
                 size="44"
-                color="primary-lighten-5"
+                color="white"
+                rounded="0"
                 class="elevation-2 border-2 border-white mr-3"
               >
                 <v-img v-if="userAvatar" :src="userAvatar" cover></v-img>
-                <span v-else class="text-primary font-weight-black">{{
-                  userInitial
-                }}</span>
+                <v-icon v-else color="primary">mdi-account</v-icon>
               </v-avatar>
               <div class="d-none d-lg-block">
                 <div
