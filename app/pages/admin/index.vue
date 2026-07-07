@@ -148,7 +148,7 @@
         <!-- Access Identifier Slot -->
         <template v-slot:item.id="{ item }">
           <span
-            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-md font-weight-black"
+            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0 font-weight-black"
           >
             {{ item.id }}
           </span>
@@ -217,7 +217,7 @@
                 color="primary"
                 size="x-small"
                 variant="flat"
-                class="font-weight-black rounded-md"
+                class="font-weight-black rounded-0"
                 style="min-width: 24px; height: 24px"
               >
                 1
@@ -236,7 +236,7 @@
 
     <!-- Edit User Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("admin") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
