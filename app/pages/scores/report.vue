@@ -149,7 +149,8 @@ const breadcrumbs = [
 
 const selectedClassId = ref("");
 const selectedSemester = ref("1");
-const selectedMonth = ref("ເດືອນ 1");
+// Default to the current calendar month (e.g. ເດືອນ 7 in July).
+const selectedMonth = ref(`ເດືອນ ${new Date().getMonth() + 1}`);
 
 const semesterOptions = ["1", "2"];
 const monthOptions = Array.from({ length: 12 }, (_, i) => `ເດືອນ ${i + 1}`);
