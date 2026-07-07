@@ -274,16 +274,51 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useStudentStore } from "~/stores/apiStudent";
+import { useClassroomStore } from "~/stores/apiClassroom";
 
 const { t } = useI18n();
 
 const search = ref("");
+const selectedClass = ref<string | null>(null);
+const selectedStatus = ref<string | null>(null);
 
 const studentStore = useStudentStore();
+const classroomStore = useClassroomStore();
 
 onMounted(() => {
   studentStore.fetchStudents();
+  classroomStore.fetchClassrooms(100);
 });
+
+// Classroom id -> { name, grade } for filtering + display.
+const classroomMap = computed<Record<string, { name: string; grade: string }>>(
+  () => {
+    const map: Record<string, { name: string; grade: string }> = {};
+    classroomStore.classrooms.forEach((c: any) => {
+      map[c.id] = {
+        name: c.classroom_name || c.classroom_code || "",
+        grade: c.gradeLevel?.grade_level_name || "",
+      };
+    });
+    return map;
+  }
+);
+
+// Class filter dropdown (real classrooms).
+const classOptions = computed(() => [
+  { title: "ທຸກຫ້ອງ / All Classes", value: null },
+  ...classroomStore.classrooms.map((c: any) => ({
+    title: c.classroom_name || c.classroom_code,
+    value: c.id,
+  })),
+]);
+
+const statusOptions = [
+  { title: "ທຸກສະຖານະ / All", value: null },
+  { title: "Active", value: "active" },
+  { title: "Inactive", value: "inactive" },
+  { title: "Block", value: "block" },
+];
 
 const capitalize = (s?: string) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
