@@ -19,12 +19,12 @@
         <v-icon v-else color="primary">mdi-account</v-icon>
       </v-avatar>
 
-      <div
+      <!-- <div
         v-if="!node.isRoot && node.layer"
         class="org-layer-badge"
       >
         Layer {{ node.layer }}
-      </div>
+      </div> -->
 
       <div class="org-node-name">{{ node.name }}</div>
       <div class="org-node-role">{{ node.title }}</div>
