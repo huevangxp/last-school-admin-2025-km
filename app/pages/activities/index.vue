@@ -198,6 +198,9 @@
           </v-col>
         </v-row>
 
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("image") }}</label>
+        <ImagePicker v-model="form.image_url" class="mb-3" />
+
         <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("status") }}</label>
         <v-select
           v-model="form.activity_status"
