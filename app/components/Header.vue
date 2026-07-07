@@ -520,6 +520,27 @@ const logoutButton = () => {
   color: rgba(255, 255, 255, 0.55) !important;
 }
 
+/* Collapsible section header (dropdown toggle) */
+.modern-nav-section {
+  color: #ffffff !important;
+  padding: 0 16px !important;
+  min-height: 48px !important;
+  transition: background-color 0.2s ease;
+}
+.modern-nav-section :deep(.v-icon) {
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+.modern-nav-section :deep(.v-list-item-title) {
+  color: rgba(255, 255, 255, 0.95) !important;
+  letter-spacing: 0.02em;
+}
+.modern-nav-section:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+.tracking-wide {
+  letter-spacing: 0.02em;
+}
+
 /* Nav Item Styling */
 .modern-nav-item {
   color: rgba(255, 255, 255, 0.85) !important;
