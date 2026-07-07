@@ -30,8 +30,8 @@
       <!-- 2. Teacher Distribution (Doughnut) -->
       <v-col cols="12" lg="4">
         <v-card elevation="0" class="intelligence-card h-100 pa-6">
-          <div class="text-title mb-1">Faculty Composition</div>
-          <div class="text-detail mb-6">Teacher distribution by department</div>
+          <div class="text-title mb-1">{{ t("faculty-composition") }}</div>
+          <div class="text-detail mb-6">{{ t("teacher-distribution-by-department") }}</div>
           <div
             class="chart-wrapper d-flex flex-column align-center"
             style="height: 250px"

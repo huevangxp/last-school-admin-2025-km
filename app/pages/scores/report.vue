@@ -9,7 +9,7 @@
       <div>
         <div class="text-title mb-1">{{ $t("score_report") }}</div>
         <div class="text-detail">
-          ຄະແນນລວມທຸກວິຊາຂອງຫ້ອງ · Full class results (all subjects).
+          {{ $t("full-class-results") }}
         </div>
       </div>
       <v-btn
@@ -70,7 +70,7 @@
 
     <v-card elevation="0" class="intelligence-card pa-4">
       <div v-if="!selectedClassId" class="text-detail text-center py-10">
-        ເລືອກຫ້ອງຮຽນ · Select a class.
+        {{ $t("select-a-class") }}
       </div>
       <div v-else-if="scoreStore.loading" class="py-10 text-center">
         <v-progress-circular indeterminate color="primary"></v-progress-circular>

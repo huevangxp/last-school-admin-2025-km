@@ -102,7 +102,11 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="['Total', 'Income', 'Expense']"
+            :items="[
+              { title: $t('total'), value: 'Total' },
+              { title: $t('income'), value: 'Income' },
+              { title: $t('expense'), value: 'Expense' },
+            ]"
             variant="outlined"
             density="compact"
             hide-details

@@ -87,9 +87,9 @@
           <div class="pa-6">
             <div class="d-flex justify-space-between align-center mb-6">
               <div>
-                <div class="text-title mb-1">Academic Pulse</div>
+                <div class="text-title mb-1">{{ t("academic-pulse") }}</div>
                 <div class="text-detail">
-                  Global performance metrics across all faculties
+                  {{ t("global-performance-metrics") }}
                 </div>
               </div>
               <div class="chart-controls d-flex ga-1">
@@ -106,7 +106,7 @@
                   class="rounded-0 text-none text-detail font-weight-bold"
                   @click="chartPeriod = p.toLowerCase()"
                 >
-                  {{ p }}
+                  {{ t(p.toLowerCase()) }}
                 </v-btn>
               </div>
             </div>

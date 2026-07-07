@@ -81,7 +81,7 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <div class="text-detail-tiny mb-2">LIFECYCLE STATUS</div>
+                  <div class="text-detail-tiny mb-2">{{ $t("lifecycle-status") }}</div>
                   <v-select
                     v-model="form.status"
                     :items="statusOptions"
@@ -95,7 +95,7 @@
                   ></v-select>
                 </v-col>
                 <v-col cols="12" md="6">
-                  <div class="text-detail-tiny mb-2">COMMENCEMENT DATE</div>
+                  <div class="text-detail-tiny mb-2">{{ $t("commencement-date") }}</div>
                   <DialogDate
                     v-model="showStartDatePicker"
                     :date="form.startDate"
