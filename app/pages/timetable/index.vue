@@ -70,7 +70,7 @@
       elevation="0"
       class="intelligence-card pa-10 text-center text-detail"
     >
-      ເລືອກຫ້ອງຮຽນ ແລະ ສົກຮຽນ ເພື່ອເບິ່ງຕາຕະລາງ · Pick a class and year.
+      {{ t("pick-class-and-year") }}
     </v-card>
 
     <template v-else>

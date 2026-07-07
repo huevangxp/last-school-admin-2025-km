@@ -19,10 +19,10 @@
         <v-row class="ga-y-2">
           <!-- Subject Name -->
           <v-col cols="12" md="8">
-            <label class="text-detail-tiny mb-2 d-block">SUBJECT NAME *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ $t("subject-name") }} *</label>
             <v-text-field
               v-model="form.name"
-              placeholder="e.g. ຄະນິດສາດ"
+              :placeholder="$t('subject-name-placeholder')"
               variant="outlined"
               density="compact"
               rounded="0"
