@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 export const useClassroomStore = defineStore("classroom", {
   state: () => ({
     classrooms: [] as any[],
+    myClassrooms: [] as any[],
     total: 0,
     gradeLevels: [] as any[],
     academicYears: [] as any[],
