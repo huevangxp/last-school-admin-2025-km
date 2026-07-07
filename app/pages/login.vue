@@ -102,23 +102,11 @@
                 <v-icon icon="mdi-arrow-right" end class="ml-2"></v-icon>
               </v-btn>
 
-              <div class="text-center">
-                <span class="text-body-2 text-grey-darken-1"
-                  >Don't have an account?</span
-                >
-                <a
-                  href="#"
-                  class="text-primary font-weight-bold text-decoration-none ml-2"
-                  >Contact Admin</a
-                >
-              </div>
+             
             </v-form>
           </div>
 
-          <div class="form-footer mt-16 text-caption text-grey-lighten-1">
-            &copy; {{ new Date().getFullYear() }} EduAdmin Professional
-            Management
-          </div>
+           
         </v-col>
       </v-row>
     </v-card>
