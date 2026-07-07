@@ -228,7 +228,7 @@
         ></v-text-field>
         <v-row>
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">ROOM NO.</label>
+            <label class="text-detail-tiny mb-1 d-block">{{ t("room_number") }}</label>
             <v-text-field
               v-model="editForm.room_number"
               variant="outlined"
@@ -239,7 +239,7 @@
           </v-col>
           <v-col cols="6">
             <label class="text-detail-tiny mb-1 d-block"
-              >MAX STUDENTS (≤40)</label
+              >{{ t("max_students") }} (≤40)</label
             >
             <v-text-field
               v-model="editForm.max_student"
@@ -252,7 +252,7 @@
             ></v-text-field>
           </v-col>
         </v-row>
-        <label class="text-detail-tiny mb-1 mt-3 d-block">HOMEROOM TEACHER</label>
+        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("homeroom_teacher") }}</label>
         <v-select
           v-model="editForm.homeroom_teacher_id"
           :items="teacherStore.teachers"
