@@ -308,6 +308,71 @@
         </div>
       </v-card>
     </v-dialog>
+
+    <!-- Clone classrooms to a new academic year -->
+    <v-dialog v-model="cloneDialog" width="480">
+      <v-card rounded="xl" class="pa-6">
+        <div class="d-flex align-center mb-1">
+          <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-lg">
+            <v-icon color="teal-darken-2" size="18">mdi-content-copy</v-icon>
+          </v-avatar>
+          <div class="text-title">ກ໊ອບປີ້ຫ້ອງຮຽນໄປສົກໃໝ່</div>
+        </div>
+        <div class="text-detail mb-4">
+          ກ໊ອບປີ້ຫ້ອງຮຽນທັງໝົດຈາກສົກໜຶ່ງ ໄປໃສ່ອີກສົກໜຶ່ງ ໂດຍບໍ່ຕ້ອງພິມໃໝ່.
+        </div>
+
+        <label class="text-detail-tiny mb-1 d-block">ຈາກສົກຮຽນ (FROM)</label>
+        <v-select
+          v-model="cloneSource"
+          :items="classroomStore.academicYears"
+          item-title="title"
+          item-value="id"
+          placeholder="ເລືອກສົກຕົ້ນທາງ"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+          class="mb-3"
+        ></v-select>
+
+        <label class="text-detail-tiny mb-1 d-block">ໄປສົກຮຽນ (TO)</label>
+        <v-select
+          v-model="cloneTarget"
+          :items="classroomStore.academicYears"
+          item-title="title"
+          item-value="id"
+          placeholder="ເລືອກສົກປາຍທາງ"
+          variant="outlined"
+          density="compact"
+          rounded="lg"
+          hide-details
+        ></v-select>
+
+        <v-alert
+          v-if="cloneMsg"
+          :type="cloneOk ? 'success' : 'error'"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ cloneMsg }}</v-alert
+        >
+
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="cloneDialog = false">{{
+            t("cancel")
+          }}</v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            :loading="cloning"
+            :disabled="!cloneSource || !cloneTarget || cloneSource === cloneTarget"
+            @click="doClone"
+            >ກ໊ອບປີ້</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
