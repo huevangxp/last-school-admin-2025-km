@@ -161,8 +161,18 @@ onMounted(async () => {
     ]);
     years.value = yRes.data?.data ?? [];
     totalTeachers.value = tRes.data?.data?.pagination?.total ?? 0;
-    // Default to the first academic year.
-    if (years.value.length) yearId.value = years.value[0].id;
+    // Default to the latest academic year (active first, else newest start).
+    if (years.value.length) {
+      const latest = [...years.value].sort((a: any, b: any) => {
+        const act = (b.status === "active" ? 1 : 0) - (a.status === "active" ? 1 : 0);
+        if (act !== 0) return act;
+        return (
+          new Date(b.start_date || 0).getTime() -
+          new Date(a.start_date || 0).getTime()
+        );
+      })[0];
+      yearId.value = latest.id;
+    }
   } catch (error) {
     console.error(error);
   }
