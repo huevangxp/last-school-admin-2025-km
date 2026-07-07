@@ -22,7 +22,7 @@
             >
             <v-text-field
               v-model="form.firstName"
-              placeholder="e.g. ສົມໃຈ"
+              :placeholder="t('eg-firstname')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -55,7 +55,7 @@
             >
             <v-text-field
               v-model="form.username"
-              :placeholder="t('login-username-placeholder')"
+              :placeholder="t('login-username')"
               variant="outlined"
               density="compact"
               rounded="0"
