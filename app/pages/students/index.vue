@@ -533,15 +533,6 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const removeStudent = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
-  try {
-    await studentStore.deleteStudent(item.uuid);
-    await studentStore.fetchStudents();
-  } catch (error) {
-    console.error(error);
-  }
-};
 </script>
 
 <style scoped>
