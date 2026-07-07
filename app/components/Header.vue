@@ -60,10 +60,10 @@
                   rounded="0"
                 >
                   <template v-slot:prepend>
-                    <v-icon size="20" class="mr-4">{{ section.icon }}</v-icon>
+                    <v-icon size="20" color="primary">{{ section.icon }}</v-icon>
                   </template>
                   <v-list-item-title
-                    class="text-subtitle-2 font-weight-black tracking-wide"
+                    class="text-subtitle-2 font-weight-black"
                   >
                     {{ t(section.label) }}
                   </v-list-item-title>
@@ -77,11 +77,10 @@
                 :to="item.to"
                 class="mb-1 modern-nav-item modern-nav-child"
                 rounded="0"
-                active-class="active-item"
                 :exact="item.to === '/'"
               >
                 <template v-slot:prepend>
-                  <v-icon size="18" class="mr-4">{{ item.icon }}</v-icon>
+                  <v-icon size="18">{{ item.icon }}</v-icon>
                 </template>
                 <v-list-item-title class="text-subtitle-2 font-weight-bold">
                   {{ t(item.title) }}
