@@ -119,5 +119,9 @@
     "score_report": "Score Report",
     "are_you_sure": "Are you sure?",
     "confirm": "Confirm",
-    "deleted_successfully": "Deleted successfully"
+    "deleted_successfully": "Deleted successfully",
+    "academic_section": "Academic",
+    "faculty": "Faculty",
+    "configuration": "Configuration",
+    "administration": "Administration"
 }
