@@ -15,16 +15,29 @@
           <div class="text-detail">ໂຄງສ້າງຄະນະຮັບຜິດຊອບຫ້ອງຮຽນ · Classroom leadership</div>
         </div>
       </div>
-      <v-btn
-        variant="flat"
-        color="white"
-        class="modern-action-btn secondary border"
-        height="36"
-        to="/class"
-      >
-        <v-icon icon="mdi-arrow-left" start size="18"></v-icon>
-        {{ t("classes") }}
-      </v-btn>
+      <div class="d-flex gap-2 align-center mt-4 mt-md-0">
+        <v-btn
+          variant="flat"
+          color="white"
+          class="modern-action-btn secondary border"
+          height="36"
+          to="/class"
+        >
+          <v-icon icon="mdi-arrow-left" start size="18"></v-icon>
+          {{ t("classes") }}
+        </v-btn>
+        <v-btn
+          variant="flat"
+          color="primary"
+          class="modern-action-btn primary elevation-4"
+          height="36"
+          :disabled="!selectedClassId"
+          @click="openManage"
+        >
+          <v-icon icon="mdi-account-cog-outline" start size="18"></v-icon>
+          {{ t("assign_roles") }}
+        </v-btn>
+      </div>
     </div>
 
     <!-- Filters -->
