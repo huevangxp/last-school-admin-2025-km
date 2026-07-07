@@ -471,7 +471,7 @@ const unitColumns = computed(() => {
   return units.map((u: any, i: number) => ({
     id: u.id,
     name: nameFor(u.student_id),
-    members: groups[i],
+    members: groups[i] ?? [],
   }));
 });
 </script>
