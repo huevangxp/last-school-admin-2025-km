@@ -455,11 +455,21 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
+    label: "configuration",
+    icon: "mdi-tune-variant",
+    adminOnly: true,
+    items: [
+      { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
+      { title: "ethnic_group", icon: "mdi-account-group-outline", to: "/ethnic-group" },
+      { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
+      { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
+    ],
+  },
+  {
     label: "administration",
     icon: "mdi-shield-account-outline",
     items: [
-      { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
-      { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
+      
     ],
   },
 ];
