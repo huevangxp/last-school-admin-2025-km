@@ -4,7 +4,7 @@
 
     <v-card elevation="0" class="intelligence-card pa-6">
       <div class="d-flex align-center mb-6">
-        <v-avatar color="blue-lighten-5" size="40" class="mr-3 rounded-lg">
+        <v-avatar color="blue-lighten-5" size="40" class="mr-3 rounded-0">
           <v-icon color="blue-darken-2" size="20"
             >mdi-account-group-outline</v-icon
           >
@@ -29,7 +29,7 @@
               variant="outlined"
               density="compact"
               color="primary"
-              rounded="lg"
+              rounded="0"
               class="premium-input"
               :placeholder="$t('name')"
               hide-details="auto"
