@@ -203,9 +203,18 @@ const { fetchEthnicGroups } = ethnicGroupStore;
 const { ethnicGroups, total } = storeToRefs(ethnicGroupStore);
 
 const deleteItem = async (id: number) => {
-  if (confirm(t("are_you_sure_delete"))) {
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
+  try {
     await ethnicGroupStore.deleteEthnicGroup(id);
     fetchEthnicGroups(limit.value, offset.value);
+    ui.notify(t("deleted_successfully"), "success");
+  } catch (error) {
+    ui.notify("Failed to delete.", "error");
   }
 };
 
