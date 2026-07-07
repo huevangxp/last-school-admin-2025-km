@@ -144,7 +144,7 @@
                 <v-select
                   v-model="form.gender"
                   :items="genderOptions"
-                  placeholder="Select gender"
+                  :placeholder="t('select-gender')"
                   variant="outlined"
                   density="compact"
                   rounded="0"

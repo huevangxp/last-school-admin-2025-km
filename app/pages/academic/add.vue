@@ -24,7 +24,7 @@
           size="small"
           variant="flat"
         >
-          DRAFT MODE
+          {{ $t("draft-mode") }}
         </v-chip>
       </div>
     </div>

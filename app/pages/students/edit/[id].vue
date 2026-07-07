@@ -59,7 +59,7 @@
             >
             <v-text-field
               v-model="form.username"
-              placeholder="Login username"
+              :placeholder="t('login-username')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -71,7 +71,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >{{ t("password") }} (leave blank to keep)</label
+              >{{ t("password") }} {{ t("leave-blank-to-keep") }}</label
             >
             <v-text-field
               v-model="form.password"

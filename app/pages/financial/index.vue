@@ -7,9 +7,9 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-title mb-1">Financial Management</h1>
+        <h1 class="text-title mb-1">{{ $t("financial-management") }}</h1>
         <p class="text-detail">
-          Track revenue, expenses, and transaction history.
+          {{ $t("financial-management-subtitle") }}
         </p>
       </div>
 
