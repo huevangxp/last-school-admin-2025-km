@@ -98,7 +98,7 @@
                 :loading="loading"
                 elevation="8"
               >
-                Sign In
+                {{ t("sign_in") }}
                 <v-icon icon="mdi-arrow-right" end class="ml-2"></v-icon>
               </v-btn>
 
