@@ -122,6 +122,8 @@ definePageMeta({
   layout: false,
 });
 
+const { t } = useI18n();
+
 const username = ref("deputy_academic");
 const password = ref("123456");
 const rememberMe = ref(false);
