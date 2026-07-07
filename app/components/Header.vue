@@ -486,6 +486,21 @@ const groupedMenuItems = computed<MenuSection[]>(() =>
     .filter((sec) => sec.items.length > 0)
 );
 
+// Which section dropdowns are expanded. Default: all open, initialised once so a
+// user's manual collapse isn't clobbered on later reactivity.
+const openedGroups = ref<string[]>([]);
+let groupsInited = false;
+watch(
+  groupedMenuItems,
+  (secs) => {
+    if (!groupsInited && secs.length) {
+      openedGroups.value = secs.map((s) => s.label);
+      groupsInited = true;
+    }
+  },
+  { immediate: true }
+);
+
 const logoutButton = () => {
   logout();
   logoutDialog.value = false;
