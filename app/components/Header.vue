@@ -215,18 +215,19 @@
               </v-avatar>
               <div class="d-none d-lg-block">
                 <div
-                  class="text-subtitle-2 font-weight-black line-height-1 mb-1 text-capitalize"
+                  class="text-subtitle-2 font-weight-black line-height-1 mb-1 text-capitalize text-white"
                 >
                   {{ username }}
                 </div>
-                <div class="text-caption text-grey-darken-1 text-capitalize">
+                <div class="text-caption text-capitalize header-role-text">
                   {{ role }}
                 </div>
               </div>
               <v-icon
                 icon="mdi-chevron-down"
                 size="16"
-                class="d-none d-lg-block ml-3 opacity-50"
+                color="white"
+                class="d-none d-lg-block ml-3 opacity-75"
               ></v-icon>
             </div>
           </template>
