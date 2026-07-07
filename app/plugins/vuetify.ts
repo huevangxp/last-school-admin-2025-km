@@ -22,13 +22,13 @@ export default defineNuxtPlugin((app: any) => {
       themes: {
         light: {
           colors: {
-            primary: "#14b8a5", // Teal 500 (brand)
-            // Light/dark teal tints kept consistent with the primary so accent
-            // backgrounds (avatars, chips) read as teal, not blue.
-            "primary-lighten-5": "#CCFBF1", // Teal 100
-            "primary-lighten-4": "#99F6E4", // Teal 200
-            "primary-darken-1": "#0D9488", // Teal 600
-            "primary-darken-2": "#0F766E", // Teal 700
+            primary: "#0A3154", // Navy (brand)
+            // Navy tints kept consistent with the primary so accent backgrounds
+            // (avatars, chips, logo tile) read as navy, not teal.
+            "primary-lighten-5": "#E6ECF2", // Very light navy
+            "primary-lighten-4": "#C2D0DE", // Light navy
+            "primary-darken-1": "#082741", // Darker navy
+            "primary-darken-2": "#06202F", // Darkest navy
             secondary: "#1E293B", // Slate 800
             ts: "#64748B", // Slate 500
             bg: "#F8FAFC", // Slate 50
