@@ -431,7 +431,6 @@ const activities = computed(() =>
   display: flex;
   align-items: center;
   padding: 2px 8px;
-  border-radius: 12px;
   font-size: 10px;
   font-weight: 800;
 }
