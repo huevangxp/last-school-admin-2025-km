@@ -486,7 +486,7 @@ const saveEdit = async () => {
     editDialog.value = false;
     await subjectStore.fetchSubjects();
   } catch (error: any) {
-    editError.value = error.response?.data?.message || "Failed to update.";
+    editError.value = error.response?.data?.message || t("failed-to-update");
   } finally {
     saving.value = false;
   }
@@ -504,7 +504,7 @@ const removeSubject = async (item: any) => {
     await subjectStore.fetchSubjects();
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    ui.notify("Failed to delete.", "error");
+    ui.notify(t("failed-to-delete"), "error");
   }
 };
 </script>

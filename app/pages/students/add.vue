@@ -151,7 +151,9 @@
 
         <v-row class="ga-y-2">
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">BLOOD GROUP *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("blood-group") }} *</label
+            >
             <v-select
               v-model="form.bloodGroup"
               :items="['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']"

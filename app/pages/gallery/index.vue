@@ -381,7 +381,7 @@ const removeGallery = async (g: any) => {
     await galleryStore.fetchGalleries();
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    ui.notify("Failed to delete.", "error");
+    ui.notify(t("failed-to-delete"), "error");
   }
 };
 </script>
