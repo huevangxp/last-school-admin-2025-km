@@ -17,7 +17,7 @@
           :class="rail ? 'px-0 py-6 justify-center' : 'px-6 py-8'"
         >
           <div
-            class="brand-logo-container bg-primary-lighten-5 rounded-lg elevation-1"
+            class="brand-logo-container bg-primary-lighten-5 rounded-0 elevation-1"
             :class="{ 'mr-3': !rail }"
           >
             <v-img
@@ -139,7 +139,7 @@
           hide-details
           class="modern-search-input"
           flat
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
       </div>
 
@@ -151,7 +151,7 @@
             <v-btn
               v-bind="props"
               variant="text"
-              class="rounded-lg px-2"
+              class="rounded-0 px-2"
               height="44"
             >
               <v-avatar size="24" class="mr-2">
@@ -164,12 +164,12 @@
               ></v-icon>
             </v-btn>
           </template>
-          <v-list class="modern-dropdown pa-2" width="180" rounded="lg">
+          <v-list class="modern-dropdown pa-2" width="180" rounded="0">
             <v-list-item
               v-for="(item, index) in locales"
               :key="index"
               @click="setLanguage(item)"
-              rounded="lg"
+              rounded="0"
               class="mb-1"
               :active="item.name === langName"
               color="primary"
@@ -191,7 +191,7 @@
           variant="text"
           color="white"
           size="small"
-          class="rounded-lg action-btn"
+          class="rounded-0 action-btn"
         >
           <v-badge dot color="error" offset-x="2" offset-y="2">
             <v-icon size="22">mdi-bell-outline</v-icon>
@@ -235,7 +235,7 @@
               ></v-icon>
             </div>
           </template>
-          <v-list class="modern-dropdown pa-2" width="240" rounded="lg">
+          <v-list class="modern-dropdown pa-2" width="240" rounded="0">
             <div class="px-3 py-2">
               <div class="text-subtitle-2 font-weight-black text-capitalize">
                 {{ username }}
@@ -246,7 +246,7 @@
             </div>
             <v-divider class="mb-2"></v-divider>
             <v-list-item
-              rounded="lg"
+              rounded="0"
               class="mb-1"
               prepend-icon="mdi-account-outline"
               to="/admin"
@@ -256,7 +256,7 @@
               }}</v-list-item-title>
             </v-list-item>
             <v-list-item
-              rounded="lg"
+              rounded="0"
               class="mb-1"
               prepend-icon="mdi-cog-outline"
               to="/settings"
@@ -267,7 +267,7 @@
             </v-list-item>
             <v-divider class="my-2"></v-divider>
             <v-list-item
-              rounded="lg"
+              rounded="0"
               color="error"
               class="mb-1"
               @click="logoutDialog = true"
@@ -287,7 +287,7 @@
     </v-app-bar>
     <!-- Logout Confirmation -->
     <v-dialog v-model="logoutDialog" width="400">
-      <v-card rounded="lg" class="pa-4 overflow-hidden">
+      <v-card rounded="0" class="pa-4 overflow-hidden">
         <div class="text-center py-6">
           <v-avatar color="red-lighten-5" size="72" class="mb-4">
             <v-icon icon="mdi-logout-variant" color="red" size="36"></v-icon>
@@ -302,7 +302,7 @@
             block
             variant="flat"
             color="red"
-            class="rounded-lg font-weight-bold"
+            class="rounded-0 font-weight-bold"
             height="44"
             @click="logoutButton"
             >Yes, Sign Out</v-btn
@@ -311,7 +311,7 @@
             block
             variant="text"
             color="grey-darken-1"
-            class="rounded-lg font-weight-bold"
+            class="rounded-0 font-weight-bold"
             height="44"
             @click="logoutDialog = false"
             >Cancel</v-btn
