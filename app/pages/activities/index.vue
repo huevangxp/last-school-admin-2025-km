@@ -341,6 +341,7 @@ const openEdit = (item: any) => {
     activity_date: item.activity_date
       ? String(item.activity_date).substring(0, 10)
       : "",
+    image_url: item.image_url || "",
     activity_status: item.activity_status || "active",
   };
   dialog.value = true;
