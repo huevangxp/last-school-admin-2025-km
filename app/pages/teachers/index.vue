@@ -459,6 +459,20 @@ import { useTeacherStore } from "~/stores/apiTeacher";
 const { t } = useI18n();
 
 const search = ref("");
+const selectedRole = ref<string | null>(null);
+const selectedStatus = ref<string | null>(null);
+
+const roleOptions = [
+  { title: "ທຸກຕຳແໜ່ງ / All", value: null },
+  { title: "Teacher", value: "teacher" },
+  { title: "Admin", value: "admin" },
+];
+const statusOptions = [
+  { title: "ທຸກສະຖານະ / All", value: null },
+  { title: "Active", value: "active" },
+  { title: "Inactive", value: "inactive" },
+  { title: "Block", value: "block" },
+];
 
 const teacherStore = useTeacherStore();
 
