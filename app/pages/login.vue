@@ -246,8 +246,8 @@ const loginBtn = async () => {
 }
 
 .rounded-input :deep(.v-field--focused) {
-  border-color: #14b8a6 !important;
-  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.1) !important;
+  border-color: #0a3154 !important;
+  box-shadow: 0 0 0 4px rgba(10, 49, 84, 0.1) !important;
 }
 
 .primary-login-btn {
