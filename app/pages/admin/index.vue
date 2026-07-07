@@ -176,10 +176,10 @@
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status === 'Active'
-              ? t('ເປີດ')
+              ? t('open')
               : item.status === 'Suspended'
-                ? t('ປິດ')
-                : t('Inactive') }}
+                ? t('closed')
+                : t('inactive') }}
           </v-chip>
         </template>
 
