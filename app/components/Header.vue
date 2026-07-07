@@ -110,7 +110,7 @@
             size="small"
  
             color="primary-lighten-5"
-            class="text-primary font-weight-bold px-3"
+            class="text-primary font-weight-bold"
           >
             v2.4.0
           </v-card>
