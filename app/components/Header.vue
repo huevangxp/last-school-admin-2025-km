@@ -422,6 +422,7 @@ const allMenuSections: MenuSection[] = [
       { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
       { title: "scores", icon: "mdi-star-outline", to: "/scores" },
       { title: "score_report", icon: "mdi-table-large", to: "/scores/report" },
+      { title: "study_schedule", icon: "mdi-timetable", to: "/timetable" },
       { title: "academic", icon: "mdi-calendar-check", to: "/academic", adminOnly: true },
     ],
   },
