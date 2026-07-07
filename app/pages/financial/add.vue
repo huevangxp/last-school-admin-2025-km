@@ -71,10 +71,14 @@
 
           <!-- Method -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">PAYMENT METHOD</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ $t("payment-method") }}</label>
             <v-select
               v-model="form.method"
-              :items="['Bank Transfer', 'Cash', 'Online Payment']"
+              :items="[
+                { title: $t('bank-transfer'), value: 'Bank Transfer' },
+                { title: $t('cash'), value: 'Cash' },
+                { title: $t('online-payment'), value: 'Online Payment' },
+              ]"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -87,11 +91,11 @@
           <!-- Note -->
           <v-col cols="12">
             <label class="text-detail-tiny mb-2 d-block"
-              >TRANSACTION NOTES</label
+              >{{ $t("transaction-notes") }}</label
             >
             <v-textarea
               v-model="form.note"
-              placeholder="e.g. Q1 Student Fees, Maintenance..."
+              :placeholder="$t('transaction-notes-placeholder')"
               variant="outlined"
               density="compact"
               rounded="0"

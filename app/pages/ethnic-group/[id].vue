@@ -9,7 +9,7 @@
         </v-avatar>
         <div>
           <h2 class="text-title">{{ $t("edit") }} {{ $t("ethnic_group") }}</h2>
-          <p class="text-detail">Modify existing classification parameters</p>
+          <p class="text-detail">{{ $t("modify-classification-parameters") }}</p>
         </div>
       </div>
 

@@ -34,7 +34,7 @@
               ></v-btn>
 
               <p class="text-detail-tiny mt-6 opacity-60">
-                Recommended: 400x400px
+                {{ t("recommended-photo-size") }}
               </p>
               <input
                 type="file"
@@ -58,8 +58,8 @@
                 >
               </v-avatar>
               <div>
-                <h3 class="text-title">Access</h3>
-                <p class="text-detail-tiny">Role &amp; account status</p>
+                <h3 class="text-title">{{ t("access") }}</h3>
+                <p class="text-detail-tiny">{{ t("role-account-status") }}</p>
               </div>
             </div>
 

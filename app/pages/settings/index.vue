@@ -157,8 +157,8 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-title">Notifications</h3>
-              <p class="text-detail-tiny">Alert system preferences</p>
+              <h3 class="text-title">{{ $t("notifications") }}</h3>
+              <p class="text-detail-tiny">{{ $t("notifications-desc") }}</p>
             </div>
           </div>
           <v-divider class="mb-2 opacity-10"></v-divider>
@@ -207,8 +207,8 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-title">Security</h3>
-              <p class="text-detail-tiny">Account & safety protocols</p>
+              <h3 class="text-title">{{ $t("security") }}</h3>
+              <p class="text-detail-tiny">{{ $t("security-desc") }}</p>
             </div>
           </div>
           <v-divider class="mb-2 opacity-10"></v-divider>
