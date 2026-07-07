@@ -302,7 +302,7 @@ const assignCell = async (
     });
     await scheduleStore.fetchSchedule(classId.value!, yearId.value!);
   } catch (error: any) {
-    ui.notify(error.response?.data?.message || "Failed to save.", "error");
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
   }
 };
 

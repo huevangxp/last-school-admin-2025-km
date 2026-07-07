@@ -226,7 +226,7 @@
             >
             <v-text-field
               v-model="form.parentName"
-              placeholder="Parent / guardian full name"
+              :placeholder="t('guardian-fullname-placeholder')"
               variant="outlined"
               density="compact"
               rounded="0"

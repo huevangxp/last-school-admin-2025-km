@@ -52,18 +52,18 @@
           <!-- Grade Levels (multi-select) -->
           <v-col cols="12" md="6">
             <div class="d-flex align-center justify-space-between mb-2">
-              <label class="text-detail-tiny d-block">GRADE LEVELS *</label>
+              <label class="text-detail-tiny d-block">{{ $t("grade-levels") }} *</label>
               <div class="d-flex ga-2">
                 <button
                   type="button"
                   class="link-btn"
                   @click="selectAllGrades"
                 >
-                  ເລືອກທັງໝົດ
+                  {{ $t("select-all") }}
                 </button>
                 <span class="text-grey-lighten-1">·</span>
                 <button type="button" class="link-btn" @click="clearGrades">
-                  ລ້າງ
+                  {{ $t("clear") }}
                 </button>
               </div>
             </div>
