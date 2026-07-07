@@ -666,7 +666,11 @@ const logoutButton = () => {
 }
 
 .profile-trigger:hover {
-  background-color: #f8fafc;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.header-role-text {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Typography & Layout Utils */
