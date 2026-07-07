@@ -293,9 +293,9 @@
           <v-avatar color="red-lighten-5" size="72" class="mb-4">
             <v-icon icon="mdi-logout-variant" color="red" size="36"></v-icon>
           </v-avatar>
-          <h3 class="text-h6 font-weight-black mb-2">Sign Out?</h3>
+          <h3 class="text-h6 font-weight-black mb-2">{{ t("logout") }}</h3>
           <p class="text-body-2 text-grey-darken-1 px-6">
-            Are you sure you want to log out of your admin session?
+            {{ t("logout_message") }}
           </p>
         </div>
         <v-card-actions class="ga-3 px-4 pb-4">
