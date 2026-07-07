@@ -6,7 +6,8 @@
         :rail="rail"
         rail-width="76"
         width="280"
-        class="modern-sidebar border-0"
+        color="surface"
+        class="modern-sidebar border-e-sm"
         elevation="0"
         floating
       >
