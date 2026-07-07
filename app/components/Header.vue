@@ -11,8 +11,11 @@
         floating
       >
         <!-- Sidebar Brand Wrapper -->
-        <div class="sidebar-brand-wrapper px-6 py-8 d-flex align-center">
-          <div class="brand-logo-container mr-3">
+        <div
+          class="sidebar-brand-wrapper d-flex align-center"
+          :class="rail ? 'px-0 py-6 justify-center' : 'px-6 py-8'"
+        >
+          <div class="brand-logo-container" :class="{ 'mr-3': !rail }">
             <v-img
               src="/logo.png"
               alt="Logo"
@@ -21,9 +24,9 @@
               contain
             ></v-img>
           </div>
-          <div class="brand-text">
+          <div v-if="!rail" class="brand-text">
             <div
-              class="text-subtitle-1 font-weight-black text-white tracking-tight line-height-1"
+              class="text-subtitle-1 font-weight-black brand-title tracking-tight line-height-1"
             >
               {{ t("schoolmanagement") }}
             </div>
