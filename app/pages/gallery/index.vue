@@ -13,7 +13,7 @@
         <div>
           <div class="text-title">{{ t("gallery") }}</div>
           <div class="text-detail">
-            ອານບໍ້າມຮູບພາບກິດຈະກຳ · Photo galleries
+            {{ t("gallery-subtitle") }}
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
       elevation="0"
       class="intelligence-card pa-10 text-center text-detail"
     >
-      ຍັງບໍ່ມີອານບໍ້າມ · No galleries yet.
+      {{ t("no-galleries-yet") }}
     </v-card>
 
     <!-- Gallery cards -->

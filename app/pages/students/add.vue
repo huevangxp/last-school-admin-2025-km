@@ -24,7 +24,7 @@
             >
             <v-text-field
               v-model="form.firstName"
-              placeholder="e.g. ສົມສະໜຸກ"
+              :placeholder="t('eg-firstname')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -40,7 +40,7 @@
             >
             <v-text-field
               v-model="form.lastName"
-              placeholder="e.g. ວົງສາ"
+              :placeholder="t('eg-lastname')"
               variant="outlined"
               density="compact"
               rounded="0"

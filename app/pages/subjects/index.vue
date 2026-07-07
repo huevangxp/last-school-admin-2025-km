@@ -331,13 +331,13 @@ const gradeName = (id: string) =>
 
 const subjectStats = computed(() => [
   {
-    label: "Total Subjects",
+    label: t("total-subjects"),
     value: String(subjectStore.subjects.length),
     icon: "mdi-book-open-page-variant-outline",
     color: "teal",
   },
   {
-    label: "Active",
+    label: t("active"),
     value: String(
       subjectStore.subjects.filter((s) => s.subject_status === "active").length
     ),
@@ -345,7 +345,7 @@ const subjectStats = computed(() => [
     color: "green",
   },
   {
-    label: "Grade Levels",
+    label: t("grade-levels"),
     value: String(
       new Set(subjectStore.subjects.map((s) => s.grade_id)).size
     ),
@@ -353,7 +353,7 @@ const subjectStats = computed(() => [
     color: "purple",
   },
   {
-    label: "Inactive",
+    label: t("inactive"),
     value: String(
       subjectStore.subjects.filter((s) => s.subject_status !== "active").length
     ),
@@ -370,7 +370,7 @@ const itemsPerPageOptions = [
   { value: 25, title: "25" },
   { value: 50, title: "50" },
   { value: 100, title: "100" },
-  { value: -1, title: "ທັງໝົດ (All)" },
+  { value: -1, title: t("all") },
 ];
 
 const withHeaderClass = (arr: any[]) =>
