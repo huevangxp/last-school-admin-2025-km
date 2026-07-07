@@ -63,18 +63,16 @@
           ></v-select>
 
           <label class="text-detail-tiny mb-2 d-block">TARGET ACADEMIC YEAR</label>
-          <v-select
-            v-model="targetYearId"
-            :items="classroomStore.academicYears"
-            item-title="title"
-            item-value="id"
-            placeholder="Select academic year"
+          <v-text-field
+            :model-value="classroomStore.latestAcademicYear?.title || '—'"
+            readonly
             variant="outlined"
             density="compact"
             rounded="lg"
             class="premium-input"
             hide-details
-          ></v-select>
+            prepend-inner-icon="mdi-calendar-check"
+          ></v-text-field>
 
           <v-alert
             v-if="message"
