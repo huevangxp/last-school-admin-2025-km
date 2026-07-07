@@ -176,9 +176,9 @@
         <!-- Curricular Level Slot -->
         <template v-slot:item.grade="{ item }">
           <div>
-            <div class="text-title-small">{{ item.grade }}</div>
+            <div class="text-title-small">{{ item.className }}</div>
             <div class="text-detail-tiny text-grey">
-              {{ item.class || "Class A" }}
+              {{ item.gradeName }}
             </div>
           </div>
         </template>
