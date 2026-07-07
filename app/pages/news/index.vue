@@ -169,6 +169,9 @@
           class="mb-3"
         ></v-textarea>
 
+        <label class="text-detail-tiny mb-1 d-block">{{ t("image") }}</label>
+        <ImagePicker v-model="form.image_url" class="mb-3" />
+
         <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
         <v-select
           v-model="form.announcement_status"
