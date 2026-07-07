@@ -106,19 +106,21 @@
         ></v-btn>
 
         <div class="d-none d-sm-flex align-center ga-2">
-          <v-card
+          <v-chip
             size="small"
-        variant="tonal"
+            variant="tonal"
             color="primary-lighten-5"
+            rounded="0"
             class="text-primary font-weight-bold px-3"
           >
             v2.4.0
-          </v-card>
+          </v-chip>
           <v-chip
             v-if="classroomStore.latestAcademicYear"
             size="small"
             variant="flat"
             color="teal-lighten-5"
+            rounded="0"
             class="text-teal-darken-2 font-weight-bold px-3"
             prepend-icon="mdi-calendar-check"
           >
