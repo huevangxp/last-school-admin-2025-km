@@ -227,14 +227,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useClassroomStore } from "~/stores/apiClassroom";
 const { t } = useI18n();
 
+const classroomStore = useClassroomStore();
+
 const search = ref("");
-const selectedYear = ref("2024-2025");
+const selectedYear = ref("");
 const selectedClass = ref("ມ1/1");
 
-const academicYears = ["2023-2024", "2024-2025", "2025-2026"];
+// Real academic years, defaulting the filter to the latest (current) one.
+const academicYears = computed(() =>
+  classroomStore.academicYears.map((y: any) => y.title)
+);
+
+onMounted(async () => {
+  await classroomStore.fetchAcademicYears();
+  selectedYear.value =
+    classroomStore.latestAcademicYear?.title || selectedYear.value;
+});
 const classes = ["ມ1/1", "ມ1/2", "ມ2/1", "ມ2/2", "ມ3/1", "ມ3/2"];
 const subjects = ["MATH", "PHYS", "CHEM", "BIO", "LAO", "ENG", "HIST", "GEO"];
 
