@@ -444,6 +444,18 @@
         </div>
       </v-card>
     </v-dialog>
+
+    <!-- Confirm popup for delete / block -->
+    <ConfirmDialog
+      v-model="confirm.show"
+      :title="confirm.title"
+      :message="confirm.message"
+      :confirm-text="confirm.confirmText"
+      :color="confirm.color"
+      :icon="confirm.icon"
+      :loading="confirm.loading"
+      @confirm="runConfirm"
+    />
   </v-container>
 </template>
 
