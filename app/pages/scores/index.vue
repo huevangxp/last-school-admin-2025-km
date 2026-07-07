@@ -170,6 +170,7 @@ import { useSubjectStore } from "~/stores/apiSubject";
 import { useTeacherStore } from "~/stores/apiTeacher";
 import { useEnrollmentStore } from "~/stores/apiEnrollment";
 import { useScoreStore } from "~/stores/apiScore";
+import { useTeachingStore } from "~/stores/apiTeaching";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
