@@ -54,7 +54,7 @@
                   <v-list-item-title
                     class="text-subtitle-2 font-weight-black tracking-wide"
                   >
-                    {{ section.label }}
+                    {{ t(section.label) }}
                   </v-list-item-title>
                 </v-list-item>
               </template>
@@ -379,7 +379,7 @@ const isAdmin = computed(() =>
 // Full menu with per-item / per-section admin gating.
 const allMenuSections: MenuSection[] = [
   {
-    label: "Overview",
+    label: "overview",
     icon: "mdi-view-dashboard-outline",
     items: [
       { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
@@ -388,7 +388,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Classes",
+    label: "classes",
     icon: "mdi-google-classroom",
     items: [
       { title: "classes", icon: "mdi-google-classroom", to: "/class", adminOnly: true },
@@ -399,7 +399,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Academic",
+    label: "academic_section",
     icon: "mdi-book-education-outline",
     items: [
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
