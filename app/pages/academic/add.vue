@@ -144,11 +144,11 @@
             <!-- Descriptive Context -->
             <div class="pa-6 rounded-0 bg-slate-50 border border-slate-100">
               <div class="text-detail-tiny mb-4 text-primary">
-                ADDITIONAL CONTEXT
+                {{ $t("additional-context") }}
               </div>
               <v-textarea
                 v-model="form.description"
-                placeholder="Define operational goals, specific terms, or institutional notes for this session..."
+                :placeholder="$t('academic-description-placeholder')"
                 variant="outlined"
                 density="compact"
                 rounded="0"

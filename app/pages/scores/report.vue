@@ -96,8 +96,8 @@
               >
                 {{ subj.subject_code || subj.subject_name }}
               </th>
-              <th class="col-total text-detail-tiny">TOTAL</th>
-              <th class="col-rank text-detail-tiny">RANK</th>
+              <th class="col-total text-detail-tiny">{{ t("total") }}</th>
+              <th class="col-rank text-detail-tiny">{{ t("rank") }}</th>
             </tr>
           </thead>
           <tbody>

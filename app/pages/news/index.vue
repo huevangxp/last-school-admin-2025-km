@@ -82,7 +82,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No news yet.</div>
+          <div class="text-detail py-8 text-center">{{ $t("no-news-yet") }}</div>
         </template>
 
         <template v-slot:item.title="{ item }">

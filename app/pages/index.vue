@@ -188,7 +188,7 @@
                     class="rounded-0 font-weight-bold text-none"
                     height="28"
                   >
-                    Action
+                    {{ t("action") }}
                   </v-btn>
                 </td>
               </tr>

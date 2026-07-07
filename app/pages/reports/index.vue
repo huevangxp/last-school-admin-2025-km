@@ -123,7 +123,7 @@
             <v-col cols="12" md="8">
               <div class="grid-stats pa-4 rounded-0 bg-grey-lighten-4 h-100">
                 <div class="text-detail-tiny mb-4">
-                  DETAILED ENROLLMENT BREAKDOWN
+                  {{ t("detailed-enrollment-breakdown") }}
                 </div>
                 <v-row>
                   <v-col
@@ -147,7 +147,7 @@
                         <span
                           class="text-detail"
                           style="font-size: 10px !important"
-                          >STDS</span
+                          >{{ t("students-abbr") }}</span
                         >
                       </div>
                     </div>

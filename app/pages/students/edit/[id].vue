@@ -219,7 +219,9 @@
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">WEIGHT (kg) *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("weight-kg") }} *</label
+            >
             <v-text-field
               v-model="form.weight"
               type="number"
@@ -235,7 +237,9 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">GUARDIAN NAME *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("guardian-name") }} *</label
+            >
             <v-text-field
               v-model="form.parentName"
               placeholder="Parent / guardian full name"
