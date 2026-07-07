@@ -78,7 +78,7 @@
                 ></v-text-field>
               </div>
 
-              <div class="d-flex align-center mb-8">
+              <div class="d-flex align-center">
                 <v-checkbox
                   v-model="rememberMe"
                   label="Remember me"
