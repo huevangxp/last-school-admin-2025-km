@@ -42,7 +42,7 @@
             >
             <v-text-field
               v-model="form.lastName"
-              placeholder="e.g. ວົງສາ"
+              :placeholder="t('eg-lastname')"
               variant="outlined"
               density="compact"
               rounded="0"

@@ -140,8 +140,8 @@ const router = useRouter();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
-  { title: "Financial", disabled: false, to: "/financial" },
-  { title: "Add Record", disabled: true, to: "" },
+  { title: t("financial"), disabled: false, to: "/financial" },
+  { title: t("add-record"), disabled: true, to: "" },
 ];
 
 const form = ref({

@@ -115,7 +115,7 @@
                 }}</label>
                 <v-text-field
                   v-model="form.fullName"
-                  placeholder="Enter full name"
+                  :placeholder="t('enter-full-name')"
                   variant="outlined"
                   density="compact"
                   rounded="0"
@@ -129,7 +129,7 @@
                 }}</label>
                 <v-text-field
                   v-model="form.username"
-                  placeholder="Enter username"
+                  :placeholder="t('enter-username')"
                   variant="outlined"
                   density="compact"
                   rounded="0"

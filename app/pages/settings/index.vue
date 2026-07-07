@@ -231,7 +231,7 @@
                   size="x-small"
                   color="primary"
                   class="font-weight-black"
-                  >RESET</v-btn
+                  >{{ $t("reset") }}</v-btn
                 >
               </template>
             </v-list-item>
@@ -247,7 +247,7 @@
                 </div>
               </template>
               <v-list-item-title class="text-title-small"
-                >Two-Factor Auth</v-list-item-title
+                >{{ $t("two-factor-auth") }}</v-list-item-title
               >
               <template v-slot:append>
                 <v-switch

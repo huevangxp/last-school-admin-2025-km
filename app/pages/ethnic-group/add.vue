@@ -12,7 +12,7 @@
         <div>
           <h2 class="text-title">{{ $t("add") }} {{ $t("ethnic_group") }}</h2>
           <p class="text-detail">
-            Define new classification for ethnic demographics
+            {{ $t("define-new-classification") }}
           </p>
         </div>
       </div>
@@ -21,7 +21,7 @@
         <v-row class="ga-y-2">
           <v-col cols="12">
             <label class="text-detail-tiny mb-2 d-block"
-              >CLASSIFICATION NAME</label
+              >{{ $t("classification-name") }}</label
             >
             <v-text-field
               v-model="form.title"

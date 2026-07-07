@@ -12,7 +12,7 @@
         >
           <v-icon icon="mdi-arrow-left" start size="20"></v-icon>
           <span class="text-detail font-weight-bold"
-            >Back to Academic Archives</span
+            >{{ $t("back-to-academic-archives") }}</span
           >
         </v-btn>
       </div>
