@@ -46,7 +46,7 @@
                 <v-list-item
                   v-bind="props"
                   class="mb-1 modern-nav-section"
-                  rounded="xl"
+                  rounded="lg"
                 >
                   <template v-slot:prepend>
                     <v-icon size="20" class="mr-4">{{ section.icon }}</v-icon>
@@ -65,7 +65,7 @@
                 :key="item.title"
                 :to="item.to"
                 class="mb-1 modern-nav-item modern-nav-child"
-                rounded="xl"
+                rounded="lg"
                 active-class="active-item"
                 :exact="item.to === '/'"
               >
@@ -151,7 +151,7 @@
               ></v-icon>
             </v-btn>
           </template>
-          <v-list class="modern-dropdown pa-2" width="180" rounded="xl">
+          <v-list class="modern-dropdown pa-2" width="180" rounded="lg">
             <v-list-item
               v-for="(item, index) in locales"
               :key="index"
@@ -221,7 +221,7 @@
               ></v-icon>
             </div>
           </template>
-          <v-list class="modern-dropdown pa-2" width="240" rounded="xl">
+          <v-list class="modern-dropdown pa-2" width="240" rounded="lg">
             <div class="px-3 py-2">
               <div class="text-subtitle-2 font-weight-black text-capitalize">
                 {{ username }}
@@ -273,7 +273,7 @@
     </v-app-bar>
     <!-- Logout Confirmation -->
     <v-dialog v-model="logoutDialog" width="400">
-      <v-card rounded="xl" class="pa-4 overflow-hidden">
+      <v-card rounded="lg" class="pa-4 overflow-hidden">
         <div class="text-center py-6">
           <v-avatar color="red-lighten-5" size="72" class="mb-4">
             <v-icon icon="mdi-logout-variant" color="red" size="36"></v-icon>
@@ -506,7 +506,7 @@ const logoutButton = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 10px;
   box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.25);
   padding: 6px;
 }

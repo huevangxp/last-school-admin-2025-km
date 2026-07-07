@@ -236,7 +236,7 @@
 
     <!-- Edit User Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="xl" class="pa-6">
+      <v-card rounded="lg" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("admin") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
@@ -476,7 +476,7 @@ const removeAdmin = async (item: any) => {
 }
 
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition: transform 0.3s ease;
@@ -496,7 +496,7 @@ const removeAdmin = async (item: any) => {
 }
 
 .intelligence-card {
-  border-radius: 20px !important;
+  border-radius: 12px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition:

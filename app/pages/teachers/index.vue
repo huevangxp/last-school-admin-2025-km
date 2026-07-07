@@ -287,7 +287,7 @@
 
     <!-- Edit Teacher Dialog -->
     <v-dialog v-model="editDialog" width="560" scrollable>
-      <v-card rounded="xl" class="pa-6">
+      <v-card rounded="lg" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("teachers") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
@@ -751,7 +751,7 @@ const saveEdit = async () => {
 }
 
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -764,7 +764,7 @@ const saveEdit = async () => {
 }
 
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

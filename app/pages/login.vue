@@ -179,7 +179,7 @@ const loginBtn = async () => {
 .login-card {
   width: 100%;
   max-width: 460px;
-  border-radius: 24px !important;
+  border-radius: 12px !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }
 
@@ -221,7 +221,7 @@ const loginBtn = async () => {
   height: 80px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;

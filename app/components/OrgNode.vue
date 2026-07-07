@@ -135,7 +135,7 @@ ul::before {
   padding: 14px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
   transition:
     transform 0.2s ease,

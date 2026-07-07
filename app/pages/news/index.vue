@@ -142,7 +142,7 @@
 
     <!-- Create / Edit Dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card rounded="xl" class="pa-6">
+      <v-card rounded="lg" class="pa-6">
         <div class="text-title mb-4">
           {{ isEdit ? t("edit") : t("add") }} {{ $t("news") }}
         </div>
@@ -351,7 +351,7 @@ onMounted(() => {
 }
 
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -364,7 +364,7 @@ onMounted(() => {
 }
 
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

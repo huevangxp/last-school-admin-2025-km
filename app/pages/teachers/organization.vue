@@ -327,7 +327,7 @@ const orgRoot = computed(() => {
 }
 
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

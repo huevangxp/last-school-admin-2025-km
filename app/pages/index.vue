@@ -415,7 +415,7 @@ const activities = computed(() =>
 
 /* Metric Cards */
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -455,7 +455,7 @@ const activities = computed(() =>
 
 /* Intelligence Cards */
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -485,7 +485,7 @@ const activities = computed(() =>
 
 /* Utility Cards & Sidebar */
 .utility-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

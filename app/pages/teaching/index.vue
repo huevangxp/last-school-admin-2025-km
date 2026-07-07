@@ -152,7 +152,7 @@
 
     <!-- Create dialog -->
     <v-dialog v-model="dialog" width="480">
-      <v-card rounded="xl" class="pa-6">
+      <v-card rounded="lg" class="pa-6">
         <div class="text-title mb-4">{{ t("add") }} {{ $t("teaching_assignments") }}</div>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
@@ -407,7 +407,7 @@ const removeItem = async (item: any) => {
   margin: 0 auto;
 }
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -423,7 +423,7 @@ const removeItem = async (item: any) => {
   color: white !important;
 }
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }

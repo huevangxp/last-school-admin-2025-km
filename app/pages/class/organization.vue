@@ -158,7 +158,7 @@
 
       <!-- Assignment panel (dialog) -->
       <v-dialog v-model="manageDialog" width="560" scrollable>
-        <v-card rounded="xl" class="pa-6">
+        <v-card rounded="lg" class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div class="text-title-small">{{ t("assign_roles") }}</div>
           <v-btn
@@ -512,7 +512,7 @@ const unitColumns = computed(() => {
   margin: 0 auto;
 }
 .intelligence-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -577,7 +577,7 @@ const unitColumns = computed(() => {
   padding: 12px 16px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
 }

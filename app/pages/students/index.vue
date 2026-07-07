@@ -542,7 +542,7 @@ const getStatusColor = (status: string) => {
 }
 
 .metric-card {
-  border-radius: 16px !important;
+  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition: transform 0.3s ease;
@@ -568,7 +568,7 @@ const getStatusColor = (status: string) => {
 }
 
 .intelligence-card {
-  border-radius: 20px !important;
+  border-radius: 12px !important;
   background: white;
   border: 1px solid #f1f5f9;
   transition:
