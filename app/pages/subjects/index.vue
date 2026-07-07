@@ -10,7 +10,7 @@
         <div class="text-title mb-1">
           {{ $t("management") }} {{ $t("subject") }}
         </div>
-        <div class="text-detail">Oversee curriculum and course management.</div>
+        <div class="text-detail">{{ $t("subjects-subtitle") }}</div>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">

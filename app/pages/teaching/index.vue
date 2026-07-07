@@ -90,9 +90,9 @@
         elevation="0"
         class="intelligence-card pa-10 text-center text-detail"
       >
-        ຍັງບໍ່ມີການມອບໝາຍການສອນ · No teaching assignments yet.
+        {{ $t("no-teaching-assignments-yet") }}
         <div class="text-detail-tiny mt-1">
-          ກົດ “{{ $t("add") }}” ເພື່ອມອບໝາຍອາຈານໃຫ້ວິຊາ.
+          {{ $t("press-add-to-assign-teacher", { add: $t("add") }) }}
         </div>
       </v-card>
 

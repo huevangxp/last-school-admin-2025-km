@@ -63,13 +63,13 @@
       </div>
 
       <div v-if="!yearId" class="text-detail py-10 text-center">
-        Please select an academic year above.
+        {{ t("please-select-academic-year") }}
       </div>
       <div v-else-if="loading" class="text-detail py-10 text-center">
-        Loading…
+        {{ t("loading") }}
       </div>
       <div v-else-if="!rows.length" class="text-detail py-10 text-center">
-        No classrooms found for this academic year.
+        {{ t("no-classrooms-found") }}
       </div>
 
       <v-table v-else class="overview-table">

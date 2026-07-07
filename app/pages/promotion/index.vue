@@ -263,7 +263,7 @@ const promote = async () => {
       academic_year_id: targetYearId.value as string,
     });
     messageType.value = "success";
-    message.value = res?.message || "Promoted successfully.";
+    message.value = res?.message || t("promoted-successfully");
     selected.value = [];
     await studentStore.fetchStudents(); // refresh class assignments
   } catch (error: any) {

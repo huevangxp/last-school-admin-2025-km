@@ -348,7 +348,7 @@ const removeItem = async (item: any) => {
     await announcementStore.fetchAnnouncements();
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    ui.notify("Failed to delete.", "error");
+    ui.notify(t("failed-to-delete"), "error");
   }
 };
 
