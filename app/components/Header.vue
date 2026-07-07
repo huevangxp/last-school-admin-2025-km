@@ -516,201 +516,52 @@ const logoutButton = () => {
 </script>
 
 <style scoped>
-/* Glassmorphism Header */
+/* App-bar must sit above the drawer; both handled by Vuetify color props. */
 .glass-header {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   z-index: 100 !important;
 }
-
-/* Sidebar Styling — clean white background */
 .modern-sidebar {
-  background: #ffffff !important;
-  border-right: 1px solid #e2e8f0 !important;
   z-index: 101 !important;
 }
 
-.sidebar-brand-wrapper {
-  border-bottom: 1px solid #eef2f6;
-}
-
-.sidebar-brand-wrapper .brand-logo-container {
+/* Logo tile — sizing only; color comes from the bg-primary-lighten-5 class. */
+.brand-logo-container {
   width: 44px;
   height: 44px;
-  background: #f0fdfa;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px -6px rgba(13, 148, 136, 0.4);
   padding: 6px;
 }
 
-.brand-title {
-  color: #0f172a !important;
-}
-
-.brand-subtitle {
-  color: #64748b !important;
-}
-
-/* Section header labels */
-.sidebar-section-label {
-  color: #94a3b8 !important;
-}
-
-/* Collapsible section header (dropdown toggle) */
-.modern-nav-section {
-  color: #1e293b !important;
-  padding: 0 16px !important;
-  min-height: 48px !important;
-  transition: background-color 0.2s ease;
-}
-.modern-nav-section :deep(.v-icon) {
-  color: #0d9488 !important;
-}
-.modern-nav-section :deep(.v-list-item-title) {
-  color: #1e293b !important;
-  letter-spacing: 0.02em;
-}
-.modern-nav-section:hover {
-  background-color: rgba(20, 184, 166, 0.08) !important;
-}
-.tracking-wide {
-  letter-spacing: 0.02em;
-}
-
-/* Nav Item Styling */
-.modern-nav-item {
-  color: #475569 !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0 16px !important;
-  min-height: 44px !important;
-}
-
-.modern-nav-item :deep(.v-icon) {
-  color: #64748b !important;
-}
-
-.modern-nav-item:hover {
-  background-color: rgba(20, 184, 166, 0.08) !important;
-  color: #0d9488 !important;
-}
-
-.modern-nav-item:hover :deep(.v-icon) {
-  color: #0d9488 !important;
-}
-
-/* Expand / collapse chevron on group headers */
-.modern-sidebar :deep(.v-list-group__header .v-list-item__append .v-icon) {
-  color: #94a3b8 !important;
-  opacity: 1;
-}
-
-/* Nested (child) items sit slightly indented under their parent group */
+/* Nested (child) items sit slightly indented under their parent group. */
 .modern-nav-child {
   padding-left: 28px !important;
 }
 
-/* Rail (collapsed) mode: center every icon and drop title-oriented spacing */
+/* Rail (collapsed) mode: center every icon, drop title-oriented spacing. */
 .modern-sidebar.v-navigation-drawer--rail .modern-nav-child {
   padding-left: 0 !important;
-}
-.modern-sidebar.v-navigation-drawer--rail .modern-nav-section,
-.modern-sidebar.v-navigation-drawer--rail .modern-nav-item {
-  padding: 0 !important;
 }
 .modern-sidebar.v-navigation-drawer--rail :deep(.v-list-item__prepend .v-icon) {
   margin-right: 0 !important;
 }
-.modern-sidebar.v-navigation-drawer--rail :deep(.v-list-group__items)::before {
-  display: none;
-}
 
-/* Faint guide line down the open child group */
-.modern-sidebar :deep(.v-list-group__items) {
-  position: relative;
-}
-
-.modern-sidebar :deep(.v-list-group__items)::before {
-  content: "";
-  position: absolute;
-  left: 26px;
-  top: 4px;
-  bottom: 4px;
-  width: 1px;
-  background: rgba(15, 23, 42, 0.08);
-}
-
-/* Active item: soft teal tint pill with teal text */
-.active-item {
-  background: rgba(20, 184, 166, 0.12) !important;
-  color: #0d9488 !important;
-  position: relative;
-  box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.25);
-}
-
-.active-item :deep(.v-icon) {
-  color: #0d9488 !important;
-}
-
-.active-item :deep(.v-list-item-title) {
-  color: #0d9488 !important;
-  font-weight: 800 !important;
-}
-
-/* Search Input */
+/* Search field widens on focus. */
 .modern-search-input {
   width: 280px;
   transition: width 0.3s ease;
 }
-
-.modern-search-input :deep(.v-field) {
-  background-color: #f1f5f9 !important;
-  border-radius: 12px !important;
-}
-
 .modern-search-input :deep(.v-field--focused) {
   width: 320px;
-  background-color: white !important;
-  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2) !important;
 }
 
-/* Profile Trigger */
-.profile-trigger {
-  transition: background 0.2s ease;
-}
-
-.profile-trigger:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.header-role-text {
-  color: rgba(255, 255, 255, 0.8) !important;
-}
-
-/* Typography & Layout Utils */
+/* Typography utils Vuetify has no direct equivalent for. */
 .line-height-1 {
   line-height: 1;
 }
-
 .tracking-tight {
   letter-spacing: -0.025em;
-}
-
-.tracking-widest {
-  letter-spacing: 0.1em;
-}
-
-.modern-dropdown {
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.border-dashed {
-  border: 1.5px dashed rgba(20, 184, 166, 0.2) !important;
 }
 
 /* Drawer is a flex column: the brand stays fixed and the nav list scrolls, so
@@ -731,14 +582,5 @@ const logoutButton = () => {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-}
-
-.scroll-container::-webkit-scrollbar {
-  width: 5px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.15);
-  border-radius: 10px;
 }
 </style>
