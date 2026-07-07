@@ -108,7 +108,7 @@
         <div class="d-none d-sm-flex align-center ga-2">
           <v-chip
             size="small"
-            variant="tonal"
+            variant="flat"
             color="primary-lighten-5"
             rounded="0"
             class="text-primary font-weight-bold px-3"
