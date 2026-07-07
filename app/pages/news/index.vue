@@ -319,6 +319,7 @@ const save = async () => {
     const payload = {
       title: form.value.title,
       content: form.value.content,
+      image_url: form.value.image_url || null,
       announcement_status: form.value.announcement_status,
     };
     if (isEdit.value) {
