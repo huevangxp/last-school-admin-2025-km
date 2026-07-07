@@ -6,7 +6,7 @@
       <!-- Identity + Account -->
       <v-card class="intelligence-card pa-6 mb-6" elevation="0">
         <div class="d-flex align-center mb-6">
-          <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-lg">
+          <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-0">
             <v-icon color="primary" size="20">mdi-account-tie-outline</v-icon>
           </v-avatar>
           <div>

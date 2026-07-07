@@ -99,7 +99,7 @@
                       : 'grey-lighten-4'
                   "
                   height="28"
-                  class="rounded-lg text-none text-detail font-weight-bold"
+                  class="rounded-0 text-none text-detail font-weight-bold"
                   @click="chartPeriod = p.toLowerCase()"
                 >
                   {{ p }}
@@ -180,7 +180,7 @@
                     variant="tonal"
                     color="primary"
                     size="x-small"
-                    class="rounded-md font-weight-bold text-none"
+                    class="rounded-0 font-weight-bold text-none"
                     height="28"
                   >
                     Action

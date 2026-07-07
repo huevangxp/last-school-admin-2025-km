@@ -7,7 +7,7 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div class="d-flex align-center">
-        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-lg">
+        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-0">
           <v-icon color="teal-darken-1" size="22">mdi-sitemap-outline</v-icon>
         </v-avatar>
         <div>

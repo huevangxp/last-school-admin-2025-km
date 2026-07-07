@@ -82,7 +82,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -94,7 +94,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 170px"
             prepend-inner-icon="mdi-google-classroom"
             class="cream-select text-detail"
@@ -109,7 +109,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
@@ -144,7 +144,7 @@
             <v-avatar
               size="36"
               class="mr-3 elevation-1 border-white"
-              rounded="lg"
+              rounded="0"
             >
               <v-img :src="item.avatar" cover></v-img>
             </v-avatar>
@@ -158,7 +158,7 @@
         <!-- Academic Identifier Slot -->
         <template v-slot:item.studentId="{ item }">
           <span
-            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-md font-weight-black"
+            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0 font-weight-black"
           >
             {{ item.studentId }}
           </span>
@@ -246,7 +246,7 @@
                 color="primary"
                 size="x-small"
                 variant="flat"
-                class="font-weight-black rounded-md"
+                class="font-weight-black rounded-0"
                 style="min-width: 24px; height: 24px"
               >
                 1
