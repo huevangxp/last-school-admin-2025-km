@@ -234,7 +234,7 @@
         ></v-text-field>
         <v-row>
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">CODE</label>
+            <label class="text-detail-tiny mb-1 d-block">{{ t("code") }}</label>
             <v-text-field
               v-model="editForm.subject_code"
               variant="outlined"

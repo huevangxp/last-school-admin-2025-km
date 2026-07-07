@@ -269,13 +269,13 @@ const headers = [
 
 const activityStats = computed(() => [
   {
-    label: "Total Activities",
+    label: t("total-activities"),
     value: String(activityStore.activities.length),
     icon: "mdi-calendar-star",
     color: "purple",
   },
   {
-    label: "Active",
+    label: t("active"),
     value: String(
       activityStore.activities.filter((a) => a.activity_status === "active").length
     ),
@@ -283,7 +283,7 @@ const activityStats = computed(() => [
     color: "green",
   },
   {
-    label: "Hidden",
+    label: t("hidden"),
     value: String(
       activityStore.activities.filter((a) => a.activity_status !== "active").length
     ),

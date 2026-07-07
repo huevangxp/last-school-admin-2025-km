@@ -380,7 +380,7 @@ const save = async () => {
     dialog.value = false;
     await teachingStore.fetchAssignments({ academic_year_id: selectedYearId.value });
   } catch (error: any) {
-    formError.value = error.response?.data?.message || "Failed to save.";
+    formError.value = error.response?.data?.message || t("failed-to-save");
   } finally {
     saving.value = false;
   }
