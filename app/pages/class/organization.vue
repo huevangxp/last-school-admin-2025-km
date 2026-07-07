@@ -97,13 +97,13 @@
 
             <!-- Layer 2 · Monitor -->
             <div class="lband">
-              <div class="layer-tag">ຊັ້ນ 2 · ຫົວໜ້າຫ້ອງ</div>
+              <div class="layer-tag">{{ t("layer2-monitor") }}</div>
               <div class="lrow">
                 <div class="lcard" :class="{ 'lcard-empty': !monitorRow }">
                   <div class="lcard-name">
-                    {{ monitorRow ? nameFor(monitorRow.student_id) : "— ຍັງບໍ່ໄດ້ກຳນົດ —" }}
+                    {{ monitorRow ? nameFor(monitorRow.student_id) : t("not-assigned") }}
                   </div>
-                  <div class="lcard-role">ຫົວໜ້າຫ້ອງ · MONITOR</div>
+                  <div class="lcard-role">{{ t("monitor-role") }}</div>
                 </div>
               </div>
             </div>
