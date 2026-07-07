@@ -101,5 +101,12 @@
     "from": "From",
     "type": "Type",
     "overview": "Overview",
-    "homeroom_teacher": "Homeroom Teacher"
+    "homeroom_teacher": "Homeroom Teacher",
+    "manage_website": "Manage Website",
+    "news": "News",
+    "activities": "Activities",
+    "content": "Content",
+    "location": "Location",
+    "activity_date": "Activity Date",
+    "new_academic_year": "New Academic Year"
 }
