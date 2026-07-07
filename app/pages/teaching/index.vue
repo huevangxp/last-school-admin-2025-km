@@ -34,6 +34,23 @@
     </div>
 
     <template v-else>
+      <!-- Stats -->
+      <v-row class="mb-6">
+        <v-col cols="12" sm="6" md="3" v-for="(s, i) in stats" :key="i">
+          <v-card class="metric-card pa-4 h-100" elevation="0">
+            <div class="d-flex align-center justify-space-between">
+              <div>
+                <p class="text-detail-tiny mb-1">{{ s.label }}</p>
+                <h2 class="text-title">{{ s.value }}</h2>
+              </div>
+              <v-avatar :color="`${s.color}-lighten-5`" rounded="lg" size="40">
+                <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
+              </v-avatar>
+            </div>
+          </v-card>
+        </v-col>
+      </v-row>
+
       <!-- Filters -->
       <v-card elevation="0" class="intelligence-card pa-4 mb-6">
         <div class="d-flex flex-column flex-md-row gap-3">
@@ -67,44 +84,69 @@
         </div>
       </v-card>
 
-      <v-card elevation="0" class="intelligence-card pa-4">
-        <v-data-table
-          :headers="headers"
-          :items="filteredRows"
-          :loading="teachingStore.loading"
-          class="premium-table"
-          hover
-        >
-          <template v-slot:no-data>
-            <div class="text-detail py-8 text-center">No assignments yet.</div>
-          </template>
+      <!-- Empty state -->
+      <v-card
+        v-if="!groupedByClass.length"
+        elevation="0"
+        class="intelligence-card pa-10 text-center text-detail"
+      >
+        ຍັງບໍ່ມີການມອບໝາຍການສອນ · No teaching assignments yet.
+        <div class="text-detail-tiny mt-1">
+          ກົດ “{{ $t("add") }}” ເພື່ອມອບໝາຍອາຈານໃຫ້ວິຊາ.
+        </div>
+      </v-card>
 
-          <template v-slot:item.classroom="{ item }">
-            <div class="text-title-small">{{ item.classroom }}</div>
-          </template>
-          <template v-slot:item.subject="{ item }">
-            <v-chip size="x-small" color="teal-lighten-5" class="text-teal-darken-2 font-weight-bold" variant="flat">
-              {{ item.subject }}
-            </v-chip>
-          </template>
-          <template v-slot:item.teacher="{ item }">
-            <div class="d-flex align-center py-2">
-              <v-avatar color="indigo-lighten-5" size="28" class="mr-2">
-                <v-icon size="15" color="indigo-darken-2">mdi-account-tie-outline</v-icon>
-              </v-avatar>
-              <div class="text-title-small">{{ item.teacher }}</div>
-            </div>
-          </template>
-          <template v-slot:item.actions="{ item }">
-            <v-btn
-              icon="mdi-delete-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="removeItem(item)"
-            ></v-btn>
-          </template>
-        </v-data-table>
+      <!-- Grouped by class -->
+      <v-card
+        v-for="grp in groupedByClass"
+        :key="grp.classroom_id"
+        elevation="0"
+        class="intelligence-card pa-0 mb-4 overflow-hidden"
+      >
+        <div class="class-head d-flex align-center px-5 py-3">
+          <v-icon color="indigo-darken-2" size="18" class="mr-2">
+            mdi-google-classroom
+          </v-icon>
+          <div class="text-title-small">{{ grp.classroom }}</div>
+          <v-chip
+            size="x-small"
+            class="ml-3 font-weight-bold text-indigo-darken-2"
+            color="indigo-lighten-5"
+            variant="flat"
+          >
+            {{ grp.items.length }} {{ t("subject") }}
+          </v-chip>
+        </div>
+
+        <div
+          v-for="it in grp.items"
+          :key="it.id"
+          class="assign-row d-flex align-center px-5 py-3"
+        >
+          <v-chip
+            size="small"
+            color="teal-lighten-5"
+            variant="flat"
+            class="text-teal-darken-2 font-weight-bold mr-3 subject-chip"
+          >
+            {{ it.subject }}
+          </v-chip>
+          <v-icon size="16" color="grey-lighten-1">mdi-arrow-right</v-icon>
+          <div class="d-flex align-center ml-3">
+            <v-avatar color="indigo-lighten-5" size="26" class="mr-2">
+              <v-icon size="14" color="indigo-darken-2">mdi-account-tie-outline</v-icon>
+            </v-avatar>
+            <div class="text-detail font-weight-bold">{{ it.teacher }}</div>
+          </div>
+          <v-spacer></v-spacer>
+          <v-btn
+            icon="mdi-delete-outline"
+            variant="text"
+            size="x-small"
+            color="error"
+            @click="removeItem(it)"
+          ></v-btn>
+        </div>
       </v-card>
     </template>
 
