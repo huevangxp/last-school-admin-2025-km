@@ -220,7 +220,7 @@
                 >
                   {{ username }}
                 </div>
-                <div class="text-caption text-capitalize header-role-text">
+                <div class="text-caption text-capitalize text-white opacity-75">
                   {{ role }}
                 </div>
               </div>
