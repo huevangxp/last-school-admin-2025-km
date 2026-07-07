@@ -298,7 +298,7 @@
             {{ t("logout_message") }}
           </p>
         </div>
-        <v-card-actions class="ga-3 px-4 pb-4">
+        <v-card-actions class="px-4 pb-4">
           <v-btn
             block
             variant="flat"
@@ -307,15 +307,6 @@
             height="44"
             @click="logoutButton"
             >{{ t("yes_logout") }}</v-btn
-          >
-          <v-btn
-            block
-            variant="text"
-            color="grey-darken-1"
-            class="rounded-0 font-weight-bold"
-            height="44"
-            @click="logoutDialog = false"
-            >{{ t("cancel") }}</v-btn
           >
         </v-card-actions>
       </v-card>
