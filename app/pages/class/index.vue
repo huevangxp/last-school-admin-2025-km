@@ -159,7 +159,7 @@
         <template v-slot:item.teacher="{ item }">
           <div class="d-flex align-center">
             <v-avatar size="32" class="mr-2 elevation-1">
-             
+             <v-icon>mdi-account</v-icon>
             </v-avatar>
             <div>
               <div class="text-title-small">{{ item.teacher }}</div>
