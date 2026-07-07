@@ -414,16 +414,27 @@ const removeItem = async (item: any) => {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
 }
-.premium-table {
-  background: transparent !important;
+.metric-card {
+  border-radius: 16px !important;
+  background: white;
+  border: 1px solid #f1f5f9;
 }
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
+/* Class group header band — indigo tint gives this page its own identity */
+.class-head {
+  background: #eef2ff;
+  border-bottom: 1px solid #e0e7ff;
 }
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
+.assign-row {
+  border-bottom: 1px solid #f1f5f9;
+}
+.assign-row:last-child {
+  border-bottom: 0;
+}
+.assign-row:hover {
+  background: #f8fafc;
+}
+.subject-chip {
+  min-width: 130px;
+  justify-content: center;
 }
 </style>
