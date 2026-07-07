@@ -227,12 +227,15 @@ const selectedClass = computed(() =>
   classroomStore.myClassrooms.find((c: any) => c.id === selectedClassId.value)
 );
 
-// Only subjects for this class's grade (falls back to all if grade unknown).
+// Subjects for this class's grade. Many grades have no subjects mapped yet, so
+// when the grade match is empty we fall back to the full subject list — the
+// teacher can always pick one rather than facing an empty dropdown.
 const subjectOptions = computed(() => {
   const gradeId = selectedClass.value?.grade_level_id;
-  const list = gradeId
+  const matched = gradeId
     ? subjectStore.subjects.filter((s: any) => s.grade_id === gradeId)
-    : subjectStore.subjects;
+    : [];
+  const list = matched.length ? matched : subjectStore.subjects;
   return list.map((s: any) => ({ id: s.id, label: s.subject_name }));
 });
 
