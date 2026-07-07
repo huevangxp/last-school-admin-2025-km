@@ -57,7 +57,7 @@
             >
             <v-text-field
               v-model="form.username"
-              placeholder="Login username"
+              :placeholder="t('login-username')"
               variant="outlined"
               density="compact"
               rounded="0"

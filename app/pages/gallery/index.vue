@@ -148,7 +148,7 @@
           v-if="!viewing?.images?.length"
           class="text-detail text-center py-8"
         >
-          ບໍ່ມີຮູບ · No photos.
+          {{ t("no-photos") }}
         </div>
       </v-card>
     </v-dialog>

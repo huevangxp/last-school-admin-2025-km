@@ -379,7 +379,7 @@ const withHeaderClass = (arr: any[]) =>
 const allHeaders = withHeaderClass([
   { title: t("subject"), key: "title", align: "start" as const, sortable: true },
   { title: t("grade"), key: "grade", align: "start" as const, sortable: true },
-  { title: "COEFFICIENT", key: "coefficient", align: "start" as const, sortable: true },
+  { title: t("coefficient"), key: "coefficient", align: "start" as const, sortable: true },
   { title: t("status"), key: "status", align: "start" as const, sortable: true },
   { title: "", key: "actions", align: "end" as const, sortable: false },
 ]);
