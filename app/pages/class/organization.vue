@@ -84,11 +84,11 @@
           <div class="lchart">
             <!-- Layer 1 · Teacher -->
             <div class="lband">
-              <div class="layer-tag">ຊັ້ນ 1 · ອາຈານປະຈຳຫ້ອງ</div>
+              <div class="layer-tag">{{ t("layer1-homeroom") }}</div>
               <div class="lrow">
                 <div class="lcard lcard-teacher">
                   <div class="lcard-name">{{ homeroomTeacherName || t("homeroom_teacher") }}</div>
-                  <div class="lcard-role">ອາຈານປະຈຳຫ້ອງ · HOMEROOM</div>
+                  <div class="lcard-role">{{ t("homeroom-role") }}</div>
                 </div>
               </div>
             </div>
