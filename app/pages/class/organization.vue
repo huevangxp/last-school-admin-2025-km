@@ -292,6 +292,13 @@ const breadcrumbs = [
 const selectedClassId = ref<string>("");
 const selectedYearId = ref<string>("");
 
+// Role-management popup (opened from the top button).
+const manageDialog = ref(false);
+const openManage = () => {
+  hydrateForm();
+  manageDialog.value = true;
+};
+
 onMounted(async () => {
   await Promise.all([
     classroomStore.fetchMyClassrooms(),
