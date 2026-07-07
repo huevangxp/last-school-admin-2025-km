@@ -455,15 +455,69 @@ const filteredStudents = computed(() =>
   })
 );
 
-// Close (deactivate) / open (activate) a student account.
-const toggleStatus = async (item: any) => {
-  const next = item.statusRaw === "active" ? "inactive" : "active";
+// ---- Confirm popup (shared for delete + block) ----
+const confirm = ref({
+  show: false,
+  title: "",
+  message: "",
+  confirmText: "",
+  color: "error",
+  icon: "mdi-alert-circle-outline",
+  loading: false,
+  action: null as null | (() => Promise<void>),
+});
+
+const requestDelete = (item: any) => {
+  confirm.value = {
+    show: true,
+    title: "ລຶບນັກຮຽນ? / Delete student?",
+    message: `"${item.name}" ${t("are_you_sure_delete")}`,
+    confirmText: "ລຶບ / Delete",
+    color: "error",
+    icon: "mdi-trash-can-outline",
+    loading: false,
+    action: () => doDelete(item),
+  };
+};
+
+const requestToggle = (item: any) => {
+  const closing = item.statusRaw === "active";
+  confirm.value = {
+    show: true,
+    title: closing ? "ປິດບັນຊີ? / Close account?" : "ເປີດບັນຊີ? / Open account?",
+    message: closing
+      ? `"${item.name}" ຈະຖືກປິດ (inactive).`
+      : `"${item.name}" ຈະຖືກເປີດຄືນ (active).`,
+    confirmText: closing ? "ປິດ / Close" : "ເປີດ / Open",
+    color: closing ? "warning" : "success",
+    icon: closing ? "mdi-account-cancel-outline" : "mdi-account-check-outline",
+    loading: false,
+    action: () => doToggle(item),
+  };
+};
+
+const runConfirm = async () => {
+  if (!confirm.value.action) return;
+  confirm.value.loading = true;
   try {
-    await studentStore.updateStudent(item.uuid, { status: next });
-    await studentStore.fetchStudents();
+    await confirm.value.action();
+    confirm.value.show = false;
   } catch (error) {
     console.error(error);
+  } finally {
+    confirm.value.loading = false;
   }
+};
+
+const doToggle = async (item: any) => {
+  const next = item.statusRaw === "active" ? "inactive" : "active";
+  await studentStore.updateStudent(item.uuid, { status: next });
+  await studentStore.fetchStudents();
+};
+
+const doDelete = async (item: any) => {
+  await studentStore.deleteStudent(item.uuid);
+  await studentStore.fetchStudents();
 };
 
 const getStatusColor = (status: string) => {
