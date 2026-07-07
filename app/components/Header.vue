@@ -109,7 +109,7 @@
           <v-chip
             size="small"
             variant="flat"
-            color="primary-lighten-5"
+            color="white"
             rounded="0"
             class="text-primary font-weight-bold px-3"
           >
