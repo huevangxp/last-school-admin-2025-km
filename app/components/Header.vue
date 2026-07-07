@@ -43,6 +43,7 @@
           <v-list
             nav
             class="pa-0"
+            color="primary"
             open-strategy="single"
             v-model:opened="openedGroups"
           >
