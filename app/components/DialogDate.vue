@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="isOpen" width="auto">
-    <v-card class="rounded overflow-hidden" elevation="0">
+    <v-card class="rounded-0 overflow-hidden" elevation="0">
       <v-date-picker
         v-model="selectedDate"
         color="primary"

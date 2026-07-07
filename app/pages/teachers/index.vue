@@ -66,7 +66,7 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -97,7 +97,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -109,7 +109,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-account-cog-outline"
             class="cream-select text-detail"
@@ -125,7 +125,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
@@ -176,7 +176,7 @@
 
         <!-- ID Number Slot -->
         <template v-slot:item.id="{ item }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
             {{ item.id }}
           </span>
         </template>
@@ -287,14 +287,14 @@
 
     <!-- Edit Teacher Dialog -->
     <v-dialog v-model="editDialog" width="560" scrollable>
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("teachers") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.full_name"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -306,7 +306,7 @@
               :items="['male', 'female']"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -317,7 +317,7 @@
               type="date"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -327,7 +327,7 @@
           v-model="editForm.phone_number"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -339,7 +339,7 @@
               :items="['teacher', 'admin']"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -350,7 +350,7 @@
               :items="['active', 'inactive']"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -367,7 +367,7 @@
               placeholder="ເລືອກ ຫຼື ພິມ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
               clearable
             ></v-combobox>
@@ -382,7 +382,7 @@
               placeholder="ເລືອກ ຫຼື ພິມ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
               clearable
             ></v-combobox>
@@ -398,7 +398,7 @@
               placeholder="ເລືອກຊັ້ນ"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
               clearable
             ></v-select>
@@ -413,7 +413,7 @@
               placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
               clearable
               no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"

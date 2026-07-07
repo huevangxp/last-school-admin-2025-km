@@ -28,7 +28,7 @@
           block
           variant="text"
           color="grey-darken-1"
-          class="rounded-lg font-weight-bold"
+          class="rounded-0 font-weight-bold"
           height="44"
           :disabled="loading"
           @click="$emit('update:modelValue', false)"
