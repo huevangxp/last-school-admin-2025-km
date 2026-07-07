@@ -131,13 +131,13 @@
 
             <!-- Layer 4 · Unit heads  +  Layer 5 · Members (split equally) -->
             <div class="lband">
-              <div class="layer-tag">ຊັ້ນ 4 · ຫົວໜ້າໜ່ວຍ &nbsp;·&nbsp; ຊັ້ນ 5 · ສະມາຊິກ</div>
+              <div class="layer-tag">{{ t("layer4-5-tag") }}</div>
               <div class="units-grid" v-if="unitColumns.length">
                 <div v-for="(u, i) in unitColumns" :key="u.id" class="unit-col">
                   <div class="lcard lcard-unit">
                     <div class="lcard-name">{{ u.name }}</div>
-                    <div class="lcard-role">ໜ່ວຍ {{ i + 1 }} · UNIT HEAD</div>
-                    <div class="unit-count">{{ u.members.length }} ສະມາຊິກ</div>
+                    <div class="lcard-role">{{ t("unit-head-role", { n: i + 1 }) }}</div>
+                    <div class="unit-count">{{ t("n-members", { n: u.members.length }) }}</div>
                   </div>
                   <div class="unit-vline" v-if="u.members.length"></div>
                   <div class="member-list">
@@ -149,7 +149,7 @@
                 </div>
               </div>
               <div v-else class="text-detail-tiny text-center py-4">
-                ຍັງບໍ່ໄດ້ກຳນົດຫົວໜ້າໜ່ວຍ · No unit heads assigned yet.
+                {{ t("no-unit-heads") }}
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@
 
         <!-- Monitor -->
         <label class="text-detail-tiny mb-1 d-block">
-          ຫົວໜ້າຫ້ອງ · Class Monitor (1)
+          {{ t("monitor-label") }}
         </label>
         <v-select
           v-model="form.monitor"
