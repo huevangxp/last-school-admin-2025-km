@@ -13,10 +13,13 @@
       >
         <!-- Sidebar Brand Wrapper -->
         <div
-          class="sidebar-brand-wrapper d-flex align-center"
+          class="sidebar-brand-wrapper d-flex align-center border-b"
           :class="rail ? 'px-0 py-6 justify-center' : 'px-6 py-8'"
         >
-          <div class="brand-logo-container" :class="{ 'mr-3': !rail }">
+          <div
+            class="brand-logo-container bg-primary-lighten-5 rounded-lg elevation-1"
+            :class="{ 'mr-3': !rail }"
+          >
             <v-img
               src="/logo.png"
               alt="Logo"
