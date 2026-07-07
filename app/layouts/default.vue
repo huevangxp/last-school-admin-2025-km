@@ -2,10 +2,11 @@
     <v-app class="bg-bg">
       <Header />
       <v-main >
-        <v-container fluid> 
+        <v-container fluid>
           <slot />
         </v-container>
       </v-main>
+      <AppFeedback />
     </v-app>
 </template>
 
