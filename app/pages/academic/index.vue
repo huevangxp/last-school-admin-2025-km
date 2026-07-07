@@ -379,7 +379,7 @@ const removeAcademic = async (item: any) => {
     await fetchAcademics();
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    ui.notify(t("are_you_sure_delete") ? "Failed to delete." : "", "error");
+    ui.notify("Failed to delete.", "error");
   }
 };
 
