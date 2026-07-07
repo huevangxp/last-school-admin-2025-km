@@ -144,11 +144,13 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useSubjectStore } from "~/stores/apiSubject";
 import { useClassroomStore } from "~/stores/apiClassroom";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 const router = useRouter();
 const subjectStore = useSubjectStore();
 const classroomStore = useClassroomStore();
+const ui = useUiStore();
 const formRef = ref();
 const loading = ref(false);
 const errorMessage = ref("");
