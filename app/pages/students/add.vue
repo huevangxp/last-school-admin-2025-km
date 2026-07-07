@@ -295,7 +295,7 @@
         </v-row>
       </v-card>
 
-      <div class="d-flex justify-end ga-3">
+      <v-card class="d-flex justify-end ga-3">
         <v-btn
           variant="flat"
           color="grey-lighten-4"
@@ -315,7 +315,7 @@
         >
           {{ t("save") }}
         </v-btn>
-      </div>
+      </v-card>
     </v-form>
   </v-container>
 </template>
