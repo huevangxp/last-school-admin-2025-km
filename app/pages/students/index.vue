@@ -407,6 +407,8 @@ const students = computed(() =>
         .join(" ") ||
       "—";
     const id = s.student_id || s.studentId || s.id || "";
+    const classId = (s.class_id as string) || "";
+    const room = classroomMap.value[classId];
     return {
       uuid: s.id,
       studentId: id,
@@ -416,8 +418,9 @@ const students = computed(() =>
       lastName: s.last_name || s.lastName || "",
       genderRaw: s.gender || "male",
       email: s.email || "",
-      grade: s.grade || s.class_name || "—",
-      class: s.class_name || s.section || "",
+      classId,
+      className: room?.name || s.class_name || "—",
+      gradeName: room?.grade || s.grade || "",
       parentContact: s.parent_number || s.parent_phone || s.phone_number || "",
       phoneRaw: s.phone_number || s.phone || "",
       parentName: s.parent_name || s.father_name || s.mother_name || "",
@@ -426,6 +429,27 @@ const students = computed(() =>
     };
   })
 );
+
+// Apply class + status filters (search is handled by the data table).
+const filteredStudents = computed(() =>
+  students.value.filter((s) => {
+    const classOk = !selectedClass.value || s.classId === selectedClass.value;
+    const statusOk =
+      !selectedStatus.value || s.statusRaw === selectedStatus.value;
+    return classOk && statusOk;
+  })
+);
+
+// Close (deactivate) / open (activate) a student account.
+const toggleStatus = async (item: any) => {
+  const next = item.statusRaw === "active" ? "inactive" : "active";
+  try {
+    await studentStore.updateStudent(item.uuid, { status: next });
+    await studentStore.fetchStudents();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const getStatusColor = (status: string) => {
   switch (status.toLowerCase()) {
