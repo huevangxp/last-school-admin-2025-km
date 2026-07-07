@@ -73,7 +73,7 @@
             <span
               class="zoom-label text-detail-tiny font-weight-black"
               @click="resetZoom"
-              title="Reset"
+              :title="t('reset')"
               >{{ Math.round(zoom * 100) }}%</span
             >
             <v-btn
@@ -88,7 +88,7 @@
               icon="mdi-fit-to-screen-outline"
               variant="text"
               size="small"
-              title="Fit to screen"
+              :title="t('fit-to-screen')"
               @click="fitToScreen"
             ></v-btn>
           </div>
@@ -115,7 +115,7 @@
           </div>
 
           <div v-else class="text-detail py-10 text-center">
-            No faculty members to display yet.
+            {{ t("no-faculty-display") }}
           </div>
         </div>
         <div class="text-detail-tiny text-grey mt-2 text-center">
