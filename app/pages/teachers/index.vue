@@ -572,6 +572,29 @@ const teachers = computed(() =>
   }))
 );
 
+// Apply role + status filters (search handled by the data table).
+const filteredTeachers = computed(() =>
+  teachers.value.filter((tc) => {
+    const roleOk =
+      !selectedRole.value ||
+      (tc.role || "").toLowerCase() === selectedRole.value;
+    const statusOk =
+      !selectedStatus.value || tc.statusRaw === selectedStatus.value;
+    return roleOk && statusOk;
+  })
+);
+
+// Close (deactivate) / open (activate) a teacher account.
+const toggleStatus = async (item: any) => {
+  const next = item.statusRaw === "active" ? "inactive" : "active";
+  try {
+    await teacherStore.updateTeacher(item.uuid, { status: next });
+    await teacherStore.fetchTeachers(100, 1);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // Teachers available as "reports to" managers in the edit form.
 const managerOptions = computed(() =>
   teachers.value.map((tc) => ({
