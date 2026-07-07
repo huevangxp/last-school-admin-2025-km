@@ -101,5 +101,12 @@
     "from":"ຈາກ",
     "type":"ປະເພດ",
     "overview":"ພາບລວມ",
-    "homeroom_teacher":"ຄູປະຈຳຫ້ອງ"
+    "homeroom_teacher":"ຄູປະຈຳຫ້ອງ",
+    "manage_website":"ຈັດການເວັບໄຊ",
+    "news":"ຂ່າວສານ",
+    "activities":"ກິດຈະກຳ",
+    "content":"ເນື້ອຫາ",
+    "location":"ສະຖານທີ່",
+    "activity_date":"ວັນທີກິດຈະກຳ",
+    "new_academic_year":"ເປີດສົກຮຽນໃໝ່"
 }
