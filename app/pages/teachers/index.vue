@@ -620,9 +620,9 @@ const confirm = ref({
 const requestDelete = (item: any) => {
   confirm.value = {
     show: true,
-    title: "ລຶບອາຈານ? / Delete teacher?",
+    title: t("delete-teacher-title"),
     message: `"${item.username}" ${t("are_you_sure_delete")}`,
-    confirmText: "ລຶບ / Delete",
+    confirmText: t("delete"),
     color: "error",
     icon: "mdi-delete-outline",
     loading: false,
@@ -634,11 +634,11 @@ const requestToggle = (item: any) => {
   const closing = item.statusRaw === "active";
   confirm.value = {
     show: true,
-    title: closing ? "ປິດບັນຊີ? / Close account?" : "ເປີດບັນຊີ? / Open account?",
+    title: closing ? t("close-account-title") : t("open-account-title"),
     message: closing
-      ? `"${item.username}" ຈະຖືກປິດ (inactive).`
-      : `"${item.username}" ຈະຖືກເປີດຄືນ (active).`,
-    confirmText: closing ? "ປິດ / Close" : "ເປີດ / Open",
+      ? t("account-will-close", { name: item.username })
+      : t("account-will-open", { name: item.username }),
+    confirmText: closing ? t("close") : t("open"),
     color: closing ? "warning" : "success",
     icon: closing ? "mdi-account-cancel-outline" : "mdi-account-check-outline",
     loading: false,
