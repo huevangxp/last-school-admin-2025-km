@@ -51,7 +51,7 @@
                   size="10"
                   class="mr-1"
                 ></v-icon>
-                LIVE
+                {{ t("live") }}
               </div>
             </div>
           </div>
