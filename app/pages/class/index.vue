@@ -63,7 +63,7 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -94,7 +94,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -106,7 +106,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 160px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
@@ -215,14 +215,14 @@
 
     <!-- Edit Classroom Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("classes") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.classroom_name"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -233,7 +233,7 @@
               v-model="editForm.room_number"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -247,7 +247,7 @@
               max="40"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -260,7 +260,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -270,7 +270,7 @@
           :items="['active', 'inactive']"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
         ></v-select>
 
@@ -300,9 +300,9 @@
 
     <!-- Clone classrooms to a new academic year -->
     <v-dialog v-model="cloneDialog" width="480">
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="d-flex align-center mb-1">
-          <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-lg">
+          <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-0">
             <v-icon color="teal-darken-2" size="18">mdi-content-copy</v-icon>
           </v-avatar>
           <div class="text-title">{{ t("copy_classrooms_title") }}</div>
@@ -320,7 +320,7 @@
           :placeholder="t('select_source_year')"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -334,7 +334,7 @@
           :placeholder="t('select_target_year')"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
         ></v-select>
 

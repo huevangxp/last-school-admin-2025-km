@@ -11,7 +11,7 @@
           <div class="w-100 max-width-form">
             <div class="text-center mb-10">
               <div class="mb-4 d-flex justify-center">
-                <v-avatar color="primary-lighten-5" size="72" rounded="lg">
+                <v-avatar color="primary-lighten-5" size="72" rounded="0">
                   <v-img src="/logo.png" alt="Logo" width="44" contain></v-img>
                 </v-avatar>
               </div>
