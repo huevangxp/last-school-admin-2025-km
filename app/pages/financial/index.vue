@@ -135,7 +135,7 @@
       >
         <!-- ID Slot -->
         <template v-slot:item.id="{ item }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
             {{ item.id }}
           </span>
         </template>

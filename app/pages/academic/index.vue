@@ -107,7 +107,7 @@
         hover
       >
         <template v-slot:item.id="{ index }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
             {{ index + 1 }}
           </span>
         </template>
