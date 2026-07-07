@@ -64,14 +64,81 @@
     </div>
 
     <template v-else>
-      <!-- Org Chart -->
+      <!-- Org Chart — layered by level -->
       <v-card elevation="0" class="intelligence-card pa-4 mb-6">
         <div class="text-title-small mb-2">{{ t("organization") }}</div>
         <div class="org-viewport">
-          <div class="tree">
-            <ul class="org-tree-root">
-              <OrgNode :node="orgRoot" />
-            </ul>
+          <div class="lchart">
+            <!-- Layer 1 · Teacher -->
+            <div class="lband">
+              <div class="layer-tag">ຊັ້ນ 1 · ອາຈານປະຈຳຫ້ອງ</div>
+              <div class="lrow">
+                <div class="lcard lcard-teacher">
+                  <div class="lcard-name">{{ homeroomTeacherName || t("homeroom_teacher") }}</div>
+                  <div class="lcard-role">ອາຈານປະຈຳຫ້ອງ · HOMEROOM</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="vline"></div>
+
+            <!-- Layer 2 · Monitor -->
+            <div class="lband">
+              <div class="layer-tag">ຊັ້ນ 2 · ຫົວໜ້າຫ້ອງ</div>
+              <div class="lrow">
+                <div class="lcard" :class="{ 'lcard-empty': !monitorRow }">
+                  <div class="lcard-name">
+                    {{ monitorRow ? nameFor(monitorRow.student_id) : "— ຍັງບໍ່ໄດ້ກຳນົດ —" }}
+                  </div>
+                  <div class="lcard-role">ຫົວໜ້າຫ້ອງ · MONITOR</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="vline"></div>
+
+            <!-- Layer 3 · Committee -->
+            <div class="lband">
+              <div class="layer-tag">ຊັ້ນ 3 · ຄະນะ</div>
+              <div class="lrow">
+                <template v-if="committeeRows.length">
+                  <div v-for="c in committeeRows" :key="c.id" class="lcard lcard-committee">
+                    <div class="lcard-name">{{ nameFor(c.student_id) }}</div>
+                    <div class="lcard-role">ຄະນะ · COMMITTEE</div>
+                  </div>
+                </template>
+                <div v-else class="lcard lcard-empty">
+                  <div class="lcard-name">— ຍັງບໍ່ໄດ້ກຳນົດ —</div>
+                  <div class="lcard-role">ຄະນะ · COMMITTEE</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="vline"></div>
+
+            <!-- Layer 4 · Unit heads  +  Layer 5 · Members (split equally) -->
+            <div class="lband">
+              <div class="layer-tag">ຊັ້ນ 4 · ຫົວໜ້າໜ່ວຍ &nbsp;·&nbsp; ຊັ້ນ 5 · ສະມາຊິກ</div>
+              <div class="units-grid" v-if="unitColumns.length">
+                <div v-for="(u, i) in unitColumns" :key="u.id" class="unit-col">
+                  <div class="lcard lcard-unit">
+                    <div class="lcard-name">{{ u.name }}</div>
+                    <div class="lcard-role">ໜ່ວຍ {{ i + 1 }} · UNIT HEAD</div>
+                    <div class="unit-count">{{ u.members.length }} ສະມາຊິກ</div>
+                  </div>
+                  <div class="unit-vline" v-if="u.members.length"></div>
+                  <div class="member-list">
+                    <div v-for="m in u.members" :key="m.id" class="member-chip">
+                      {{ m.label }}
+                    </div>
+                    <div v-if="!u.members.length" class="member-empty">—</div>
+                  </div>
+                </div>
+              </div>
+              <div v-else class="text-detail-tiny text-center py-4">
+                ຍັງບໍ່ໄດ້ກຳນົດຫົວໜ້າໜ່ວຍ · No unit heads assigned yet.
+              </div>
+            </div>
           </div>
         </div>
       </v-card>
