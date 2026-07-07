@@ -396,7 +396,7 @@ const removeItem = async (item: any) => {
     await teachingStore.fetchAssignments({ academic_year_id: selectedYearId.value });
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    console.error(error);
+    ui.notify("Failed to delete.", "error");
   }
 };
 </script>

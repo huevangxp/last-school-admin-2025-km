@@ -189,8 +189,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useEthnicGroupStore } from "@/stores/apiEthnicGroup";
+import { useUiStore } from "~/stores/ui";
 import { hiddenId } from "@/utils/formatDate";
 const { t } = useI18n();
+const ui = useUiStore();
 
 const search = ref("");
 const limit = ref(10);
