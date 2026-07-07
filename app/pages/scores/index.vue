@@ -103,7 +103,7 @@
     <!-- Score entry grid -->
     <v-card elevation="0" class="intelligence-card pa-4">
       <div v-if="!ready" class="text-detail text-center py-10">
-        ເລືອກຫ້ອງ, ວິຊາ ແລະ ອາຈານ · Select class, subject and teacher to begin.
+        {{ $t("select-class-subject-teacher") }}
       </div>
 
       <div v-else-if="enrollmentStore.loading" class="py-10 text-center">

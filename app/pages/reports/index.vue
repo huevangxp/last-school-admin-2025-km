@@ -226,7 +226,7 @@ const studentData = ref<any>({
   labels: [],
   datasets: [
     {
-      label: "Enrolled Students",
+      label: t("enrolled-students"),
       borderColor: "#14b8a6",
       backgroundColor: "rgba(20, 184, 166, 0.1)",
       data: [],
@@ -252,7 +252,7 @@ const subjectData = ref<any>({
   labels: [],
   datasets: [
     {
-      label: "Coefficient",
+      label: t("coefficient"),
       backgroundColor: "rgba(20, 184, 166, 0.8)",
       borderRadius: 4,
       data: [],
@@ -320,7 +320,7 @@ onMounted(async () => {
       labels: subjects.map((s: any) => s.subject_name),
       datasets: [
         {
-          label: "Coefficient",
+          label: t("coefficient"),
           backgroundColor: "rgba(20, 184, 166, 0.8)",
           borderRadius: 4,
           data: subjects.map((s: any) => Number(s.coefficient) || 0),
@@ -348,7 +348,7 @@ onMounted(async () => {
       labels: years.map((y: any) => y.title),
       datasets: [
         {
-          label: "Enrolled Students",
+          label: t("enrolled-students"),
           borderColor: "#14b8a6",
           backgroundColor: "rgba(20, 184, 166, 0.1)",
           data: counts,

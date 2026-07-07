@@ -179,12 +179,12 @@
               <v-divider class="mb-6"></v-divider>
               <div class="d-flex flex-column ga-4">
                 <div class="d-flex justify-space-between text-detail-tiny">
-                  <span>AUTO-SYNC STATUS</span>
-                  <span class="text-success">ENABLED</span>
+                  <span>{{ $t("auto-sync-status") }}</span>
+                  <span class="text-success">{{ $t("enabled") }}</span>
                 </div>
                 <div class="d-flex justify-space-between text-detail-tiny">
-                  <span>DATABASE COMMIT</span>
-                  <span class="text-primary">PENDING</span>
+                  <span>{{ $t("database-commit") }}</span>
+                  <span class="text-primary">{{ $t("pending") }}</span>
                 </div>
               </div>
 
@@ -199,7 +199,7 @@
                   :disabled="!isFormValid"
                 >
                   <v-icon icon="mdi-check-circle" start size="20"></v-icon>
-                  Save Configuration
+                  {{ $t("save-configuration") }}
                 </v-btn>
                 <v-btn
                   variant="text"

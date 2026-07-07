@@ -48,13 +48,13 @@
             <h3 class="text-title">2. {{ t("to") }}</h3>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">TARGET CLASS</label>
+          <label class="text-detail-tiny mb-2 d-block">{{ t("target-class") }}</label>
           <v-select
             v-model="targetClassId"
             :items="targetClassOptions"
             :item-title="classLabel"
             item-value="id"
-            placeholder="Select next class"
+            :placeholder="t('select-next-class')"
             variant="outlined"
             density="compact"
             rounded="0"

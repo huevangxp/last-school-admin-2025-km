@@ -403,7 +403,7 @@ const events = computed(() =>
 const activities = computed(() =>
   recentClasses.value.map((c) => ({
     user: c.classroom_name || "—",
-    action: `· ${c.homeroomTeacher?.full_name || "no homeroom teacher"}`,
+    action: `· ${c.homeroomTeacher?.full_name || t("no-homeroom-teacher")}`,
     time: c.gradeLevel?.grade_level_name || "",
     icon: "mdi-google-classroom",
     color: "primary",

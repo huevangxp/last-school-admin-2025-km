@@ -239,13 +239,13 @@ const headers = [
 
 const newsStats = computed(() => [
   {
-    label: "Total News",
+    label: t("total-news"),
     value: String(announcementStore.announcements.length),
     icon: "mdi-newspaper-variant-outline",
     color: "blue",
   },
   {
-    label: "Published",
+    label: t("published"),
     value: String(
       announcementStore.announcements.filter(
         (a) => a.announcement_status === "active"
@@ -255,7 +255,7 @@ const newsStats = computed(() => [
     color: "green",
   },
   {
-    label: "Hidden",
+    label: t("hidden"),
     value: String(
       announcementStore.announcements.filter(
         (a) => a.announcement_status !== "active"
