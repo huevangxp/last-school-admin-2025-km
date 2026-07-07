@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="text-detail-tiny text-grey mt-2 text-center">
-          ລາກເພື່ອເລື່ອນ · ໝູນເມົາສ໌ເພື່ອຊູມ · Drag to pan · scroll to zoom
+          {{ t("pan-zoom-hint") }}
         </div>
       </template>
     </v-card>
@@ -269,7 +269,7 @@ const capitalize = (s?: string) =>
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("teachers"), disabled: false, to: "/teachers" },
-  { title: "Organization", disabled: true, to: "/teachers/organization" },
+  { title: t("organization"), disabled: true, to: "/teachers/organization" },
 ];
 
 // Normalized faculty list.
@@ -309,7 +309,7 @@ const orgRoots = computed(() => {
     image: tc.image,
     title:
       tc.position ||
-      (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
+      (tc.role?.toLowerCase() === "admin" ? t("admin") : t("teacher")),
     department: tc.department,
     status: tc.status,
     layer: tc.layer,
