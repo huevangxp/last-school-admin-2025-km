@@ -390,6 +390,7 @@ interface MenuItem {
 
 interface MenuSection {
   label: string;
+  icon: string;
   adminOnly?: boolean;
   items: MenuItem[];
 }
@@ -406,6 +407,7 @@ const isAdmin = computed(() =>
 const allMenuSections: MenuSection[] = [
   {
     label: "Overview",
+    icon: "mdi-view-dashboard-outline",
     items: [
       { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
       { title: "reports", icon: "mdi-chart-box-outline", to: "/reports", adminOnly: true },
@@ -414,6 +416,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Classes",
+    icon: "mdi-google-classroom",
     items: [
       { title: "classes", icon: "mdi-google-classroom", to: "/class", adminOnly: true },
       { title: "students", icon: "mdi-account-school-outline", to: "/students", adminOnly: true },
