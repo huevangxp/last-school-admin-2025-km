@@ -39,10 +39,10 @@
               >
 
               <div class="mb-5">
-                <label class="custom-label">Email or Username</label>
+                <label class="custom-label">{{ t("email_or_username") }}</label>
                 <v-text-field
                   v-model="username"
-                  placeholder="Enter your email"
+                  :placeholder="t('enter_email')"
                   variant="outlined"
                   density="comfortable"
                   prepend-inner-icon="mdi-email-outline"
