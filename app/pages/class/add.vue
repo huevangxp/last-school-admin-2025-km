@@ -8,9 +8,9 @@
           <v-icon color="primary" size="20">mdi-google-classroom</v-icon>
         </v-avatar>
         <div>
-          <h2 class="text-title">Register Section</h2>
+          <h2 class="text-title">{{ t("register-section") }}</h2>
           <p class="text-detail">
-            Configure new class group and room allocation
+            {{ t("configure-class-desc") }}
           </p>
         </div>
       </div>
@@ -19,7 +19,7 @@
         <v-row class="ga-y-2">
           <!-- Class Name -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">CLASS NAME *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("class-name") }} *</label>
             <v-text-field
               v-model="form.className"
               placeholder="e.g. M1/A"
@@ -35,7 +35,7 @@
 
           <!-- Class Code -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">CLASS CODE *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("class-code") }} *</label>
             <v-text-field
               v-model="form.code"
               placeholder="e.g. M1A-2025"
