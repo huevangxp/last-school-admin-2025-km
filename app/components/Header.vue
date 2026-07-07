@@ -34,8 +34,14 @@
         </div>
 
         <div class="px-4 py-2 scroll-container">
-          <!-- Navigation — each section is a collapsible dropdown -->
-          <v-list nav class="pa-0" v-model:opened="openedGroups">
+          <!-- Navigation — accordion dropdowns: one section open at a time so
+               the sidebar stays compact and fixed (no scrolling needed). -->
+          <v-list
+            nav
+            class="pa-0"
+            open-strategy="single"
+            v-model:opened="openedGroups"
+          >
             <v-list-group
               v-for="section in groupedMenuItems"
               :key="section.label"
