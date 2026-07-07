@@ -39,7 +39,7 @@
             >
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16">{{ item.icon }}</v-icon>
@@ -85,7 +85,7 @@
             <v-list-item class="px-0 py-1">
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16"
@@ -118,7 +118,7 @@
             >
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16">{{ item.icon }}</v-icon>
@@ -170,7 +170,7 @@
             >
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16">{{ notif.icon }}</v-icon>
@@ -216,7 +216,7 @@
             <v-list-item class="px-0 py-1">
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16">mdi-key-outline</v-icon>
@@ -238,7 +238,7 @@
             <v-list-item class="px-0 py-1">
               <template v-slot:prepend>
                 <div
-                  class="mr-3 d-flex align-center justify-center rounded bg-grey-lighten-4"
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
                   <v-icon color="secondary" size="16"
