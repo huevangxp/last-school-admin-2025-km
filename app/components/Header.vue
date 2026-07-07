@@ -306,7 +306,7 @@
             class="rounded-0 font-weight-bold"
             height="44"
             @click="logoutButton"
-            >Yes, Sign Out</v-btn
+            >{{ t("yes_logout") }}</v-btn
           >
           <v-btn
             block
