@@ -119,5 +119,9 @@
     "score_report":"ລາຍງານຄະແນນ",
     "are_you_sure":"ທ່ານແນ່ໃຈບໍ່?",
     "confirm":"ຢືນຢັນ",
-    "deleted_successfully":"ລົບສຳເລັດແລ້ວ"
+    "deleted_successfully":"ລົບສຳເລັດແລ້ວ",
+    "academic_section":"ວິຊາການ",
+    "faculty":"ຄະນະອາຈານ",
+    "configuration":"ການຕັ້ງຄ່າ",
+    "administration":"ການบໍລິຫານ"
 }
