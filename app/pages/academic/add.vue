@@ -232,7 +232,8 @@ const formRef = ref();
 const form = ref({
   title: "",
   status: "active",
-  startDate: "",
+  // Default the start date to today; end date is left for the user to pick.
+  startDate: new Date().toISOString().substring(0, 10),
   endDate: "",
   description: "",
 });
