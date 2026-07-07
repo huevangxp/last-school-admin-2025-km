@@ -39,6 +39,7 @@ const emit = defineEmits<{ (e: "update:modelValue", v: string): void }>();
 
 const { t } = useI18n();
 const { uploadImage } = useUpload();
+const { mediaUrl } = useMedia();
 const loading = ref(false);
 
 const onPick = async (files: File | File[] | null) => {
