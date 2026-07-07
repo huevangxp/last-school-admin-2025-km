@@ -7,8 +7,8 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
-        <h1 class="text-title mb-1">Settings</h1>
-        <p class="text-detail">Manage system preferences and configurations.</p>
+        <h1 class="text-title mb-1">{{ $t("settings") }}</h1>
+        <p class="text-detail">{{ $t("settings-subtitle") }}</p>
       </div>
     </div>
 

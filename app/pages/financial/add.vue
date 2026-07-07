@@ -8,8 +8,8 @@
           <v-icon color="emerald-darken-1" size="20">mdi-cash-plus</v-icon>
         </v-avatar>
         <div>
-          <h2 class="text-title">New Transaction</h2>
-          <p class="text-detail">Record revenue or expense entries</p>
+          <h2 class="text-title">{{ $t("new-transaction") }}</h2>
+          <p class="text-detail">{{ $t("record-revenue-expense") }}</p>
         </div>
       </div>
 
