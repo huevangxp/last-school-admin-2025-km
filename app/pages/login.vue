@@ -54,11 +54,11 @@
 
               <div class="mb-6">
                 <div class="d-flex justify-space-between align-center mb-2">
-                  <label class="custom-label">Password</label>
+                  <label class="custom-label">{{ t("password") }}</label>
                   <a
                     href="#"
                     class="text-caption text-primary font-weight-bold text-decoration-none"
-                    >Forgot?</a
+                    >{{ t("forgotPassword") }}</a
                   >
                 </div>
                 <v-text-field
