@@ -3,12 +3,12 @@
     <ClientOnly>
       <v-navigation-drawer
         v-model="drawer"
+        :rail="rail"
+        rail-width="76"
         width="280"
         class="modern-sidebar border-0"
         elevation="0"
         floating
-        color="primary"
-        theme="dark"
       >
         <!-- Sidebar Brand Wrapper -->
         <div class="sidebar-brand-wrapper px-6 py-8 d-flex align-center">
