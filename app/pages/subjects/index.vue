@@ -122,7 +122,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No subjects yet.</div>
+          <div class="text-detail py-8 text-center">{{ $t("no-subjects-yet") }}</div>
         </template>
         <!-- Subject Name Slot -->
         <template v-slot:item.title="{ item }">
@@ -212,7 +212,7 @@
             rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status === 'Active' ? t('ເປີດ') : t('ປິດ') }}
+            {{ item.status === 'Active' ? t('open') : t('closed') }}
           </v-chip>
         </template>
 

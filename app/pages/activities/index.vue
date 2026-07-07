@@ -121,7 +121,7 @@
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.activity_status === "active" ? "Active" : "Hidden" }}
+            {{ item.activity_status === "active" ? $t("active") : $t("hidden") }}
           </v-chip>
         </template>
 
@@ -255,8 +255,8 @@ const breadcrumbs = [
 ];
 
 const statusOptions = [
-  { label: "Active", value: "active" },
-  { label: "Hidden", value: "inactive" },
+  { label: t("active"), value: "active" },
+  { label: t("hidden"), value: "inactive" },
 ];
 
 const headers = [

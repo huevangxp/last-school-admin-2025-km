@@ -495,7 +495,7 @@ onMounted(async () => {
     }
   } catch (error: any) {
     errorMessage.value =
-      error.response?.data?.message || "Failed to load student.";
+      error.response?.data?.message || t("failed-load-student");
   } finally {
     loadingData.value = false;
   }
@@ -533,7 +533,7 @@ const save = async () => {
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
-      error.response?.data?.message || "Failed to update student.";
+      error.response?.data?.message || t("failed-update-student");
   } finally {
     loading.value = false;
   }

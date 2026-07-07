@@ -366,7 +366,7 @@ const openCreate = () => {
 
 const save = async () => {
   if (!form.value.classroom_id || !form.value.subject_id || !form.value.teacher_id) {
-    formError.value = "All fields are required.";
+    formError.value = t("all-fields-required");
     return;
   }
   saving.value = true;
