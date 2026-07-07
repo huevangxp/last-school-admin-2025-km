@@ -10,8 +10,8 @@
           >
         </v-avatar>
         <div>
-          <h2 class="text-title">Register Subject</h2>
-          <p class="text-detail">Define new curricular course details</p>
+          <h2 class="text-title">{{ $t("register-subject") }}</h2>
+          <p class="text-detail">{{ $t("register-subject-subtitle") }}</p>
         </div>
       </div>
 

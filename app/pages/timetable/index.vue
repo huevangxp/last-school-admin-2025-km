@@ -13,7 +13,7 @@
         <div>
           <div class="text-title">{{ t("study_schedule") }}</div>
           <div class="text-detail">
-            ຕາຕະລາງຮຽນປະຈຳອາທິດ · Weekly class timetable
+            {{ t("timetable-subtitle") }}
           </div>
         </div>
       </div>
