@@ -384,7 +384,7 @@
             <v-combobox
               v-model="editForm.department"
               :items="departmentOptions"
-              placeholder="ເລືອກ ຫຼື ພິມ"
+              :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -396,11 +396,11 @@
 
         <v-row class="mt-1">
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">LAYER</label>
+            <label class="text-detail-tiny mb-1 d-block">{{ t("layer") }}</label>
             <v-select
               v-model="editForm.layer"
               :items="layerOptions"
-              placeholder="ເລືອກຊັ້ນ"
+              :placeholder="t('select-layer')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -415,13 +415,13 @@
             <v-select
               v-model="editForm.manager_id"
               :items="managerOptions.filter((m) => m.value !== editForm.uuid)"
-              placeholder="ເລືອກຫົວໜ້າ (ບໍ່ບັງຄັບ)"
+              :placeholder="t('select-manager-optional')"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details
               clearable
-              no-data-text="ຍັງບໍ່ມີພະນັກງານອື່ນ"
+              :no-data-text="t('no-other-staff')"
             ></v-select>
           </v-col>
         </v-row>
