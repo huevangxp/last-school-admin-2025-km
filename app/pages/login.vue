@@ -148,7 +148,7 @@ const loginBtn = async () => {
     }
   } catch (error) {
     console.error(error);
-    errorMessage.value = "Login failed. Please try again.";
+    errorMessage.value = t("login_failed");
   } finally {
     loading.value = false;
   }
