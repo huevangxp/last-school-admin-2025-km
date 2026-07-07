@@ -426,11 +426,12 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
+    // Section itself is visible to teachers, but only the read-only org chart.
+    // Managing the teacher list (create/edit/delete) stays admin-only.
     label: "faculty",
     icon: "mdi-account-tie-outline",
-    adminOnly: true,
     items: [
-      { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
+      { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers", adminOnly: true },
       { title: "organization", icon: "mdi-sitemap-outline", to: "/teachers/organization" },
     ],
   },
