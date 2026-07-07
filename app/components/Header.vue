@@ -337,9 +337,18 @@
 
 <script setup lang="ts">
 import { useApiAuthStore } from "~/stores/apiAuth";
+import { useClassroomStore } from "~/stores/apiClassroom";
 
 const apiAuthStore = useApiAuthStore();
 const { logout } = apiAuthStore;
+
+// Current academic year shown as a chip in the top bar.
+const classroomStore = useClassroomStore();
+onMounted(() => {
+  if (!classroomStore.academicYears.length) {
+    classroomStore.fetchAcademicYears();
+  }
+});
 
 const langName = useCookie("lang_name", { default: () => "English" });
 const langFlag = useCookie("lang_flag", { default: () => "/eng.png" });
