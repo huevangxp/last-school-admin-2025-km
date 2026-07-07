@@ -34,77 +34,50 @@
         </div>
 
         <div class="px-4 py-2 scroll-container">
-          <!-- Navigation Sections -->
-          <div
-            v-for="(section, sIndex) in groupedMenuItems"
-            :key="sIndex"
-            class="mb-6"
-          >
-            <div
-              class="px-4 mb-2 text-uppercase text-caption font-weight-black sidebar-section-label tracking-widest"
+          <!-- Navigation — each section is a collapsible dropdown -->
+          <v-list nav class="pa-0" v-model:opened="openedGroups">
+            <v-list-group
+              v-for="section in groupedMenuItems"
+              :key="section.label"
+              :value="section.label"
+              class="mb-2 nav-group"
             >
-              {{ section.label }}
-            </div>
-
-            <v-list nav class="pa-0">
-              <template v-for="item in section.items" :key="item.title">
-                <!-- Expandable item with children -->
-                <v-list-group v-if="item.children" :value="item.title">
-                  <template v-slot:activator="{ props }">
-                    <v-list-item
-                      v-bind="props"
-                      class="mb-1 modern-nav-item"
-                      rounded="xl"
-                    >
-                      <template v-slot:prepend>
-                        <v-icon size="20" class="mr-4">{{ item.icon }}</v-icon>
-                      </template>
-                      <v-list-item-title
-                        class="text-subtitle-2 font-weight-bold"
-                      >
-                        {{ t(item.title) }}
-                      </v-list-item-title>
-                    </v-list-item>
-                  </template>
-
-                  <v-list-item
-                    v-for="child in item.children"
-                    :key="child.title"
-                    :to="child.to"
-                    class="mb-1 modern-nav-item modern-nav-child"
-                    rounded="xl"
-                    active-class="active-item"
-                  >
-                    <template v-slot:prepend>
-                      <v-icon size="18" class="mr-4">{{ child.icon }}</v-icon>
-                    </template>
-                    <v-list-item-title
-                      class="text-subtitle-2 font-weight-bold"
-                    >
-                      {{ t(child.title) }}
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list-group>
-
-                <!-- Flat item -->
+              <template v-slot:activator="{ props }">
                 <v-list-item
-                  v-else
-                  :to="item.to"
-                  class="mb-1 modern-nav-item"
+                  v-bind="props"
+                  class="mb-1 modern-nav-section"
                   rounded="xl"
-                  active-class="active-item"
-                  :exact="item.to === '/'"
                 >
                   <template v-slot:prepend>
-                    <v-icon size="20" class="mr-4">{{ item.icon }}</v-icon>
+                    <v-icon size="20" class="mr-4">{{ section.icon }}</v-icon>
                   </template>
-                  <v-list-item-title class="text-subtitle-2 font-weight-bold">
-                    {{ t(item.title) }}
+                  <v-list-item-title
+                    class="text-subtitle-2 font-weight-black tracking-wide"
+                  >
+                    {{ section.label }}
                   </v-list-item-title>
                 </v-list-item>
               </template>
-            </v-list>
-          </div>
+
+              <!-- Section items -->
+              <v-list-item
+                v-for="item in section.items"
+                :key="item.title"
+                :to="item.to"
+                class="mb-1 modern-nav-item modern-nav-child"
+                rounded="xl"
+                active-class="active-item"
+                :exact="item.to === '/'"
+              >
+                <template v-slot:prepend>
+                  <v-icon size="18" class="mr-4">{{ item.icon }}</v-icon>
+                </template>
+                <v-list-item-title class="text-subtitle-2 font-weight-bold">
+                  {{ t(item.title) }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list-group>
+          </v-list>
         </div>
 
       </v-navigation-drawer>
