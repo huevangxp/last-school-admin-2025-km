@@ -114,5 +114,7 @@
     "saved": "Saved successfully",
     "semester": "Semester",
     "month": "Month",
-    "teacher": "Teacher"
+    "teacher": "Teacher",
+    "teaching_assignments": "Teaching Assignments",
+    "score_report": "Score Report"
 }
