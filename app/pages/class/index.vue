@@ -389,7 +389,49 @@ const teacherStore = useTeacherStore();
 
 onMounted(() => {
   classroomStore.fetchClassrooms(100);
+  classroomStore.fetchAcademicYears();
 });
+
+// ---- Clone classrooms to a new academic year ----
+const cloneDialog = ref(false);
+const cloning = ref(false);
+const cloneSource = ref<string | null>(null);
+const cloneTarget = ref<string | null>(null);
+const cloneMsg = ref("");
+const cloneOk = ref(false);
+
+const openClone = () => {
+  cloneMsg.value = "";
+  // Default target to the latest year; source to the previous one if any.
+  const years = classroomStore.academicYears;
+  cloneTarget.value = classroomStore.latestAcademicYearId;
+  cloneSource.value =
+    years.find((y: any) => y.id !== cloneTarget.value)?.id ?? null;
+  cloneDialog.value = true;
+};
+
+const doClone = async () => {
+  if (!cloneSource.value || !cloneTarget.value) return;
+  cloning.value = true;
+  cloneMsg.value = "";
+  try {
+    const res = await classroomStore.cloneClassrooms(
+      cloneSource.value,
+      cloneTarget.value
+    );
+    cloneOk.value = true;
+    const created = res?.data?.created ?? 0;
+    const skipped = res?.data?.skipped?.length ?? 0;
+    cloneMsg.value = `ກ໊ອບປີ້ສຳເລັດ ${created} ຫ້ອງ. ຂ້າມ ${skipped} ຫ້ອງ (ມີຢູ່ແລ້ວ).`;
+    await classroomStore.fetchClassrooms(100);
+  } catch (error: any) {
+    cloneOk.value = false;
+    cloneMsg.value =
+      error.response?.data?.message || "ກ໊ອບປີ້ບໍ່ສຳເລັດ.";
+  } finally {
+    cloning.value = false;
+  }
+};
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
