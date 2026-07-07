@@ -161,7 +161,7 @@
             type="submit"
             :loading="loading"
           >
-            Register Class
+            {{ t("register-class") }}
           </v-btn>
         </div>
       </v-form>
@@ -208,7 +208,7 @@ const breadcrumbs = [
 ];
 
 const rules = {
-  required: (v: any) => !!v || "Field is required",
+  required: (v: any) => !!v || t("required"),
 };
 
 const save = async () => {
@@ -231,7 +231,7 @@ const save = async () => {
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
-      error.response?.data?.message || "Failed to create classroom.";
+      error.response?.data?.message || t("failed-create-classroom");
   } finally {
     loading.value = false;
   }
