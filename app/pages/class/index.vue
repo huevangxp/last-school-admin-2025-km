@@ -305,19 +305,19 @@
           <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-lg">
             <v-icon color="teal-darken-2" size="18">mdi-content-copy</v-icon>
           </v-avatar>
-          <div class="text-title">ກ໊ອບປີ້ຫ້ອງຮຽນໄປສົກໃໝ່</div>
+          <div class="text-title">{{ t("copy_classrooms_title") }}</div>
         </div>
         <div class="text-detail mb-4">
-          ກ໊ອບປີ້ຫ້ອງຮຽນທັງໝົດຈາກສົກໜຶ່ງ ໄປໃສ່ອີກສົກໜຶ່ງ ໂດຍບໍ່ຕ້ອງພິມໃໝ່.
+          {{ t("copy_classrooms_desc") }}
         </div>
 
-        <label class="text-detail-tiny mb-1 d-block">ຈາກສົກຮຽນ (FROM)</label>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("from_year") }}</label>
         <v-select
           v-model="cloneSource"
           :items="classroomStore.academicYears"
           item-title="title"
           item-value="id"
-          placeholder="ເລືອກສົກຕົ້ນທາງ"
+          :placeholder="t('select_source_year')"
           variant="outlined"
           density="compact"
           rounded="lg"
@@ -325,13 +325,13 @@
           class="mb-3"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">ໄປສົກຮຽນ (TO)</label>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("to_year") }}</label>
         <v-select
           v-model="cloneTarget"
           :items="classroomStore.academicYears"
           item-title="title"
           item-value="id"
-          placeholder="ເລືອກສົກປາຍທາງ"
+          :placeholder="t('select_target_year')"
           variant="outlined"
           density="compact"
           rounded="lg"
@@ -357,7 +357,7 @@
             :loading="cloning"
             :disabled="!cloneSource || !cloneTarget || cloneSource === cloneTarget"
             @click="doClone"
-            >ກ໊ອບປີ້</v-btn
+            >{{ t("copy") }}</v-btn
           >
         </div>
       </v-card>
@@ -448,13 +448,13 @@ const classStats = computed(() => {
   );
   return [
     {
-      label: "Total Classes",
+      label: t("total_classes"),
       value: String(classroomStore.total),
       icon: "mdi-google-classroom",
       color: "blue",
     },
     {
-      label: "Active Sections",
+      label: t("active_sections"),
       value: String(
         rooms.filter((c) => c.classroom_status === "active").length
       ),
@@ -462,13 +462,13 @@ const classStats = computed(() => {
       color: "green",
     },
     {
-      label: "Total Capacity",
+      label: t("total_capacity"),
       value: String(capacity),
       icon: "mdi-account-group",
       color: "purple",
     },
     {
-      label: "Grade Levels",
+      label: t("grade_levels"),
       value: String(new Set(rooms.map((c) => c.grade_level_id)).size),
       icon: "mdi-account-multiple",
       color: "orange",
