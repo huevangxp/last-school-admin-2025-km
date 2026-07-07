@@ -466,6 +466,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Administration",
+    icon: "mdi-shield-account-outline",
     items: [
       { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
       { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
