@@ -205,7 +205,7 @@
           <template v-slot:activator="{ props }">
             <div
               v-bind="props"
-              class="d-flex align-center cursor-pointer profile-trigger pa-1 pr-3 rounded-pill"
+              class="d-flex align-center cursor-pointer profile-trigger pa-1 pr-3 rounded-0"
             >
               <v-avatar
                 size="44"
