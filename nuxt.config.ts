@@ -15,6 +15,13 @@ export default defineNuxtConfig({
   },
   compatibilityDate: "2025-012-16",
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      // API server origin (serves both /api and /uploads). Override in
+      // production with NUXT_PUBLIC_API_BASE.
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:4000",
+    },
+  },
   build: {
     transpile: ["vuetify"],
   },
