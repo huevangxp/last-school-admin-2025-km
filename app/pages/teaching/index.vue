@@ -126,6 +126,7 @@
         >
           <v-chip
             size="small"
+            rounded="0"
             color="teal-lighten-5"
             variant="flat"
             class="text-teal-darken-2 font-weight-bold mr-3 subject-chip"
