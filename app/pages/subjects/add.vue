@@ -85,13 +85,13 @@
               :rules="[rules.requiredMany]"
             ></v-select>
             <div class="text-detail-tiny text-grey mt-1">
-              ວິຊານີ້ຈະຖືກສ້າງໃຫ້ແຕ່ລະຊັ້ນທີ່ເລືອກ. ຊັ້ນທີ່ບໍ່ຕ້ອງການ ບໍ່ຕ້ອງເລືອກ.
+              {{ $t("grade-levels-hint") }}
             </div>
           </v-col>
 
           <!-- Coefficient -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">COEFFICIENT *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ $t("coefficient") }} *</label>
             <v-text-field
               v-model="form.coefficient"
               type="number"

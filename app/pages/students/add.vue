@@ -267,7 +267,7 @@
               hide-details="auto"
               class="premium-input"
               color="primary"
-              no-data-text="No grade levels yet"
+              :no-data-text="t('no-grade-levels')"
               @update:model-value="onGradeLevelChange"
             ></v-select>
           </v-col>
