@@ -119,7 +119,7 @@
             v-if="classroomStore.latestAcademicYear"
             size="small"
             variant="flat"
-            color="teal-lighten-5"
+            color="white"
             rounded="0"
             class="text-teal-darken-2 font-weight-bold px-3"
             prepend-icon="mdi-calendar-check"
