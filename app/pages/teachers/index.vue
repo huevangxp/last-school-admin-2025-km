@@ -484,15 +484,15 @@ const selectedRole = ref<string | null>(null);
 const selectedStatus = ref<string | null>(null);
 
 const roleOptions = [
-  { title: "ທຸກຕຳແໜ່ງ / All", value: null },
-  { title: "Teacher", value: "teacher" },
-  { title: "Admin", value: "admin" },
+  { title: t("all-roles"), value: null },
+  { title: t("teacher"), value: "teacher" },
+  { title: t("admin"), value: "admin" },
 ];
 const statusOptions = [
-  { title: "ທຸກສະຖານະ / All", value: null },
-  { title: "Active", value: "active" },
-  { title: "Inactive", value: "inactive" },
-  { title: "Block", value: "block" },
+  { title: t("all-statuses"), value: null },
+  { title: t("active"), value: "active" },
+  { title: t("inactive"), value: "inactive" },
+  { title: t("block"), value: "block" },
 ];
 
 const teacherStore = useTeacherStore();
@@ -511,19 +511,19 @@ const breadcrumbs = [
 
 const teacherStats = computed(() => [
   {
-    label: "Total Teachers",
+    label: t("total-teachers"),
     value: String(teacherStore.total),
     icon: "mdi-account-group",
     color: "blue",
   },
   {
-    label: "Active",
+    label: t("active"),
     value: String(teacherStore.activeCount),
     icon: "mdi-check-circle-outline",
     color: "green",
   },
   {
-    label: "Never Logged In",
+    label: t("never-logged-in"),
     value: String(
       teacherStore.teachers.filter((tc) => !tc.last_login_at).length
     ),
@@ -531,7 +531,7 @@ const teacherStats = computed(() => [
     color: "purple",
   },
   {
-    label: "Inactive",
+    label: t("inactive"),
     value: String(
       teacherStore.teachers.filter(
         (tc) => tc.status?.toLowerCase() !== "active"
