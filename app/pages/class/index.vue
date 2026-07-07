@@ -423,7 +423,7 @@ const doClone = async () => {
     cloneOk.value = true;
     const created = res?.data?.created ?? 0;
     const skipped = res?.data?.skipped?.length ?? 0;
-    cloneMsg.value = `ກ໊ອບປີ້ສຳເລັດ ${created} ຫ້ອງ. ຂ້າມ ${skipped} ຫ້ອງ (ມີຢູ່ແລ້ວ).`;
+    cloneMsg.value = t("clone-success", { created, skipped });
     await classroomStore.fetchClassrooms(100);
   } catch (error: any) {
     cloneOk.value = false;
