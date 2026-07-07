@@ -10,7 +10,7 @@
           height="36"
         >
           <v-icon icon="mdi-file-download-outline" start size="16"></v-icon>
-          Export
+          {{ t("export") }}
         </v-btn>
         <v-btn
           variant="flat"

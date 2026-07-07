@@ -11,7 +11,7 @@
           {{ t("management") }} {{ t("ethnic_group") }}
         </div>
         <div class="text-detail">
-          Manage ethnic group classifications and records.
+          {{ t("manage-ethnic-group-records") }}
         </div>
       </div>
 

@@ -45,11 +45,10 @@
               </v-avatar>
               <div>
                 <div class="text-title mb-1" style="font-size: 18px !important">
-                  {{ t("academic") }} Registration
+                  {{ t("academic") }} {{ $t("registration") }}
                 </div>
                 <div class="text-detail">
-                  Initialize and synchronize new academic cycles with the
-                  institutional database.
+                  {{ $t("academic-registration-subtitle") }}
                 </div>
               </div>
             </div>

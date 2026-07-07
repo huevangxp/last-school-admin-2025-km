@@ -93,7 +93,7 @@
             <v-select
               v-model="form.gender"
               :items="genderOptions"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -138,7 +138,7 @@
             <v-select
               v-model="form.status"
               :items="['active', 'inactive', 'block']"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -171,7 +171,7 @@
             <v-select
               v-model="form.bloodGroup"
               :items="['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -186,7 +186,7 @@
             <v-select
               v-model="form.ethnicity"
               :items="ethnicityOptions"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"

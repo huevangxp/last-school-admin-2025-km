@@ -21,7 +21,7 @@
           height="32"
           prepend-icon="mdi-tray-arrow-down"
         >
-          Export
+          {{ $t("export") }}
         </v-btn>
 
         <v-btn
@@ -31,7 +31,7 @@
           prepend-icon="mdi-plus"
           to="/financial/add"
         >
-          Add
+          {{ $t("add") }}
         </v-btn>
       </div>
     </div>

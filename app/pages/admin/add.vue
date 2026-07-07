@@ -267,18 +267,18 @@ const form = ref({
 });
 
 const genderOptions = [
-  { title: "Male", value: "male" },
-  { title: "Female", value: "female" },
+  { title: t("male"), value: "male" },
+  { title: t("female"), value: "female" },
 ];
 
 const roleOptions = [
-  { title: "Administrator", value: "admin" },
-  { title: "Teacher", value: "teacher" },
+  { title: t("administrator"), value: "admin" },
+  { title: t("teacher"), value: "teacher" },
 ];
 
 const statusOptions = [
-  { title: "Active", value: "active" },
-  { title: "Inactive", value: "inactive" },
+  { title: t("active"), value: "active" },
+  { title: t("inactive"), value: "inactive" },
 ];
 
 const fileInput = ref<HTMLInputElement | null>(null);

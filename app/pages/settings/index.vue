@@ -276,32 +276,32 @@ const breadcrumbs = [
 ];
 
 const schoolDetails = [
-  { title: "School Name", value: "ມ.ສ ກາງໃໝ່", icon: "mdi-school-outline" },
+  { title: t("school-name"), value: "ມ.ສ ກາງໃໝ່", icon: "mdi-school-outline" },
   {
-    title: "Address",
+    title: t("address"),
     value: "ບ້ານ ກາງໃໝ່, ເມືອງ ໄຊທານີ",
     icon: "mdi-map-marker-outline",
   },
-  { title: "Phone", value: "+856 20 5555 5555", icon: "mdi-phone-outline" },
+  { title: t("phone"), value: "+856 20 5555 5555", icon: "mdi-phone-outline" },
 ];
 
 const academicDetails = [
   {
-    title: "Semester",
+    title: t("semester"),
     value: "Semester 1",
     icon: "mdi-calendar-range-outline",
   },
   {
-    title: "Timeline",
+    title: t("timeline"),
     value: "01/09/24 - 30/06/25",
     icon: "mdi-clock-time-four-outline",
   },
 ];
 
 const notifications = ref([
-  { title: "Email Notifications", enabled: true, icon: "mdi-email-outline" },
-  { title: "SMS Alerts", enabled: false, icon: "mdi-message-text-outline" },
-  { title: "Push System", enabled: true, icon: "mdi-bell-ring-outline" },
+  { title: t("email-notifications"), enabled: true, icon: "mdi-email-outline" },
+  { title: t("sms-alerts"), enabled: false, icon: "mdi-message-text-outline" },
+  { title: t("push-system"), enabled: true, icon: "mdi-bell-ring-outline" },
 ]);
 
 const twoFactorAuth = ref(false);
