@@ -74,8 +74,8 @@
               >
             </v-avatar>
             <div>
-              <h3 class="text-title">Academic Config</h3>
-              <p class="text-detail-tiny">Year and semester management</p>
+              <h3 class="text-title">{{ $t("academic-config") }}</h3>
+              <p class="text-detail-tiny">{{ $t("academic-config-desc") }}</p>
             </div>
           </div>
 
@@ -94,7 +94,7 @@
                 </div>
               </template>
               <v-list-item-title class="text-title-small"
-                >Academic Year</v-list-item-title
+                >{{ $t("academic-year") }}</v-list-item-title
               >
               <v-list-item-subtitle class="text-detail"
                 >2024-2025</v-list-item-subtitle

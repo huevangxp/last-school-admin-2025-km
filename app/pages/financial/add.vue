@@ -18,11 +18,14 @@
           <!-- Transaction Type -->
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >TRANSACTION CATEGORY</label
+              >{{ $t("transaction-category") }}</label
             >
             <v-select
               v-model="form.type"
-              :items="['Revenue', 'Expense']"
+              :items="[
+                { title: $t('revenue'), value: 'Revenue' },
+                { title: $t('expense'), value: 'Expense' },
+              ]"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -34,7 +37,7 @@
 
           <!-- Amount -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">AMOUNT</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ $t("amount") }}</label>
             <v-text-field
               v-model="form.amount"
               placeholder="0.00"
