@@ -163,6 +163,13 @@ ul::before {
   font-size: 13px;
   color: #0f172a;
   line-height: 1.2;
+  text-align: center;
+  /* Reserve two lines so short and long names keep cards the same height. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 31px;
 }
 .org-node-role {
   font-size: 10.5px;
