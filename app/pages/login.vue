@@ -107,8 +107,7 @@
           </div>
 
           <div class="form-footer mt-2 text-caption text-grey-lighten-1">
-            &copy; {{ new Date().getFullYear() }} EduAdmin Professional
-            Management
+            &copy; {{ new Date().getFullYear() }} {{ t("schoolmanagement") }}
           </div>
         </v-col>
       </v-row>
