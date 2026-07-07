@@ -102,45 +102,36 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="[
-              'All Subjects',
-              'Math',
-              'Physics',
-              'Biology',
-              'Chemistry',
-              'English',
-            ]"
+            v-model="selectedRole"
+            :items="roleOptions"
+            item-title="title"
+            item-value="value"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 140px"
-            prepend-inner-icon="mdi-filter-variant"
+            style="min-width: 150px"
+            prepend-inner-icon="mdi-account-cog-outline"
             class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
 
           <v-select
-            :items="['All Statuses', 'Active', 'Inactive', 'Suspended']"
+            v-model="selectedStatus"
+            :items="statusOptions"
+            item-title="title"
+            item-value="value"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 130px"
+            style="min-width: 150px"
+            prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
-
-          <v-btn
-            variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border"
-            height="32"
-            width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
         </div>
       </div>
 
