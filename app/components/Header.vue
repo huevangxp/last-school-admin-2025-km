@@ -611,6 +611,21 @@ const logoutButton = () => {
   padding-left: 28px !important;
 }
 
+/* Rail (collapsed) mode: center every icon and drop title-oriented spacing */
+.modern-sidebar.v-navigation-drawer--rail .modern-nav-child {
+  padding-left: 0 !important;
+}
+.modern-sidebar.v-navigation-drawer--rail .modern-nav-section,
+.modern-sidebar.v-navigation-drawer--rail .modern-nav-item {
+  padding: 0 !important;
+}
+.modern-sidebar.v-navigation-drawer--rail :deep(.v-list-item__prepend .v-icon) {
+  margin-right: 0 !important;
+}
+.modern-sidebar.v-navigation-drawer--rail :deep(.v-list-group__items)::before {
+  display: none;
+}
+
 /* Faint guide line down the open child group */
 .modern-sidebar :deep(.v-list-group__items) {
   position: relative;
