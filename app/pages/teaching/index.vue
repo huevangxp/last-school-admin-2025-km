@@ -223,12 +223,14 @@ import { useClassroomStore } from "~/stores/apiClassroom";
 import { useSubjectStore } from "~/stores/apiSubject";
 import { useTeacherStore } from "~/stores/apiTeacher";
 import { useTeachingStore } from "~/stores/apiTeaching";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
 const subjectStore = useSubjectStore();
 const teacherStore = useTeacherStore();
 const teachingStore = useTeachingStore();
+const ui = useUiStore();
 
 const roleCookie = useCookie<string>("role");
 const isAdmin = computed(() => (roleCookie.value || "").toLowerCase() === "admin");
@@ -383,10 +385,16 @@ const save = async () => {
 };
 
 const removeItem = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
   try {
     await teachingStore.deleteAssignment(item.id);
     await teachingStore.fetchAssignments({ academic_year_id: selectedYearId.value });
+    ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
     console.error(error);
   }
