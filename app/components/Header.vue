@@ -185,7 +185,7 @@
         <v-btn
           icon="mdi-bell-outline"
           variant="text"
-          color="slate-600"
+          color="white"
           size="small"
           class="rounded-lg action-btn"
         >
