@@ -94,7 +94,7 @@
               :items="teacherStore.teachers"
               item-title="full_name"
               item-value="id"
-              placeholder="Select homeroom teacher"
+              :placeholder="t('select-homeroom-teacher')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -107,7 +107,7 @@
 
           <!-- Room -->
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">ROOM NO.</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("room_number") }}</label>
             <v-text-field
               v-model="form.room"
               placeholder="e.g. 101"
@@ -122,7 +122,7 @@
 
           <!-- Max students -->
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">MAX STUDENTS</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("max_students") }}</label>
             <v-text-field
               v-model="form.maxStudent"
               type="number"
@@ -151,7 +151,7 @@
             height="40"
             @click="$router.push('/class')"
           >
-            Cancel
+            {{ t("cancel") }}
           </v-btn>
           <v-btn
             variant="flat"
