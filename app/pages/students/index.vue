@@ -345,19 +345,19 @@ const breadcrumbs = [
 
 const studentStats = computed(() => [
   {
-    label: "total students",
+    label: t("total-students"),
     value: String(studentStore.total),
     icon: "mdi-account-group",
     color: "blue",
   },
   {
-    label: "active enrollment",
+    label: t("active-enrollment"),
     value: String(studentStore.activeCount),
     icon: "mdi-check-circle",
     color: "green",
   },
   {
-    label: "inactive",
+    label: t("inactive-students"),
     value: String(
       studentStore.students.filter(
         (s) => s.status && s.status.toLowerCase() !== "active"
@@ -367,7 +367,7 @@ const studentStats = computed(() => [
     color: "purple",
   },
   {
-    label: "loaded",
+    label: t("loaded-count"),
     value: String(studentStore.students.length),
     icon: "mdi-clock-time-four-outline",
     color: "orange",
@@ -382,7 +382,7 @@ const headers = [
     sortable: true,
   },
   {
-    title: "STUDENT ID",
+    title: t("student-id"),
     key: "studentId",
     align: "start" as const,
     sortable: true,

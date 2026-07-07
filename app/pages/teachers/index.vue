@@ -168,7 +168,7 @@
                 {{ item.username }}
               </div>
               <div class="text-detail-tiny">
-                {{ item.email || "No email" }}
+                {{ item.email || t("no-email") }}
               </div>
             </div>
           </div>
@@ -216,10 +216,10 @@
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status === 'Active'
-              ? t('ເປີດ')
+              ? t('open')
               : item.status === 'Suspended'
-                ? t('ປິດ')
-                : t('Inactive') }}
+                ? t('closed')
+                : t('inactive') }}
           </v-chip>
         </template>
 
@@ -234,7 +234,7 @@
             variant="text"
             size="x-small"
             :color="item.statusRaw === 'active' ? 'warning' : 'success'"
-            :title="item.statusRaw === 'active' ? 'ປິດ (close)' : 'ເປີດ (open)'"
+            :title="item.statusRaw === 'active' ? t('close') : t('open')"
             @click="requestToggle(item)"
           ></v-btn>
           <v-btn
@@ -257,8 +257,8 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              Showing 1 to {{ teachers.length }} of
-              {{ teachers.length }} results
+              {{ t("showing") }} 1-{{ teachers.length }} {{ t("of") }}
+              {{ teachers.length }} {{ t("results") }}
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn
