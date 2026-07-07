@@ -11,7 +11,7 @@
           {{ $t("management") }} {{ $t("scores") }}
         </div>
         <div class="text-detail">
-          ອາຈານເລືອກຫ້ອງ ແລະ ວິຊາ ແລ້ວປ້ອນຄະແນນນັກຮຽນ · Enter student scores.
+          {{ $t("enter-student-scores") }}
         </div>
       </div>
 

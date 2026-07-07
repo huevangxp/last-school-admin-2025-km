@@ -238,7 +238,7 @@
         <v-card elevation="0" class="utility-card pb-4">
           <div class="pa-6 pb-2">
             <h3 class="text-title mb-1">{{ t("classes") }}</h3>
-            <p class="text-detail mb-6">Recent classrooms</p>
+            <p class="text-detail mb-6">{{ t("recent-classrooms") }}</p>
 
             <div class="feed-container">
               <div v-for="(log, i) in activities" :key="i" class="feed-item">
@@ -342,7 +342,7 @@ const stats = computed(() => [
     title: t("students"),
     value: String(studentCount.value),
     trendUp: true,
-    trendValue: "LIVE",
+    trendValue: t("live"),
     icon: "mdi-account-multiple",
     iconColor: "primary",
   },
@@ -350,7 +350,7 @@ const stats = computed(() => [
     title: t("teachers"),
     value: String(teacherCount.value),
     trendUp: true,
-    trendValue: "LIVE",
+    trendValue: t("live"),
     icon: "mdi-account-tie",
     iconColor: "indigo",
   },
@@ -358,7 +358,7 @@ const stats = computed(() => [
     title: t("classes"),
     value: String(classCount.value),
     trendUp: true,
-    trendValue: "LIVE",
+    trendValue: t("live"),
     icon: "mdi-google-classroom",
     iconColor: "amber-darken-2",
   },
@@ -366,7 +366,7 @@ const stats = computed(() => [
     title: t("subject"),
     value: String(subjectCount.value),
     trendUp: true,
-    trendValue: "LIVE",
+    trendValue: t("live"),
     icon: "mdi-book-open-variant",
     iconColor: "emerald-darken-1",
   },

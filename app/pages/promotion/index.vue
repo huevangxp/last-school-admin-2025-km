@@ -5,7 +5,7 @@
     <div class="mb-6">
       <div class="text-title mb-1">{{ t("promotion") }}</div>
       <div class="text-detail">
-        Move students who passed into their next class.
+        {{ t("promotion-subtitle") }}
       </div>
     </div>
 
@@ -22,13 +22,13 @@
             <h3 class="text-title">1. {{ t("from") }}</h3>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">SOURCE CLASS</label>
+          <label class="text-detail-tiny mb-2 d-block">{{ t("source-class") }}</label>
           <v-select
             v-model="sourceClassId"
             :items="classroomStore.classrooms"
             :item-title="classLabel"
             item-value="id"
-            placeholder="Select current class"
+            :placeholder="t('select-current-class')"
             variant="outlined"
             density="compact"
             rounded="0"

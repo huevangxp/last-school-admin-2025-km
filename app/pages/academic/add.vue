@@ -170,13 +170,11 @@
                   >mdi-information-outline</v-icon
                 >
                 <span class="text-title text-orange-darken-4"
-                  >Registration Policy</span
+                  >{{ $t("registration-policy") }}</span
                 >
               </div>
               <div class="text-detail mb-6" style="line-height: 1.6">
-                Registering a new academic session will synchronize the
-                institutional calendar. Ensure commencement and conclusion dates
-                do not overlap with existing active sessions.
+                {{ $t("registration-policy-text") }}
               </div>
               <v-divider class="mb-6"></v-divider>
               <div class="d-flex flex-column ga-4">

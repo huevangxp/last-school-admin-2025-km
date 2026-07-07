@@ -116,7 +116,7 @@
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.announcement_status === "active" ? "ເປິດ" : "ປິດສະແດງ" }}
+            {{ item.announcement_status === "active" ? $t("open") : $t("closed") }}
           </v-chip>
         </template>
 
@@ -226,8 +226,8 @@ const breadcrumbs = [
 ];
 
 const statusOptions = [
-  { label: "Published", value: "active" },
-  { label: "Hidden", value: "inactive" },
+  { label: t("published"), value: "active" },
+  { label: t("hidden"), value: "inactive" },
 ];
 
 const headers = [
