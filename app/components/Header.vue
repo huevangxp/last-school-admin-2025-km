@@ -353,6 +353,18 @@ const userInitial = computed(() =>
 
 const logoutDialog = ref(false);
 const drawer = ref(true);
+// Collapsed (rail) sidebar: shows icons only, hides titles. Toggled from the
+// header menu button. On small screens the button opens/closes the drawer
+// instead, since a rail is pointless when the drawer overlays content.
+const rail = ref(false);
+const { mobile } = useDisplay();
+const toggleSidebar = () => {
+  if (mobile.value) {
+    drawer.value = !drawer.value;
+  } else {
+    rail.value = !rail.value;
+  }
+};
 
 const getFlag = (item: any) => item.flag || "/eng.png";
 
