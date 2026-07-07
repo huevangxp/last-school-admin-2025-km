@@ -116,5 +116,8 @@
     "month": "Month",
     "teacher": "Teacher",
     "teaching_assignments": "Teaching Assignments",
-    "score_report": "Score Report"
+    "score_report": "Score Report",
+    "are_you_sure": "Are you sure?",
+    "confirm": "Confirm",
+    "deleted_successfully": "Deleted successfully"
 }
