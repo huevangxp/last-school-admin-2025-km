@@ -18,7 +18,7 @@
       <v-col cols="12" md="6">
         <v-card class="intelligence-card pa-4 h-100" elevation="0">
           <div class="d-flex align-center mb-4">
-            <v-avatar color="blue-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-avatar color="blue-lighten-5" size="40" class="mr-3 rounded-0">
               <v-icon color="blue-darken-2" size="20">mdi-cog-outline</v-icon>
             </v-avatar>
             <div>
@@ -68,7 +68,7 @@
       <v-col cols="12" md="6">
         <v-card class="intelligence-card pa-4 h-100" elevation="0">
           <div class="d-flex align-center mb-4">
-            <v-avatar color="green-lighten-5" size="40" class="mr-3 rounded-lg">
+            <v-avatar color="green-lighten-5" size="40" class="mr-3 rounded-0">
               <v-icon color="green-darken-2" size="20"
                 >mdi-book-open-page-variant-outline</v-icon
               >
@@ -150,7 +150,7 @@
             <v-avatar
               color="purple-lighten-5"
               size="40"
-              class="mr-3 rounded-lg"
+              class="mr-3 rounded-0"
             >
               <v-icon color="purple-darken-2" size="20"
                 >mdi-bell-outline</v-icon
@@ -200,7 +200,7 @@
             <v-avatar
               color="orange-lighten-5"
               size="40"
-              class="mr-3 rounded-lg"
+              class="mr-3 rounded-0"
             >
               <v-icon color="orange-darken-2" size="20"
                 >mdi-shield-lock-outline</v-icon

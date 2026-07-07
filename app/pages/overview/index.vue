@@ -22,7 +22,7 @@
           :placeholder="t('academic_title')"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           prepend-inner-icon="mdi-calendar-check"
           class="cream-input"
@@ -43,7 +43,7 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="lg"
+              rounded="0"
               size="42"
               class="metric-icon-box"
             >
@@ -89,7 +89,7 @@
                   color="blue-lighten-5"
                   size="32"
                   class="mr-3"
-                  rounded="lg"
+                  rounded="0"
                 >
                   <v-icon
                     icon="mdi-google-classroom"
