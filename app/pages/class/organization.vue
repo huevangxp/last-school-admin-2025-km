@@ -12,7 +12,7 @@
         </v-avatar>
         <div>
           <div class="text-title">{{ $t("class_organization") }}</div>
-          <div class="text-detail">ໂຄງສ້າງຄະນະຮັບຜິດຊອບຫ້ອງຮຽນ · Classroom leadership</div>
+          <div class="text-detail">{{ t("class-leadership-desc") }}</div>
         </div>
       </div>
       <div class="d-flex gap-2 align-center mt-4 mt-md-0">
