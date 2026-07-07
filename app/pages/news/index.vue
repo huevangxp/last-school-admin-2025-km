@@ -116,7 +116,7 @@
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.announcement_status === "active" ? "Published" : "Hidden" }}
+            {{ item.announcement_status === "active" ? "ເປິດ" : "ປິດສະແດງ" }}
           </v-chip>
         </template>
 
