@@ -87,42 +87,33 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="[
-              'All Grades',
-              'Grade 9',
-              'Grade 10',
-              'Grade 11',
-              'Grade 12',
-            ]"
+            v-model="selectedClass"
+            :items="classOptions"
+            item-title="title"
+            item-value="value"
+            variant="outlined"
+            density="compact"
+            hide-details
+            rounded="lg"
+            style="min-width: 170px"
+            prepend-inner-icon="mdi-google-classroom"
+            class="cream-select text-detail"
+            no-data-text="No classrooms yet"
+          ></v-select>
+
+          <v-select
+            v-model="selectedStatus"
+            :items="statusOptions"
+            item-title="title"
+            item-value="value"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
             style="min-width: 150px"
-            prepend-inner-icon="mdi-school-outline"
+            prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
           ></v-select>
-
-          <v-select
-            :items="['All Statuses', 'Active', 'Inactive', 'Graduated']"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 140px"
-            class="cream-select text-detail"
-          ></v-select>
-
-          <v-btn
-            variant="flat"
-            color="white"
-            class="modern-action-btn secondary border px-0"
-            height="40"
-            width="40"
-            min-width="40"
-          >
-            <v-icon icon="mdi-tune" size="18"></v-icon>
-          </v-btn>
         </div>
       </div>
 
