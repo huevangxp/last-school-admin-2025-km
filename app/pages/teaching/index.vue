@@ -7,7 +7,7 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div class="d-flex align-center">
-        <v-avatar color="indigo-lighten-5" size="44" class="mr-3 rounded-lg">
+        <v-avatar color="indigo-lighten-5" size="44" class="mr-3 rounded-0">
           <v-icon color="indigo-darken-2" size="22">mdi-clipboard-account-outline</v-icon>
         </v-avatar>
         <div>
@@ -43,7 +43,7 @@
                 <p class="text-detail-tiny mb-1">{{ s.label }}</p>
                 <h2 class="text-title">{{ s.value }}</h2>
               </div>
-              <v-avatar :color="`${s.color}-lighten-5`" rounded="lg" size="40">
+              <v-avatar :color="`${s.color}-lighten-5`" rounded="0" size="40">
                 <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
               </v-avatar>
             </div>
@@ -63,7 +63,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             clearable
             style="max-width: 260px"
             color="primary"
@@ -77,7 +77,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="max-width: 220px"
             color="primary"
           ></v-select>
@@ -152,7 +152,7 @@
 
     <!-- Create dialog -->
     <v-dialog v-model="dialog" width="480">
-      <v-card rounded="lg" class="pa-6">
+      <v-card rounded="0" class="pa-6">
         <div class="text-title mb-4">{{ t("add") }} {{ $t("teaching_assignments") }}</div>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
@@ -163,7 +163,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -176,7 +176,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -189,7 +189,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
         ></v-select>
 
