@@ -262,7 +262,8 @@
             {{ t("save") }}
           </v-btn>
         </div>
-      </v-card>
+        </v-card>
+      </v-dialog>
     </template>
   </v-container>
 </template>
