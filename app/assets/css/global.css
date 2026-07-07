@@ -85,3 +85,10 @@ body,
   background: white !important;
   color: #0f172a !important;
 }
+
+/* Selects are picked from a list, not typed into — hide the text caret so a
+   coloured (teal) blinking line never appears at the start of the field.
+   Autocomplete/combobox keep their caret (they are separate components). */
+.v-select .v-field__input input {
+  caret-color: transparent !important;
+}
