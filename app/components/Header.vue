@@ -427,6 +427,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Academic",
+    icon: "mdi-book-education-outline",
     items: [
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
       { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
@@ -437,6 +438,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Faculty",
+    icon: "mdi-account-tie-outline",
     adminOnly: true,
     items: [
       { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
@@ -445,6 +447,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Configuration",
+    icon: "mdi-tune-variant",
     adminOnly: true,
     items: [
       { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
@@ -453,6 +456,7 @@ const allMenuSections: MenuSection[] = [
   },
   {
     label: "Manage Website",
+    icon: "mdi-web",
     adminOnly: true,
     items: [
       { title: "news", icon: "mdi-newspaper-variant-outline", to: "/news" },
