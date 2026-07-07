@@ -596,15 +596,69 @@ const filteredTeachers = computed(() =>
   })
 );
 
-// Close (deactivate) / open (activate) a teacher account.
-const toggleStatus = async (item: any) => {
-  const next = item.statusRaw === "active" ? "inactive" : "active";
+// ---- Confirm popup (shared for delete + block) ----
+const confirm = ref({
+  show: false,
+  title: "",
+  message: "",
+  confirmText: "",
+  color: "error",
+  icon: "mdi-alert-circle-outline",
+  loading: false,
+  action: null as null | (() => Promise<void>),
+});
+
+const requestDelete = (item: any) => {
+  confirm.value = {
+    show: true,
+    title: "ລຶບອາຈານ? / Delete teacher?",
+    message: `"${item.username}" ${t("are_you_sure_delete")}`,
+    confirmText: "ລຶບ / Delete",
+    color: "error",
+    icon: "mdi-delete-outline",
+    loading: false,
+    action: () => doDelete(item),
+  };
+};
+
+const requestToggle = (item: any) => {
+  const closing = item.statusRaw === "active";
+  confirm.value = {
+    show: true,
+    title: closing ? "ປິດບັນຊີ? / Close account?" : "ເປີດບັນຊີ? / Open account?",
+    message: closing
+      ? `"${item.username}" ຈະຖືກປິດ (inactive).`
+      : `"${item.username}" ຈະຖືກເປີດຄືນ (active).`,
+    confirmText: closing ? "ປິດ / Close" : "ເປີດ / Open",
+    color: closing ? "warning" : "success",
+    icon: closing ? "mdi-account-cancel-outline" : "mdi-account-check-outline",
+    loading: false,
+    action: () => doToggle(item),
+  };
+};
+
+const runConfirm = async () => {
+  if (!confirm.value.action) return;
+  confirm.value.loading = true;
   try {
-    await teacherStore.updateTeacher(item.uuid, { status: next });
-    await teacherStore.fetchTeachers(100, 1);
+    await confirm.value.action();
+    confirm.value.show = false;
   } catch (error) {
     console.error(error);
+  } finally {
+    confirm.value.loading = false;
   }
+};
+
+const doToggle = async (item: any) => {
+  const next = item.statusRaw === "active" ? "inactive" : "active";
+  await teacherStore.updateTeacher(item.uuid, { status: next });
+  await teacherStore.fetchTeachers(100, 1);
+};
+
+const doDelete = async (item: any) => {
+  await teacherStore.deleteTeacher(item.uuid);
+  await teacherStore.fetchTeachers(100, 1);
 };
 
 // Teachers available as "reports to" managers in the edit form.
