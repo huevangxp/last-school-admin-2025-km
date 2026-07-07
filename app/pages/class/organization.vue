@@ -73,7 +73,7 @@
     </v-card>
 
     <div v-if="!selectedClassId" class="text-detail text-center py-10">
-      ກະລຸນາເລືອກຫ້ອງຮຽນ · Select a class to view its organization.
+      {{ t("select-class-hint") }}
     </div>
 
     <template v-else>
