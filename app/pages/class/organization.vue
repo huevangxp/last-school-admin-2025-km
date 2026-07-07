@@ -7,7 +7,7 @@
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div class="d-flex align-center">
-        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-lg">
+        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-0">
           <v-icon color="teal-darken-1" size="22">mdi-account-supervisor-outline</v-icon>
         </v-avatar>
         <div>
@@ -52,7 +52,7 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="lg"
+          rounded="0"
           style="max-width: 280px"
           color="primary"
         ></v-select>
@@ -65,7 +65,7 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="lg"
+          rounded="0"
           style="max-width: 220px"
           color="primary"
         ></v-select>
@@ -158,7 +158,7 @@
 
       <!-- Assignment panel (dialog) -->
       <v-dialog v-model="manageDialog" width="560" scrollable>
-        <v-card rounded="lg" class="pa-6">
+        <v-card rounded="0" class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div class="text-title-small">{{ t("assign_roles") }}</div>
           <v-btn
@@ -185,7 +185,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           clearable
           class="mb-4"
@@ -203,7 +203,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           multiple
           chips
@@ -223,7 +223,7 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           multiple
           chips

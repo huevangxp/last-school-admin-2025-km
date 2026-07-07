@@ -199,7 +199,7 @@
                 color="primary"
                 size="x-small"
                 variant="flat"
-                class="font-weight-black rounded-md"
+                class="font-weight-black rounded-0"
                 style="min-width: 24px; height: 24px"
               >
                 1

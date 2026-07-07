@@ -39,7 +39,7 @@
               <v-avatar
                 color="primary-lighten-5"
                 size="56"
-                class="mr-5 rounded-xl"
+                class="mr-5 rounded-0"
               >
                 <v-icon color="primary" size="28">mdi-school-outline</v-icon>
               </v-avatar>
@@ -61,7 +61,7 @@
           <!-- Primary Details Group -->
           <v-col cols="12" lg="8">
             <div
-              class="pa-6 rounded-xl bg-slate-50 border border-slate-100 mb-6"
+              class="pa-6 rounded-0 bg-slate-50 border border-slate-100 mb-6"
             >
               <div class="text-detail-tiny mb-6 text-primary">
                 PRIMARY CONFIGURATION
@@ -74,7 +74,7 @@
                     placeholder="e.g. 2024-2025"
                     variant="outlined"
                     density="compact"
-                    rounded="lg"
+                    rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"
                     hide-details="auto"
@@ -88,7 +88,7 @@
                     :items="statusOptions"
                     variant="outlined"
                     density="compact"
-                    rounded="lg"
+                    rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"
                     hide-details="auto"
@@ -107,7 +107,7 @@
                     variant="outlined"
                     density="compact"
                     placeholder="Select start date"
-                    rounded="lg"
+                    rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"
                     hide-details="auto"
@@ -129,7 +129,7 @@
                     variant="outlined"
                     density="compact"
                     placeholder="Select end date"
-                    rounded="lg"
+                    rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"
                     hide-details="auto"
@@ -143,7 +143,7 @@
             </div>
 
             <!-- Descriptive Context -->
-            <div class="pa-6 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="pa-6 rounded-0 bg-slate-50 border border-slate-100">
               <div class="text-detail-tiny mb-4 text-primary">
                 ADDITIONAL CONTEXT
               </div>
@@ -152,7 +152,7 @@
                 placeholder="Define operational goals, specific terms, or institutional notes for this session..."
                 variant="outlined"
                 density="compact"
-                rounded="lg"
+                rounded="0"
                 class="premium-input text-detail bg-white"
                 color="primary"
                 rows="4"
@@ -164,7 +164,7 @@
           <!-- Sidebar Information/Summary -->
           <v-col cols="12" lg="4">
             <div
-              class="pa-6 rounded-xl bg-orange-lighten-5 border border-orange-100 h-100"
+              class="pa-6 rounded-0 bg-orange-lighten-5 border border-orange-100 h-100"
             >
               <div class="d-flex align-center mb-4">
                 <v-icon color="orange-darken-2" class="mr-2"
