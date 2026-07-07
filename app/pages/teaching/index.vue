@@ -271,28 +271,67 @@ const teacherOptions = computed(() =>
   }))
 );
 
-const headers = [
-  { title: t("class"), key: "classroom", align: "start" as const, sortable: true },
-  { title: t("subject"), key: "subject", align: "start" as const, sortable: true },
-  { title: t("teacher"), key: "teacher", align: "start" as const, sortable: true },
-  { title: "", key: "actions", align: "end" as const, sortable: false },
-].map((h) => ({ ...h, class: "text-detail-tiny pb-2" }));
-
 const rows = computed(() =>
   teachingStore.assignments.map((a: any) => ({
     id: a.id,
     classroom_id: a.classroom_id,
     classroom: a.tb_classroom?.classroom_name || "—",
+    subject_id: a.subject_id,
     subject: a.tb_subject?.subject_name || "—",
+    teacher_id: a.teacher_id,
     teacher: a.tb_teacher?.full_name || a.tb_teacher?.username || "—",
   }))
 );
+
+// Summary tiles across all assignments for the year (unaffected by the filter).
+const stats = computed(() => [
+  {
+    label: "Assignments",
+    value: rows.value.length,
+    icon: "mdi-clipboard-account-outline",
+    color: "indigo",
+  },
+  {
+    label: "Classes Covered",
+    value: new Set(rows.value.map((r) => r.classroom_id)).size,
+    icon: "mdi-google-classroom",
+    color: "blue",
+  },
+  {
+    label: "Subjects Assigned",
+    value: new Set(rows.value.map((r) => r.subject_id)).size,
+    icon: "mdi-book-open-variant",
+    color: "teal",
+  },
+  {
+    label: "Teachers Teaching",
+    value: new Set(rows.value.map((r) => r.teacher_id)).size,
+    icon: "mdi-account-tie-outline",
+    color: "purple",
+  },
+]);
 
 const filteredRows = computed(() =>
   filterClassId.value
     ? rows.value.filter((r) => r.classroom_id === filterClassId.value)
     : rows.value
 );
+
+// Grouped into one card per class, each listing its subject → teacher rows.
+const groupedByClass = computed(() => {
+  const map = new Map<string, any>();
+  for (const r of filteredRows.value) {
+    if (!map.has(r.classroom_id)) {
+      map.set(r.classroom_id, {
+        classroom_id: r.classroom_id,
+        classroom: r.classroom,
+        items: [] as any[],
+      });
+    }
+    map.get(r.classroom_id).items.push(r);
+  }
+  return [...map.values()];
+});
 
 // ---- Create ----
 const dialog = ref(false);
