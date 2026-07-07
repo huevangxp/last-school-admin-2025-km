@@ -11,6 +11,7 @@ export default defineNuxtPlugin((app: any) => {
         style: "text-transform: none;",
         fontWeight: "bold",
         letterSpacing: "0.5px",
+        rounded: "0", // square buttons (no rounded corners)
       },
       VCard: {
         elevation: 0,
