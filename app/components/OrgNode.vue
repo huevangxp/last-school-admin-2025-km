@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ node: any }>();
+defineProps<{ node: any }>();
 </script>
 
 <style scoped>
