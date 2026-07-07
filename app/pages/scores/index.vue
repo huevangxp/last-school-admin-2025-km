@@ -177,6 +177,7 @@ const subjectStore = useSubjectStore();
 const teacherStore = useTeacherStore();
 const enrollmentStore = useEnrollmentStore();
 const scoreStore = useScoreStore();
+const teachingStore = useTeachingStore();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
