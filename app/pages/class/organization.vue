@@ -424,44 +424,53 @@ const save = async () => {
   }
 };
 
-// ---- Org chart tree ----
+// ---- Layered org chart ----
 const nameFor = (studentId: string) =>
   students.value.find((s) => s.id === studentId)?.label || "—";
 
-const orgRoot = computed(() => {
-  const monitorRow = classRoleStore.roles.find((r: any) => r.role === "monitor");
-  const committee = classRoleStore.roles.filter((r: any) => r.role === "committee");
-  const units = classRoleStore.roles.filter((r: any) => r.role === "unit_head");
+// Rows by role (from the saved assignments).
+const monitorRow = computed(() =>
+  classRoleStore.roles.find((r: any) => r.role === "monitor")
+);
+const committeeRows = computed(() =>
+  classRoleStore.roles.filter((r: any) => r.role === "committee")
+);
+const unitRows = computed(() =>
+  classRoleStore.roles.filter((r: any) => r.role === "unit_head")
+);
 
-  const leaderNodes = (rows: any[], title: string) =>
-    rows.map((r: any) => ({
-      uuid: r.id,
-      name: nameFor(r.student_id),
-      title,
-      children: [],
-    }));
+// Everyone holding a leadership role — excluded from the "members" pool.
+const leaderIds = computed(() => {
+  const ids = new Set<string>();
+  if (monitorRow.value) ids.add(monitorRow.value.student_id);
+  committeeRows.value.forEach((r: any) => ids.add(r.student_id));
+  unitRows.value.forEach((r: any) => ids.add(r.student_id));
+  return ids;
+});
 
-  const subordinates = [
-    ...leaderNodes(committee, "ຄະນະ · Committee"),
-    ...leaderNodes(units, "ຫົວໜ້າໜ່ວຍ · Unit Head"),
-  ];
+// The plain members: enrolled students who hold no leadership role.
+const memberStudents = computed(() =>
+  students.value.filter((s) => !leaderIds.value.has(s.id))
+);
 
-  const monitorNode = monitorRow
-    ? {
-        uuid: monitorRow.id,
-        name: nameFor(monitorRow.student_id),
-        title: "ຫົວໜ້າຫ້ອງ · Monitor",
-        children: subordinates,
-      }
-    : null;
+// Split the members as evenly as possible across the units (round-robin),
+// so each ໜ່ວຍ gets an equal share.
+const splitEven = <T,>(arr: T[], n: number): T[][] => {
+  const groups: T[][] = Array.from({ length: n }, () => []);
+  arr.forEach((item, i) => groups[i % n].push(item));
+  return groups;
+};
 
-  return {
-    uuid: "__teacher__",
-    name: homeroomTeacherName.value || t("homeroom_teacher"),
-    title: "ອາຈານປະຈຳຫ້ອງ · Homeroom",
-    status: "Active",
-    children: monitorNode ? [monitorNode] : subordinates,
-  };
+// Layer 4 (unit heads) each with their Layer 5 members attached.
+const unitColumns = computed(() => {
+  const units = unitRows.value;
+  if (!units.length) return [] as any[];
+  const groups = splitEven(memberStudents.value, units.length);
+  return units.map((u: any, i: number) => ({
+    id: u.id,
+    name: nameFor(u.student_id),
+    members: groups[i],
+  }));
 });
 </script>
 
