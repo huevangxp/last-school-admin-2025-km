@@ -16,7 +16,9 @@
         </div>
       </div>
 
-      <div class="d-flex gap-2 align-center mt-4 mt-md-0">
+      <!-- Managing teachers (list / add) is admin-only; teachers get a
+           read-only org chart with no create/edit actions. -->
+      <div v-if="isAdmin" class="d-flex gap-2 align-center mt-4 mt-md-0">
         <v-btn
           variant="flat"
           color="white"
