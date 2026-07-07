@@ -79,7 +79,7 @@
         {{ scoreStore.error }}
       </div>
       <div v-else-if="!students.length" class="text-detail text-center py-10">
-        ບໍ່ມີນັກຮຽນ · No students.
+        {{ $t("no-students") }}
       </div>
 
       <div v-else class="table-wrapper">

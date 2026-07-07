@@ -64,9 +64,9 @@
       <!-- 3. Class Performance (Bar) -->
       <v-col cols="12" md="6" lg="6">
         <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="text-title mb-1">Class Proficiency Audit</div>
+          <div class="text-title mb-1">{{ t("class-proficiency-audit") }}</div>
           <div class="text-detail mb-6">
-            Average score distribution across grades
+            {{ t("average-score-distribution") }}
           </div>
           <div class="chart-wrapper" style="height: 250px">
             <ClientOnly>
@@ -79,9 +79,9 @@
       <!-- 4. Subject Popularity (Horizontal Bar) -->
       <v-col cols="12" md="6" lg="6">
         <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="text-title mb-1">Subject Engagement</div>
+          <div class="text-title mb-1">{{ t("subject-engagement") }}</div>
           <div class="text-detail mb-6">
-            Student enrollment volume by subject
+            {{ t("student-enrollment-volume-by-subject") }}
           </div>
           <div class="chart-wrapper" style="height: 250px">
             <ClientOnly>

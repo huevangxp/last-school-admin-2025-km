@@ -105,7 +105,7 @@
                     v-model="form.startDate"
                     variant="outlined"
                     density="compact"
-                    placeholder="Select start date"
+                    :placeholder="$t('select-start-date')"
                     rounded="0"
                     class="premium-input text-detail bg-white"
                     color="primary"

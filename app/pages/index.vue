@@ -126,7 +126,7 @@
           >
             <div>
               <div class="text-title mb-1">{{ t("students") }}</div>
-              <div class="text-detail">Latest registered students</div>
+              <div class="text-detail">{{ t("latest-registered-students") }}</div>
             </div>
             <v-chip
               color="primary"
@@ -135,7 +135,7 @@
               rounded="0"
               class="font-weight-black px-2"
             >
-              {{ studentCount }} TOTAL
+              {{ studentCount }} {{ t("total") }}
             </v-chip>
           </header>
 

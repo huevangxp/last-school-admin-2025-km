@@ -197,12 +197,14 @@
               hide-details="auto"
               class="premium-input"
               color="primary"
-              no-data-text="No ethnic groups yet"
+              :no-data-text="t('no-ethnic-groups')"
               :rules="[rules.required]"
             ></v-select>
           </v-col>
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">HEIGHT (cm) *</label>
+            <label class="text-detail-tiny mb-2 d-block"
+              >{{ t("height-cm") }} *</label
+            >
             <v-text-field
               v-model="form.height"
               type="number"

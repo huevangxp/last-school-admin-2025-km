@@ -249,13 +249,13 @@ const { t } = useI18n();
 const search = ref("");
 
 const breadcrumbs = [
-  { title: "Dashboard", disabled: false, to: "/" },
-  { title: "Financial", disabled: true, to: "/financial" },
+  { title: t("dashboard"), disabled: false, to: "/" },
+  { title: t("financial"), disabled: true, to: "/financial" },
 ];
 
 const financeStats = [
   {
-    label: "Total Income",
+    label: t("total-income"),
     value: "₭45.2M",
     icon: "mdi-cash-plus",
     color: "green",
@@ -263,7 +263,7 @@ const financeStats = [
     trendUp: true,
   },
   {
-    label: "Total Expense",
+    label: t("total-expense"),
     value: "₭28.7M",
     icon: "mdi-cash-minus",
     color: "red",
@@ -271,13 +271,13 @@ const financeStats = [
     trendUp: false,
   },
   {
-    label: "Balance",
+    label: t("balance"),
     value: "₭16.5M",
     icon: "mdi-wallet-outline",
     color: "purple",
   },
   {
-    label: "Pending",
+    label: t("pending"),
     value: "15",
     icon: "mdi-clock-time-four-outline",
     color: "orange",
@@ -285,16 +285,16 @@ const financeStats = [
 ];
 
 const headers = [
-  { title: "ID", key: "id", align: "start" as const, sortable: true },
+  { title: t("id"), key: "id", align: "start" as const, sortable: true },
   {
-    title: "Description",
+    title: t("description"),
     key: "description",
     align: "start" as const,
     sortable: true,
   },
-  { title: "Amount", key: "amount", align: "start" as const, sortable: true },
-  { title: "Date", key: "date", align: "start" as const, sortable: true },
-  { title: "Status", key: "status", align: "start" as const, sortable: true },
+  { title: t("amount"), key: "amount", align: "start" as const, sortable: true },
+  { title: t("date"), key: "date", align: "start" as const, sortable: true },
+  { title: t("status"), key: "status", align: "start" as const, sortable: true },
   { title: "", key: "actions", align: "end" as const, sortable: false },
 ].map((h) => ({
   ...h,
