@@ -14,7 +14,7 @@
       <v-col cols="12" md="5">
         <v-card elevation="0" class="intelligence-card pa-6 mb-4">
           <div class="d-flex align-center mb-4">
-            <v-avatar color="blue-lighten-5" size="36" class="mr-3 rounded-lg">
+            <v-avatar color="blue-lighten-5" size="36" class="mr-3 rounded-0">
               <v-icon color="blue-darken-2" size="18"
                 >mdi-account-group-outline</v-icon
               >
@@ -31,7 +31,7 @@
             placeholder="Select current class"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             class="premium-input"
             hide-details
           ></v-select>
@@ -40,7 +40,7 @@
         <!-- Target -->
         <v-card elevation="0" class="intelligence-card pa-6">
           <div class="d-flex align-center mb-4">
-            <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-lg">
+            <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-0">
               <v-icon color="teal-darken-2" size="18"
                 >mdi-arrow-up-bold-box-outline</v-icon
               >
@@ -57,7 +57,7 @@
             placeholder="Select next class"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             class="premium-input mb-4"
             hide-details
           ></v-select>
@@ -68,7 +68,7 @@
             readonly
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             class="premium-input"
             hide-details
             prepend-inner-icon="mdi-calendar-check"
@@ -134,7 +134,7 @@
             <v-list-item
               v-for="s in sourceStudents"
               :key="s.id"
-              class="px-2 mb-1 rounded-lg source-student"
+              class="px-2 mb-1 rounded-0 source-student"
               @click="toggle(s.id)"
             >
               <template v-slot:prepend>

@@ -82,7 +82,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -91,7 +91,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-shield-lock-outline"
             class="cream-select text-detail"
@@ -102,7 +102,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 140px"
             class="cream-select text-detail"
           ></v-select>
@@ -134,7 +134,7 @@
             <v-avatar
               size="36"
               class="mr-3 elevation-1 border-white"
-              rounded="lg"
+              rounded="0"
             >
               <v-img :src="item.image" cover></v-img>
             </v-avatar>
@@ -243,7 +243,7 @@
           v-model="editForm.full_name"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -255,7 +255,7 @@
               :items="['teacher', 'admin']"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -266,7 +266,7 @@
               :items="['active', 'inactive']"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -276,7 +276,7 @@
           v-model="editForm.phone_number"
           variant="outlined"
           density="compact"
-          rounded="lg"
+          rounded="0"
           hide-details
         ></v-text-field>
 
