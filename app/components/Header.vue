@@ -470,7 +470,10 @@ const groupedMenuItems = computed<MenuSection[]>(() =>
 const route = useRoute();
 const openedGroups = ref<string[]>([]);
 
-const sectionForPath = (path: string) => {
+const sectionForPath = (rawPath: string) => {
+  // Strip the i18n locale prefix (e.g. /en/scores -> /scores) so it matches the
+  // unprefixed menu `to` values.
+  const path = rawPath.replace(/^\/(en|la)(?=\/|$)/, "") || "/";
   const inSection = (to?: string) =>
     !!to && (to === path || (to !== "/" && path.startsWith(to)));
   const sec = groupedMenuItems.value.find((s) =>
