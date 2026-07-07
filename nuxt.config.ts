@@ -17,9 +17,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      // API server origin (serves both /api and /uploads). Override in
-      // production with NUXT_PUBLIC_API_BASE.
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:4000",
+      // API server origin (serves both /api and /uploads). Nuxt auto-overrides
+      // this from the NUXT_PUBLIC_API_BASE env var in production.
+      apiBase: "http://localhost:4000",
     },
   },
   build: {
