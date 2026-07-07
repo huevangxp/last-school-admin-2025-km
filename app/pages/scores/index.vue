@@ -203,14 +203,16 @@ const semesterOptions = ["1", "2"];
 const monthOptions = Array.from({ length: 12 }, (_, i) => `ເດືອນ ${i + 1}`);
 
 onMounted(async () => {
-  const tasks = [
-    classroomStore.fetchMyClassrooms(),
+  await Promise.all([
     classroomStore.fetchAcademicYears(),
     subjectStore.fetchSubjects(),
-  ];
-  // Only admins need the full teacher list for the selector.
-  if (isAdmin.value) tasks.push(teacherStore.fetchTeachers(200, 1));
-  await Promise.all(tasks);
+    // Admins pick from every class + teacher; teachers pick only from the
+    // (class, subject) pairs they are assigned to teach.
+    isAdmin.value
+      ? classroomStore.fetchMyClassrooms()
+      : teachingStore.fetchMyTeaching(),
+    ...(isAdmin.value ? [teacherStore.fetchTeachers(200, 1)] : []),
+  ]);
 
   // Teachers always enter scores under their own account.
   if (!isAdmin.value && idCookie.value) selectedTeacherId.value = idCookie.value;
@@ -218,21 +220,54 @@ onMounted(async () => {
 
 const yearId = computed(() => classroomStore.latestAcademicYearId || "");
 
-const classOptions = computed(() =>
-  classroomStore.myClassrooms.map((c: any) => ({
-    id: c.id,
-    label: c.classroom_name,
-  }))
+// A teacher's assignments for the current year.
+const myTeachingForYear = computed(() =>
+  teachingStore.myTeaching.filter((a: any) => a.academic_year_id === yearId.value)
 );
 
-const selectedClass = computed(() =>
-  classroomStore.myClassrooms.find((c: any) => c.id === selectedClassId.value)
-);
+const classOptions = computed(() => {
+  if (isAdmin.value) {
+    return classroomStore.myClassrooms.map((c: any) => ({
+      id: c.id,
+      label: c.classroom_name,
+    }));
+  }
+  // Distinct classes the teacher teaches in.
+  const seen = new Map<string, any>();
+  myTeachingForYear.value.forEach((a: any) => {
+    if (a.tb_classroom && !seen.has(a.classroom_id)) {
+      seen.set(a.classroom_id, {
+        id: a.classroom_id,
+        label: a.tb_classroom.classroom_name,
+      });
+    }
+  });
+  return [...seen.values()];
+});
 
-// Subjects for this class's grade. Many grades have no subjects mapped yet, so
-// when the grade match is empty we fall back to the full subject list — the
-// teacher can always pick one rather than facing an empty dropdown.
+const selectedClass = computed(() => {
+  if (isAdmin.value) {
+    return classroomStore.myClassrooms.find(
+      (c: any) => c.id === selectedClassId.value
+    );
+  }
+  return myTeachingForYear.value.find(
+    (a: any) => a.classroom_id === selectedClassId.value
+  )?.tb_classroom;
+});
+
 const subjectOptions = computed(() => {
+  // Teacher: only the subjects they teach in the chosen class.
+  if (!isAdmin.value) {
+    const seen = new Map<string, any>();
+    myTeachingForYear.value
+      .filter((a: any) => a.classroom_id === selectedClassId.value && a.tb_subject)
+      .forEach((a: any) =>
+        seen.set(a.subject_id, { id: a.subject_id, label: a.tb_subject.subject_name })
+      );
+    return [...seen.values()];
+  }
+  // Admin: subjects for the class's grade, falling back to all when none map.
   const gradeId = selectedClass.value?.grade_level_id;
   const matched = gradeId
     ? subjectStore.subjects.filter((s: any) => s.grade_id === gradeId)
