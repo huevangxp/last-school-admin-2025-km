@@ -193,10 +193,12 @@ const form = ref({
   maxStudent: "",
 });
 
-onMounted(() => {
+onMounted(async () => {
   classroomStore.fetchGradeLevels();
-  classroomStore.fetchAcademicYears();
   teacherStore.fetchTeachers(100, 1);
+  // Load academic years and default to the latest (current) one.
+  await classroomStore.fetchAcademicYears();
+  form.value.academicYearId = classroomStore.latestAcademicYearId;
 });
 
 const breadcrumbs = [
