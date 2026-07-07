@@ -133,6 +133,14 @@ import { useTeacherStore } from "~/stores/apiTeacher";
 const { t } = useI18n();
 const teacherStore = useTeacherStore();
 
+// Teachers may view this org chart but not create/edit. Admins get the action
+// buttons; a missing/legacy role cookie falls back to admin so nothing hides
+// by accident.
+const role = useCookie<string>("role", { default: () => "Administrator" });
+const isAdmin = computed(() =>
+  ["admin", "administrator"].includes((role.value || "").toLowerCase())
+);
+
 const viewport = ref<HTMLElement | null>(null);
 
 onMounted(() => {
