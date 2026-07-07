@@ -212,6 +212,7 @@
             "
             size="x-small"
             variant="flat"
+            rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status }}
