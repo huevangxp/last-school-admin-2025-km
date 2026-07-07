@@ -207,10 +207,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useAnnouncementStore } from "~/stores/apiAnnouncement";
+import { useUiStore } from "~/stores/ui";
 import { formatDate } from "@/utils/formatDate";
 
 const { t } = useI18n();
 const announcementStore = useAnnouncementStore();
+const ui = useUiStore();
 
 const search = ref("");
 
