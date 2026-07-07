@@ -444,7 +444,20 @@ const groupedMenuItems = ref<MenuSection[]>([
       { title: "academic", icon: "mdi-calendar-check", to: "/academic" },
     ],
   },
- 
+
+  {
+    label: "Manage Website",
+    items: [
+      { title: "news", icon: "mdi-newspaper-variant-outline", to: "/news" },
+      { title: "activities", icon: "mdi-calendar-star", to: "/activities" },
+      {
+        title: "new_academic_year",
+        icon: "mdi-calendar-plus",
+        to: "/academic/add",
+      },
+    ],
+  },
+
   {
     label: "Administration",
     items: [
