@@ -51,13 +51,13 @@
 
           <!-- Grade Level -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">GRADE LEVEL *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("grade-level") }} *</label>
             <v-select
               v-model="form.gradeLevelId"
               :items="classroomStore.gradeLevels"
               item-title="grade_level_name"
               item-value="id"
-              placeholder="Select grade level"
+              :placeholder="t('select-grade-level')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -70,7 +70,7 @@
 
           <!-- Academic Year (auto: latest / current) -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">ACADEMIC YEAR *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("academic-year") }} *</label>
             <v-text-field
               :model-value="classroomStore.latestAcademicYear?.title || '—'"
               readonly
@@ -87,7 +87,7 @@
           <!-- Homeroom Teacher (required) -->
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >HOMEROOM TEACHER *</label
+              >{{ t("homeroom_teacher") }} *</label
             >
             <v-select
               v-model="form.homeroomTeacherId"
