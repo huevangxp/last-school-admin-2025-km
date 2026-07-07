@@ -100,15 +100,6 @@
       </v-row>
     </v-card>
 
-    <v-alert
-      v-if="saveMsg"
-      :type="saveMsgType"
-      variant="tonal"
-      density="compact"
-      class="mb-4"
-      >{{ saveMsg }}</v-alert
-    >
-
     <!-- Score entry grid -->
     <v-card elevation="0" class="intelligence-card pa-4">
       <div v-if="!ready" class="text-detail text-center py-10">
