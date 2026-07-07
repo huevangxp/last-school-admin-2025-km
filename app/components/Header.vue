@@ -623,23 +623,23 @@ const logoutButton = () => {
   top: 4px;
   bottom: 4px;
   width: 1px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(15, 23, 42, 0.08);
 }
 
-/* Active item: soft light-teal tint pill with white text */
+/* Active item: soft teal tint pill with teal text */
 .active-item {
-  background: rgba(255, 255, 255, 0.18) !important;
-  color: #ffffff !important;
+  background: rgba(20, 184, 166, 0.12) !important;
+  color: #0d9488 !important;
   position: relative;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.25);
 }
 
 .active-item :deep(.v-icon) {
-  color: #ffffff !important;
+  color: #0d9488 !important;
 }
 
 .active-item :deep(.v-list-item-title) {
-  color: #ffffff !important;
+  color: #0d9488 !important;
   font-weight: 800 !important;
 }
 
