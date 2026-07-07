@@ -194,7 +194,7 @@
 
         <!-- Committee -->
         <label class="text-detail-tiny mb-1 d-block">
-          ຄະນະ · Committee (max 2)
+          {{ t("committee-label") }}
         </label>
         <v-select
           v-model="form.committee"
@@ -214,7 +214,7 @@
 
         <!-- Unit heads -->
         <label class="text-detail-tiny mb-1 d-block">
-          ຫົວໜ້າໜ່ວຍ · Unit Heads (max 5)
+          {{ t("unit-heads-label") }}
         </label>
         <v-select
           v-model="form.unit_head"
@@ -406,7 +406,7 @@ const save = async () => {
   saveError.value = "";
   saveOk.value = false;
   if (overCap.value) {
-    saveError.value = "Too many members selected for a role.";
+    saveError.value = t("too-many-members");
     return;
   }
   saving.value = true;
@@ -448,7 +448,7 @@ const save = async () => {
     saveOk.value = true;
     manageDialog.value = false; // close popup to reveal the updated chart
   } catch (error: any) {
-    saveError.value = error.response?.data?.message || "Failed to save roles.";
+    saveError.value = error.response?.data?.message || t("failed-save-roles");
   } finally {
     saving.value = false;
   }
