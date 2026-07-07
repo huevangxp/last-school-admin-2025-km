@@ -171,6 +171,7 @@ import { useTeacherStore } from "~/stores/apiTeacher";
 import { useEnrollmentStore } from "~/stores/apiEnrollment";
 import { useScoreStore } from "~/stores/apiScore";
 import { useTeachingStore } from "~/stores/apiTeaching";
+import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
@@ -179,6 +180,7 @@ const teacherStore = useTeacherStore();
 const enrollmentStore = useEnrollmentStore();
 const scoreStore = useScoreStore();
 const teachingStore = useTeachingStore();
+const ui = useUiStore();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
