@@ -303,6 +303,7 @@ const openEdit = (item: any) => {
     id: item.id,
     title: item.title,
     content: item.content,
+    image_url: item.image_url || "",
     announcement_status: item.announcement_status || "active",
   };
   dialog.value = true;
