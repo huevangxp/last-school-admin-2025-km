@@ -10,7 +10,7 @@
         <div class="text-title mb-1">
           {{ t("management") }} {{ t("classes") }}
         </div>
-        <div class="text-detail">Manage class sections and schedules.</div>
+        <div class="text-detail">{{ t("manage_classes_desc") }}</div>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
@@ -22,7 +22,7 @@
           prepend-icon="mdi-content-copy"
           @click="openClone"
         >
-          ກ໊ອບປີ້ໄປສົກໃໝ່
+          {{ t("copy_to_new_year") }}
         </v-btn>
 
         <v-btn
