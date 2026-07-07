@@ -132,6 +132,7 @@
               color="primary"
               variant="flat"
               size="x-small"
+              rounded="0"
               class="font-weight-black px-2"
             >
               {{ studentCount }} TOTAL
