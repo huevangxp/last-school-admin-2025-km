@@ -147,7 +147,7 @@
 
       <v-data-table
         :headers="headers"
-        :items="teachers"
+        :items="filteredTeachers"
         :search="search"
         :loading="teacherStore.loading"
         class="premium-table"
