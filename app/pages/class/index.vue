@@ -179,7 +179,7 @@
             rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status }}
+            {{ item.status === 'Active' ? t('ເປິດ') : t('ປິດ') }}
           </v-chip>
         </template>
 
