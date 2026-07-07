@@ -385,102 +385,98 @@ interface MenuItem {
   icon: string;
   to?: string;
   children?: MenuItem[];
+  adminOnly?: boolean;
 }
 
 interface MenuSection {
   label: string;
+  adminOnly?: boolean;
   items: MenuItem[];
 }
 
-// Grouped Menu — Academic on top, with the Type group first.
-const groupedMenuItems = ref<MenuSection[]>([
+// Whether the current user is an admin. Teachers get a reduced menu limited to
+// the things they can act on (score entry/report + their class organization).
+// Falls back to admin for a missing/legacy role cookie so nothing is hidden by
+// accident; a real teacher's cookie is set to "teacher" on login.
+const isAdmin = computed(() =>
+  ["admin", "administrator"].includes((role.value || "").toLowerCase())
+);
+
+// Full menu with per-item / per-section admin gating.
+const allMenuSections: MenuSection[] = [
   {
     label: "Overview",
     items: [
       { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
-      { title: "reports", icon: "mdi-chart-box-outline", to: "/reports" },
+      { title: "reports", icon: "mdi-chart-box-outline", to: "/reports", adminOnly: true },
+      { title: "overview", icon: "mdi-chart-box-outline", to: "/overview", adminOnly: true },
+    ],
+  },
+  {
+    label: "Classes",
+    items: [
+      { title: "classes", icon: "mdi-google-classroom", to: "/class", adminOnly: true },
+      { title: "students", icon: "mdi-account-school-outline", to: "/students", adminOnly: true },
+      { title: "enroll", icon: "mdi-account-plus-outline", to: "/students/add", adminOnly: true },
+      { title: "promotion", icon: "mdi-arrow-up-bold-box-outline", to: "/promotion", adminOnly: true },
+      { title: "class_organization", icon: "mdi-account-supervisor-outline", to: "/class/organization" },
     ],
   },
   {
     label: "Academic",
     items: [
-      {
-        title: "overview",
-        icon: "mdi-chart-box-outline",
-        to: "/overview",
-      },
-      {
-        title: "type",
-        icon: "mdi-shape-outline",
-        children: [
-          { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
-          {
-            title: "ethnic_group",
-            icon: "mdi-account-group-outline",
-            to: "/ethnic-group",
-          },
-          { title: "classes", icon: "mdi-google-classroom", to: "/class" },
-        ],
-      },
-      {
-        title: "students",
-        icon: "mdi-account-school-outline",
-        to: "/students",
-      },
-      { title: "enroll", icon: "mdi-account-plus-outline", to: "/students/add" },
-      { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
-      {
-        title: "organization",
-        icon: "mdi-sitemap-outline",
-        to: "/teachers/organization",
-      },
-      { title: "subject", icon: "mdi-book-open-variant", to: "/subjects" },
-      {
-        title: "teaching_assignments",
-        icon: "mdi-clipboard-account-outline",
-        to: "/teaching",
-      },
+      { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
+      { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
       { title: "scores", icon: "mdi-star-outline", to: "/scores" },
-      {
-        title: "score_report",
-        icon: "mdi-table-large",
-        to: "/scores/report",
-      },
-      {
-        title: "class_organization",
-        icon: "mdi-account-supervisor-outline",
-        to: "/class/organization",
-      },
-      {
-        title: "promotion",
-        icon: "mdi-arrow-up-bold-box-outline",
-        to: "/promotion",
-      },
-      { title: "academic", icon: "mdi-calendar-check", to: "/academic" },
+      { title: "score_report", icon: "mdi-table-large", to: "/scores/report" },
+      { title: "academic", icon: "mdi-calendar-check", to: "/academic", adminOnly: true },
     ],
   },
-
+  {
+    label: "Faculty",
+    adminOnly: true,
+    items: [
+      { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers" },
+      { title: "organization", icon: "mdi-sitemap-outline", to: "/teachers/organization" },
+    ],
+  },
+  {
+    label: "Configuration",
+    adminOnly: true,
+    items: [
+      { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
+      { title: "ethnic_group", icon: "mdi-account-group-outline", to: "/ethnic-group" },
+    ],
+  },
   {
     label: "Manage Website",
+    adminOnly: true,
     items: [
       { title: "news", icon: "mdi-newspaper-variant-outline", to: "/news" },
       { title: "activities", icon: "mdi-calendar-star", to: "/activities" },
-      {
-        title: "new_academic_year",
-        icon: "mdi-calendar-plus",
-        to: "/academic/add",
-      },
+      { title: "new_academic_year", icon: "mdi-calendar-plus", to: "/academic/add" },
     ],
   },
-
   {
     label: "Administration",
     items: [
-      { title: "admin", icon: "mdi-shield-account-outline", to: "/admin" },
+      { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
       { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
     ],
   },
-]);
+];
+
+// The menu the current user actually sees: drop admin-only sections/items for
+// teachers, then drop any section left with no items.
+const groupedMenuItems = computed<MenuSection[]>(() =>
+  allMenuSections
+    .filter((sec) => isAdmin.value || !sec.adminOnly)
+    .map((sec) => ({
+      ...sec,
+      items: sec.items.filter((it) => isAdmin.value || !it.adminOnly),
+    }))
+    .filter((sec) => sec.items.length > 0)
+);
 
 const logoutButton = () => {
   logout();
