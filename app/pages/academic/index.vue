@@ -158,7 +158,11 @@
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status }}
+            {{ item.status === 'active'
+              ? t('ເປີດ')
+              : item.status === 'upcoming'
+                ? t('ກຳລັງເປີດ')
+                : t('ປິດ') }}
           </v-chip>
         </template>
 
