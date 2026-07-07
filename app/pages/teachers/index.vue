@@ -230,7 +230,7 @@
             size="x-small"
             :color="item.statusRaw === 'active' ? 'warning' : 'success'"
             :title="item.statusRaw === 'active' ? 'ປິດ (close)' : 'ເປີດ (open)'"
-            @click="toggleStatus(item)"
+            @click="requestToggle(item)"
           ></v-btn>
           <v-btn
             icon="mdi-pencil-outline"
@@ -244,7 +244,7 @@
             variant="text"
             size="x-small"
             color="error"
-            @click="removeTeacher(item)"
+            @click="requestDelete(item)"
           ></v-btn>
         </template>
 
