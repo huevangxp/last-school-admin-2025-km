@@ -277,70 +277,77 @@ const teachers = computed(() =>
   }))
 );
 
-// Positions that should NOT appear as their own node in the chart. A subject
-// head (ຫົວໜ້າໝວດວິຊາ) is skipped and the teachers reporting to it are lifted
-// up to the head's own manager (a deputy director).
-const HIDDEN_POSITIONS = ["ຫົວໜ້າໝວດວິຊາ"];
-const isHidden = (pos?: string) =>
-  HIDDEN_POSITIONS.includes((pos || "").trim());
+const DIRECTOR_POS = "ຜູ້ອຳນວຍການ";
+const DEPUTY_POS = "ຮອງຜູ້ອຳນວຍການ";
+const HEAD_POS = "ຫົວໜ້າໝວດວິຊາ"; // subject head — hidden from the chart
 
-// Build the reporting tree from manager_id. The director (top-level, no
-// manager) is the real root — there is no synthetic school node. Subject-head
-// nodes are collapsed so every teacher lines up directly under the deputies.
+const posOf = (tc: any) => (tc.position || "").trim();
+
+// A flat 3-tier org chart:
+//   Director (top) → the two Deputy Directors → all teachers.
+// The synthetic school node and the subject-head layer are removed; teachers
+// (who in the data all report through the subject heads to one deputy) are
+// spread evenly across BOTH deputies, keeping each department on one side so
+// the tree stays balanced and the line from the director sits centered.
 const orgRoots = computed(() => {
-  const byId: Record<string, any> = {};
-  teachers.value.forEach((tc) => {
-    byId[tc.uuid] = {
-      uuid: tc.uuid,
-      name: tc.username,
-      image: tc.image,
-      title:
-        tc.position ||
-        (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
-      department: tc.department,
-      status: tc.status,
-      position: tc.position,
-      explicitLayer: tc.layer, // admin-assigned Layer 1–5 (may be null)
-      children: [],
-    };
+  const list = teachers.value;
+  if (!list.length) return [];
+
+  const mk = (tc: any) => ({
+    uuid: tc.uuid,
+    name: tc.username,
+    image: tc.image,
+    title:
+      tc.position ||
+      (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
+    department: tc.department,
+    status: tc.status,
+    layer: tc.layer,
+    children: [] as any[],
   });
 
-  const roots: any[] = [];
-  teachers.value.forEach((tc) => {
-    const node = byId[tc.uuid];
-    const manager = tc.managerId ? byId[tc.managerId] : null;
-    // Guard against a node being its own manager / broken references.
-    if (manager && manager !== node) manager.children.push(node);
-    else roots.push(node);
-  });
+  const director = list.find((tc) => !tc.managerId) || null;
+  const deputyNodes = list
+    .filter((tc) => posOf(tc) === DEPUTY_POS)
+    .map(mk);
 
-  // Drop hidden-position nodes, lifting their children to the parent level.
-  const stripHidden = (nodes: any[]): any[] => {
-    const out: any[] = [];
-    nodes.forEach((n) => {
-      const kids = stripHidden(n.children || []);
-      if (isHidden(n.position)) {
-        out.push(...kids); // remove this node, keep its reports
-      } else {
-        n.children = kids;
-        out.push(n);
-      }
+  // Everyone who is not the director, a deputy, or a (hidden) subject head is a
+  // teacher shown on the bottom tier.
+  const teacherList = list.filter(
+    (tc) =>
+      tc !== director &&
+      posOf(tc) !== DEPUTY_POS &&
+      posOf(tc) !== DIRECTOR_POS &&
+      posOf(tc) !== HEAD_POS
+  );
+
+  // Group teachers by department, then hand each whole department to whichever
+  // deputy currently has the fewest teachers (greedy balance).
+  if (deputyNodes.length) {
+    const byDept: Record<string, any[]> = {};
+    teacherList.forEach((tc) => {
+      (byDept[tc.department || "—"] ||= []).push(tc);
     });
-    return out;
-  };
-  const cleaned = stripHidden(roots);
+    const counts = deputyNodes.map(() => 0);
+    Object.values(byDept)
+      .sort((a, b) => b.length - a.length)
+      .forEach((group) => {
+        let idx = 0;
+        for (let i = 1; i < counts.length; i++)
+          if (counts[i] < counts[idx]) idx = i;
+        group.forEach((tc) => deputyNodes[idx].children.push(mk(tc)));
+        counts[idx] += group.length;
+      });
+  }
 
-  // Layer per node: use the admin-assigned layer when set, otherwise fall back
-  // to the depth in the reporting tree (top-level = 1, each level deeper +1).
-  const assignLayers = (nodes: any[], layer: number) => {
-    nodes.forEach((n) => {
-      n.layer = n.explicitLayer ?? layer;
-      if (n.children?.length) assignLayers(n.children, layer + 1);
-    });
-  };
-  assignLayers(cleaned, 1);
-
-  return cleaned;
+  if (director) {
+    const root = mk(director);
+    // No deputies? fall back to teachers directly under the director.
+    root.children = deputyNodes.length ? deputyNodes : teacherList.map(mk);
+    return [root];
+  }
+  // No clear director: show the deputies (or everyone) as top-level nodes.
+  return deputyNodes.length ? deputyNodes : teacherList.map(mk);
 });
 </script>
 
