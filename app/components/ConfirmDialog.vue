@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
 withDefaults(
   defineProps<{
     modelValue: boolean;
@@ -53,10 +54,10 @@ withDefaults(
     loading?: boolean;
   }>(),
   {
-    title: "Are you sure?",
+    title: () => t("are_you_sure"),
     message: "",
-    confirmText: "Confirm",
-    cancelText: "Cancel",
+    confirmText: () => t("confirm"),
+    cancelText: () => t("cancel"),
     color: "error",
     icon: "mdi-alert-circle-outline",
     loading: false,

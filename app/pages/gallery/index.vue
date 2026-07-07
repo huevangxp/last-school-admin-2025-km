@@ -336,7 +336,7 @@ const onPickImages = async (files: File | File[] | null) => {
     const urls = await uploadImages(list);
     form.value.images.push(...urls);
   } catch (e) {
-    ui.notify("Failed to upload images.", "error");
+    ui.notify(t("failed-to-upload-images"), "error");
   } finally {
     uploading.value = false;
   }
@@ -363,7 +363,7 @@ const save = async () => {
     dialog.value = false;
     await galleryStore.fetchGalleries();
   } catch (error: any) {
-    formError.value = error.response?.data?.message || "Failed to save.";
+    formError.value = error.response?.data?.message || t("failed-to-save");
   } finally {
     saving.value = false;
   }

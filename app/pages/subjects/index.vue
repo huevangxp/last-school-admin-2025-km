@@ -386,8 +386,8 @@ const allHeaders = withHeaderClass([
 
 const groupedHeaders = withHeaderClass([
   { title: t("subject"), key: "title", align: "start" as const, sortable: true },
-  { title: "ຫ້ອງຮຽນ / CLASSES", key: "classes", align: "start" as const, sortable: false },
-  { title: "COEFFICIENT", key: "coefficient", align: "start" as const, sortable: true },
+  { title: t("classes"), key: "classes", align: "start" as const, sortable: false },
+  { title: t("coefficient"), key: "coefficient", align: "start" as const, sortable: true },
 ]);
 
 const displayHeaders = computed(() =>

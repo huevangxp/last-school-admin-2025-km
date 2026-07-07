@@ -92,7 +92,7 @@
             <v-select
               v-model="form.gender"
               :items="genderOptions"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -144,8 +144,8 @@
             >
           </v-avatar>
           <div>
-            <h2 class="text-title">Health, Class & Guardian</h2>
-            <p class="text-detail">Required school record details</p>
+            <h2 class="text-title">{{ t("health-class-guardian") }}</h2>
+            <p class="text-detail">{{ t("required-school-record-details") }}</p>
           </div>
         </div>
 
@@ -155,7 +155,7 @@
             <v-select
               v-model="form.bloodGroup"
               :items="['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-']"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -170,7 +170,7 @@
             <v-select
               v-model="form.ethnicity"
               :items="ethnicityOptions"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
