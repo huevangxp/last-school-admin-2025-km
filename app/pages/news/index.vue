@@ -311,7 +311,7 @@ const openEdit = (item: any) => {
 
 const save = async () => {
   if (!form.value.title || !form.value.content) {
-    formError.value = "Title and content are required.";
+    formError.value = t("title-content-required");
     return;
   }
   saving.value = true;

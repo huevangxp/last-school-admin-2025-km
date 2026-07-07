@@ -62,7 +62,7 @@
             hide-details
           ></v-select>
 
-          <label class="text-detail-tiny mb-2 d-block">TARGET ACADEMIC YEAR</label>
+          <label class="text-detail-tiny mb-2 d-block">{{ t("target-academic-year") }}</label>
           <v-text-field
             :model-value="classroomStore.latestAcademicYear?.title || '—'"
             readonly

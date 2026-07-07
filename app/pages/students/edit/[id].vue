@@ -271,12 +271,12 @@
 
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >ຊັ້ນຮຽນ / GRADE LEVEL (optional)</label
+              >{{ t("grade-level-optional") }}</label
             >
             <v-select
               v-model="selectedGradeLevel"
               :items="gradeLevelOptions"
-              placeholder="ເລືອກຊັ້ນຮຽນກ່ອນ"
+              :placeholder="t('select-grade-first')"
               variant="outlined"
               density="compact"
               rounded="0"

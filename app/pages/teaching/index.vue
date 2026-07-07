@@ -13,7 +13,7 @@
         <div>
           <div class="text-title">{{ $t("teaching_assignments") }}</div>
           <div class="text-detail">
-            ອາຈານຄົນໃດສອນວິຊາໃດ ໃນຫ້ອງໃດ · Who teaches what, in each class.
+            {{ $t("teaching-assignments-subtitle") }}
           </div>
         </div>
       </div>

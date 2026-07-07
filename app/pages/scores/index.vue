@@ -111,14 +111,14 @@
       </div>
 
       <div v-else-if="!rows.length" class="text-detail text-center py-10">
-        ບໍ່ມີນັກຮຽນໃນຫ້ອງນີ້ · No students enrolled in this class/year.
+        {{ $t("no-students-enrolled") }}
       </div>
 
       <div v-else class="table-wrapper">
         <table class="score-table">
           <thead>
             <tr>
-              <th class="col-no text-detail-tiny">NO.</th>
+              <th class="col-no text-detail-tiny">{{ t("column-no") }}</th>
               <th class="col-name text-detail-tiny text-left">
                 {{ t("students") }}
               </th>

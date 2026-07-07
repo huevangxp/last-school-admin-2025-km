@@ -244,7 +244,7 @@ const teacherData = ref<any>({
 const classData = ref<any>({
   labels: [],
   datasets: [
-    { label: "Classes", backgroundColor: "#6366f1", borderRadius: 6, data: [] },
+    { label: t("classes"), backgroundColor: "#6366f1", borderRadius: 6, data: [] },
   ],
 });
 
@@ -307,7 +307,7 @@ onMounted(async () => {
       labels: Object.keys(grades),
       datasets: [
         {
-          label: "Classes",
+          label: t("classes"),
           backgroundColor: "#6366f1",
           borderRadius: 6,
           data: Object.values(grades),
