@@ -522,54 +522,58 @@ const logoutButton = () => {
   z-index: 100 !important;
 }
 
-/* Sidebar Styling — primary (teal) gradient background */
+/* Sidebar Styling — clean white background */
 .modern-sidebar {
-  background: linear-gradient(180deg, #14b8a5 0%, #0d9488 55%, #0b7d72 100%) !important;
-  border-right: 0 !important;
+  background: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
   z-index: 101 !important;
 }
 
 .sidebar-brand-wrapper {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid #eef2f6;
 }
 
 .sidebar-brand-wrapper .brand-logo-container {
   width: 44px;
   height: 44px;
-  background: #ffffff;
+  background: #f0fdfa;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px -6px rgba(13, 148, 136, 0.4);
   padding: 6px;
 }
 
+.brand-title {
+  color: #0f172a !important;
+}
+
 .brand-subtitle {
-  color: rgba(255, 255, 255, 0.75) !important;
+  color: #64748b !important;
 }
 
 /* Section header labels */
 .sidebar-section-label {
-  color: rgba(255, 255, 255, 0.55) !important;
+  color: #94a3b8 !important;
 }
 
 /* Collapsible section header (dropdown toggle) */
 .modern-nav-section {
-  color: #ffffff !important;
+  color: #1e293b !important;
   padding: 0 16px !important;
   min-height: 48px !important;
   transition: background-color 0.2s ease;
 }
 .modern-nav-section :deep(.v-icon) {
-  color: rgba(255, 255, 255, 0.92) !important;
+  color: #0d9488 !important;
 }
 .modern-nav-section :deep(.v-list-item-title) {
-  color: rgba(255, 255, 255, 0.95) !important;
+  color: #1e293b !important;
   letter-spacing: 0.02em;
 }
 .modern-nav-section:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: rgba(20, 184, 166, 0.08) !important;
 }
 .tracking-wide {
   letter-spacing: 0.02em;
@@ -577,28 +581,28 @@ const logoutButton = () => {
 
 /* Nav Item Styling */
 .modern-nav-item {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #475569 !important;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   padding: 0 16px !important;
   min-height: 44px !important;
 }
 
 .modern-nav-item :deep(.v-icon) {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #64748b !important;
 }
 
 .modern-nav-item:hover {
-  background-color: rgba(255, 255, 255, 0.12) !important;
-  color: #ffffff !important;
+  background-color: rgba(20, 184, 166, 0.08) !important;
+  color: #0d9488 !important;
 }
 
 .modern-nav-item:hover :deep(.v-icon) {
-  color: #ffffff !important;
+  color: #0d9488 !important;
 }
 
-/* Expand / collapse chevron on group headers stays legible on teal */
+/* Expand / collapse chevron on group headers */
 .modern-sidebar :deep(.v-list-group__header .v-list-item__append .v-icon) {
-  color: rgba(255, 255, 255, 0.7) !important;
+  color: #94a3b8 !important;
   opacity: 1;
 }
 
