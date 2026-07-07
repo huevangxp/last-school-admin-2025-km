@@ -68,23 +68,20 @@
             ></v-select>
           </v-col>
 
-          <!-- Academic Year -->
+          <!-- Academic Year (auto: latest / current) -->
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block">ACADEMIC YEAR *</label>
-            <v-select
-              v-model="form.academicYearId"
-              :items="classroomStore.academicYears"
-              item-title="title"
-              item-value="id"
-              placeholder="Select academic year"
+            <v-text-field
+              :model-value="classroomStore.latestAcademicYear?.title || '—'"
+              readonly
               variant="outlined"
               density="compact"
               rounded="lg"
               class="premium-input"
               color="primary"
               hide-details="auto"
-              :rules="[rules.required]"
-            ></v-select>
+              prepend-inner-icon="mdi-calendar-check"
+            ></v-text-field>
           </v-col>
 
           <!-- Homeroom Teacher (required) -->
