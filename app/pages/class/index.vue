@@ -159,9 +159,9 @@
         <template v-slot:item.teacher="{ item }">
           <div class="d-flex align-center">
             <v-avatar size="32" class="mr-2 elevation-1">
-              <v-img
+              <!-- <v-img
                 :src="`https://ui-avatars.com/api/?name=${item.teacher}&background=random`"
-              ></v-img>
+              ></v-img> -->
             </v-avatar>
             <div>
               <div class="text-title-small">{{ item.teacher }}</div>
