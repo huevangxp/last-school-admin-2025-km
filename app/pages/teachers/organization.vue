@@ -277,8 +277,17 @@ const teachers = computed(() =>
   }))
 );
 
-// Build a real reporting tree from manager_id, under a synthetic school root.
-const orgRoot = computed(() => {
+// Positions that should NOT appear as their own node in the chart. A subject
+// head (ຫົວໜ້າໝວດວິຊາ) is skipped and the teachers reporting to it are lifted
+// up to the head's own manager (a deputy director).
+const HIDDEN_POSITIONS = ["ຫົວໜ້າໝວດວິຊາ"];
+const isHidden = (pos?: string) =>
+  HIDDEN_POSITIONS.includes((pos || "").trim());
+
+// Build the reporting tree from manager_id. The director (top-level, no
+// manager) is the real root — there is no synthetic school node. Subject-head
+// nodes are collapsed so every teacher lines up directly under the deputies.
+const orgRoots = computed(() => {
   const byId: Record<string, any> = {};
   teachers.value.forEach((tc) => {
     byId[tc.uuid] = {
@@ -290,6 +299,7 @@ const orgRoot = computed(() => {
         (tc.role?.toLowerCase() === "admin" ? "Admin" : "Teacher"),
       department: tc.department,
       status: tc.status,
+      position: tc.position,
       explicitLayer: tc.layer, // admin-assigned Layer 1–5 (may be null)
       children: [],
     };
@@ -304,6 +314,22 @@ const orgRoot = computed(() => {
     else roots.push(node);
   });
 
+  // Drop hidden-position nodes, lifting their children to the parent level.
+  const stripHidden = (nodes: any[]): any[] => {
+    const out: any[] = [];
+    nodes.forEach((n) => {
+      const kids = stripHidden(n.children || []);
+      if (isHidden(n.position)) {
+        out.push(...kids); // remove this node, keep its reports
+      } else {
+        n.children = kids;
+        out.push(n);
+      }
+    });
+    return out;
+  };
+  const cleaned = stripHidden(roots);
+
   // Layer per node: use the admin-assigned layer when set, otherwise fall back
   // to the depth in the reporting tree (top-level = 1, each level deeper +1).
   const assignLayers = (nodes: any[], layer: number) => {
@@ -312,15 +338,9 @@ const orgRoot = computed(() => {
       if (n.children?.length) assignLayers(n.children, layer + 1);
     });
   };
-  assignLayers(roots, 1);
+  assignLayers(cleaned, 1);
 
-  return {
-    uuid: "__school__",
-    isRoot: true,
-    name: t("schoolmanagement"),
-    title: t("management"),
-    children: roots,
-  };
+  return cleaned;
 });
 </script>
 
