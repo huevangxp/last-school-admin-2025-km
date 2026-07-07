@@ -31,28 +31,27 @@
       <v-col cols="12" sm="6" lg="3" v-for="(stat, i) in studentStats" :key="i">
         <v-card elevation="0" class="metric-card h-100 overflow-hidden">
           <div class="pa-4">
-            <div class="d-flex justify-space-between align-center mb-4">
-              <div :class="`metric-icon-box bg-${stat.color}-lighten-5`">
-                <v-icon
-                  :icon="stat.icon"
-                  :color="`${stat.color}-darken-2`"
-                  size="18"
-                ></v-icon>
+            <div class="d-flex justify-space-between align-center">
+              <div class="d-flex align-center ga-3">
+                <div :class="`metric-icon-box bg-${stat.color}-lighten-5`">
+                  <v-icon
+                    :icon="stat.icon"
+                    :color="`${stat.color}-darken-2`"
+                    size="18"
+                  ></v-icon>
+                </div>
+                <div class="metric-info">
+                  <div class="text-detail mb-1">{{ stat.label }}</div>
+                  <div class="text-title">{{ stat.value }}</div>
+                </div>
               </div>
-              <v-chip
-                color="grey-lighten-4"
-                class="text-detail-tiny font-weight-black"
-                size="x-small"
-                variant="flat"
-              >
-                LIVE CAPTURE
-              </v-chip>
-            </div>
-
-            <div class="metric-info">
-              <div class="text-detail mb-1 uppercase">{{ stat.label }}</div>
-              <div class="text-title" style="font-size: 18px !important">
-                {{ stat.value }}
+              <div class="trend-badge up">
+                <v-icon
+                  icon="mdi-arrow-top-right"
+                  size="10"
+                  class="mr-1"
+                ></v-icon>
+                LIVE
               </div>
             </div>
           </div>
