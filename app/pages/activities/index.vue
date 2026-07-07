@@ -349,7 +349,7 @@ const openEdit = (item: any) => {
 
 const save = async () => {
   if (!form.value.title || !form.value.description) {
-    formError.value = "Title and description are required.";
+    formError.value = t("title-description-required");
     return;
   }
   saving.value = true;
@@ -370,7 +370,7 @@ const save = async () => {
     dialog.value = false;
     await activityStore.fetchActivities();
   } catch (error: any) {
-    formError.value = error.response?.data?.message || "Failed to save.";
+    formError.value = error.response?.data?.message || t("failed-to-save");
   } finally {
     saving.value = false;
   }

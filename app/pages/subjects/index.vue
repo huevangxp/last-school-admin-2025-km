@@ -244,7 +244,7 @@
             ></v-text-field>
           </v-col>
           <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">COEFFICIENT</label>
+            <label class="text-detail-tiny mb-1 d-block">{{ t("coefficient") }}</label>
             <v-text-field
               v-model="editForm.coefficient"
               type="number"
