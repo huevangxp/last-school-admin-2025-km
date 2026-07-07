@@ -48,6 +48,27 @@ export const useClassroomStore = defineStore("classroom", {
       }
     },
 
+    // Classrooms the logged-in user may work with: admins get all, a teacher
+    // gets only the classes they homeroom. Backed by the authenticated
+    // /my-classrooms endpoint (used by score entry & class organization).
+    async fetchMyClassrooms(academicYearId?: string) {
+      const { $axios } = useNuxtApp();
+      this.loading = true;
+      this.error = "";
+      try {
+        const res = await $axios.get("/my-classrooms", {
+          params: academicYearId ? { academic_year_id: academicYearId } : {},
+        });
+        this.myClassrooms = res.data?.data?.classrooms ?? [];
+      } catch (error: any) {
+        console.error("fetchMyClassrooms error:", error);
+        this.error =
+          error.response?.data?.message || "Failed to load classrooms.";
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async fetchGradeLevels() {
       const { $axios } = useNuxtApp();
       try {
