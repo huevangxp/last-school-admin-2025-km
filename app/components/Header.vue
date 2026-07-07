@@ -106,14 +106,14 @@
         ></v-btn>
 
         <div class="d-none d-sm-flex align-center ga-2">
-          <v-chip
+          <car
             size="small"
-            variant="plain"
+            variant="flat"
             color="primary-lighten-5"
             class="text-primary font-weight-bold px-3"
           >
             v2.4.0
-          </v-chip>
+          </car>
           <v-chip
             v-if="classroomStore.latestAcademicYear"
             size="small"
