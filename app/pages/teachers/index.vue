@@ -729,15 +729,6 @@ const saveEdit = async () => {
   }
 };
 
-const removeTeacher = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
-  try {
-    await teacherStore.deleteTeacher(item.uuid);
-    await teacherStore.fetchTeachers(100, 1);
-  } catch (error) {
-    console.error(error);
-  }
-};
 </script>
 
 <style scoped>
