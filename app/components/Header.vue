@@ -465,17 +465,25 @@ const groupedMenuItems = computed<MenuSection[]>(() =>
     .filter((sec) => sec.items.length > 0)
 );
 
-// Which section dropdowns are expanded. Default: all open, initialised once so a
-// user's manual collapse isn't clobbered on later reactivity.
+// Accordion: only one section is open at a time. It opens to the section that
+// holds the current route so the sidebar stays short and never needs scrolling.
+const route = useRoute();
 const openedGroups = ref<string[]>([]);
-let groupsInited = false;
+
+const sectionForPath = (path: string) => {
+  const inSection = (to?: string) =>
+    !!to && (to === path || (to !== "/" && path.startsWith(to)));
+  const sec = groupedMenuItems.value.find((s) =>
+    s.items.some((it) => inSection(it.to))
+  );
+  return sec?.label ?? groupedMenuItems.value[0]?.label ?? null;
+};
+
 watch(
-  groupedMenuItems,
-  (secs) => {
-    if (!groupsInited && secs.length) {
-      openedGroups.value = secs.map((s) => s.label);
-      groupsInited = true;
-    }
+  () => route.path,
+  (path) => {
+    const label = sectionForPath(path);
+    openedGroups.value = label ? [label] : [];
   },
   { immediate: true }
 );
