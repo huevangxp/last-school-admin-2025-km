@@ -204,17 +204,20 @@ const save = async () => {
     const skipped = res?.data?.skipped?.length ?? 0;
     if (skipped > 0) {
       ui.notify(
-        `ສ້າງສຳເລັດ ${res.data.created.length} ຊັ້ນ. ຂ້າມ ${skipped} ຊັ້ນ (ມີວິຊານີ້ຢູ່ແລ້ວ).`,
+        t("subjects-created-skipped", {
+          created: res.data.created.length,
+          skipped,
+        }),
         "warning"
       );
     } else {
-      ui.notify(t("saved") || "Saved successfully", "success");
+      ui.notify(t("saved-successfully"), "success");
     }
     router.push("/subjects");
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
-      error.response?.data?.message || "Failed to create subject.";
+      error.response?.data?.message || t("failed-to-create-subject");
   } finally {
     loading.value = false;
   }

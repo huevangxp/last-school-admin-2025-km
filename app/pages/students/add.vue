@@ -364,8 +364,8 @@ const form = ref({
 });
 
 const genderOptions = [
-  { title: "Male", value: "male" },
-  { title: "Female", value: "female" },
+  { title: t("gender-male"), value: "male" },
+  { title: t("gender-female"), value: "female" },
 ];
 
 const rules = {
@@ -457,7 +457,7 @@ const save = async () => {
   } catch (error: any) {
     console.error(error);
     errorMessage.value =
-      error.response?.data?.message || "Failed to create student.";
+      error.response?.data?.message || t("failed-create-student");
   } finally {
     loading.value = false;
   }
