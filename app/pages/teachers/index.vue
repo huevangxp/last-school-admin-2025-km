@@ -732,7 +732,7 @@ const saveEdit = async () => {
     editDialog.value = false;
     await teacherStore.fetchTeachers(100, 1);
   } catch (error: any) {
-    editError.value = error.response?.data?.message || "Failed to update.";
+    editError.value = error.response?.data?.message || t("failed-update");
   } finally {
     saving.value = false;
   }

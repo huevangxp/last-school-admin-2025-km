@@ -11,8 +11,8 @@
           <v-icon color="teal-darken-1" size="22">mdi-sitemap-outline</v-icon>
         </v-avatar>
         <div>
-          <div class="text-title">Organization Chart</div>
-          <div class="text-detail">Faculty hierarchy & reporting structure</div>
+          <div class="text-title">{{ t("organization-chart") }}</div>
+          <div class="text-detail">{{ t("faculty-hierarchy-desc") }}</div>
         </div>
       </div>
 
