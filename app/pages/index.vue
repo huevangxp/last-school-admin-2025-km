@@ -456,7 +456,6 @@ const activities = computed(() =>
 
 /* Intelligence Cards */
 .intelligence-card {
-  border-radius: 10px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
@@ -480,7 +479,6 @@ const activities = computed(() =>
 .status-dot {
   width: 6px;
   height: 6px;
-  border-radius: 50%;
   margin-right: 8px;
 }
 
