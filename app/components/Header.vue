@@ -119,7 +119,7 @@
           class="mr-4"
         ></v-btn>
 
-        <div class="d-none d-sm-flex align-center">
+        <div class="d-none d-sm-flex align-center ga-2">
           <v-chip
             size="small"
             variant="flat"
@@ -127,6 +127,16 @@
             class="text-primary font-weight-bold px-3"
           >
             v2.4.0
+          </v-chip>
+          <v-chip
+            v-if="classroomStore.latestAcademicYear"
+            size="small"
+            variant="flat"
+            color="teal-lighten-5"
+            class="text-teal-darken-2 font-weight-bold px-3"
+            prepend-icon="mdi-calendar-check"
+          >
+            {{ classroomStore.latestAcademicYear.title }}
           </v-chip>
         </div>
       </div>
