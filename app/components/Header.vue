@@ -91,13 +91,13 @@
 
       </v-navigation-drawer>
     </ClientOnly>
-    <v-app-bar elevation="0" height="72" class="px-6 glass-header">
+    <v-app-bar elevation="0" height="72" color="primary" class="px-6 glass-header">
       <div class="d-flex align-center">
         <v-btn
-          icon="mdi-menu-variant"
+          :icon="rail ? 'mdi-menu' : 'mdi-menu-open'"
           variant="text"
-          color="slate-700"
-          @click="drawer = !drawer"
+          color="white"
+          @click="toggleSidebar"
           class="mr-4"
         ></v-btn>
 
