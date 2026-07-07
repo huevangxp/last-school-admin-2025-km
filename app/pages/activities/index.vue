@@ -8,7 +8,7 @@
     >
       <div>
         <div class="text-title mb-1">{{ $t("activities") }}</div>
-        <div class="text-detail">Manage school activities & events.</div>
+        <div class="text-detail">{{ $t("manage-activities-subtitle") }}</div>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
@@ -82,7 +82,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No activities yet.</div>
+          <div class="text-detail py-8 text-center">{{ $t("no-activities-yet") }}</div>
         </template>
 
         <template v-slot:item.title="{ item }">

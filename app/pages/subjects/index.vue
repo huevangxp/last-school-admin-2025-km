@@ -100,11 +100,11 @@
           >
             <v-btn value="all" size="small" class="text-none">
               <v-icon start size="16">mdi-format-list-bulleted</v-icon>
-              ທັງໝົດ
+              {{ $t("all") }}
             </v-btn>
             <v-btn value="grouped" size="small" class="text-none">
               <v-icon start size="16">mdi-book-multiple-outline</v-icon>
-              ຕາມວິຊາ
+              {{ $t("by-subject") }}
             </v-btn>
           </v-btn-toggle>
         </div>

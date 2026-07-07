@@ -269,7 +269,7 @@ const promote = async () => {
   } catch (error: any) {
     messageType.value = "error";
     message.value =
-      error.response?.data?.message || "Failed to promote students.";
+      error.response?.data?.message || t("failed-to-promote-students");
   } finally {
     promoting.value = false;
   }

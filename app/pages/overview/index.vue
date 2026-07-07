@@ -220,7 +220,7 @@ const rows = computed(() =>
     name: c.classroom_name,
     code: c.classroom_code,
     grade: c.gradeLevel?.grade_level_name || "—",
-    teacher: c.homeroomTeacher?.full_name || "Unassigned",
+    teacher: c.homeroomTeacher?.full_name || t("unassigned"),
     students: countByClass.value[c.id] || 0,
   }))
 );

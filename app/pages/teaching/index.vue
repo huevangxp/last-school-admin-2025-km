@@ -290,25 +290,25 @@ const rows = computed(() =>
 // Summary tiles across all assignments for the year (unaffected by the filter).
 const stats = computed(() => [
   {
-    label: "Assignments",
+    label: t("assignments"),
     value: rows.value.length,
     icon: "mdi-clipboard-account-outline",
     color: "indigo",
   },
   {
-    label: "Classes Covered",
+    label: t("classes-covered"),
     value: new Set(rows.value.map((r) => r.classroom_id)).size,
     icon: "mdi-google-classroom",
     color: "blue",
   },
   {
-    label: "Subjects Assigned",
+    label: t("subjects-assigned"),
     value: new Set(rows.value.map((r) => r.subject_id)).size,
     icon: "mdi-book-open-variant",
     color: "teal",
   },
   {
-    label: "Teachers Teaching",
+    label: t("teachers-teaching"),
     value: new Set(rows.value.map((r) => r.teacher_id)).size,
     icon: "mdi-account-tie-outline",
     color: "purple",

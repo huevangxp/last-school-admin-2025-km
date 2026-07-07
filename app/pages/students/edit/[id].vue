@@ -386,8 +386,8 @@ const form = ref({
 });
 
 const genderOptions = [
-  { title: "Male", value: "male" },
-  { title: "Female", value: "female" },
+  { title: t("gender-male"), value: "male" },
+  { title: t("gender-female"), value: "female" },
 ];
 
 const rules = {
