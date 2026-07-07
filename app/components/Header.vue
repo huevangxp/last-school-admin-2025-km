@@ -108,7 +108,7 @@
         <div class="d-none d-sm-flex align-center ga-2">
           <v-card
             size="small"
-            variant="flat"
+ 
             color="primary-lighten-5"
             class="text-primary font-weight-bold px-3"
           >
