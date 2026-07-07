@@ -39,7 +39,7 @@
         {{ node.department }}
       </v-chip>
 
-      <v-chip
+      <!-- <v-chip
         v-if="!node.isRoot && node.status"
         :color="node.status === 'Active' ? 'success' : 'grey'"
         size="x-small"
@@ -47,7 +47,7 @@
         class="mt-1 font-weight-black text-uppercase"
       >
         {{ node.status }}
-      </v-chip>
+      </v-chip> -->
     </div>
 
     <ul v-if="node.children && node.children.length">
