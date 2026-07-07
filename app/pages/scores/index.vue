@@ -40,7 +40,7 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -54,7 +54,7 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -66,7 +66,7 @@
             :items="semesterOptions"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -78,7 +78,7 @@
             :items="monthOptions"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -92,7 +92,7 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="lg"
+            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -142,7 +142,7 @@
                   variant="outlined"
                   density="compact"
                   hide-details
-                  rounded="lg"
+                  rounded="0"
                   style="max-width: 120px; margin: 0 auto"
                 ></v-text-field>
               </td>

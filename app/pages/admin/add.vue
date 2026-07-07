@@ -16,7 +16,7 @@
               <v-avatar
                 size="160"
                 color="slate-50"
-                class="border-dashed rounded-xl overflow-hidden"
+                class="border-dashed rounded-0 overflow-hidden"
               >
                 <v-img v-if="previewImage" :src="previewImage" cover></v-img>
                 <v-icon v-else size="48" color="slate-300"
@@ -51,7 +51,7 @@
               <v-avatar
                 color="amber-lighten-5"
                 size="36"
-                class="mr-3 rounded-lg"
+                class="mr-3 rounded-0"
               >
                 <v-icon color="amber-darken-2" size="18"
                   >mdi-shield-account-outline</v-icon
@@ -72,7 +72,7 @@
               placeholder="Select role"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               class="premium-input mb-4"
               hide-details
             ></v-select>
@@ -85,7 +85,7 @@
               :items="statusOptions"
               variant="outlined"
               density="compact"
-              rounded="lg"
+              rounded="0"
               class="premium-input"
               hide-details
             ></v-select>
@@ -99,7 +99,7 @@
               <v-avatar
                 color="primary-lighten-5"
                 size="36"
-                class="mr-3 rounded-lg"
+                class="mr-3 rounded-0"
               >
                 <v-icon color="primary" size="18"
                   >mdi-account-details-outline</v-icon
@@ -118,7 +118,7 @@
                   placeholder="Enter full name"
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-text-field>
@@ -132,7 +132,7 @@
                   placeholder="Enter username"
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-text-field>
@@ -147,7 +147,7 @@
                   placeholder="Select gender"
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-select>
@@ -161,7 +161,7 @@
                   placeholder="+856 20 ..."
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-text-field>
@@ -174,7 +174,7 @@
               <v-avatar
                 color="indigo-lighten-5"
                 size="36"
-                class="mr-3 rounded-lg"
+                class="mr-3 rounded-0"
               >
                 <v-icon color="indigo-darken-1" size="18"
                   >mdi-lock-outline</v-icon
@@ -194,7 +194,7 @@
                   placeholder="••••••••"
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-text-field>
@@ -209,7 +209,7 @@
                   placeholder="••••••••"
                   variant="outlined"
                   density="compact"
-                  rounded="lg"
+                  rounded="0"
                   class="premium-input"
                   hide-details
                 ></v-text-field>
