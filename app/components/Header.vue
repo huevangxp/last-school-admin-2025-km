@@ -352,9 +352,6 @@ const isEmpty = (v?: string | null) =>
 const userAvatar = computed(() =>
   isEmpty(avatarCookie.value) ? "" : avatarCookie.value
 );
-const userInitial = computed(() =>
-  (username.value || "A").charAt(0).toUpperCase()
-);
 
 const logoutDialog = ref(false);
 const drawer = ref(true);
