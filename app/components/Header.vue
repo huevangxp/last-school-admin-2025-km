@@ -46,7 +46,7 @@
                 <v-list-item
                   v-bind="props"
                   class="mb-1 modern-nav-section"
-                  rounded="lg"
+                  rounded="0"
                 >
                   <template v-slot:prepend>
                     <v-icon size="20" class="mr-4">{{ section.icon }}</v-icon>
@@ -65,7 +65,7 @@
                 :key="item.title"
                 :to="item.to"
                 class="mb-1 modern-nav-item modern-nav-child"
-                rounded="lg"
+                rounded="0"
                 active-class="active-item"
                 :exact="item.to === '/'"
               >
