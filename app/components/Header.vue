@@ -444,6 +444,7 @@ const allMenuSections: MenuSection[] = [
     items: [
       { title: "news", icon: "mdi-newspaper-variant-outline", to: "/news" },
       { title: "activities", icon: "mdi-calendar-star", to: "/activities" },
+      { title: "gallery", icon: "mdi-image-multiple-outline", to: "/gallery" },
       { title: "new_academic_year", icon: "mdi-calendar-plus", to: "/academic/add" },
     ],
   },
