@@ -273,14 +273,14 @@
           </v-col>
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
-              >ຫ້ອງຮຽນ / CLASSROOM (optional)</label
+              >{{ t("classroom-optional") }}</label
             >
             <v-select
               v-model="form.classId"
               :items="classOptions"
               :disabled="!selectedGradeLevel"
               :loading="loadingClassrooms"
-              placeholder="ເລືອກຫ້ອງຮຽນ"
+              :placeholder="t('select-classroom')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -289,8 +289,8 @@
               color="primary"
               :no-data-text="
                 selectedGradeLevel
-                  ? 'No classrooms for this grade level'
-                  : 'ເລືອກຊັ້ນຮຽນກ່ອນ'
+                  ? t('no-classrooms-for-grade')
+                  : t('select-grade-first')
               "
             ></v-select>
           </v-col>
