@@ -203,9 +203,12 @@ const save = async () => {
     // Warn if some grades were skipped because the title already existed.
     const skipped = res?.data?.skipped?.length ?? 0;
     if (skipped > 0) {
-      alert(
-        `ສ້າງສຳເລັດ ${res.data.created.length} ຊັ້ນ. ຂ້າມ ${skipped} ຊັ້ນ (ມີວິຊານີ້ຢູ່ແລ້ວ).`
+      ui.notify(
+        `ສ້າງສຳເລັດ ${res.data.created.length} ຊັ້ນ. ຂ້າມ ${skipped} ຊັ້ນ (ມີວິຊານີ້ຢູ່ແລ້ວ).`,
+        "warning"
       );
+    } else {
+      ui.notify(t("saved") || "Saved successfully", "success");
     }
     router.push("/subjects");
   } catch (error: any) {
