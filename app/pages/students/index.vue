@@ -484,11 +484,11 @@ const requestToggle = (item: any) => {
   const closing = item.statusRaw === "active";
   confirm.value = {
     show: true,
-    title: closing ? "ປິດບັນຊີ? / Close account?" : "ເປີດບັນຊີ? / Open account?",
+    title: closing ? t("close-account-title") : t("open-account-title"),
     message: closing
-      ? `"${item.name}" ຈະຖືກປິດ (inactive).`
-      : `"${item.name}" ຈະຖືກເປີດຄືນ (active).`,
-    confirmText: closing ? "ປິດ / Close" : "ເປີດ / Open",
+      ? `"${item.name}" ${t("account-will-close")}`
+      : `"${item.name}" ${t("account-will-open")}`,
+    confirmText: closing ? t("closed") : t("open"),
     color: closing ? "warning" : "success",
     icon: closing ? "mdi-account-cancel-outline" : "mdi-account-check-outline",
     loading: false,
