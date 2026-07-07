@@ -54,7 +54,7 @@
             </div>
             <v-avatar
               color="blue-lighten-5"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -84,7 +84,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
       </div>
 
@@ -97,7 +97,7 @@
         hover
       >
         <template v-slot:item.id="{ index }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded">
+          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
             {{ offset + index + 1 }}
           </span>
         </template>
@@ -164,7 +164,7 @@
                 color="primary"
                 size="x-small"
                 variant="flat"
-                class="font-weight-black rounded-md"
+                class="font-weight-black rounded-0"
                 style="min-width: 24px; height: 24px"
               >
                 {{ Math.floor(offset / limit) + 1 }}
