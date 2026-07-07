@@ -369,7 +369,7 @@
             <v-combobox
               v-model="editForm.position"
               :items="positionOptions"
-              placeholder="ເລືອກ ຫຼື ພິມ"
+              :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
               rounded="0"

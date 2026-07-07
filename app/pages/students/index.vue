@@ -470,9 +470,9 @@ const confirm = ref({
 const requestDelete = (item: any) => {
   confirm.value = {
     show: true,
-    title: "ລຶບນັກຮຽນ? / Delete student?",
+    title: t("delete-student-title"),
     message: `"${item.name}" ${t("are_you_sure_delete")}`,
-    confirmText: "ລຶບ / Delete",
+    confirmText: t("delete"),
     color: "error",
     icon: "mdi-trash-can-outline",
     loading: false,
