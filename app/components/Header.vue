@@ -27,11 +27,11 @@
           </div>
           <div v-if="!rail" class="brand-text">
             <div
-              class="text-subtitle-1 font-weight-black brand-title tracking-tight line-height-1"
+              class="text-subtitle-1 font-weight-black text-high-emphasis tracking-tight line-height-1"
             >
               {{ t("schoolmanagement") }}
             </div>
-            <div class="text-caption brand-subtitle font-weight-bold">
+            <div class="text-caption text-medium-emphasis font-weight-bold">
               {{ t("management") }}
             </div>
           </div>
