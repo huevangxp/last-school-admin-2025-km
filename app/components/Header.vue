@@ -410,7 +410,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Faculty",
+    label: "faculty",
     icon: "mdi-account-tie-outline",
     adminOnly: true,
     items: [
@@ -419,7 +419,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Configuration",
+    label: "configuration",
     icon: "mdi-tune-variant",
     adminOnly: true,
     items: [
@@ -428,7 +428,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Manage Website",
+    label: "manage_website",
     icon: "mdi-web",
     adminOnly: true,
     items: [
@@ -438,7 +438,7 @@ const allMenuSections: MenuSection[] = [
     ],
   },
   {
-    label: "Administration",
+    label: "administration",
     icon: "mdi-shield-account-outline",
     items: [
       { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
