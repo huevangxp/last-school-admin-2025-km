@@ -466,6 +466,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
+
+// Managing teachers (list / edit / delete) is admin-only; teachers are sent to
+// the read-only org chart instead.
+definePageMeta({ requiresAdmin: true });
 import {
   positionOptions,
   departmentOptions,
