@@ -329,10 +329,10 @@ const classOptions = computed(() => [
 ]);
 
 const statusOptions = [
-  { title: "ທຸກສະຖານະ / All", value: null },
-  { title: "Active", value: "active" },
-  { title: "Inactive", value: "inactive" },
-  { title: "Block", value: "block" },
+  { title: t("all-status"), value: null },
+  { title: t("status-active"), value: "active" },
+  { title: t("status-inactive"), value: "inactive" },
+  { title: t("status-block"), value: "block" },
 ];
 
 const capitalize = (s?: string) =>

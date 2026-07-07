@@ -11,7 +11,7 @@
           {{ t("management") }} {{ t("teachers") }}
         </div>
         <div class="text-detail">
-          Manage your faculty members and their assignments.
+          {{ t("manage-faculty-desc") }}
         </div>
       </div>
 
@@ -24,7 +24,7 @@
           to="/teachers/organization"
         >
           <v-icon icon="mdi-sitemap-outline" start size="18"></v-icon>
-          Organization
+          {{ t("organization") }}
         </v-btn>
 
         <v-btn
@@ -154,7 +154,7 @@
         hover
       >
         <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">No teachers found.</div>
+          <div class="text-detail py-8 text-center">{{ t("no-teachers-found") }}</div>
         </template>
 
         <!-- Teacher Name with Image Slot -->
