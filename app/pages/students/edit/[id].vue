@@ -13,7 +13,7 @@
           </v-avatar>
           <div>
             <h2 class="text-title">{{ t("information") }}</h2>
-            <p class="text-detail">Student identity & login</p>
+            <p class="text-detail">{{ t("student-identity-login") }}</p>
           </div>
         </div>
 
@@ -26,7 +26,7 @@
             >
             <v-text-field
               v-model="form.firstName"
-              placeholder="e.g. ສົມສະໜຸກ"
+              :placeholder="t('eg-firstname')"
               variant="outlined"
               density="compact"
               rounded="0"

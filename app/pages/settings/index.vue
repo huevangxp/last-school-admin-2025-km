@@ -223,7 +223,7 @@
                 </div>
               </template>
               <v-list-item-title class="text-title-small"
-                >Change Password</v-list-item-title
+                >{{ $t("change-password") }}</v-list-item-title
               >
               <template v-slot:append>
                 <v-btn

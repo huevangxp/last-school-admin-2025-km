@@ -69,7 +69,7 @@
             <v-select
               v-model="form.role"
               :items="roleOptions"
-              placeholder="Select role"
+              :placeholder="t('select-role')"
               variant="outlined"
               density="compact"
               rounded="0"

@@ -17,7 +17,7 @@
         <v-row class="ga-y-2">
           <v-col cols="12">
             <label class="text-detail-tiny mb-2 d-block"
-              >CLASSIFICATION NAME</label
+              >{{ $t("classification-name") }}</label
             >
             <v-text-field
               v-model="form.title"

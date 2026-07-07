@@ -124,7 +124,7 @@
             height="40"
             type="submit"
           >
-            Confirm Transaction
+            {{ $t("confirm-transaction") }}
           </v-btn>
         </div>
       </v-form>
