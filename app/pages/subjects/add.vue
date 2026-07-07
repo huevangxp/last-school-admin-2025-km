@@ -35,7 +35,7 @@
 
           <!-- Subject Code -->
           <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">SUBJECT CODE *</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ $t("subject-code") }} *</label>
             <v-text-field
               v-model="form.code"
               placeholder="MATH-101"

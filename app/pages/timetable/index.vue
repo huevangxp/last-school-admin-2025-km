@@ -83,8 +83,7 @@
         rounded="0"
         class="mb-4"
       >
-        ຍັງບໍ່ມີການມອບໝາຍການສອນສຳລັບຫ້ອງນີ້ · No teaching assignments for this
-        class yet.
+        {{ t("no-assignments-for-class") }}
         <NuxtLink to="/teaching" class="font-weight-bold text-primary ml-1">
           {{ t("teaching_assignments") }} →
         </NuxtLink>
