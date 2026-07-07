@@ -207,7 +207,7 @@
               item.status === 'ຊຳລະແລ້ວ'
                 ? 'success'
                 : item.status === 'ຄ້າງຊຳລະ'
-                  ? 'warning'
+                  ? 'red'
                   : 'grey'
             "
             size="x-small"
