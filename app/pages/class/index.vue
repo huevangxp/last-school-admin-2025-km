@@ -99,32 +99,20 @@
 
         <div class="d-flex gap-2 align-center flex-wrap">
           <v-select
-            :items="[
-              'All Grades',
-              'Grade 9',
-              'Grade 10',
-              'Grade 11',
-              'Grade 12',
-            ]"
+            v-model="selectedGrade"
+            :items="gradeFilterOptions"
+            item-title="label"
+            item-value="value"
             variant="outlined"
             density="compact"
             hide-details
             rounded="lg"
-            style="min-width: 130px"
+            style="min-width: 160px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
           ></v-select>
-
-          <v-btn
-            variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border"
-            height="32"
-            width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
         </div>
       </div>
 
