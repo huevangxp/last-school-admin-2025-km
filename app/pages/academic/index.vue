@@ -368,12 +368,18 @@ const saveEdit = async () => {
 };
 
 const removeAcademic = async (item: any) => {
-  if (!confirm(t("are_you_sure_delete"))) return;
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
   try {
     await academicStore.deleteAcademic(item.id);
     await fetchAcademics();
+    ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    console.error(error);
+    ui.notify(t("are_you_sure_delete") ? "Failed to delete." : "", "error");
   }
 };
 
