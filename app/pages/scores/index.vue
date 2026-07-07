@@ -2,7 +2,7 @@
   <v-container fluid class="pa-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
-    <!-- Header Section -->
+    <!-- Header -->
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
@@ -10,361 +10,314 @@
         <div class="text-title mb-1">
           {{ $t("management") }} {{ $t("scores") }}
         </div>
-        <div class="text-detail">Manage student grades and performance.</div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
-        <v-btn
-          variant="outlined"
-          color="success"
-          class="modern-action-btn secondary border"
-          height="32"
-          prepend-icon="mdi-file-excel"
-        >
-          Excel
-        </v-btn>
-
-        <v-btn
-          variant="outlined"
-          color="error"
-          class="modern-action-btn secondary border"
-          height="32"
-          prepend-icon="mdi-file-pdf-box"
-        >
-          PDF
-        </v-btn>
-
-        <v-btn
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="32"
-          prepend-icon="mdi-plus"
-        >
-          {{ $t("add") }}
-        </v-btn>
-      </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in scoreStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              rounded="lg"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Main Content Card -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Filter Section -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="$t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 280px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-          rounded="lg"
-        ></v-text-field>
-
-        <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            v-model="selectedYear"
-            :items="academicYears"
-            placeholder="Year"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 110px"
-            class="cream-select text-detail"
-            color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-select
-            v-model="selectedClass"
-            :items="classes"
-            placeholder="Class"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="lg"
-            style="min-width: 110px"
-            class="cream-select text-detail"
-            color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-btn
-            variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border"
-            height="32"
-            width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
+        <div class="text-detail">
+          ອາຈານເລືອກຫ້ອງ ແລະ ວິຊາ ແລ້ວປ້ອນຄະແນນນັກຮຽນ · Enter student scores.
         </div>
       </div>
 
-      <!-- Score Table -->
-      <div class="table-wrapper">
+      <v-btn
+        color="primary"
+        class="modern-action-btn primary elevation-4"
+        height="36"
+        :loading="scoreStore.saving"
+        :disabled="!canSave"
+        @click="saveAll"
+      >
+        <v-icon icon="mdi-content-save-outline" start size="18"></v-icon>
+        {{ $t("save") }}
+      </v-btn>
+    </div>
+
+    <!-- Filters -->
+    <v-card elevation="0" class="intelligence-card pa-4 mb-6">
+      <v-row dense>
+        <v-col cols="12" sm="6" md="3">
+          <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
+          <v-select
+            v-model="selectedClassId"
+            :items="classOptions"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="compact"
+            rounded="lg"
+            hide-details
+            color="primary"
+          ></v-select>
+        </v-col>
+        <v-col cols="12" sm="6" md="3">
+          <label class="text-detail-tiny mb-1 d-block">{{ t("subject") }}</label>
+          <v-select
+            v-model="selectedSubjectId"
+            :items="subjectOptions"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="compact"
+            rounded="lg"
+            hide-details
+            color="primary"
+          ></v-select>
+        </v-col>
+        <v-col cols="6" sm="4" md="2">
+          <label class="text-detail-tiny mb-1 d-block">{{ t("semester") }}</label>
+          <v-select
+            v-model="selectedSemester"
+            :items="semesterOptions"
+            variant="outlined"
+            density="compact"
+            rounded="lg"
+            hide-details
+            color="primary"
+          ></v-select>
+        </v-col>
+        <v-col cols="6" sm="4" md="2">
+          <label class="text-detail-tiny mb-1 d-block">{{ t("month") }}</label>
+          <v-select
+            v-model="selectedMonth"
+            :items="monthOptions"
+            variant="outlined"
+            density="compact"
+            rounded="lg"
+            hide-details
+            color="primary"
+          ></v-select>
+        </v-col>
+        <v-col cols="12" sm="4" md="2">
+          <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
+          <v-select
+            v-model="selectedTeacherId"
+            :items="teacherOptions"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="compact"
+            rounded="lg"
+            hide-details
+            color="primary"
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <v-alert
+      v-if="saveMsg"
+      :type="saveMsgType"
+      variant="tonal"
+      density="compact"
+      class="mb-4"
+      >{{ saveMsg }}</v-alert
+    >
+
+    <!-- Score entry grid -->
+    <v-card elevation="0" class="intelligence-card pa-4">
+      <div v-if="!ready" class="text-detail text-center py-10">
+        ເລືອກຫ້ອງ, ວິຊາ ແລະ ອາຈານ · Select class, subject and teacher to begin.
+      </div>
+
+      <div v-else-if="enrollmentStore.loading" class="py-10 text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </div>
+
+      <div v-else-if="!rows.length" class="text-detail text-center py-10">
+        ບໍ່ມີນັກຮຽນໃນຫ້ອງນີ້ · No students enrolled in this class/year.
+      </div>
+
+      <div v-else class="table-wrapper">
         <table class="score-table">
           <thead>
             <tr>
               <th class="col-no text-detail-tiny">NO.</th>
-              <th class="col-name text-detail-tiny text-left">STUDENT NAME</th>
-              <th
-                class="col-score text-detail-tiny"
-                v-for="subj in subjects"
-                :key="subj"
-              >
-                {{ subj }}
+              <th class="col-name text-detail-tiny text-left">
+                {{ t("students") }}
               </th>
-              <th class="col-total text-detail-tiny">TOTAL</th>
-              <th class="col-rank text-detail-tiny">RANK</th>
+              <th class="col-score text-detail-tiny">
+                {{ t("scores") }} (0–100)
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(student, index) in students"
-              :key="index"
-              class="table-row"
-            >
-              <td class="text-center text-detail-tiny">
-                {{ index + 1 }}
-              </td>
+            <tr v-for="(row, index) in rows" :key="row.student_id" class="table-row">
+              <td class="text-center text-detail-tiny">{{ index + 1 }}</td>
               <td class="text-left px-4 text-detail font-weight-black">
-                {{ student.name }}
+                {{ row.name }}
               </td>
-              <td
-                class="text-center score-cell text-detail"
-                v-for="n in 4"
-                :key="n"
-              >
-                {{
-                  n === 1
-                    ? student.lao
-                    : n === 2
-                      ? student.eng
-                      : n === 3
-                        ? student.math
-                        : student.science
-                }}
-              </td>
-              <td
-                class="text-center score-cell text-detail"
-                v-for="n in subjects.length - 4"
-                :key="'empty-' + n"
-              >
-                -
-              </td>
-              <td
-                class="text-center font-weight-black total-cell text-detail text-primary"
-              >
-                {{ student.total }}
-              </td>
-              <td class="text-center rank-cell">
-                <v-chip
-                  size="x-small"
-                  :color="getRankColor(index)"
-                  variant="flat"
-                  class="font-weight-black"
-                >
-                  {{ index + 1 }}
-                </v-chip>
+              <td class="text-center score-cell">
+                <v-text-field
+                  v-model.number="row.score"
+                  type="number"
+                  min="0"
+                  max="100"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                  rounded="lg"
+                  style="max-width: 120px; margin: 0 auto"
+                ></v-text-field>
               </td>
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <!-- Enhanced Footer Signatures -->
-      <div class="signature-section mt-8 pa-4 rounded-lg">
-        <div class="d-flex justify-space-between">
-          <div class="text-center">
-            <div class="text-detail-tiny mb-6 opacity-60">
-              COURSE INSTRUCTOR
-            </div>
-            <div class="text-title-small">ປຕ ບຸນຕາ ແຄນສິງວິ</div>
-          </div>
-          <div class="text-center">
-            <div class="text-detail-tiny mb-6 opacity-60">SIGNATURE</div>
-            <div class="signature-line"></div>
-          </div>
-        </div>
       </div>
     </v-card>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
+import { useSubjectStore } from "~/stores/apiSubject";
+import { useTeacherStore } from "~/stores/apiTeacher";
+import { useEnrollmentStore } from "~/stores/apiEnrollment";
+import { useScoreStore } from "~/stores/apiScore";
+
 const { t } = useI18n();
-
 const classroomStore = useClassroomStore();
-
-const search = ref("");
-const selectedYear = ref("");
-const selectedClass = ref("ມ1/1");
-
-// Real academic years, defaulting the filter to the latest (current) one.
-const academicYears = computed(() =>
-  classroomStore.academicYears.map((y: any) => y.title)
-);
-
-onMounted(async () => {
-  await classroomStore.fetchAcademicYears();
-  selectedYear.value =
-    classroomStore.latestAcademicYear?.title || selectedYear.value;
-});
-const classes = ["ມ1/1", "ມ1/2", "ມ2/1", "ມ2/2", "ມ3/1", "ມ3/2"];
-const subjects = ["MATH", "PHYS", "CHEM", "BIO", "LAO", "ENG", "HIST", "GEO"];
+const subjectStore = useSubjectStore();
+const teacherStore = useTeacherStore();
+const enrollmentStore = useEnrollmentStore();
+const scoreStore = useScoreStore();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("scores"), disabled: true, to: "/scores" },
 ];
 
-const scoreStats = [
-  {
-    label: "Total Students",
-    value: "148",
-    icon: "mdi-account-group",
-    color: "blue",
-  },
-  {
-    label: "Average Score",
-    value: "83.2",
-    icon: "mdi-chart-line",
-    color: "green",
-  },
-  { label: "Pass Rate", value: "92%", icon: "mdi-trophy", color: "purple" },
-  {
-    label: "Pending",
-    value: "3",
-    icon: "mdi-clock-time-four-outline",
-    color: "orange",
-  },
-];
+const selectedClassId = ref("");
+const selectedSubjectId = ref("");
+const selectedSemester = ref("1");
+const selectedMonth = ref("ເດືອນ 1");
+const selectedTeacherId = ref("");
 
-const students = ref([
-  {
-    name: "ນາງ ຄຳພອນ ແກ້ວມະນີ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 87,
-  },
-  {
-    name: "ນາງ ສີດາ ເພັດສະຫັວນ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 89,
-  },
-  {
-    name: "ນາງ ເກດາ ແກ້ວພາວົງ",
-    lao: 9,
-    eng: 16,
-    math: 13,
-    science: 15,
-    total: 66,
-  },
-  {
-    name: "ນາງ ເມສາ ຈັນທອງສາ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 87,
-  },
-  {
-    name: "ນາງ ບົວໄຂ ໄຊສົງຄາມ",
-    lao: 9,
-    eng: 16,
-    math: 13,
-    science: 15,
-    total: 79,
-  },
-  {
-    name: "ນາງ ວັນນະຫົງ ພາລີວົງ",
-    lao: 9,
-    eng: 16,
-    math: 13,
-    science: 15,
-    total: 82,
-  },
-  {
-    name: "ນາງ ສຸດາວັນ ແກ້ວພູວົງ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 89,
-  },
-  {
-    name: "ນາງ ລັດສະໝີ ແສງມະນີ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 91,
-  },
-  {
-    name: "ນາງ ລັດຕະນາ ທິບພະສອນ",
-    lao: 8,
-    eng: 15,
-    math: 13,
-    science: 15,
-    total: 78,
-  },
-  {
-    name: "ນາງ ແກ່ນຄຳ ສີຫາວົງ",
-    lao: 10,
-    eng: 18,
-    math: 13,
-    science: 15,
-    total: 84,
-  },
-]);
+const semesterOptions = ["1", "2"];
+const monthOptions = Array.from({ length: 12 }, (_, i) => `ເດືອນ ${i + 1}`);
 
-const getRankColor = (index: number) => {
-  if (index === 0) return "amber-darken-2";
-  if (index === 1) return "grey-darken-1";
-  if (index === 2) return "brown-darken-1";
-  return "blue-grey-lighten-2";
+onMounted(async () => {
+  await Promise.all([
+    classroomStore.fetchClassrooms(200),
+    classroomStore.fetchAcademicYears(),
+    subjectStore.fetchSubjects(),
+    teacherStore.fetchTeachers(200, 1),
+  ]);
+});
+
+const yearId = computed(() => classroomStore.latestAcademicYearId || "");
+
+const classOptions = computed(() =>
+  classroomStore.classrooms.map((c: any) => ({ id: c.id, label: c.classroom_name }))
+);
+
+const selectedClass = computed(() =>
+  classroomStore.classrooms.find((c: any) => c.id === selectedClassId.value)
+);
+
+// Only subjects for this class's grade (falls back to all if grade unknown).
+const subjectOptions = computed(() => {
+  const gradeId = selectedClass.value?.grade_level_id;
+  const list = gradeId
+    ? subjectStore.subjects.filter((s: any) => s.grade_id === gradeId)
+    : subjectStore.subjects;
+  return list.map((s: any) => ({ id: s.id, label: s.subject_name }));
+});
+
+const teacherOptions = computed(() =>
+  teacherStore.teachers.map((tc: any) => ({
+    id: tc.id,
+    label: tc.full_name || tc.username,
+  }))
+);
+
+// Default the teacher to the class's homeroom teacher when a class is chosen.
+watch(selectedClassId, () => {
+  const hr = selectedClass.value?.homeroom_teacher_id;
+  if (hr) selectedTeacherId.value = hr;
+  // Reset subject if it no longer belongs to the new class's grade.
+  if (
+    selectedSubjectId.value &&
+    !subjectOptions.value.some((s) => s.id === selectedSubjectId.value)
+  ) {
+    selectedSubjectId.value = "";
+  }
+});
+
+const ready = computed(
+  () =>
+    !!selectedClassId.value &&
+    !!selectedSubjectId.value &&
+    !!selectedTeacherId.value &&
+    !!yearId.value
+);
+
+const rows = ref<any[]>([]);
+
+// (Re)build the grid: students of the class, prefilled with any saved score
+// for the chosen subject / semester / month.
+const buildRows = async () => {
+  if (!ready.value) {
+    rows.value = [];
+    return;
+  }
+  await Promise.all([
+    enrollmentStore.fetchEnrollments({
+      class_id: selectedClassId.value,
+      academic_year_id: yearId.value,
+      status: "active",
+    }),
+    scoreStore.fetchScores({
+      academic_year_id: yearId.value,
+      subject_id: selectedSubjectId.value,
+      semester: selectedSemester.value,
+      month: selectedMonth.value,
+    }),
+  ]);
+
+  const scoreByStudent: Record<string, any> = {};
+  scoreStore.scores.forEach((s: any) => (scoreByStudent[s.student_id] = s));
+
+  rows.value = enrollmentStore.enrollments
+    .filter((e: any) => e.tb_student)
+    .map((e: any) => {
+      const s = e.tb_student;
+      const existing = scoreByStudent[s.id];
+      return {
+        enrollment_id: e.id,
+        student_id: s.id,
+        name: `${s.first_name} ${s.last_name}`,
+        score: existing ? Number(existing.score) : 0,
+      };
+    });
+};
+
+watch(
+  [ready, selectedClassId, selectedSubjectId, selectedSemester, selectedMonth],
+  buildRows
+);
+
+const canSave = computed(() => ready.value && rows.value.length > 0);
+
+const saveMsg = ref("");
+const saveMsgType = ref<"success" | "error">("success");
+
+const saveAll = async () => {
+  saveMsg.value = "";
+  try {
+    const payload = rows.value.map((r) => ({
+      enrollment_id: r.enrollment_id,
+      student_id: r.student_id,
+      academic_year_id: yearId.value,
+      teacher_id: selectedTeacherId.value,
+      subject_id: selectedSubjectId.value,
+      semester: selectedSemester.value,
+      month: selectedMonth.value,
+      score: Number(r.score) || 0,
+    }));
+    const res = await scoreStore.bulkUpsertScores(payload);
+    saveMsgType.value = "success";
+    saveMsg.value = res?.message || "Scores saved successfully.";
+  } catch (error: any) {
+    saveMsgType.value = "error";
+    saveMsg.value = error.response?.data?.message || "Failed to save scores.";
+  }
 };
 </script>
 
@@ -373,7 +326,6 @@ const getRankColor = (index: number) => {
   max-width: 1400px;
   margin: 0 auto;
 }
-
 .modern-action-btn {
   border-radius: 8px !important;
   text-transform: none !important;
@@ -381,43 +333,25 @@ const getRankColor = (index: number) => {
   font-size: 12px !important;
   padding: 0 12px !important;
 }
-
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
 }
-
-.metric-card {
-  border-radius: 16px !important;
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.metric-icon-box {
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .intelligence-card {
   border-radius: 16px !important;
   background: white;
   border: 1px solid #f1f5f9;
 }
-
 .table-wrapper {
   overflow-x: auto;
   border-radius: 12px;
   border: 1px solid #f1f5f9;
 }
-
 .score-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
 }
-
 .score-table th {
   padding: 12px;
   border: 1px solid #f1f5f9;
@@ -425,40 +359,18 @@ const getRankColor = (index: number) => {
   color: #64748b;
   height: 48px;
 }
-
 .score-table td {
   padding: 10px;
   border: 1px solid #f1f5f9;
-  height: 52px;
+  height: 56px;
 }
-
 .table-row:hover {
   background-color: #f8fafc !important;
 }
-
-.total-cell {
-  background: #f1f5f9;
+.col-no {
+  width: 64px;
 }
-
-.signature-section {
-  background-color: #f8fafc;
-  border: 1px dashed #e2e8f0;
-}
-
-.signature-line {
-  border-bottom: 2px solid #e2e8f0;
-  width: 160px;
-  margin: 0 auto;
-  height: 32px;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
+.col-score {
+  width: 180px;
 }
 </style>
