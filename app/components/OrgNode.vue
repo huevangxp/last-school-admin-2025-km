@@ -167,6 +167,7 @@ ul::before {
   /* Reserve two lines so short and long names keep cards the same height. */
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   min-height: 31px;
