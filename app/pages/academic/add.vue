@@ -299,7 +299,7 @@ const save = async () => {
 .premium-input :deep(.v-field--focused .v-field__outline__start),
 .premium-input :deep(.v-field--focused .v-field__outline__end),
 .premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: #14b8a6 !important;
+  border-color: #0a3154 !important;
   border-width: 1.5px !important;
 }
 
