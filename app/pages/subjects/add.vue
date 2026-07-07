@@ -75,7 +75,7 @@
               multiple
               chips
               closable-chips
-              placeholder="ເລືອກຊັ້ນຮຽນທີ່ຕ້ອງມີວິຊານີ້ (ມ.1 - ມ.7)"
+              :placeholder="$t('grade-levels-placeholder')"
               variant="outlined"
               density="compact"
               rounded="0"
