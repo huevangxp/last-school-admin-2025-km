@@ -22,9 +22,9 @@
               <v-icon color="blue-darken-2" size="20">mdi-cog-outline</v-icon>
             </v-avatar>
             <div>
-              <h3 class="text-title">General Settings</h3>
+              <h3 class="text-title">{{ $t("general-settings") }}</h3>
               <p class="text-detail-tiny">
-                School information and system settings
+                {{ $t("general-settings-desc") }}
               </p>
             </div>
           </div>
