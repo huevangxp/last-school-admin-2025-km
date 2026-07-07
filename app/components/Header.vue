@@ -443,15 +443,7 @@ const allMenuSections: MenuSection[] = [
       { title: "organization", icon: "mdi-sitemap-outline", to: "/teachers/organization" },
     ],
   },
-  {
-    label: "configuration",
-    icon: "mdi-tune-variant",
-    adminOnly: true,
-    items: [
-      { title: "financial", icon: "mdi-wallet-outline", to: "/financial" },
-      { title: "ethnic_group", icon: "mdi-account-group-outline", to: "/ethnic-group" },
-    ],
-  },
+ 
   {
     label: "manage_website",
     icon: "mdi-web",
