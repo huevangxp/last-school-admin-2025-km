@@ -353,11 +353,7 @@ watch(
 
 const canSave = computed(() => ready.value && rows.value.length > 0);
 
-const saveMsg = ref("");
-const saveMsgType = ref<"success" | "error">("success");
-
 const saveAll = async () => {
-  saveMsg.value = "";
   try {
     const payload = rows.value.map((r) => ({
       enrollment_id: r.enrollment_id,
@@ -370,11 +366,12 @@ const saveAll = async () => {
       score: Number(r.score) || 0,
     }));
     const res = await scoreStore.bulkUpsertScores(payload);
-    saveMsgType.value = "success";
-    saveMsg.value = res?.message || "Scores saved successfully.";
+    ui.notify(res?.message || "Scores saved successfully.", "success");
   } catch (error: any) {
-    saveMsgType.value = "error";
-    saveMsg.value = error.response?.data?.message || "Failed to save scores.";
+    ui.notify(
+      error.response?.data?.message || "Failed to save scores.",
+      "error"
+    );
   }
 };
 </script>
