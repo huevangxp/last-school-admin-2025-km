@@ -167,7 +167,7 @@
             <v-combobox
               v-model="form.department"
               :items="departmentOptions"
-              placeholder="ເລືອກ ຫຼື ພິມ"
+              :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -178,11 +178,11 @@
             ></v-combobox>
           </v-col>
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">LAYER</label>
+            <label class="text-detail-tiny mb-2 d-block">{{ t("layer") }}</label>
             <v-select
               v-model="form.layer"
               :items="layerOptions"
-              placeholder="ເລືອກຊັ້ນ"
+              :placeholder="t('select-layer')"
               variant="outlined"
               density="compact"
               rounded="0"

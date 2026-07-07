@@ -208,7 +208,7 @@
               variant="text"
               size="x-small"
               :color="item.statusRaw === 'active' ? 'warning' : 'success'"
-              :title="item.statusRaw === 'active' ? 'ປິດ (close)' : 'ເປີດ (open)'"
+              :title="item.statusRaw === 'active' ? t('closed') : t('open')"
               @click="requestToggle(item)"
             ></v-btn>
             <v-btn
