@@ -99,17 +99,17 @@
 
             <!-- Layer 3 · Committee -->
             <div class="lband">
-              <div class="layer-tag">ຊັ້ນ 3 · ຄະນะ</div>
+              <div class="layer-tag">ຊັ້ນ 3 · ຄະນະ</div>
               <div class="lrow">
                 <template v-if="committeeRows.length">
                   <div v-for="c in committeeRows" :key="c.id" class="lcard lcard-committee">
                     <div class="lcard-name">{{ nameFor(c.student_id) }}</div>
-                    <div class="lcard-role">ຄະນะ · COMMITTEE</div>
+                    <div class="lcard-role">ຄະນະ · COMMITTEE</div>
                   </div>
                 </template>
                 <div v-else class="lcard lcard-empty">
                   <div class="lcard-name">— ຍັງບໍ່ໄດ້ກຳນົດ —</div>
-                  <div class="lcard-role">ຄະນะ · COMMITTEE</div>
+                  <div class="lcard-role">ຄະນະ · COMMITTEE</div>
                 </div>
               </div>
             </div>
