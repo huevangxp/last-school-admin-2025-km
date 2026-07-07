@@ -295,7 +295,7 @@
         </v-row>
       </v-card>
 
-      <v-card class="d-flex justify-end ga-3 py-4">
+      <v-card class="d-flex justify-end ga-3 py-4 px-6">
         <v-btn
           variant="flat"
           color="grey-lighten-4"
