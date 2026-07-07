@@ -114,5 +114,7 @@
     "saved":"ບັນທຶກສຳເລັດ",
     "semester":"ພາກຮຽນ",
     "month":"ເດືອນ",
-    "teacher":"ອາຈານ"
+    "teacher":"ອາຈານ",
+    "teaching_assignments":"ການມອບໝາຍການສອນ",
+    "score_report":"ລາຍງານຄະແນນ"
 }
