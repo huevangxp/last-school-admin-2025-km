@@ -428,7 +428,7 @@ const doClone = async () => {
   } catch (error: any) {
     cloneOk.value = false;
     cloneMsg.value =
-      error.response?.data?.message || "ກ໊ອບປີ້ບໍ່ສຳເລັດ.";
+      error.response?.data?.message || t("clone-failed");
   } finally {
     cloning.value = false;
   }
@@ -562,7 +562,7 @@ const saveEdit = async () => {
     editDialog.value = false;
     await classroomStore.fetchClassrooms(100);
   } catch (error: any) {
-    editError.value = error.response?.data?.message || "Failed to update.";
+    editError.value = error.response?.data?.message || t("failed-update");
   } finally {
     saving.value = false;
   }
@@ -580,7 +580,7 @@ const removeClassroom = async (item: any) => {
     await classroomStore.fetchClassrooms(100);
     ui.notify(t("deleted_successfully"), "success");
   } catch (error) {
-    ui.notify("Failed to delete.", "error");
+    ui.notify(t("failed-delete"), "error");
   }
 };
 </script>
