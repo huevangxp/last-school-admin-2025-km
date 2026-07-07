@@ -110,6 +110,7 @@
           <div class="text-title-small">{{ grp.classroom }}</div>
           <v-chip
             size="x-small"
+            rounded="0"
             class="ml-3 font-weight-bold text-indigo-darken-2"
             color="indigo-lighten-5"
             variant="flat"
