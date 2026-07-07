@@ -380,7 +380,18 @@ const ui = useUiStore();
 onMounted(() => {
   classroomStore.fetchClassrooms(100);
   classroomStore.fetchAcademicYears();
+  classroomStore.fetchGradeLevels();
 });
+
+// ---- Grade filter (real grade levels) ----
+const selectedGrade = ref<string | null>(null);
+const gradeFilterOptions = computed(() => [
+  { label: t("all_grades"), value: null },
+  ...classroomStore.gradeLevels.map((g: any) => ({
+    label: g.grade_level_name,
+    value: g.id,
+  })),
+]);
 
 // ---- Clone classrooms to a new academic year ----
 const cloneDialog = ref(false);
