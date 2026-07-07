@@ -11,7 +11,7 @@
           </v-avatar>
           <div>
             <h2 class="text-title">{{ t("information") }}</h2>
-            <p class="text-detail">Teacher identity & login</p>
+            <p class="text-detail">{{ t("teacher-identity-login") }}</p>
           </div>
         </div>
 
@@ -55,7 +55,7 @@
             >
             <v-text-field
               v-model="form.username"
-              placeholder="Login username"
+              :placeholder="t('login-username-placeholder')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -90,7 +90,7 @@
             <v-select
               v-model="form.gender"
               :items="genderOptions"
-              placeholder="Select"
+              :placeholder="t('select')"
               variant="outlined"
               density="compact"
               rounded="0"
@@ -150,7 +150,7 @@
             <v-combobox
               v-model="form.position"
               :items="positionOptions"
-              placeholder="ເລືອກ ຫຼື ພິມ"
+              :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
               rounded="0"
