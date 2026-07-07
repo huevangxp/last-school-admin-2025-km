@@ -97,7 +97,7 @@
           <div class="d-flex align-center mb-6">
             <v-avatar
               color="orange-lighten-5"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="mr-4"
             >
@@ -121,7 +121,7 @@
               </div>
             </v-col>
             <v-col cols="12" md="8">
-              <div class="grid-stats pa-4 rounded-xl bg-grey-lighten-4 h-100">
+              <div class="grid-stats pa-4 rounded-0 bg-grey-lighten-4 h-100">
                 <div class="text-detail-tiny mb-4">
                   DETAILED ENROLLMENT BREAKDOWN
                 </div>
@@ -134,7 +134,7 @@
                     :key="i"
                   >
                     <div
-                      class="pa-3 bg-white rounded-lg border border-slate-100 shadow-sm"
+                      class="pa-3 bg-white rounded-0 border border-slate-100 shadow-sm"
                     >
                       <div
                         class="text-detail-tiny"

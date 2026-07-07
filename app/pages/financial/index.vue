@@ -52,7 +52,7 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="lg"
+              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -97,7 +97,7 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="lg"
+          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -106,7 +106,7 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="lg"
+            rounded="0"
             style="min-width: 130px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
