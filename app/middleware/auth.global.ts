@@ -19,4 +19,17 @@ export default defineNuxtRouteMiddleware((to) => {
     abortNavigation();
     return navigateTo("/login");
   }
+
+  // Role guard: pages marked `requiresAdmin` (e.g. creating/editing teachers)
+  // are off-limits to the teacher role. A missing/legacy role cookie is treated
+  // as admin so existing admins are never locked out.
+  if (token.value && to?.meta?.requiresAdmin) {
+    const role = useCookie<string>("role");
+    const isAdmin = ["admin", "administrator"].includes(
+      (role.value || "administrator").toLowerCase()
+    );
+    if (!isAdmin) {
+      return navigateTo("/teachers/organization");
+    }
+  }
 });
