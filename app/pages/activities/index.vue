@@ -307,6 +307,7 @@ const form = ref({
   description: "",
   location: "",
   activity_date: todayStr(),
+  image_url: "",
   activity_status: "active",
 });
 
@@ -317,6 +318,7 @@ const resetForm = () => {
     description: "",
     location: "",
     activity_date: todayStr(),
+    image_url: "",
     activity_status: "active",
   };
   formError.value = "";
