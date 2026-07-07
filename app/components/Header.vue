@@ -315,7 +315,7 @@
             class="rounded-0 font-weight-bold"
             height="44"
             @click="logoutDialog = false"
-            >Cancel</v-btn
+            >{{ t("cancel") }}</v-btn
           >
         </v-card-actions>
       </v-card>
