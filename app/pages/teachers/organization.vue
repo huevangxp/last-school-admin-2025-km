@@ -102,9 +102,13 @@
           @mouseup="endPan"
           @mouseleave="endPan"
         >
-          <div v-if="teachers.length" class="tree" :style="treeStyle">
+          <div v-if="orgRoots.length" class="tree" :style="treeStyle">
             <ul class="org-tree-root">
-              <OrgNode :node="orgRoot" />
+              <OrgNode
+                v-for="root in orgRoots"
+                :key="root.uuid"
+                :node="root"
+              />
             </ul>
           </div>
 
