@@ -355,6 +355,14 @@ const days = [
   { key: "friday" },
 ];
 
+// Mobile layout shows one day at a time. Default to today when it's a weekday,
+// otherwise Monday.
+const jsDay = new Date().getDay(); // 0 Sun … 6 Sat
+const selectedDayIdx = ref(jsDay >= 1 && jsDay <= 5 ? jsDay - 1 : 0);
+const currentDayKey = computed(
+  () => days[selectedDayIdx.value]?.key || "monday"
+);
+
 const classId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
