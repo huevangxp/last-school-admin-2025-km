@@ -163,7 +163,7 @@
                   v-model="row.score"
                   type="number"
                   min="0"
-                  max="100"
+                  max="10"
                   variant="outlined"
                   density="compact"
                   hide-details
