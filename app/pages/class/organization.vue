@@ -535,17 +535,57 @@ const splitEven = <T,>(arr: T[], n: number): T[][] => {
   return groups;
 };
 
-// Layer 4 (unit heads) each with their Layer 5 members attached.
+// Manual member → unit-index overrides from drag & drop. Not persisted to the
+// backend (there is no member-unit field); it lets you rearrange the split for
+// this session. Cleared whenever the class/year (and thus members) change.
+const memberUnit = ref<Record<string, number>>({});
+
+// Layer 4 (unit heads) each with their Layer 5 members attached. Members follow
+// any manual drag override, otherwise fall back to an even round-robin split.
 const unitColumns = computed(() => {
   const units = unitRows.value;
   if (!units.length) return [] as any[];
-  const groups = splitEven(memberStudents.value, units.length);
+
+  // Default (even) unit index for each member.
+  const defaultIndex: Record<string, number> = {};
+  splitEven(memberStudents.value, units.length).forEach((group, i) =>
+    group.forEach((m: any) => (defaultIndex[m.id] = i))
+  );
+
+  const groups: any[][] = Array.from({ length: units.length }, () => []);
+  memberStudents.value.forEach((m) => {
+    let idx = memberUnit.value[m.id];
+    if (idx === undefined || idx < 0 || idx >= units.length) {
+      idx = defaultIndex[m.id] ?? 0;
+    }
+    (groups[idx] as any[]).push(m);
+  });
+
   return units.map((u: any, i: number) => ({
     id: u.id,
     name: nameFor(u.student_id),
     members: groups[i] ?? [],
   }));
 });
+
+// ---- Drag & drop: move a member between units ----
+const draggedMemberId = ref<string | null>(null);
+const dragOverUnit = ref<number | null>(null);
+
+const onDragStart = (memberId: string) => {
+  if (isStudent.value) return;
+  draggedMemberId.value = memberId;
+};
+const onDragEnd = () => {
+  draggedMemberId.value = null;
+  dragOverUnit.value = null;
+};
+const onDropUnit = (unitIndex: number) => {
+  if (isStudent.value || !draggedMemberId.value) return;
+  memberUnit.value = { ...memberUnit.value, [draggedMemberId.value]: unitIndex };
+  draggedMemberId.value = null;
+  dragOverUnit.value = null;
+};
 </script>
 
 <style scoped>
