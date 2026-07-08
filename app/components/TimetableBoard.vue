@@ -917,6 +917,203 @@ const clearFromDialog = async () => {
   if (existing) await clearCell(existing);
   addDialog.value = false;
 };
+
+// ---- Export / print the current timetable ----
+const exporting = ref(false);
+
+// Labels used in filenames and document titles.
+const scopeLabel = computed(() =>
+  isTeachingTab.value
+    ? currentTeacherLabel.value
+    : classOptions.value.find((c) => c.id === studyClassId.value)?.label || ""
+);
+const yearLabel = computed(
+  () =>
+    (classroomStore.academicYears.find((y: any) => y.id === yearId.value) || {})
+      .title || ""
+);
+const docTitle = computed(() =>
+  [headerTitle.value, scopeLabel.value, yearLabel.value]
+    .filter(Boolean)
+    .join(" · ")
+);
+const fileBase = () =>
+  [headerTitle.value, scopeLabel.value, yearLabel.value]
+    .filter(Boolean)
+    .join("_")
+    .replace(/[\\/:*?"<>|]+/g, "")
+    .replace(/\s+/g, "_") || "timetable";
+
+// The grid as plain data: one row per period, one entry per day.
+const gridData = () =>
+  scheduleStore.periods.map((p: any) => ({
+    period: p.period_name || p.period_code || "",
+    cells: days.map((d) => {
+      const c = cellFor(p.id, d.key);
+      return c
+        ? { subject: subjectOf(c), secondary: secondaryOf(c) }
+        : { subject: "", secondary: "" };
+    }),
+  }));
+
+const esc = (s: any) =>
+  String(s ?? "").replace(
+    /[&<>]/g,
+    (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[ch] || ch
+  );
+
+// Self-contained HTML for the timetable (styles inlined) — used for print and
+// for the off-screen node the image/PDF are rasterised from.
+const TT_CSS = `
+  .tt-wrap{font-family:'Noto Sans Lao','Phetsarath OT',system-ui,-apple-system,sans-serif;color:#0f172a;background:#fff;padding:16px}
+  .tt-wrap h2{font-size:16px;margin:0 0 12px}
+  table.tt{border-collapse:collapse;width:100%;min-width:680px;table-layout:fixed}
+  table.tt th,table.tt td{border:1px solid #cbd5e1;padding:6px 8px;text-align:center;vertical-align:middle;font-size:12px}
+  table.tt th{background:#eef2ff;color:#3730a3;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+  table.tt td.pcol{background:#f8fafc;font-weight:700;width:92px}
+  table.tt .s{font-weight:800;color:#0f766e;line-height:1.15}
+  table.tt .t{font-size:10.5px;color:#64748b;line-height:1.1}
+  @media print{@page{size:landscape;margin:12mm}}
+`;
+
+const buildTableHtml = () => {
+  const header = `<tr><th class="pcol">${esc(t("period"))}</th>${days
+    .map((d) => `<th>${esc(t(d.key))}</th>`)
+    .join("")}</tr>`;
+  const body = gridData()
+    .map(
+      (r) =>
+        `<tr><td class="pcol">${esc(r.period)}</td>${r.cells
+          .map((c) =>
+            c.subject
+              ? `<td><div class="s">${esc(c.subject)}</div>${
+                  c.secondary ? `<div class="t">${esc(c.secondary)}</div>` : ""
+                }</td>`
+              : `<td>—</td>`
+          )
+          .join("")}</tr>`
+    )
+    .join("");
+  return `<div class="tt-wrap"><h2>${esc(
+    docTitle.value
+  )}</h2><table class="tt"><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
+};
+
+// Build an off-screen node with the timetable, hand it to `fn`, then remove it.
+const withOffscreen = async (fn: (node: HTMLElement) => Promise<void>) => {
+  const style = document.createElement("style");
+  style.textContent = TT_CSS;
+  const holder = document.createElement("div");
+  holder.style.position = "fixed";
+  holder.style.left = "-10000px";
+  holder.style.top = "0";
+  holder.style.width = "1024px";
+  holder.appendChild(style);
+  const content = document.createElement("div");
+  content.innerHTML = buildTableHtml();
+  holder.appendChild(content);
+  document.body.appendChild(holder);
+  try {
+    await fn(content);
+  } finally {
+    document.body.removeChild(holder);
+  }
+};
+
+const exportExcel = async () => {
+  exporting.value = true;
+  try {
+    const XLSX = await import("xlsx");
+    const header = [t("period"), ...days.map((d) => t(d.key))];
+    const rows = gridData().map((r) => [
+      r.period,
+      ...r.cells.map((c) =>
+        c.subject
+          ? c.secondary
+            ? `${c.subject}\n${c.secondary}`
+            : c.subject
+          : ""
+      ),
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([[docTitle.value], [], header, ...rows]);
+    ws["!cols"] = header.map((_, i) => ({ wch: i === 0 ? 14 : 22 }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Timetable");
+    XLSX.writeFile(wb, `${fileBase()}.xlsx`);
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const exportImage = async () => {
+  exporting.value = true;
+  try {
+    const html2canvas = (await import("html2canvas")).default;
+    await withOffscreen(async (node) => {
+      const canvas = await html2canvas(node, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+      });
+      const link = document.createElement("a");
+      link.download = `${fileBase()}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const exportPdf = async () => {
+  exporting.value = true;
+  try {
+    const html2canvas = (await import("html2canvas")).default;
+    const { jsPDF } = await import("jspdf");
+    await withOffscreen(async (node) => {
+      const canvas = await html2canvas(node, {
+        scale: 2,
+        backgroundColor: "#ffffff",
+      });
+      const img = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
+      const margin = 24;
+      const pw = pdf.internal.pageSize.getWidth() - margin * 2;
+      const ph = pdf.internal.pageSize.getHeight() - margin * 2;
+      let iw = pw;
+      let ih = (canvas.height / canvas.width) * iw;
+      if (ih > ph) {
+        ih = ph;
+        iw = (canvas.width / canvas.height) * ih;
+      }
+      pdf.addImage(img, "PNG", margin, margin, iw, ih);
+      pdf.save(`${fileBase()}.pdf`);
+    });
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const printTimetable = () => {
+  const w = window.open("", "_blank", "width=1000,height=700");
+  if (!w) return;
+  w.document.write(
+    `<!doctype html><html><head><meta charset="utf-8"><title>${esc(
+      docTitle.value
+    )}</title><style>${TT_CSS}</style></head><body>${buildTableHtml()}</body></html>`
+  );
+  w.document.close();
+  w.focus();
+  // Give the new window a tick to lay out (and load fonts) before printing.
+  setTimeout(() => {
+    w.print();
+  }, 350);
+};
 </script>
 
 <style scoped>
