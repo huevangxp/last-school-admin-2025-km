@@ -439,13 +439,12 @@ const ready = computed(
 
 const rows = ref<any[]>([]);
 
-// Clamp a score into 0–100 when the user leaves the field. An empty field is
-// left empty (ungraded) — it only becomes 0 at save time.
+// Clamp a score into 0–100 when the user leaves the field. An empty/invalid
+// field falls back to 0 (the default).
 const clampScore = (row: any) => {
-  if (row.score === "" || row.score === null || row.score === undefined) return;
   const n = Number(row.score);
-  if (Number.isNaN(n)) {
-    row.score = "";
+  if (row.score === "" || row.score === null || Number.isNaN(n)) {
+    row.score = 0;
     return;
   }
   row.score = Math.min(100, Math.max(0, Math.round(n)));
