@@ -90,8 +90,11 @@
         </NuxtLink>
       </v-alert>
 
-      <!-- Timetable grid -->
-      <v-card elevation="0" class="intelligence-card pa-0 overflow-hidden">
+      <!-- Timetable grid — full weekly table on tablet/desktop -->
+      <v-card
+        elevation="0"
+        class="intelligence-card pa-0 overflow-hidden d-none d-md-block"
+      >
         <div class="timetable-wrap">
           <table class="timetable">
             <thead>
