@@ -758,6 +758,7 @@ const editForm = ref({
   status: "active",
   position: "",
   department: "",
+  subject_id: null as string | null,
   layer: null as number | null,
   manager_id: null as string | null,
 });
