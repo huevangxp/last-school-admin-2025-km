@@ -552,6 +552,35 @@ watch(
   { immediate: true }
 );
 
+// ---- Mobile bottom navigation ----
+// The sidebar is hidden on small screens; these primary destinations appear as
+// a mobile-app-style bottom bar. Any overflow items live behind the "More"
+// button, which opens the full drawer as an overlay. For a student (only four
+// pages) all fit and no "More" button is shown.
+const flatNavItems = computed(() =>
+  groupedMenuItems.value.flatMap((s) => s.items).filter((i) => i.to)
+);
+const bottomItems = computed(() => flatNavItems.value.slice(0, 4));
+const hasMoreNav = computed(
+  () => flatNavItems.value.length > bottomItems.value.length
+);
+
+// Highlight the tab matching the current route (locale prefix stripped).
+const activeBottom = computed(() => {
+  const path = route.path.replace(/^\/(en|la)(?=\/|$)/, "") || "/";
+  const match = bottomItems.value.find(
+    (it) =>
+      !!it.to && (it.to === path || (it.to !== "/" && path.startsWith(it.to)))
+  );
+  return match?.to ?? null;
+});
+const bottomTab = ref<string | null>(null);
+watch(activeBottom, (v) => (bottomTab.value = v), { immediate: true });
+
+// Sidebar starts closed on mobile (the bottom bar drives navigation) and open
+// on desktop; it re-syncs when the viewport crosses the breakpoint.
+watch(mobile, (m) => (drawer.value = !m), { immediate: true });
+
 const logoutButton = () => {
   logout();
   logoutDialog.value = false;
