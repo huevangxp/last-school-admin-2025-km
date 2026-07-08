@@ -604,15 +604,23 @@ const teachers = computed(() =>
   }))
 );
 
-// Apply role + status filters (search handled by the data table).
+// Distinct teacher names for the searchable name filter.
+const teacherNameOptions = computed(() =>
+  Array.from(
+    new Set(teachers.value.map((tc) => tc.username).filter(Boolean))
+  ).sort()
+);
+
+// Apply name + role + status filters.
 const filteredTeachers = computed(() =>
   teachers.value.filter((tc) => {
+    const nameOk = !selectedName.value || tc.username === selectedName.value;
     const roleOk =
       !selectedRole.value ||
       (tc.role || "").toLowerCase() === selectedRole.value;
     const statusOk =
       !selectedStatus.value || tc.statusRaw === selectedStatus.value;
-    return roleOk && statusOk;
+    return nameOk && roleOk && statusOk;
   })
 );
 
