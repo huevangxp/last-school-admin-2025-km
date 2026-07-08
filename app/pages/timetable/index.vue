@@ -334,6 +334,7 @@ const ui = useUiStore();
 
 // Admin edits the timetable; teachers & students only view it.
 const roleCookie = useCookie<string>("role");
+const idCookie = useCookie<string>("id");
 const isAdmin = computed(
   () => (roleCookie.value || "").toLowerCase() === "admin"
 );
@@ -341,6 +342,11 @@ const isAdmin = computed(
 // else picks from the full class list.
 const isStudent = computed(
   () => (roleCookie.value || "").toLowerCase() === "student"
+);
+// Teachers see their OWN weekly schedule across every class they teach (one
+// table), with each cell showing the subject + the classroom taught.
+const isTeacher = computed(
+  () => (roleCookie.value || "").toLowerCase() === "teacher"
 );
 
 const breadcrumbs = [
