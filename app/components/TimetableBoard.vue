@@ -393,6 +393,12 @@ const canEdit = computed(() => isAdmin.value || isTeacher.value);
 // /timetable/teaching (edits are scoped to their own subjects on the server).
 const isTeachingTab = computed(() => props.mode === "teaching");
 
+// On the teaching board an admin can add a slot for the chosen teacher by
+// picking a subject + class inline — creating the teaching assignment on the fly
+// if it doesn't exist yet. (Creating assignments is admin-only on the server, so
+// teachers keep the pick-from-existing flow.)
+const canInlineCreate = computed(() => isAdmin.value && isTeachingTab.value);
+
 const headerIcon = computed(() =>
   isTeachingTab.value ? "mdi-human-male-board" : "mdi-timetable"
 );
