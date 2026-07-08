@@ -116,7 +116,7 @@
                   v-for="d in days"
                   :key="d.key"
                   class="slot-cell"
-                  :class="{ editable: isAdmin }"
+                  :class="{ editable: canEdit }"
                 >
                   <!-- Admin/teacher: click to assign / change / clear -->
                   <v-menu v-if="canEdit" :close-on-content-click="true">
