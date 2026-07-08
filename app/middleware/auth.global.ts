@@ -44,16 +44,17 @@ export default defineNuxtRouteMiddleware((to) => {
       list.some((a) => path === a || path.startsWith(a + "/"));
 
     // Student: read-only, limited to five pages. Anything else → score report.
+    // (/scores serves the read-only report to students; entry mode is hidden.)
     if (role === "student") {
       const allowed = [
         "/teachers/organization",
-        "/scores/report",
+        "/scores",
         "/timetable",
         "/class/organization",
         "/announcement",
       ];
       if (!matches(allowed)) {
-        return navigateTo("/scores/report");
+        return navigateTo("/scores");
       }
     }
 
