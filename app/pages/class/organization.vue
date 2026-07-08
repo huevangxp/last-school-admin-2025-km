@@ -750,6 +750,25 @@ const onDropUnit = (unitIndex: number) => {
   text-align: center;
 }
 
+/* Drag & drop: members can be dragged between units. */
+.member-draggable {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.member-draggable:active {
+  cursor: grabbing;
+}
+.drag-handle {
+  color: #94a3b8;
+}
+.unit-drop-active {
+  background: #f0fdfa;
+  outline: 2px dashed #0d9488;
+  outline-offset: 4px;
+}
+
 /* ---- Mobile (< md): the layered chart reflows to a clean vertical stack ---- */
 @media (max-width: 959px) {
   /* Filters take the full row width instead of the capped desktop widths. */
