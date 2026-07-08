@@ -283,7 +283,9 @@ const loadGrid = async () => {
 
 onMounted(async () => {
   await Promise.all([
-    classroomStore.fetchClassrooms(200),
+    isStudent.value
+      ? classroomStore.fetchMyClassrooms()
+      : classroomStore.fetchClassrooms(200),
     classroomStore.fetchAcademicYears(),
     scheduleStore.fetchPeriods(),
   ]);
