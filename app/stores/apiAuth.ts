@@ -24,7 +24,7 @@ export const useApiAuthStore = defineStore("apiAuth", {
 
         // One form serves both account types. Try the teacher/admin login first;
         // if the username isn't a teacher (404), fall back to the student login.
-        let response;
+        let response: any;
         try {
           response = await $axios.post("/login-teacher", {
             username: user,
