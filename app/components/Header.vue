@@ -97,13 +97,30 @@
     </ClientOnly>
     <v-app-bar elevation="0" height="72" color="primary" class="px-6 glass-header">
       <div class="d-flex align-center">
+        <!-- Desktop: toggles the sidebar (rail). Hidden on mobile, where the
+             bottom navigation bar is the primary nav. -->
         <v-btn
           :icon="rail ? 'mdi-menu' : 'mdi-menu-open'"
           variant="text"
           color="white"
           @click="toggleSidebar"
-          class="mr-4"
+          class="mr-4 d-none d-md-inline-flex"
         ></v-btn>
+
+        <!-- Mobile-only compact brand so the top-left isn't empty. -->
+        <div class="d-flex d-md-none align-center mr-2">
+          <v-avatar
+            size="30"
+            color="white"
+            rounded="0"
+            class="mr-2 elevation-1"
+          >
+            <v-img src="/logo.png" alt="Logo" width="20" height="20" contain></v-img>
+          </v-avatar>
+          <span class="text-white font-weight-black text-body-2">{{
+            t("schoolmanagement")
+          }}</span>
+        </div>
 
         <div class="d-none d-sm-flex align-center ga-2">
           <v-chip
