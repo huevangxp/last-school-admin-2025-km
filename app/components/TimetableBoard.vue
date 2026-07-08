@@ -586,8 +586,15 @@ onMounted(async () => {
     tasks.push(classroomStore.fetchMyClassrooms());
   } else if (isTeachingTab.value) {
     // Teaching board: admins choose from all teachers; a teacher uses their own
-    // id, so no list is needed.
-    if (isAdmin.value) tasks.push(teacherStore.fetchTeachers(500, 1));
+    // id, so no list is needed. Admins also need classes + subjects to add a
+    // teaching slot inline.
+    if (isAdmin.value) {
+      tasks.push(
+        teacherStore.fetchTeachers(500, 1),
+        classroomStore.fetchClassrooms(200),
+        subjectStore.fetchSubjects()
+      );
+    }
   } else {
     // Study board: admins and teachers both pick from the class list.
     tasks.push(classroomStore.fetchClassrooms(200));
