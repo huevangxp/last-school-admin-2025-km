@@ -177,7 +177,7 @@
       <!-- Intelligence Column -->
       <v-col cols="12" lg="8">
         <!-- Academic Performance Visualization -->
-        <v-card elevation="0" class="intelligence-card mb-6">
+        <v-card elevation="0" class="intelligence-card h-100">
           <div class="pa-6">
             <div class="d-flex justify-space-between align-center mb-6">
               <div>
