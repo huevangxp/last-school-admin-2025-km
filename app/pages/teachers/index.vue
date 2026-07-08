@@ -261,7 +261,7 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              {{ t("showing") }} 1-{{ teachers.length }} {{ t("of") }}
+              {{ t("showing") }} {{ filteredTeachers.length }} {{ t("of") }}
               {{ teachers.length }} {{ t("results") }}
             </div>
             <div class="d-flex gap-1 align-center">
