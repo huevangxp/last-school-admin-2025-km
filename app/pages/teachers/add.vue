@@ -272,7 +272,6 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
-import { useSubjectStore } from "~/stores/apiSubject";
 
 // Creating teachers is admin-only (teachers are redirected to the org chart).
 definePageMeta({ requiresAdmin: true });
