@@ -317,6 +317,12 @@ onMounted(async () => {
     teacherStore.fetchTeachers(200, 1),
   ]);
   selectedYearId.value = classroomStore.latestAcademicYearId || "";
+  // Student/teacher see only their own class(es) (backend-scoped via
+  // /my-classrooms), so default to the first one and show its chart right away.
+  // Admins keep the "pick a class" prompt since they can see every class.
+  if (!isAdmin.value) {
+    selectedClassId.value = classOptions.value[0]?.id || "";
+  }
 });
 
 const classOptions = computed(() =>
