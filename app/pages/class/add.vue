@@ -23,6 +23,7 @@
             <v-text-field
               v-model="form.className"
               placeholder="e.g. M1/A"
+              variant="outlined"
               density="compact"
               rounded="0"
               class="premium-input"
