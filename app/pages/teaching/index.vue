@@ -354,9 +354,15 @@ const dialogSubjectOptions = computed(() => {
   return list.map((s: any) => ({ id: s.id, label: s.subject_name }));
 });
 
-// The subject a teacher already teaches (by name), from their existing
-// assignments this year — used to auto-fill the subject in the create dialog.
+// The subject a teacher teaches (by name), used to auto-fill the create dialog.
+// Prefers the teacher's configured main subject; falls back to inferring it
+// from an existing assignment this year.
 const teacherSubjectName = (teacherId: string): string | null => {
+  const tc = teacherStore.teachers.find((x: any) => x.id === teacherId);
+  if (tc?.subject_id) {
+    const subj = subjectStore.subjects.find((s: any) => s.id === tc.subject_id);
+    if (subj?.subject_name) return subj.subject_name;
+  }
   const a = teachingStore.assignments.find(
     (x: any) => x.teacher_id === teacherId && x.tb_subject
   );
