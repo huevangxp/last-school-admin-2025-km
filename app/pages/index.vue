@@ -482,9 +482,9 @@ const studentTrend = computed(() => {
   const labels: string[] = [];
   let running = 0;
   for (let i = 0; i < 12; i++) {
-    running += monthly[i];
+    running += monthly[i] ?? 0;
     values.push(running);
-    labels.push(MONTHS_SHORT[(startMonth + i) % 12]);
+    labels.push(MONTHS_SHORT[(startMonth + i) % 12] ?? "");
   }
   return { labels, values };
 });
