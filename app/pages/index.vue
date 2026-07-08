@@ -358,6 +358,7 @@ onMounted(async () => {
       $axios.get("/get-all-classrooms?limit=100"),
       $axios.get("/get-all-subjects?limit=100"),
       $axios.get("/get-all-academic-year"),
+      financeStore.fetchFinances(),
     ]);
 
     const students = Array.isArray(sRes.data?.data)
@@ -366,7 +367,9 @@ onMounted(async () => {
     studentCount.value = students.length;
     recentStudents.value = students.slice(0, 5);
 
-    teacherCount.value = tRes.data?.data?.pagination?.total ?? 0;
+    teachers.value = tRes.data?.data?.teachers ?? [];
+    teacherCount.value =
+      tRes.data?.data?.pagination?.total ?? teachers.value.length;
 
     const classes = cRes.data?.data?.classrooms ?? [];
     classCount.value = cRes.data?.data?.pagination?.total ?? classes.length;
