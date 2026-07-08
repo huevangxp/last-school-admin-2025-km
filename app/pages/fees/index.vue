@@ -355,7 +355,7 @@ onMounted(async () => {
 // ---- Fee structure ----
 const structureDialog = ref(false);
 const savingStructure = ref(false);
-const structureForm = ref<Record<string, string>>({});
+const structureForm = ref<Record<string, number | string>>({});
 
 const openStructure = async () => {
   structureForm.value = {};
@@ -412,7 +412,10 @@ const collectDialog = ref(false);
 const collecting = ref(false);
 const collectError = ref("");
 const collectTarget = ref<any>(null);
-const collectForm = ref({ amount: "", method: "Cash" });
+const collectForm = ref<{ amount: number | string; method: string }>({
+  amount: "",
+  method: "Cash",
+});
 
 const openCollect = (item: any) => {
   collectTarget.value = item;
