@@ -160,7 +160,7 @@
               </td>
               <td class="text-center score-cell">
                 <v-text-field
-                  v-model.number="row.score"
+                  v-model="row.score"
                   type="number"
                   min="0"
                   max="100"
@@ -169,7 +169,7 @@
                   hide-details
                   rounded="0"
                   style="max-width: 120px; margin: 0 auto"
-                  @update:model-value="clampScore(row)"
+                  @blur="clampScore(row)"
                 ></v-text-field>
               </td>
             </tr>
