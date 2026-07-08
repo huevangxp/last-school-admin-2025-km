@@ -10,6 +10,7 @@ export interface Teacher {
   role: string;
   position?: string | null;
   department?: string | null;
+  subject_id?: string | null;
   manager_id?: string | null;
   layer?: number | null;
   login_count: number;
