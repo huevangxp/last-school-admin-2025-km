@@ -11,13 +11,13 @@
           <v-icon color="indigo-darken-2" size="22">mdi-timetable</v-icon>
         </v-avatar>
         <div>
-          <div class="text-title">{{ t("study_schedule") }}</div>
+          <div class="text-title">{{ t("timetable") }}</div>
           <div class="text-detail">
             {{ t("timetable-subtitle") }}
           </div>
         </div>
       </div>
-      <!-- Only students are read-only; teachers can now edit their classes. -->
+      <!-- Only students are read-only; teachers can edit their own subjects. -->
       <v-chip
         v-if="isStudent"
         size="small"
@@ -31,14 +31,32 @@
       </v-chip>
     </div>
 
-    <!-- Filters: class + academic year -->
+    <!-- Two "pages": Study schedule (per class) and Teaching schedule (per
+         teacher). Admins get both tabs; teachers see only Teaching, students
+         only Study. -->
+    <v-tabs
+      v-if="isAdmin"
+      v-model="activeTab"
+      color="indigo-darken-2"
+      class="mb-4"
+    >
+      <v-tab value="study" rounded="0">
+        <v-icon start size="18">mdi-book-open-variant</v-icon>
+        {{ t("study_schedule") }}
+      </v-tab>
+      <v-tab value="teaching" rounded="0">
+        <v-icon start size="18">mdi-human-male-board</v-icon>
+        {{ t("teaching_schedule") }}
+      </v-tab>
+    </v-tabs>
+
+    <!-- Filters -->
     <v-card elevation="0" class="intelligence-card pa-4 mb-6">
       <div class="d-flex flex-column flex-md-row gap-3">
-        <!-- Class picker — teachers see one cross-class table, so no picker for
-             them. Students are locked to their own class. -->
+        <!-- Study tab: class picker. Students are locked to their own class. -->
         <v-select
-          v-if="!isTeacher"
-          v-model="classId"
+          v-if="!isTeachingTab"
+          v-model="studyClassId"
           :items="classOptions"
           item-title="label"
           item-value="id"
@@ -53,6 +71,26 @@
           prepend-inner-icon="mdi-google-classroom"
           :disabled="isStudent"
         ></v-select>
+
+        <!-- Teaching tab: teacher picker (admins only — a teacher only ever
+             sees their own schedule). -->
+        <v-select
+          v-if="isTeachingTab && isAdmin"
+          v-model="teacherId"
+          :items="teacherOptions"
+          item-title="label"
+          item-value="id"
+          :label="t('teacher')"
+          variant="outlined"
+          density="compact"
+          class="mb-4 mb-md-0"
+          hide-details
+          rounded="0"
+          style="max-width: 260px"
+          color="primary"
+          prepend-inner-icon="mdi-account-tie"
+        ></v-select>
+
         <v-select
           v-model="yearId"
           :items="classroomStore.academicYears"
@@ -70,26 +108,30 @@
       </div>
     </v-card>
 
-    <!-- Prompt to choose a class -->
+    <!-- Prompt to choose a class / teacher -->
     <v-card
       v-if="!ready"
       elevation="0"
       class="intelligence-card pa-10 text-center text-detail"
     >
-      {{ t("pick-class-and-year") }}
+      {{ isTeachingTab ? t("pick-teacher-and-year") : t("pick-class-and-year") }}
     </v-card>
 
     <template v-else>
-      <!-- Admin needs teaching assignments to fill cells -->
+      <!-- Editors need teaching assignments to fill cells -->
       <v-alert
-        v-if="isAdmin && !assignmentOptions.length"
+        v-if="canEdit && !assignmentOptions.length"
         type="info"
         variant="tonal"
         density="compact"
         rounded="0"
         class="mb-4"
       >
-        {{ t("no-assignments-for-class") }}
+        {{
+          isTeachingTab
+            ? t("no-assignments-for-teacher")
+            : t("no-assignments-for-class")
+        }}
         <NuxtLink to="/teaching" class="font-weight-bold text-primary ml-1">
           {{ t("teaching_assignments") }} →
         </NuxtLink>
@@ -143,7 +185,8 @@
                     </template>
                     <v-list density="compact" class="pa-1" min-width="220">
                       <v-list-subheader class="text-detail-tiny">
-                        {{ t("subject") }} — {{ t("teacher") }}
+                        {{ t("subject") }} —
+                        {{ isTeachingTab ? t("class") : t("teacher") }}
                       </v-list-subheader>
                       <v-list-item
                         v-for="opt in assignmentOptions"
@@ -179,7 +222,7 @@
                     </v-list>
                   </v-menu>
 
-                  <!-- Teacher / student: read-only -->
+                  <!-- Student: read-only -->
                   <div
                     v-else
                     class="cell-inner"
@@ -264,7 +307,8 @@
               </template>
               <v-list density="compact" class="pa-1" min-width="220">
                 <v-list-subheader class="text-detail-tiny">
-                  {{ t("subject") }} — {{ t("teacher") }}
+                  {{ t("subject") }} —
+                  {{ isTeachingTab ? t("class") : t("teacher") }}
                 </v-list-subheader>
                 <v-list-item
                   v-for="opt in assignmentOptions"
@@ -300,7 +344,7 @@
               </v-list>
             </v-menu>
 
-            <!-- Teacher / student: read-only -->
+            <!-- Student: read-only -->
             <div
               v-else
               class="mobile-slot"
@@ -328,15 +372,16 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
 import { useTeachingStore } from "~/stores/apiTeaching";
 import { useScheduleStore } from "~/stores/apiSchedule";
+import { useTeacherStore } from "~/stores/apiTeacher";
 import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
 const teachingStore = useTeachingStore();
 const scheduleStore = useScheduleStore();
+const teacherStore = useTeacherStore();
 const ui = useUiStore();
 
-// Admin edits the timetable; teachers & students only view it.
 const roleCookie = useCookie<string>("role");
 const idCookie = useCookie<string>("id");
 const isAdmin = computed(
@@ -347,17 +392,25 @@ const isAdmin = computed(
 const isStudent = computed(
   () => (roleCookie.value || "").toLowerCase() === "student"
 );
-// Teachers pick from the classes they teach and can set the timetable for those
-// classes (scoped to their own subjects on the server).
+// Teachers set the timetable for the classes they teach (scoped to their own
+// subjects on the server).
 const isTeacher = computed(
   () => (roleCookie.value || "").toLowerCase() === "teacher"
 );
 // Admins and teachers may edit cells; students are read-only.
 const canEdit = computed(() => isAdmin.value || isTeacher.value);
 
+// The two "pages" of the timetable: the class-centric study schedule and the
+// teacher-centric teaching schedule. Admins toggle between them via tabs;
+// teachers are locked to Teaching and students to Study.
+const activeTab = ref<"study" | "teaching">("study");
+const isTeachingTab = computed(
+  () => isTeacher.value || activeTab.value === "teaching"
+);
+
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
-  { title: t("study_schedule"), disabled: true, to: "/timetable" },
+  { title: t("timetable"), disabled: true, to: "/timetable" },
 ];
 
 const days = [
@@ -376,10 +429,13 @@ const currentDayKey = computed(
   () => days[selectedDayIdx.value]?.key || "monday"
 );
 
-const classId = ref<string | null>(null);
+// Study tab picks a class; Teaching tab picks a teacher (admins) or is locked to
+// the logged-in teacher.
+const studyClassId = ref<string | null>(null);
+const teacherId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
-// Class picker options (admins / students only — teachers have no picker).
+// Class picker options (admins / students only). Students see just their class.
 const classOptions = computed(() => {
   const source = isStudent.value
     ? classroomStore.myClassrooms
@@ -387,13 +443,26 @@ const classOptions = computed(() => {
   return source.map((c: any) => ({ id: c.id, label: c.classroom_name }));
 });
 
+// Teacher picker options (admins only).
+const teacherOptions = computed(() =>
+  teacherStore.teachers.map((tc: any) => ({
+    id: tc.id,
+    label: tc.full_name || tc.username,
+  }))
+);
+
 // Options to fill a cell.
-//  • Teachers: every one of their own assignments (across all classes) —
+//  • Teaching tab: every assignment of the chosen teacher (across all classes),
 //    labelled "subject · class" — so a slot can be set for any class they teach.
-//  • Admins: every assignment in the selected class, labelled "subject · teacher".
+//  • Study tab: every assignment in the selected class, labelled "subject · teacher".
 const assignmentOptions = computed(() => {
-  if (isTeacher.value) {
-    return teachingStore.myTeaching
+  if (isTeachingTab.value) {
+    // Teachers read their own assignments from /my-teaching; admins fetch the
+    // chosen teacher's assignments into `assignments`.
+    const source = isTeacher.value
+      ? teachingStore.myTeaching
+      : teachingStore.assignments;
+    return source
       .filter((a: any) => a.academic_year_id === yearId.value)
       .map((a: any) => ({
         id: a.id,
@@ -404,7 +473,7 @@ const assignmentOptions = computed(() => {
   }
   return teachingStore.assignments.map((a: any) => ({
     id: a.id,
-    classroom_id: classId.value,
+    classroom_id: studyClassId.value,
     subject: a.tb_subject?.subject_name || "—",
     secondary: a.tb_teacher?.full_name || a.tb_teacher?.username || t("teacher"),
   }));
@@ -418,68 +487,86 @@ const cellFor = (periodId: string, day: string) =>
 
 const subjectOf = (cell: any) =>
   cell?.assignment?.tb_subject?.subject_name || "—";
-// The classroom of a cell (teacher's cross-class table carries tb_classroom).
+// The classroom of a cell (teaching schedule spans classes → carries tb_classroom).
 const classroomOf = (cell: any) => cell?.tb_classroom?.classroom_name || "—";
-// Second line of a cell: teachers see the class they teach; admins & students
-// see the teacher's name.
+// Second line of a cell: Teaching tab shows the class; Study tab shows the teacher.
 const secondaryOf = (cell: any) =>
-  isTeacher.value
+  isTeachingTab.value
     ? classroomOf(cell)
     : cell?.assignment?.tb_teacher?.full_name ||
       cell?.assignment?.tb_teacher?.username ||
       "—";
 
-// Teachers only need a year (their table spans every class they teach); admins
-// and students also need a class.
+// Teaching tab needs a teacher + year; Study tab needs a class + year.
 const ready = computed(() =>
-  isTeacher.value ? !!yearId.value : !!classId.value && !!yearId.value
+  isTeachingTab.value
+    ? !!teacherId.value && !!yearId.value
+    : !!studyClassId.value && !!yearId.value
 );
 
 const loadGrid = async () => {
   if (!yearId.value) return;
-  // Teacher: one cross-class table of their own schedule + their assignments.
-  if (isTeacher.value) {
-    if (!idCookie.value) return;
+  // Teaching tab: one cross-class table of the chosen teacher's schedule + the
+  // assignments that fill it.
+  if (isTeachingTab.value) {
+    if (!teacherId.value) return;
     await Promise.all([
-      scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value),
-      teachingStore.fetchMyTeaching(yearId.value),
+      scheduleStore.fetchTeacherSchedule(teacherId.value, yearId.value),
+      isTeacher.value
+        ? teachingStore.fetchMyTeaching(yearId.value)
+        : teachingStore.fetchAssignments({
+            teacher_id: teacherId.value,
+            academic_year_id: yearId.value,
+          }),
     ]);
     return;
   }
-  if (!classId.value) return;
-  await scheduleStore.fetchSchedule(classId.value, yearId.value);
-  if (isAdmin.value) {
+  // Study tab: the selected class's schedule + its assignments (editors only).
+  if (!studyClassId.value) return;
+  await scheduleStore.fetchSchedule(studyClassId.value, yearId.value);
+  if (canEdit.value) {
     await teachingStore.fetchAssignments({
-      classroom_id: classId.value,
+      classroom_id: studyClassId.value,
       academic_year_id: yearId.value,
     });
   }
 };
 
 onMounted(async () => {
-  await Promise.all([
-    isStudent.value
-      ? classroomStore.fetchMyClassrooms()
-      : isTeacher.value
-        ? Promise.resolve()
-        : classroomStore.fetchClassrooms(200),
+  const tasks: Promise<any>[] = [
     classroomStore.fetchAcademicYears(),
     scheduleStore.fetchPeriods(),
-  ]);
+  ];
+  if (isStudent.value) {
+    tasks.push(classroomStore.fetchMyClassrooms());
+  } else if (isAdmin.value) {
+    tasks.push(
+      classroomStore.fetchClassrooms(200),
+      teacherStore.fetchTeachers(500, 1)
+    );
+  }
+  await Promise.all(tasks);
+
   yearId.value = classroomStore.latestAcademicYearId || null;
-  if (!isTeacher.value) classId.value = classOptions.value[0]?.id || null;
+  if (isTeacher.value) {
+    activeTab.value = "teaching";
+    teacherId.value = idCookie.value || null;
+  } else {
+    activeTab.value = "study";
+    studyClassId.value = classOptions.value[0]?.id || null;
+    if (isAdmin.value) teacherId.value = teacherOptions.value[0]?.id || null;
+  }
   await loadGrid();
 });
 
-watch([classId, yearId], loadGrid);
+watch([activeTab, studyClassId, teacherId, yearId], loadGrid);
 
-// Reload after any change: teachers refetch their cross-class schedule; others
-// refetch the selected class's schedule.
+// Reload cells for the active tab after any change.
 const reloadCells = async () => {
-  if (isTeacher.value && idCookie.value) {
-    await scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value!);
-  } else if (classId.value) {
-    await scheduleStore.fetchSchedule(classId.value, yearId.value!);
+  if (isTeachingTab.value && teacherId.value) {
+    await scheduleStore.fetchTeacherSchedule(teacherId.value, yearId.value!);
+  } else if (studyClassId.value) {
+    await scheduleStore.fetchSchedule(studyClassId.value, yearId.value!);
   }
 };
 
@@ -488,15 +575,15 @@ const assignCell = async (
   day: string,
   assignmentId: string
 ) => {
-  // The target class comes from the chosen assignment (teachers) or the picked
-  // class (admins).
+  // The target class comes from the chosen assignment (Teaching tab) or the
+  // picked class (Study tab).
   const opt = assignmentOptions.value.find((o) => o.id === assignmentId);
-  const classroomId = opt?.classroom_id || classId.value;
+  const classroomId = opt?.classroom_id || studyClassId.value;
   if (!classroomId) return;
   try {
-    // A teacher can't be in two rooms at once: if this slot already holds a
-    // different class, clear it first before assigning the new one.
-    if (isTeacher.value) {
+    // On the Teaching tab a teacher can't be in two rooms at once: if this slot
+    // already holds a different class, clear it first before assigning the new one.
+    if (isTeachingTab.value) {
       const existing = cellFor(periodId, day);
       if (existing && existing.classroom_id !== classroomId) {
         await scheduleStore.deleteCell(existing.id);
