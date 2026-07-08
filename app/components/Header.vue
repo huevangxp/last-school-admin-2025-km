@@ -394,6 +394,10 @@ const isAdmin = computed(() =>
   ["admin", "administrator"].includes((role.value || "").toLowerCase())
 );
 
+// Students see a read-only subset (teacher org, score report, timetable,
+// class organization) — everything else is hidden from their sidebar.
+const isStudent = computed(() => (role.value || "").toLowerCase() === "student");
+
 // Full menu with per-item / per-section admin gating.
 const allMenuSections: MenuSection[] = [
   {
@@ -413,7 +417,7 @@ const allMenuSections: MenuSection[] = [
       { title: "students", icon: "mdi-account-school-outline", to: "/students", adminOnly: true },
       { title: "enroll", icon: "mdi-account-plus-outline", to: "/students/add", adminOnly: true },
       { title: "promotion", icon: "mdi-arrow-up-bold-box-outline", to: "/promotion", adminOnly: true },
-      { title: "class_organization", icon: "mdi-account-supervisor-outline", to: "/class/organization" },
+      { title: "class_organization", icon: "mdi-account-supervisor-outline", to: "/class/organization", studentVisible: true },
     ],
   },
   {
