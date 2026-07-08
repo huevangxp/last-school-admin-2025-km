@@ -420,6 +420,16 @@ const countByClass = computed(() => {
   return map;
 });
 
+// Line chart: enrolled students per class for the selected academic year.
+const chartLabels = computed(() =>
+  yearClassrooms.value.map(
+    (c) => c.classroom_name || c.classroom_code || "—"
+  )
+);
+const chartValues = computed(() =>
+  yearClassrooms.value.map((c) => countByClass.value[c.id] || 0)
+);
+
 const stats = computed(() => [
   {
     title: t("students"),
