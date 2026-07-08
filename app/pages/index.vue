@@ -427,7 +427,6 @@ onMounted(async () => {
 
     const classes = cRes.data?.data?.classrooms ?? [];
     classCount.value = cRes.data?.data?.pagination?.total ?? classes.length;
-    recentClasses.value = classes.slice(0, 4);
 
     subjectCount.value = subRes.data?.data?.pagination?.total ?? 0;
 
