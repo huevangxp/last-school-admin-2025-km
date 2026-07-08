@@ -431,7 +431,7 @@ const save = async () => {
 }
 
 .modern-action-btn.primary {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
   color: white !important;
 }
 

@@ -251,7 +251,7 @@ const loginBtn = async () => {
 }
 
 .primary-login-btn {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
   color: white !important;
   height: 60px !important;
   text-transform: none !important;
