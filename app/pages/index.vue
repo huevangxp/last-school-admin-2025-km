@@ -483,15 +483,21 @@ const events = computed(() =>
   })
 );
 
-const activities = computed(() =>
-  recentClasses.value.map((c) => ({
+// Prefer the year-scoped classrooms (with accurate enrollment counts) once a
+// year is selected; fall back to the recent global classrooms on first paint.
+const activities = computed(() => {
+  const source = yearClassrooms.value.length
+    ? yearClassrooms.value
+    : recentClasses.value;
+  return source.slice(0, 6).map((c) => ({
     user: c.classroom_name || "—",
     action: `· ${c.homeroomTeacher?.full_name || t("no-homeroom-teacher")}`,
     time: c.gradeLevel?.grade_level_name || "",
+    students: countByClass.value[c.id] || 0,
     icon: "mdi-google-classroom",
     color: "primary",
-  }))
-);
+  }));
+});
 </script>
 
 <style scoped>
