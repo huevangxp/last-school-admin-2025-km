@@ -239,10 +239,12 @@ const classId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
 const classOptions = computed(() =>
-  classroomStore.classrooms.map((c: any) => ({
-    id: c.id,
-    label: c.classroom_name,
-  }))
+  (isStudent.value ? classroomStore.myClassrooms : classroomStore.classrooms).map(
+    (c: any) => ({
+      id: c.id,
+      label: c.classroom_name,
+    })
+  )
 );
 
 // Subject → teacher pairs available for this class (admin picks from these).
