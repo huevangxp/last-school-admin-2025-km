@@ -685,4 +685,47 @@ const unitColumns = computed(() => {
   color: #94a3b8;
   text-align: center;
 }
+
+/* ---- Mobile (< md): the layered chart reflows to a clean vertical stack ---- */
+@media (max-width: 959px) {
+  /* Filters take the full row width instead of the capped desktop widths. */
+  .filter-select {
+    max-width: 100% !important;
+    width: 100%;
+  }
+  .org-viewport {
+    min-height: 240px;
+    background-size: 18px 18px;
+  }
+  .lchart {
+    padding: 16px 8px;
+  }
+  .lcard {
+    min-width: 120px;
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+  .lrow {
+    gap: 10px;
+  }
+  /* Stack the unit heads vertically — each unit and its members become one
+     full-width block, far clearer than columns wrapping on a narrow screen. */
+  .units-grid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    width: 100%;
+  }
+  .unit-col {
+    width: 100%;
+    min-width: 0;
+    align-items: stretch;
+  }
+  .unit-col .lcard-unit {
+    max-width: 100%;
+  }
+  .member-list {
+    max-width: 100%;
+  }
+}
 </style>
