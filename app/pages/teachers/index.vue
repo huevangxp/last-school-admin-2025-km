@@ -609,7 +609,6 @@ const teachers = computed(() =>
     statusRaw: tc.status,
     position: tc.position || "",
     department: tc.department || "",
-    subjectId: tc.subject_id || null,
     layer: tc.layer ?? null,
     managerId: tc.manager_id || null,
   }))
