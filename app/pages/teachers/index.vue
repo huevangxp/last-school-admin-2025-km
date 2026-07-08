@@ -263,8 +263,8 @@
         <template v-slot:bottom>
           <div class="d-flex align-center justify-space-between pt-4 border-t">
             <div class="text-detail-tiny">
-              {{ t("showing") }} {{ filteredTeachers.length }} {{ t("of") }}
-              {{ teachers.length }} {{ t("results") }}
+              {{ t("showing") }} {{ rangeStart }}-{{ rangeEnd }} {{ t("of") }}
+              {{ filteredTeachers.length }} {{ t("results") }}
             </div>
             <div class="d-flex gap-1 align-center">
               <v-btn
@@ -272,16 +272,21 @@
                 variant="text"
                 color="grey-darken-1"
                 size="x-small"
+                :disabled="page <= 1"
+                @click="page--"
               ></v-btn>
 
               <v-btn
-                color="primary"
+                v-for="p in pages"
+                :key="p"
+                :color="p === page ? 'primary' : 'grey-darken-1'"
+                :variant="p === page ? 'flat' : 'text'"
                 size="x-small"
-                variant="flat"
                 class="font-weight-black rounded-0"
                 style="min-width: 24px; height: 24px"
+                @click="page = p"
               >
-                1
+                {{ p }}
               </v-btn>
 
               <v-btn
@@ -289,6 +294,8 @@
                 variant="text"
                 color="grey-darken-1"
                 size="x-small"
+                :disabled="page >= pageCount"
+                @click="page++"
               ></v-btn>
             </div>
           </div>
