@@ -386,10 +386,10 @@ const isTeacher = computed(
 // Admins and teachers may edit cells; students are read-only.
 const canEdit = computed(() => isAdmin.value || isTeacher.value);
 
-// A teacher only ever gets the teaching board, regardless of the route.
-const isTeachingTab = computed(
-  () => isTeacher.value || props.mode === "teaching"
-);
+// Which board this is, driven purely by the route. Teachers get both: the
+// student/study table on /timetable and their own teaching table on
+// /timetable/teaching (edits are scoped to their own subjects on the server).
+const isTeachingTab = computed(() => props.mode === "teaching");
 
 const headerIcon = computed(() =>
   isTeachingTab.value ? "mdi-human-male-board" : "mdi-timetable"
