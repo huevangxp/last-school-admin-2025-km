@@ -207,7 +207,7 @@ const { $axios } = useNuxtApp();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
-  { title: t("reports"), disabled: true, to: "/reports" },
+  { title: t("analytics"), disabled: true, to: "/reports" },
 ];
 
 const PALETTE = [
