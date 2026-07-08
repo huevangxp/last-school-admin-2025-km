@@ -1,4 +1,11 @@
 {
+  "more": "ເພີ່ມເຕີມ",
+  "announcement": "ແຈ້ງການ",
+  "announcements": "ແຈ້ງການ",
+  "post": "ໂພສ",
+  "post-announcement": "ໂພສແຈ້ງການ",
+  "no-announcements-yet": "ຍັງບໍ່ມີແຈ້ງການ",
+  "announcement-feed-subtitle": "ຂ່າວສານ ແລະ ແຈ້ງການຈາກໂຮງຮຽນ",
   "welcome": "ຍິນດີຕ້ອນຮັບ",
   "welcomeText": "ເຂົ້າລະບົບເພື່ອສືບຕໍ່ໄປທີ່ແຜງຄວບຄຸມຂອງທ່ານ",
   "dashboard": "ໜ້າຫຼັກ",
