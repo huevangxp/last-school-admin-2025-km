@@ -26,7 +26,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -42,7 +41,7 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input uppercase-text"
+              class="uppercase-text"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -79,7 +78,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
               :rules="[rules.requiredMany]"
@@ -99,7 +97,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -245,19 +242,6 @@ const save = async () => {
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
-}
-
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.premium-input :deep(.v-field--focused .v-field__outline__start),
-.premium-input :deep(.v-field--focused .v-field__outline__end),
-.premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1.5px !important;
 }
 
 .uppercase-text :deep(input) {

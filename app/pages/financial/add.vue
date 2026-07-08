@@ -29,7 +29,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -45,7 +44,7 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input font-weight-black"
+              class="font-weight-black"
               color="primary"
               hide-details="auto"
               type="number"
@@ -63,7 +62,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
             ></v-text-field>
@@ -82,7 +80,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -99,7 +96,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               rows="3"
               hide-details="auto"
@@ -179,19 +175,6 @@ const save = () => {
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   color: white !important;
-}
-
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.premium-input :deep(.v-field--focused .v-field__outline__start),
-.premium-input :deep(.v-field--focused .v-field__outline__end),
-.premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: #10b981 !important;
-  border-width: 1.5px !important;
 }
 
 .text-slate-700 {

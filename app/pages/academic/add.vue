@@ -74,7 +74,7 @@
                     variant="outlined"
                     density="compact"
                     rounded="0"
-                    class="premium-input text-detail bg-white"
+                    class="text-detail bg-white"
                     color="primary"
                     hide-details="auto"
                     :rules="[rules.required]"
@@ -88,7 +88,7 @@
                     variant="outlined"
                     density="compact"
                     rounded="0"
-                    class="premium-input text-detail bg-white"
+                    class="text-detail bg-white"
                     color="primary"
                     hide-details="auto"
                     :rules="[rules.required]"
@@ -107,7 +107,7 @@
                     density="compact"
                     :placeholder="$t('select-start-date')"
                     rounded="0"
-                    class="premium-input text-detail bg-white"
+                    class="text-detail bg-white"
                     color="primary"
                     hide-details="auto"
                     :rules="[rules.required]"
@@ -129,7 +129,7 @@
                     density="compact"
                     :placeholder="$t('select-end-date')"
                     rounded="0"
-                    class="premium-input text-detail bg-white"
+                    class="text-detail bg-white"
                     color="primary"
                     hide-details="auto"
                     :rules="[rules.required]"
@@ -152,7 +152,7 @@
                 variant="outlined"
                 density="compact"
                 rounded="0"
-                class="premium-input text-detail bg-white"
+                class="text-detail bg-white"
                 color="primary"
                 rows="4"
                 hide-details="auto"
@@ -288,19 +288,6 @@ const save = async () => {
 
 .bg-slate-50 {
   background-color: #f8fafc !important;
-}
-
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.premium-input :deep(.v-field--focused .v-field__outline__start),
-.premium-input :deep(.v-field--focused .v-field__outline__end),
-.premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: #0a3154 !important;
-  border-width: 1.5px !important;
 }
 
 .grey-text {

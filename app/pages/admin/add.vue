@@ -73,7 +73,7 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input mb-4"
+              class="mb-4"
               hide-details
             ></v-select>
 
@@ -86,7 +86,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               hide-details
             ></v-select>
           </v-card>
@@ -119,7 +118,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -133,7 +131,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -148,7 +145,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-select>
               </v-col>
@@ -162,7 +158,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -195,7 +190,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -210,7 +204,6 @@
                   variant="outlined"
                   density="compact"
                   rounded="0"
-                  class="premium-input"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -328,19 +321,6 @@ const save = () => {
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
-}
-
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.premium-input :deep(.v-field--focused .v-field__outline__start),
-.premium-input :deep(.v-field--focused .v-field__outline__end),
-.premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1.5px !important;
 }
 
 .border-dashed {

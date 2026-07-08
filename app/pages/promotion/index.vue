@@ -32,7 +32,6 @@
             variant="outlined"
             density="compact"
             rounded="0"
-            class="premium-input"
             hide-details
           ></v-select>
         </v-card>
@@ -58,7 +57,7 @@
             variant="outlined"
             density="compact"
             rounded="0"
-            class="premium-input mb-4"
+            class="mb-4"
             hide-details
           ></v-select>
 
@@ -69,7 +68,6 @@
             variant="outlined"
             density="compact"
             rounded="0"
-            class="premium-input"
             hide-details
             prepend-inner-icon="mdi-calendar-check"
           ></v-text-field>
@@ -300,9 +298,5 @@ const promote = async () => {
 .source-student:hover {
   background-color: #f8fafc;
 }
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
+
 </style>

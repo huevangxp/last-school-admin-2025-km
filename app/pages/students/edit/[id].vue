@@ -31,7 +31,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -47,7 +46,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -64,7 +62,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -81,7 +78,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
             ></v-text-field>
           </v-col>
@@ -98,7 +94,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-select>
@@ -112,7 +107,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -128,7 +122,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -143,7 +136,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-select>
@@ -178,7 +170,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-select>
@@ -195,7 +186,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :no-data-text="t('no-ethnic-groups')"
               :rules="[rules.required]"
@@ -213,7 +203,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -230,7 +219,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -247,7 +235,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -263,7 +250,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -281,7 +267,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :no-data-text="t('no-grade-levels')"
               @update:model-value="onGradeLevelChange"
@@ -301,7 +286,6 @@
               density="compact"
               rounded="0"
               hide-details="auto"
-              class="premium-input"
               color="primary"
               :no-data-text="
                 selectedGradeLevel
@@ -561,19 +545,6 @@ const save = async () => {
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
-}
-
-.premium-input :deep(.v-field__outline__start),
-.premium-input :deep(.v-field__outline__end),
-.premium-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.premium-input :deep(.v-field--focused .v-field__outline__start),
-.premium-input :deep(.v-field--focused .v-field__outline__end),
-.premium-input :deep(.v-field--focused .v-field__outline__notch) {
-  border-color: rgb(var(--v-theme-primary)) !important;
-  border-width: 1.5px !important;
 }
 
 .text-slate-700 {
