@@ -44,6 +44,9 @@
 
 <script setup lang="ts">
 const { t } = useI18n();
+// Defaults for title/confirmText/cancelText are resolved in the template
+// (`title || t('are_you_sure')`), because defineProps is hoisted and cannot
+// reference the locally-declared `t`.
 withDefaults(
   defineProps<{
     modelValue: boolean;
@@ -56,10 +59,7 @@ withDefaults(
     loading?: boolean;
   }>(),
   {
-    title: () => t("are_you_sure"),
     message: "",
-    confirmText: () => t("confirm"),
-    cancelText: () => t("cancel"),
     color: "error",
     icon: "mdi-alert-circle-outline",
     loading: false,
