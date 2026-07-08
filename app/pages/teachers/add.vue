@@ -284,7 +284,6 @@ import {
 const { t } = useI18n();
 const router = useRouter();
 const teacherStore = useTeacherStore();
-const subjectStore = useSubjectStore();
 const loading = ref(false);
 const errorMessage = ref("");
 const formRef = ref();
