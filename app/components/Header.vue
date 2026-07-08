@@ -576,16 +576,15 @@ const flatNavItems = computed(() =>
 // current role can see fill the (max 4) tabs first; anything left over stays in
 // the drawer behind "More". Each role naturally gets a sensible set:
 //   admin   → Dashboard · Students · Classes · Scores
-//   teacher → Dashboard · Scores · Score Report · Timetable
-//   student → Score Report · Timetable · Class Org · Teacher Org (all four)
+//   teacher → Dashboard · Scores · Timetable · Class Org
+//   student → Scores · Timetable · Class Org · Teacher Org (all four)
 const BOTTOM_PRIORITY = [
   "/",
   "/announcement",
   "/teachers/organization",
-  "/scores/report",
+  "/scores",
   "/timetable",
   "/class/organization",
-  "/scores",
   "/students",
   "/class",
 ];
