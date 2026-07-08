@@ -24,7 +24,7 @@
           :loading="loading"
           @click="$emit('confirm')"
         >
-          {{ confirmText }}
+          {{ confirmText || t("confirm") }}
         </v-btn>
         <v-btn
           block
