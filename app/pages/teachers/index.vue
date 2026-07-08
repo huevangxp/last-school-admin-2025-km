@@ -689,6 +689,8 @@ const managerOptions = computed(() =>
 const editDialog = ref(false);
 const saving = ref(false);
 const editError = ref("");
+const showDobPicker = ref(false);
+
 const editForm = ref({
   uuid: "",
   full_name: "",
