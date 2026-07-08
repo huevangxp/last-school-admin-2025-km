@@ -41,6 +41,7 @@
             rounded="0"
             hide-details
             color="primary"
+            :disabled="isStudent"
           ></v-select>
         </v-col>
         <v-col cols="6" sm="3" md="2">
