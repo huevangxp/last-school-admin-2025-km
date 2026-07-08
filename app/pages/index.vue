@@ -205,7 +205,11 @@
                 {{ t("loading") }}
               </div>
               <ClientOnly v-else>
-                <DashboardPieChart :labels="chartLabels" :values="chartValues" />
+                <DashboardChart
+                  :labels="chartLabels"
+                  :values="chartValues"
+                  :series-label="t('students')"
+                />
               </ClientOnly>
             </div>
           </div>
