@@ -441,6 +441,54 @@ const chartValues = computed(() =>
   yearClassrooms.value.map((c) => countByClass.value[c.id] || 0)
 );
 
+const selectedYear = computed(() =>
+  academicYears.value.find((y) => y.id === yearId.value)
+);
+
+// Line chart: cumulative count of active students per month across the selected
+// academic year, bucketed by each enrollment's created_at (starting from the
+// academic year's start month).
+const MONTHS_SHORT = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+const studentTrend = computed(() => {
+  const start = selectedYear.value?.start_date
+    ? new Date(selectedYear.value.start_date)
+    : null;
+  const startMonth = start ? start.getMonth() : 0;
+  const startYear = start ? start.getFullYear() : new Date().getFullYear();
+
+  const monthly = Array(12).fill(0);
+  for (const e of yearEnrollments.value) {
+    const d = e.created_at ? new Date(e.created_at) : null;
+    if (!d || Number.isNaN(d.getTime())) continue;
+    let idx = (d.getFullYear() - startYear) * 12 + (d.getMonth() - startMonth);
+    idx = Math.min(11, Math.max(0, idx));
+    monthly[idx]++;
+  }
+
+  const values: number[] = [];
+  const labels: string[] = [];
+  let running = 0;
+  for (let i = 0; i < 12; i++) {
+    running += monthly[i];
+    values.push(running);
+    labels.push(MONTHS_SHORT[(startMonth + i) % 12]);
+  }
+  return { labels, values };
+});
+
 // Doughnut: teachers grouped by department (falls back to position / gender).
 const teacherDistribution = computed(() => {
   const map: Record<string, number> = {};
