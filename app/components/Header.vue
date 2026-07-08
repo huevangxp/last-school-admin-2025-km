@@ -117,9 +117,11 @@
           >
             <v-img src="/logo.png" alt="Logo" width="20" height="20" contain></v-img>
           </v-avatar>
-          <span class="text-white font-weight-black text-body-2">{{
-            t("schoolmanagement")
-          }}</span>
+          <span
+            class="text-white font-weight-black text-body-2 text-truncate"
+            style="max-width: 150px"
+            >{{ t("schoolmanagement") }}</span
+          >
         </div>
 
         <div class="d-none d-sm-flex align-center ga-2">
