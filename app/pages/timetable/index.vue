@@ -403,8 +403,26 @@ const teacherOf = (cell: any) =>
   cell?.assignment?.tb_teacher?.full_name ||
   cell?.assignment?.tb_teacher?.username ||
   "—";
+// The classroom a teacher teaches for a given cell (teacher view only).
+const classroomOf = (cell: any) => cell?.tb_classroom?.classroom_name || "—";
+// Second line of a cell: teachers see the classroom they teach; admins and
+// students see the teacher's name.
+const secondaryOf = (cell: any) =>
+  isTeacher.value ? classroomOf(cell) : teacherOf(cell);
+
+// Teachers only need a year selected (their schedule spans all classes);
+// everyone else needs both a class and a year.
+const ready = computed(() =>
+  isTeacher.value ? !!yearId.value : !!classId.value && !!yearId.value
+);
 
 const loadGrid = async () => {
+  // Teacher: load their own schedule across every class they teach.
+  if (isTeacher.value) {
+    if (!yearId.value || !idCookie.value) return;
+    await scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value);
+    return;
+  }
   if (!classId.value || !yearId.value) return;
   await scheduleStore.fetchSchedule(classId.value, yearId.value);
   // Assignment options are admin-only (the endpoint requires admin).
@@ -418,14 +436,17 @@ const loadGrid = async () => {
 
 onMounted(async () => {
   await Promise.all([
+    // Teachers don't pick a class, so skip the (admin-only) class list for them.
     isStudent.value
       ? classroomStore.fetchMyClassrooms()
-      : classroomStore.fetchClassrooms(200),
+      : isTeacher.value
+        ? Promise.resolve()
+        : classroomStore.fetchClassrooms(200),
     classroomStore.fetchAcademicYears(),
     scheduleStore.fetchPeriods(),
   ]);
   yearId.value = classroomStore.latestAcademicYearId || null;
-  classId.value = classOptions.value[0]?.id || null;
+  if (!isTeacher.value) classId.value = classOptions.value[0]?.id || null;
   await loadGrid();
 });
 
