@@ -216,6 +216,11 @@ const roleCookie = useCookie<string>("role");
 const isAdmin = computed(
   () => (roleCookie.value || "").toLowerCase() === "admin"
 );
+// Students are scoped to their own class only (via /my-classrooms); everyone
+// else picks from the full class list.
+const isStudent = computed(
+  () => (roleCookie.value || "").toLowerCase() === "student"
+);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
