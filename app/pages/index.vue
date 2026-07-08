@@ -390,6 +390,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from "vue";
+import DashboardChart from "~/components/DashboardChart.vue";
 import DashboardPieChart from "~/components/DashboardPieChart.vue";
 import DashboardBarChart from "~/components/DashboardBarChart.vue";
 import DashboardDoughnutChart from "~/components/DashboardDoughnutChart.vue";
