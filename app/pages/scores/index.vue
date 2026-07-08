@@ -290,6 +290,7 @@ const isStudent = computed(
 );
 
 // The single page has two modes: "enter" (grade entry) and "view" (report).
+// Students are locked to "view" (see onMounted); everyone else can toggle.
 const mode = ref<"enter" | "view">("enter");
 
 // Shared filters.
