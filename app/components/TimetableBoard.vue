@@ -400,7 +400,7 @@
           <v-icon start size="20" color="indigo-darken-2">
             mdi-clock-plus-outline
           </v-icon>
-          {{ cellFor(addPeriodId!, addDay!) ? t("change_teaching_time") : t("add_teaching_time") }}
+          {{ addDialogCell ? t("change_teaching_time") : t("add_teaching_time") }}
         </v-card-title>
         <v-card-subtitle class="text-detail-tiny">
           {{ currentTeacherLabel }}<template v-if="addSlotLabel"> · {{ addSlotLabel }}</template>
