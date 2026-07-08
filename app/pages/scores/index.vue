@@ -169,6 +169,7 @@
                   hide-details
                   rounded="0"
                   style="max-width: 120px; margin: 0 auto"
+                  @focus="$event.target.select()"
                   @blur="clampScore(row)"
                 ></v-text-field>
               </td>
