@@ -182,7 +182,15 @@ const loading = ref(false);
 const errorMessage = ref("");
 const formRef = ref();
 
-const form = ref({
+const form = ref<{
+  className: string;
+  code: string;
+  gradeLevelId: string | null;
+  academicYearId: string | null;
+  homeroomTeacherId: string | null;
+  room: string;
+  maxStudent: string;
+}>({
   className: "",
   code: "",
   gradeLevelId: null,
