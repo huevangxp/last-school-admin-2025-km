@@ -375,6 +375,8 @@ interface MenuItem {
   to?: string;
   children?: MenuItem[];
   adminOnly?: boolean;
+  // Students get a heavily reduced, read-only menu: only items marked here.
+  studentVisible?: boolean;
 }
 
 interface MenuSection {
