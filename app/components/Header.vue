@@ -424,6 +424,9 @@ interface MenuItem {
   adminOnly?: boolean;
   // Students get a heavily reduced, read-only menu: only items marked here.
   studentVisible?: boolean;
+  // Hidden from teachers (e.g. the class study timetable — teachers use their
+  // own teaching timetable instead).
+  teacherHidden?: boolean;
 }
 
 interface MenuSection {
