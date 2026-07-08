@@ -47,6 +47,7 @@ export default defineNuxtRouteMiddleware((to) => {
         "/scores/report",
         "/timetable",
         "/class/organization",
+        "/announcement",
       ];
       const ok = allowed.some((a) => path === a || path.startsWith(a + "/"));
       if (!ok) {
