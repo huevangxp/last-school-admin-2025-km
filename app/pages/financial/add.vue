@@ -227,7 +227,15 @@ const rules = {
   positive: (v: any) => Number(v) > 0 || t("required"),
 };
 
-const form = ref({
+const form = ref<{
+  type: string;
+  category: string;
+  amount: number | string;
+  transaction_date: string;
+  method: string;
+  status: string;
+  description: string;
+}>({
   type: "income",
   category: "registration",
   amount: "",
