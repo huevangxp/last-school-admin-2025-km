@@ -175,24 +175,6 @@
             ></v-combobox>
           </v-col>
           <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("subject")
-            }}</label>
-            <v-select
-              v-model="form.subjectId"
-              :items="subjectOptions"
-              item-title="label"
-              item-value="id"
-              :placeholder="t('select')"
-              variant="outlined"
-              density="compact"
-              rounded="0"
-              hide-details="auto"
-              color="primary"
-              clearable
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">{{ t("layer") }}</label>
             <v-select
               v-model="form.layer"
