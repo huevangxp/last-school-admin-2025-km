@@ -304,6 +304,87 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Section: Latest registered students (full width) -->
+    <v-row class="mt-2">
+      <v-col cols="12">
+        <v-card elevation="0" class="intelligence-card overflow-hidden">
+          <header
+            class="pa-6 d-flex justify-space-between align-center border-b"
+          >
+            <div>
+              <div class="text-title mb-1">{{ t("students") }}</div>
+              <div class="text-detail">{{ t("latest-registered-students") }}</div>
+            </div>
+            <v-chip
+              color="primary"
+              variant="flat"
+              size="x-small"
+              rounded="0"
+              class="font-weight-black px-2"
+            >
+              {{ studentCount }} {{ t("total") }}
+            </v-chip>
+          </header>
+
+          <v-table class="premium-table">
+            <thead>
+              <tr>
+                <th class="text-detail">{{ t("stakeholder") }}</th>
+                <th class="text-detail">{{ t("context") }}</th>
+                <th class="text-detail">{{ t("alert") }}</th>
+                <th class="text-right text-detail pr-6">{{ t("action") }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(student, i) in flaggedStudents"
+                :key="i"
+                class="table-row-hover"
+              >
+                <td class="pl-6">
+                  <div class="d-flex align-center py-3">
+                    <v-avatar size="32" class="mr-3 elevation-1 border-white">
+                      <v-img
+                        :src="`https://ui-avatars.com/api/?name=${student.name}&background=random`"
+                      ></v-img>
+                    </v-avatar>
+                    <div>
+                      <div class="text-title-small">{{ student.name }}</div>
+                      <div class="text-detail-tiny">{{ student.id }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="text-title-small">{{ student.grade }}</div>
+                </td>
+                <td>
+                  <div class="d-flex align-center">
+                    <div :class="`status-dot bg-${student.statusColor}`"></div>
+                    <span
+                      :class="`text-detail-tiny font-weight-black text-uppercase text-${student.statusColor}`"
+                    >
+                      {{ student.status }}
+                    </span>
+                  </div>
+                </td>
+                <td class="text-right pr-6">
+                  <v-btn
+                    variant="tonal"
+                    color="primary"
+                    size="x-small"
+                    class="rounded-0 font-weight-bold text-none"
+                    height="28"
+                  >
+                    {{ t("action") }}
+                  </v-btn>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
