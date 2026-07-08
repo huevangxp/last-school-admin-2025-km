@@ -55,19 +55,17 @@
           <!-- Amount -->
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block">{{ $t("amount") }}</label>
-            <v-text-field
+            <MoneyInput
               v-model="form.amount"
               placeholder="0"
-              prefix="₭"
               variant="outlined"
               density="compact"
               rounded="0"
               class="font-weight-black"
               color="primary"
               hide-details="auto"
-              type="number"
               :rules="[rules.required, rules.positive]"
-            ></v-text-field>
+            ></MoneyInput>
           </v-col>
 
           <!-- Date -->
