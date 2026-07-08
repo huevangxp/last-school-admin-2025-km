@@ -84,6 +84,18 @@ const breadcrumbs = [
 
 const id = route.params.id as string;
 
+onMounted(async () => {
+  loading.value = true;
+  try {
+    const data = await ethnicGroupStore.getEthnicGroupById(Number(id));
+    form.title = data?.title ?? "";
+  } catch (error) {
+    console.error(error);
+  } finally {
+    loading.value = false;
+  }
+});
+
 const submit = async () => {
   loading.value = true;
   try {
