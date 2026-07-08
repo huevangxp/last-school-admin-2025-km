@@ -28,7 +28,6 @@
               rounded="0"
               class="premium-input"
               color="primary"
-              hide-details="auto"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
