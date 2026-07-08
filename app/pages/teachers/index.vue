@@ -415,6 +415,26 @@
         </v-row>
 
         <v-row class="mt-1">
+          <v-col cols="12">
+            <label class="text-detail-tiny mb-1 d-block">{{
+              t("subject")
+            }}</label>
+            <v-select
+              v-model="editForm.subject_id"
+              :items="subjectOptions"
+              item-title="label"
+              item-value="id"
+              :placeholder="t('select')"
+              variant="outlined"
+              density="compact"
+              rounded="0"
+              hide-details
+              clearable
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <v-row class="mt-1">
           <v-col cols="6">
             <label class="text-detail-tiny mb-1 d-block">{{ t("layer") }}</label>
             <v-select
