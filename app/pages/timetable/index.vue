@@ -377,23 +377,44 @@ const currentDayKey = computed(
 const classId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
-const classOptions = computed(() =>
-  (isStudent.value ? classroomStore.myClassrooms : classroomStore.classrooms).map(
-    (c: any) => ({
-      id: c.id,
-      label: c.classroom_name,
-    })
-  )
-);
+const classOptions = computed(() => {
+  // Teachers: only the distinct classes they teach this year.
+  if (isTeacher.value) {
+    const seen = new Map<string, any>();
+    teachingStore.myTeaching
+      .filter((a: any) => a.academic_year_id === yearId.value && a.tb_classroom)
+      .forEach((a: any) => {
+        if (!seen.has(a.classroom_id)) {
+          seen.set(a.classroom_id, {
+            id: a.classroom_id,
+            label: a.tb_classroom.classroom_name,
+          });
+        }
+      });
+    return [...seen.values()];
+  }
+  const source = isStudent.value
+    ? classroomStore.myClassrooms
+    : classroomStore.classrooms;
+  return source.map((c: any) => ({ id: c.id, label: c.classroom_name }));
+});
 
-// Subject → teacher pairs available for this class (admin picks from these).
-const assignmentOptions = computed(() =>
-  teachingStore.assignments.map((a: any) => ({
+// Subject → teacher pairs available to fill a cell. Admins pick from every
+// assignment in the class; teachers pick only from their own assignments.
+const assignmentOptions = computed(() => {
+  const source = isTeacher.value
+    ? teachingStore.myTeaching.filter(
+        (a: any) =>
+          a.classroom_id === classId.value &&
+          a.academic_year_id === yearId.value
+      )
+    : teachingStore.assignments;
+  return source.map((a: any) => ({
     id: a.id,
     subject: a.tb_subject?.subject_name || "—",
-    teacher: a.tb_teacher?.full_name || a.tb_teacher?.username || "—",
-  }))
-);
+    teacher: a.tb_teacher?.full_name || a.tb_teacher?.username || t("teacher"),
+  }));
+});
 
 // Fast lookup of a filled cell by (period, day).
 const cellFor = (periodId: string, day: string) =>
