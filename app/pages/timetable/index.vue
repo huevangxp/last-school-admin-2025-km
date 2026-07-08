@@ -236,8 +236,8 @@
               <div class="text-detail-tiny">{{ p.period_code }}</div>
             </div>
 
-            <!-- Admin: tap to assign / change / clear -->
-            <v-menu v-if="isAdmin" :close-on-content-click="true">
+            <!-- Admin/teacher: tap to assign / change / clear -->
+            <v-menu v-if="canEdit" :close-on-content-click="true">
               <template v-slot:activator="{ props }">
                 <div
                   v-bind="props"
