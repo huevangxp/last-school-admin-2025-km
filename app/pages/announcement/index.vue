@@ -3,9 +3,7 @@
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
-    >
+    <div class="feed-column mx-auto d-flex align-center justify-space-between mb-4">
       <div class="d-flex align-center">
         <v-avatar color="deep-orange-lighten-5" size="44" class="mr-3 rounded-0">
           <v-icon color="deep-orange-darken-2" size="22">mdi-bullhorn-outline</v-icon>
@@ -16,23 +14,13 @@
         </div>
       </div>
 
-      <!-- Teachers & admins can post; students only read. -->
-      <v-btn
-        v-if="!isStudent"
-        color="primary"
-        class="modern-action-btn primary elevation-4 mt-4 mt-md-0"
-        height="36"
-        @click="openCreate"
-      >
-        <v-icon icon="mdi-plus" start size="18"></v-icon>
-        {{ t("post-announcement") }}
-      </v-btn>
+      <!-- Students only read. -->
       <v-chip
-        v-else
+        v-if="isStudent"
         size="small"
         rounded="0"
         color="deep-orange-lighten-5"
-        class="text-deep-orange-darken-2 font-weight-bold mt-4 mt-md-0"
+        class="text-deep-orange-darken-2 font-weight-bold"
         variant="flat"
       >
         <v-icon start size="14">mdi-eye-outline</v-icon>
@@ -40,51 +28,109 @@
       </v-chip>
     </div>
 
-    <!-- Loading -->
-    <div v-if="announcementStore.loading" class="py-10 text-center">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-    </div>
+    <div class="feed-column mx-auto">
+      <!-- Composer (teachers / admins) -->
+      <v-card v-if="!isStudent" elevation="0" class="fb-card mb-4">
+        <div class="pa-4 d-flex align-center ga-3">
+          <v-avatar color="deep-orange-lighten-5" size="40">
+            <v-icon color="deep-orange-darken-2" size="20"
+              >mdi-bullhorn-outline</v-icon
+            >
+          </v-avatar>
+          <button
+            type="button"
+            class="composer-input flex-grow-1"
+            @click="openCreate"
+          >
+            {{ t("write-announcement") }}
+          </button>
+        </div>
+        <v-divider></v-divider>
+        <div class="pa-1">
+          <v-btn
+            variant="text"
+            block
+            class="composer-cta"
+            @click="openCreate"
+          >
+            <v-icon start size="18" color="deep-orange-darken-2"
+              >mdi-image-outline</v-icon
+            >
+            {{ t("post-announcement") }}
+          </v-btn>
+        </div>
+      </v-card>
 
-    <!-- Empty -->
-    <v-card
-      v-else-if="!feed.length"
-      elevation="0"
-      class="intelligence-card pa-10 text-center text-detail"
-    >
-      {{ t("no-announcements-yet") }}
-    </v-card>
+      <!-- Loading -->
+      <div v-if="announcementStore.loading" class="py-10 text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </div>
 
-    <!-- Feed -->
-    <v-row v-else>
-      <v-col
-        v-for="a in feed"
-        :key="a.id"
-        cols="12"
-        sm="6"
-        md="4"
+      <!-- Empty -->
+      <v-card
+        v-else-if="!feed.length"
+        elevation="0"
+        class="fb-card pa-10 text-center text-detail"
       >
-        <v-card elevation="0" class="intelligence-card h-100 overflow-hidden d-flex flex-column">
+        {{ t("no-announcements-yet") }}
+      </v-card>
+
+      <!-- Feed (Facebook-style posts) -->
+      <template v-else>
+        <v-card
+          v-for="a in feed"
+          :key="a.id"
+          elevation="0"
+          class="fb-card mb-4 overflow-hidden"
+        >
+          <!-- Post header -->
+          <div class="pa-4 pb-2 d-flex align-center">
+            <v-avatar color="deep-orange-lighten-5" size="44" class="mr-3">
+              <v-icon color="deep-orange-darken-2" size="22">mdi-bullhorn</v-icon>
+            </v-avatar>
+            <div>
+              <div class="fb-author">{{ t("announcement_author") }}</div>
+              <div class="text-detail-tiny d-flex align-center ga-1">
+                {{ formatDate(a.created_at) }}
+                <span>·</span>
+                <v-icon size="12">mdi-earth</v-icon>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post body -->
+          <div class="px-4 pb-3">
+            <div v-if="a.title" class="text-title-small mb-1">{{ a.title }}</div>
+            <div class="fb-content text-detail">{{ a.content }}</div>
+          </div>
+
+          <!-- Post image (full width) -->
           <v-img
             v-if="a.image_url"
             :src="mediaUrl(a.image_url)"
-            height="160"
             cover
+            max-height="520"
           ></v-img>
-          <div class="pa-4 d-flex flex-column flex-grow-1">
-            <div class="d-flex align-center mb-2">
-              <v-icon size="16" color="deep-orange-darken-2" class="mr-2">
-                mdi-bullhorn-outline
-              </v-icon>
-              <div class="text-detail-tiny">{{ formatDate(a.created_at) }}</div>
-            </div>
-            <div class="text-title-small mb-2">{{ a.title }}</div>
-            <div class="text-detail announcement-body flex-grow-1">
-              {{ a.content }}
-            </div>
+
+          <!-- Action bar -->
+          <v-divider></v-divider>
+          <div class="d-flex fb-actions">
+            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
+              <v-icon start size="18">mdi-thumb-up-outline</v-icon>
+              {{ t("like") }}
+            </v-btn>
+            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
+              <v-icon start size="18">mdi-comment-outline</v-icon>
+              {{ t("comment") }}
+            </v-btn>
+            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
+              <v-icon start size="18">mdi-share-outline</v-icon>
+              {{ t("share") }}
+            </v-btn>
           </div>
         </v-card>
-      </v-col>
-    </v-row>
+      </template>
+    </div>
 
     <!-- Post dialog (teachers / admins) -->
     <v-dialog v-model="dialog" width="560">
