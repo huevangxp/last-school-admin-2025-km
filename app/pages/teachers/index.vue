@@ -317,13 +317,20 @@
           </v-col>
           <v-col cols="6">
             <label class="text-detail-tiny mb-1 d-block">{{ t("dob") }}</label>
+            <DialogDate
+              v-model="showDobPicker"
+              :date="editForm.dob"
+              @update:date="editForm.dob = $event"
+            />
             <v-text-field
               v-model="editForm.dob"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showDobPicker = true"
             ></v-text-field>
           </v-col>
         </v-row>
