@@ -155,7 +155,7 @@
                           <span class="font-weight-bold text-teal-darken-2">{{
                             opt.subject
                           }}</span>
-                          · {{ opt.teacher }}
+                          · {{ opt.secondary }}
                         </v-list-item-title>
                       </v-list-item>
                       <template v-if="cellFor(p.id, d.key)">
