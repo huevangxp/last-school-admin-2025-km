@@ -239,26 +239,40 @@
             <label class="text-detail-tiny mb-1 d-block">{{
               t("start_date")
             }}</label>
+            <DialogDate
+              v-model="showStartDatePicker"
+              :date="editForm.startDate"
+              @update:date="editForm.startDate = $event"
+            />
             <v-text-field
               v-model="editForm.startDate"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details
+              prepend-inner-icon="mdi-calendar-start"
+              readonly
+              @click="showStartDatePicker = true"
             ></v-text-field>
           </v-col>
           <v-col cols="6">
             <label class="text-detail-tiny mb-1 d-block">{{
               t("end_date")
             }}</label>
+            <DialogDate
+              v-model="showEndDatePicker"
+              :date="editForm.endDate"
+              @update:date="editForm.endDate = $event"
+            />
             <v-text-field
               v-model="editForm.endDate"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details
+              prepend-inner-icon="mdi-calendar-end"
+              readonly
+              @click="showEndDatePicker = true"
             ></v-text-field>
           </v-col>
         </v-row>
