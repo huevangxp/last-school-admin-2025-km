@@ -1,29 +1,17 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
+  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
-    <!-- Header Section -->
+    <!-- Header -->
     <div
       class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
     >
       <div>
         <h1 class="text-title mb-1">{{ $t("financial-management") }}</h1>
-        <p class="text-detail">
-          {{ $t("financial-management-subtitle") }}
-        </p>
+        <p class="text-detail">{{ $t("financial-management-subtitle") }}</p>
       </div>
 
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
-        <v-btn
-          variant="outlined"
-          color="grey-darken-1"
-          class="modern-action-btn secondary border"
-          height="32"
-          prepend-icon="mdi-tray-arrow-down"
-        >
-          {{ $t("export") }}
-        </v-btn>
-
         <v-btn
           color="primary"
           class="modern-action-btn primary elevation-4"
@@ -39,15 +27,10 @@
     <!-- Stats Cards -->
     <v-row class="mb-6">
       <v-col cols="12" sm="6" md="3" v-for="(stat, i) in financeStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
+        <v-card class="metric-card pa-4 h-100" elevation="0">
+          <div class="d-flex align-center justify-space-between">
             <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
+              <p class="text-detail-tiny mb-1">{{ stat.label }}</p>
               <h2 class="text-title">{{ stat.value }}</h2>
             </div>
             <v-avatar
@@ -61,27 +44,12 @@
               }}</v-icon>
             </v-avatar>
           </div>
-          <div class="d-flex align-center mt-2" v-if="stat.trend">
-            <v-icon
-              :icon="
-                stat.trendUp ? 'mdi-arrow-up-right' : 'mdi-arrow-down-right'
-              "
-              :color="stat.trendUp ? 'green-darken-1' : 'red-darken-1'"
-              size="12"
-              class="mr-1"
-            ></v-icon>
-            <span
-              :class="`text-detail-tiny font-weight-black text-${stat.trendUp ? 'green' : 'red'}-darken-2`"
-              >{{ stat.trend }}</span
-            >
-          </div>
         </v-card>
       </v-col>
     </v-row>
 
     <!-- Main Content Card -->
     <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search and Filter Section -->
       <div
         class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
@@ -92,72 +60,55 @@
           variant="outlined"
           density="compact"
           hide-details
-          class="cream-input"
           style="max-width: 320px"
           bg-color="white"
           color="primary"
-          base-color="grey-lighten-1"
           rounded="0"
         ></v-text-field>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            :items="[
-              { title: $t('total'), value: 'Total' },
-              { title: $t('income'), value: 'Income' },
-              { title: $t('expense'), value: 'Expense' },
-            ]"
-            variant="outlined"
-            density="compact"
-            hide-details
-            rounded="0"
-            style="min-width: 130px"
-            prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
-            color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
-
-          <v-btn
-            variant="outlined"
-            color="grey-darken-1"
-            class="modern-action-btn secondary border"
-            height="32"
-            width="32"
-            icon="mdi-dots-horizontal"
-          ></v-btn>
-        </div>
+        <v-select
+          v-model="typeFilter"
+          :items="[
+            { title: $t('total'), value: 'Total' },
+            { title: $t('income'), value: 'income' },
+            { title: $t('expense'), value: 'expense' },
+          ]"
+          variant="outlined"
+          density="compact"
+          hide-details
+          rounded="0"
+          style="min-width: 150px; max-width: 180px"
+          prepend-inner-icon="mdi-filter-variant"
+          color="primary"
+        ></v-select>
       </div>
 
       <!-- Data Table -->
       <v-data-table
         :headers="headers"
-        :items="transactions"
+        :items="rows"
         :search="search"
+        :loading="financeStore.loading"
         class="premium-table"
         hover
       >
-        <!-- ID Slot -->
-        <template v-slot:item.id="{ item }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
-            {{ item.id }}
-          </span>
+        <template v-slot:no-data>
+          <div class="text-detail py-8 text-center">
+            {{ $t("no-transactions-yet") }}
+          </div>
         </template>
 
-        <!-- Description Slot -->
+        <!-- Description -->
         <template v-slot:item.description="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar
-              :color="
-                item.type === 'income' ? 'green-lighten-5' : 'red-lighten-5'
-              "
+              :color="item.type === 'income' ? 'green-lighten-5' : 'red-lighten-5'"
               size="32"
               class="mr-3 elevation-1 border-white"
+              rounded="0"
             >
               <v-icon
-                :color="
-                  item.type === 'income' ? 'green-darken-1' : 'red-darken-1'
-                "
+                :color="item.type === 'income' ? 'green-darken-1' : 'red-darken-1'"
                 size="16"
               >
                 {{
@@ -169,74 +120,61 @@
             </v-avatar>
             <div>
               <div class="text-title-small">
-                {{ item.description }}
+                {{ item.description || $t(item.category || "other") }}
               </div>
               <div class="text-detail-tiny text-grey">
-                {{ item.category }}
+                {{ $t(item.category || "other") }} · {{ item.method }}
               </div>
             </div>
           </div>
         </template>
 
-        <!-- Amount Slot -->
+        <!-- Amount -->
         <template v-slot:item.amount="{ item }">
           <span
-            :class="
-              item.type === 'income'
-                ? 'text-green-darken-2'
-                : 'text-red-darken-2'
-            "
+            :class="item.type === 'income' ? 'text-green-darken-2' : 'text-red-darken-2'"
             class="text-title-small"
           >
-            {{ item.type === "income" ? "+" : "-" }}₭{{ item.amount }}
+            {{ item.type === "income" ? "+" : "-" }}₭{{ formatMoney(item.amount) }}
           </span>
         </template>
 
-        <!-- Date Slot -->
-        <template v-slot:item.date="{ item }">
-          <div>
-            <div class="text-title-small">
-              {{ item.date }}
-            </div>
-            <div class="text-detail-tiny text-grey">
-              {{ item.time }}
-            </div>
-          </div>
+        <!-- Date -->
+        <template v-slot:item.transaction_date="{ item }">
+          <div class="text-detail">{{ formatDate(item.transaction_date) }}</div>
         </template>
 
-        <!-- Status Slot -->
+        <!-- Status -->
         <template v-slot:item.status="{ item }">
           <v-chip
-            :color="
-              item.status === 'ຊຳລະແລ້ວ'
-                ? 'success'
-                : item.status === 'ຄ້າງຊຳລະ'
-                  ? 'red'
-                  : 'grey'
-            "
+            :color="item.status === 'paid' ? 'success' : 'orange'"
             size="x-small"
             variant="flat"
             rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
-            {{ item.status }}
+            {{ item.status === "paid" ? $t("paid") : $t("pending") }}
           </v-chip>
         </template>
 
-        <!-- Actions Slot -->
+        <!-- Actions -->
         <template v-slot:item.actions="{ item }">
-          <v-btn
-            icon="mdi-eye-outline"
-            variant="text"
-            size="x-small"
-            color="primary"
-          ></v-btn>
-          <v-btn
-            icon="mdi-pencil-outline"
-            variant="text"
-            size="x-small"
-            color="secondary"
-          ></v-btn>
+          <div class="d-flex justify-end ga-1">
+            <v-btn
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="x-small"
+              color="primary"
+              :to="`/financial/add?id=${item.id}`"
+            ></v-btn>
+            <v-btn
+              icon="mdi-delete-outline"
+              variant="text"
+              size="x-small"
+              color="error"
+              @click="removeItem(item)"
+            ></v-btn>
+          </div>
         </template>
       </v-data-table>
     </v-card>
@@ -244,115 +182,87 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useFinanceStore } from "~/stores/apiFinance";
+import { useUiStore } from "~/stores/ui";
+import { formatDate } from "@/utils/formatDate";
+
 const { t } = useI18n();
+const financeStore = useFinanceStore();
+const ui = useUiStore();
+
 const search = ref("");
+const typeFilter = ref("Total");
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("financial"), disabled: true, to: "/financial" },
 ];
 
-const financeStats = [
+const formatMoney = (v: any) =>
+  Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
+
+const rows = computed(() =>
+  typeFilter.value === "Total"
+    ? financeStore.finances
+    : financeStore.finances.filter((f: any) => f.type === typeFilter.value)
+);
+
+// Live totals across the whole ledger (from the store getters).
+const financeStats = computed(() => [
   {
     label: t("total-income"),
-    value: "₭45.2M",
+    value: `₭${formatMoney(financeStore.totalIncome)}`,
     icon: "mdi-cash-plus",
     color: "green",
-    trend: "+12.5%",
-    trendUp: true,
   },
   {
     label: t("total-expense"),
-    value: "₭28.7M",
+    value: `₭${formatMoney(financeStore.totalExpense)}`,
     icon: "mdi-cash-minus",
     color: "red",
-    trend: "+5.2%",
-    trendUp: false,
   },
   {
     label: t("balance"),
-    value: "₭16.5M",
+    value: `₭${formatMoney(financeStore.balance)}`,
     icon: "mdi-wallet-outline",
     color: "purple",
   },
   {
     label: t("pending"),
-    value: "15",
+    value: String(financeStore.pendingCount),
     icon: "mdi-clock-time-four-outline",
     color: "orange",
   },
-];
+]);
 
 const headers = [
-  { title: t("id"), key: "id", align: "start" as const, sortable: true },
-  {
-    title: t("description"),
-    key: "description",
-    align: "start" as const,
-    sortable: true,
-  },
+  { title: t("description"), key: "description", align: "start" as const, sortable: false },
   { title: t("amount"), key: "amount", align: "start" as const, sortable: true },
-  { title: t("date"), key: "date", align: "start" as const, sortable: true },
+  { title: t("date"), key: "transaction_date", align: "start" as const, sortable: true },
   { title: t("status"), key: "status", align: "start" as const, sortable: true },
   { title: "", key: "actions", align: "end" as const, sortable: false },
-].map((h) => ({
-  ...h,
-  class: "text-detail-tiny pb-2",
-}));
+].map((h) => ({ ...h, class: "text-detail-tiny pb-2" }));
 
-const transactions = ref([
-  {
-    id: "#TXN-001",
-    description: "ຄ່າຮຽນ - ນັກຮຽນໃໝ່",
-    category: "Tuition",
-    type: "income",
-    amount: "2,500,000",
-    date: "15/12/2024",
-    time: "09:30",
-    status: "ຊຳລະແລ້ວ",
-  },
-  {
-    id: "#TXN-002",
-    description: "ເງິນເດືອນຄູ",
-    category: "Salary",
-    type: "expense",
-    amount: "8,000,000",
-    date: "14/12/2024",
-    time: "14:00",
-    status: "ຊຳລະແລ້ວ",
-  },
-  {
-    id: "#TXN-003",
-    description: "ຄ່າອຸປະກອນການສອນ",
-    category: "Supplies",
-    type: "expense",
-    amount: "1,200,000",
-    date: "13/12/2024",
-    time: "11:15",
-    status: "ຊຳລະແລ້ວ",
-  },
-  {
-    id: "#TXN-004",
-    description: "ຄ່າຮຽນ - ພາກຮຽນ 2",
-    category: "Tuition",
-    type: "income",
-    amount: "3,000,000",
-    date: "12/12/2024",
-    time: "10:00",
-    status: "ຄ້າງຊຳລະ",
-  },
-  {
-    id: "#TXN-005",
-    description: "ຄ່າໄຟຟ້າ",
-    category: "Utilities",
-    type: "expense",
-    amount: "500,000",
-    date: "11/12/2024",
-    time: "16:30",
-    status: "ຊຳລະແລ້ວ",
-  },
-]);
+const removeItem = async (item: any) => {
+  const ok = await ui.confirm({
+    message: t("are_you_sure_delete"),
+    confirmText: t("delete"),
+    icon: "mdi-delete-outline",
+  });
+  if (!ok) return;
+  try {
+    await financeStore.deleteFinance(item.id);
+    await financeStore.fetchFinances();
+    ui.notify(t("deleted_successfully"), "success");
+  } catch {
+    ui.notify(t("failed-to-delete"), "error");
+  }
+};
+
+onMounted(() => {
+  financeStore.fetchFinances();
+});
 </script>
 
 <style scoped>
@@ -360,61 +270,42 @@ const transactions = ref([
   max-width: 1400px;
   margin: 0 auto;
 }
-
 .modern-action-btn {
   text-transform: none !important;
   font-weight: 800 !important;
   font-size: 12px !important;
   padding: 0 12px !important;
 }
-
 .modern-action-btn.primary {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
 }
-
 .metric-card {
   background: white;
   border: 1px solid #f1f5f9;
 }
-
 .metric-icon-box {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .intelligence-card {
   background: white;
   border: 1px solid #f1f5f9;
 }
-
 .premium-table {
   background: transparent !important;
 }
-
 :deep(.v-data-table__th) {
   background-color: #f8fafc !important;
   border-bottom: 1px solid #f1f5f9 !important;
   height: 48px !important;
 }
-
 :deep(.v-data-table__td) {
   border-bottom: 1px solid #f1f5f9 !important;
   height: 60px !important;
 }
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
 .border-white {
   border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
 }
 </style>
