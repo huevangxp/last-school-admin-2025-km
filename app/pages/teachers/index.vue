@@ -85,23 +85,28 @@
       <div
         class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
       >
-        <v-text-field
-          v-model="search"
+        <!-- Searchable teacher-name filter (type to search, pick from the list). -->
+        <v-autocomplete
+          v-model="selectedName"
+          :items="teacherNameOptions"
           prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search')"
+          :placeholder="t('search-teacher-name')"
+          :no-data-text="t('no-teachers-found')"
           variant="outlined"
           density="compact"
           hide-details
+          clearable
+          auto-select-first
           class="cream-input"
           style="max-width: 320px"
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
           rounded="0"
-        ></v-text-field>
+        ></v-autocomplete>
 
         <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
+          <v-autocomplete
             v-model="selectedRole"
             :items="roleOptions"
             item-title="title"
@@ -115,9 +120,9 @@
             class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
-          ></v-select>
+          ></v-autocomplete>
 
-          <v-select
+          <v-autocomplete
             v-model="selectedStatus"
             :items="statusOptions"
             item-title="title"
@@ -131,7 +136,7 @@
             class="cream-select text-detail"
             color="primary"
             base-color="grey-lighten-1"
-          ></v-select>
+          ></v-autocomplete>
         </div>
       </div>
 
