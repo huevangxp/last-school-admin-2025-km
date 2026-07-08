@@ -34,9 +34,10 @@
     <!-- Filters: class + academic year -->
     <v-card elevation="0" class="intelligence-card pa-4 mb-6">
       <div class="d-flex flex-column flex-md-row gap-3">
-        <!-- Class picker: teachers pick from the classes they teach; students
-             are locked to their own class. -->
+        <!-- Class picker — teachers see one cross-class table, so no picker for
+             them. Students are locked to their own class. -->
         <v-select
+          v-if="!isTeacher"
           v-model="classId"
           :items="classOptions"
           item-title="label"
