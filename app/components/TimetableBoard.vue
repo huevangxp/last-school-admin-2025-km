@@ -434,7 +434,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            v-if="cellFor(addPeriodId!, addDay!)"
+            v-if="addDialogCell"
             color="error"
             variant="text"
             rounded="0"
