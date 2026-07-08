@@ -392,6 +392,73 @@
         </v-card>
       </div>
     </template>
+
+    <!-- Inline add/change teaching time (admin, teaching board) -->
+    <v-dialog v-model="addDialog" max-width="440">
+      <v-card rounded="0" class="pa-2">
+        <v-card-title class="d-flex align-center text-title-small">
+          <v-icon start size="20" color="indigo-darken-2">
+            mdi-clock-plus-outline
+          </v-icon>
+          {{ cellFor(addPeriodId!, addDay!) ? t("change_teaching_time") : t("add_teaching_time") }}
+        </v-card-title>
+        <v-card-subtitle class="text-detail-tiny">
+          {{ currentTeacherLabel }}<template v-if="addSlotLabel"> · {{ addSlotLabel }}</template>
+        </v-card-subtitle>
+        <v-card-text class="pt-4">
+          <v-select
+            v-model="addClassId"
+            :items="classOptions"
+            item-title="label"
+            item-value="id"
+            :label="t('class')"
+            variant="outlined"
+            density="compact"
+            rounded="0"
+            hide-details
+            class="mb-3"
+            prepend-inner-icon="mdi-google-classroom"
+          ></v-select>
+          <v-select
+            v-model="addSubjectId"
+            :items="subjectOptions"
+            item-title="label"
+            item-value="id"
+            :label="t('subject')"
+            variant="outlined"
+            density="compact"
+            rounded="0"
+            hide-details
+            prepend-inner-icon="mdi-book-open-variant"
+          ></v-select>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            v-if="cellFor(addPeriodId!, addDay!)"
+            color="error"
+            variant="text"
+            rounded="0"
+            @click="clearFromDialog"
+          >
+            {{ t("clear") }}
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn variant="text" rounded="0" @click="addDialog = false">
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="flat"
+            rounded="0"
+            :disabled="!addClassId || !addSubjectId"
+            :loading="adding"
+            @click="addTeachingTime"
+          >
+            {{ t("save") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
