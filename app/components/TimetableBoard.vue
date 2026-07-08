@@ -535,21 +535,22 @@ onMounted(async () => {
   ];
   if (isStudent.value) {
     tasks.push(classroomStore.fetchMyClassrooms());
-  } else if (isAdmin.value) {
-    // Admin picks a teacher on the teaching board, a class on the study board.
-    tasks.push(
-      isTeachingTab.value
-        ? teacherStore.fetchTeachers(500, 1)
-        : classroomStore.fetchClassrooms(200)
-    );
+  } else if (isTeachingTab.value) {
+    // Teaching board: admins choose from all teachers; a teacher uses their own
+    // id, so no list is needed.
+    if (isAdmin.value) tasks.push(teacherStore.fetchTeachers(500, 1));
+  } else {
+    // Study board: admins and teachers both pick from the class list.
+    tasks.push(classroomStore.fetchClassrooms(200));
   }
   await Promise.all(tasks);
 
   yearId.value = classroomStore.latestAcademicYearId || null;
-  if (isTeacher.value) {
-    teacherId.value = idCookie.value || null;
-  } else if (isTeachingTab.value) {
-    teacherId.value = teacherOptions.value[0]?.id || null;
+  if (isTeachingTab.value) {
+    // Teacher is locked to their own schedule; admin defaults to the first teacher.
+    teacherId.value = isTeacher.value
+      ? idCookie.value || null
+      : teacherOptions.value[0]?.id || null;
   } else {
     studyClassId.value = classOptions.value[0]?.id || null;
   }
