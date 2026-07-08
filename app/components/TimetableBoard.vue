@@ -527,14 +527,18 @@ const loadGrid = async () => {
     ]);
     return;
   }
-  // Study board: the selected class's schedule + its assignments (editors only).
+  // Study board: the selected class's schedule + the assignments that fill it.
+  // Admins pull every assignment in the class (admin-only endpoint); teachers
+  // pull their own via /my-teaching. Students don't edit, so fetch nothing.
   if (!studyClassId.value) return;
   await scheduleStore.fetchSchedule(studyClassId.value, yearId.value);
-  if (canEdit.value) {
+  if (isAdmin.value) {
     await teachingStore.fetchAssignments({
       classroom_id: studyClassId.value,
       academic_year_id: yearId.value,
     });
+  } else if (isTeacher.value) {
+    await teachingStore.fetchMyTeaching(yearId.value);
   }
 };
 
