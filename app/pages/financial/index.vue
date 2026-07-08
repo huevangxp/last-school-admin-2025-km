@@ -186,6 +186,7 @@ import { ref, computed, onMounted } from "vue";
 import { useFinanceStore } from "~/stores/apiFinance";
 import { useUiStore } from "~/stores/ui";
 import { formatDate } from "@/utils/formatDate";
+import { formatMoney } from "@/utils/money";
 
 const { t } = useI18n();
 const financeStore = useFinanceStore();
@@ -198,9 +199,6 @@ const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("financial"), disabled: true, to: "/financial" },
 ];
-
-const formatMoney = (v: any) =>
-  Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
 
 const rows = computed(() =>
   typeFilter.value === "Total"
