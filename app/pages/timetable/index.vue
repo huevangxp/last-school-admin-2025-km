@@ -309,7 +309,7 @@
                   {{ subjectOf(cellFor(p.id, currentDayKey)) }}
                 </div>
                 <div class="tchr">
-                  {{ teacherOf(cellFor(p.id, currentDayKey)) }}
+                  {{ secondaryOf(cellFor(p.id, currentDayKey)) }}
                 </div>
               </template>
               <span v-else class="text-detail-tiny text-grey-lighten-1">—</span>
