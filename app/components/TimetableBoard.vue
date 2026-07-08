@@ -143,8 +143,32 @@
                   class="slot-cell"
                   :class="{ editable: canEdit }"
                 >
-                  <!-- Admin/teacher: click to assign / change / clear -->
-                  <v-menu v-if="canEdit" :close-on-content-click="true">
+                  <!-- Admin teaching board: click opens the add/change dialog
+                       so a subject + class can be created inline. -->
+                  <div
+                    v-if="canInlineCreate"
+                    class="cell-inner"
+                    :class="{ filled: cellFor(p.id, d.key) }"
+                    @click="openAdd(p.id, d.key)"
+                  >
+                    <template v-if="cellFor(p.id, d.key)">
+                      <div class="subj">
+                        {{ subjectOf(cellFor(p.id, d.key)) }}
+                      </div>
+                      <div class="tchr">
+                        {{ secondaryOf(cellFor(p.id, d.key)) }}
+                      </div>
+                    </template>
+                    <v-icon v-else size="18" color="grey-lighten-1">
+                      mdi-plus
+                    </v-icon>
+                  </div>
+
+                  <!-- Teacher / admin study board: pick from existing assignments -->
+                  <v-menu
+                    v-else-if="canEdit"
+                    :close-on-content-click="true"
+                  >
                     <template v-slot:activator="{ props }">
                       <div
                         v-bind="props"
