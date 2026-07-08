@@ -473,8 +473,7 @@ const allMenuSections: MenuSection[] = [
     items: [
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
       { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
-      { title: "scores", icon: "mdi-star-outline", to: "/scores" },
-      { title: "score_report", icon: "mdi-table-large", to: "/scores/report", studentVisible: true },
+      { title: "scores", icon: "mdi-star-outline", to: "/scores", studentVisible: true },
       { title: "study_schedule", icon: "mdi-timetable", to: "/timetable", studentVisible: true },
       { title: "student_fees", icon: "mdi-cash-multiple", to: "/fees", adminOnly: true },
       { title: "academic", icon: "mdi-calendar-check", to: "/academic", adminOnly: true },
