@@ -15,7 +15,9 @@
           <div class="text-detail">{{ t("class-leadership-desc") }}</div>
         </div>
       </div>
-      <div class="d-flex gap-2 align-center mt-4 mt-md-0">
+      <!-- Write actions (back to class list, assign roles) are hidden from the
+           read-only student role; students only view the org chart below. -->
+      <div v-if="!isStudent" class="d-flex gap-2 align-center mt-4 mt-md-0">
         <v-btn
           variant="flat"
           color="white"
