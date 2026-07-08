@@ -474,7 +474,7 @@ const buildRows = async () => {
   const scoreByStudent: Record<string, any> = {};
   scoreStore.scores.forEach((s: any) => (scoreByStudent[s.student_id] = s));
 
-  rows.value = enrollmentStore.enrollments
+  const mapped = enrollmentStore.enrollments
     .filter((e: any) => e.tb_student)
     .map((e: any) => {
       const s = e.tb_student;
@@ -483,9 +483,20 @@ const buildRows = async () => {
         enrollment_id: e.id,
         student_id: s.id,
         name: `${s.first_name} ${s.last_name}`,
-        score: existing ? Number(existing.score) : "",
+        // All fields default to 0; already-scored students keep their score.
+        score: existing ? Number(existing.score) : 0,
       };
     });
+
+  // Keep ungraded students (score 0) at the top for quick entry; students who
+  // already have a score sink to the bottom. Sort runs only here (on load), so
+  // rows never jump while the teacher is typing. Array.sort is stable, so the
+  // original enrollment order is preserved within each group.
+  mapped.sort(
+    (a, b) => (Number(a.score) > 0 ? 1 : 0) - (Number(b.score) > 0 ? 1 : 0)
+  );
+
+  rows.value = mapped;
 };
 
 watch(
