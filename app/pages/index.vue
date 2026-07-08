@@ -218,43 +218,8 @@
 
       <!-- Contextual Utilities Column -->
       <v-col cols="12" lg="4">
-        <!-- Unified Schedule Widget -->
-        <v-card elevation="0" class="utility-card dark mb-6 overflow-hidden">
-          <div class="pa-6 relative-z">
-            <div class="d-flex justify-space-between align-center mb-6">
-              <div class="text-title text-white">{{ t("academic") }}</div>
-              <v-btn
-                icon="mdi-calendar"
-                variant="text"
-                color="white"
-                size="x-small"
-              ></v-btn>
-            </div>
-
-            <div class="schedule-list ga-3 d-flex flex-column">
-              <div v-for="(event, i) in events" :key="i" class="schedule-item">
-                <div class="date-shard">
-                  <span class="day">{{ event.day }}</span>
-                  <span class="month">{{ event.month }}</span>
-                </div>
-                <div class="details flex-grow-1">
-                  <div class="title">{{ event.title }}</div>
-                  <div class="time d-flex align-center">
-                    <v-icon
-                      icon="mdi-clock-outline"
-                      size="12"
-                      class="mr-1"
-                    ></v-icon>
-                    {{ event.time }}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </v-card>
-
-        <!-- System Intelligence Feed -->
-        <v-card elevation="0" class="utility-card pb-4">
+        <!-- Class distribution (Pie) -->
+        <v-card elevation="0" class="utility-card pb-4 h-100">
           <div class="pa-6 pb-2">
             <h3 class="text-title mb-1">
               {{ t("classes") }}
