@@ -435,6 +435,8 @@
   "pick-class-and-year": "Pick a class and year.",
   "pick-teacher-and-year": "Pick a teacher and year.",
   "teaching_schedule": "Teaching Schedule",
+  "add_teaching_time": "Add teaching time",
+  "change_teaching_time": "Change teaching time",
   "no-assignments-for-class": "No teaching assignments for this class yet.",
   "no-assignments-for-teacher": "No teaching assignments for this teacher yet.",
   "failed-to-clear": "Failed to clear.",

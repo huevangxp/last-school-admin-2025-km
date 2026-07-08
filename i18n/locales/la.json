@@ -435,6 +435,8 @@
   "pick-class-and-year": "ເລືອກຫ້ອງຮຽນ ແລະ ສົກຮຽນ ເພື່ອເບິ່ງຕາຕະລາງ",
   "pick-teacher-and-year": "ເລືອກອາຈານ ແລະ ສົກຮຽນ ເພື່ອເບິ່ງຕາຕະລາງ",
   "teaching_schedule": "ຕາຕະລາງສອນ",
+  "add_teaching_time": "ເພີ່ມຄາບສອນ",
+  "change_teaching_time": "ປ່ຽນຄາບສອນ",
   "no-assignments-for-class": "ຍັງບໍ່ມີການມອບໝາຍການສອນສຳລັບຫ້ອງນີ້",
   "no-assignments-for-teacher": "ຍັງບໍ່ມີການມອບໝາຍການສອນສຳລັບອາຈານທ່ານນີ້",
   "failed-to-clear": "ລຶບອອກບໍ່ສຳເລັດ.",
