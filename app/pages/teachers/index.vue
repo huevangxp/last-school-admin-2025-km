@@ -723,74 +723,9 @@ const doDelete = async (item: any) => {
   await teacherStore.fetchTeachers(100, 1);
 };
 
-// Teachers available as "reports to" managers in the edit form.
-const managerOptions = computed(() =>
-  teachers.value.map((tc) => ({
-    title: `${tc.username}${tc.position ? " — " + tc.position : ""}`,
-    value: tc.uuid,
-  }))
-);
-
-// ---- Edit / Delete ----
-const editDialog = ref(false);
-const saving = ref(false);
-const editError = ref("");
-const showDobPicker = ref(false);
-
-const editForm = ref({
-  uuid: "",
-  full_name: "",
-  gender: "",
-  dob: "",
-  phone_number: "",
-  role: "teacher",
-  status: "active",
-  position: "",
-  department: "",
-  layer: null as number | null,
-  manager_id: null as string | null,
-});
-
+// Editing opens a dedicated full page (like create), not a dialog.
 const openEdit = (item: any) => {
-  editError.value = "";
-  editForm.value = {
-    uuid: item.uuid,
-    full_name: item.fullName || item.username,
-    gender: item.genderRaw || "",
-    dob: item.dob || "",
-    phone_number: item.phone || "",
-    role: item.role || "teacher",
-    status: item.statusRaw || "active",
-    position: item.position || "",
-    department: item.department || "",
-    layer: item.layer ?? null,
-    manager_id: item.managerId || null,
-  };
-  editDialog.value = true;
-};
-
-const saveEdit = async () => {
-  saving.value = true;
-  try {
-    await teacherStore.updateTeacher(editForm.value.uuid, {
-      full_name: editForm.value.full_name,
-      gender: editForm.value.gender,
-      dob: editForm.value.dob,
-      phone_number: editForm.value.phone_number,
-      role: editForm.value.role,
-      status: editForm.value.status,
-      position: editForm.value.position,
-      department: editForm.value.department,
-      layer: editForm.value.layer,
-      manager_id: editForm.value.manager_id,
-    });
-    editDialog.value = false;
-    await teacherStore.fetchTeachers(100, 1);
-  } catch (error: any) {
-    editError.value = error.response?.data?.message || t("failed-update");
-  } finally {
-    saving.value = false;
-  }
+  router.push(`/teachers/edit/${item.uuid}`);
 };
 
 </script>
