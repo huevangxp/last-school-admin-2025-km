@@ -383,6 +383,8 @@ const students = computed(() =>
 // Load enrollments + existing roles whenever the class/year changes.
 const reload = async () => {
   if (!selectedClassId.value || !selectedYearId.value) return;
+  // Drag overrides belong to a specific class/year — drop them on a change.
+  memberUnit.value = {};
   await Promise.all([
     enrollmentStore.fetchEnrollments({
       class_id: selectedClassId.value,
