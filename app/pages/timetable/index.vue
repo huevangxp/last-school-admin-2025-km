@@ -528,4 +528,49 @@ const clearCell = async (cell: any) => {
   color: #64748b;
   line-height: 1.1;
 }
+
+/* ---- Mobile day view ---- */
+.day-chips :deep(.v-chip) {
+  color: #3730a3;
+  background: #eef2ff;
+}
+.day-chips :deep(.v-chip.day-chip-on) {
+  background: #3730a3;
+  color: #fff;
+}
+.mobile-period-badge {
+  flex: 0 0 84px;
+  width: 84px;
+  background: #f8fafc;
+  border-right: 1px solid #eef2f6;
+  padding: 10px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.mobile-slot {
+  flex: 1 1 auto;
+  min-height: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  text-align: center;
+}
+.mobile-slot.filled {
+  background: #f0fdfa;
+}
+.mobile-slot .subj {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f766e;
+  line-height: 1.15;
+}
+.mobile-slot .tchr {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+}
 </style>
