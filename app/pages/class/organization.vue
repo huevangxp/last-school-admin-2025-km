@@ -139,7 +139,15 @@
             <div class="lband">
               <div class="layer-tag">{{ t("layer4-5-tag") }}</div>
               <div class="units-grid" v-if="unitColumns.length">
-                <div v-for="(u, i) in unitColumns" :key="u.id" class="unit-col">
+                <div
+                  v-for="(u, i) in unitColumns"
+                  :key="u.id"
+                  class="unit-col"
+                  :class="{ 'unit-drop-active': !isStudent && dragOverUnit === i }"
+                  @dragover.prevent="!isStudent && (dragOverUnit = i)"
+                  @dragleave="dragOverUnit === i && (dragOverUnit = null)"
+                  @drop="onDropUnit(i)"
+                >
                   <div class="lcard lcard-unit">
                     <div class="lcard-name">{{ u.name }}</div>
                     <div class="lcard-role">{{ t("unit-head-role", { n: i + 1 }) }}</div>
@@ -147,8 +155,21 @@
                   </div>
                   <div class="unit-vline" v-if="u.members.length"></div>
                   <div class="member-list">
-                    <div v-for="m in u.members" :key="m.id" class="member-chip">
-                      {{ m.label }}
+                    <div
+                      v-for="m in u.members"
+                      :key="m.id"
+                      class="member-chip"
+                      :class="{ 'member-draggable': !isStudent }"
+                      :draggable="!isStudent"
+                      @dragstart="onDragStart(m.id)"
+                      @dragend="onDragEnd"
+                    >
+                      <v-icon
+                        v-if="!isStudent"
+                        size="12"
+                        class="mr-1 drag-handle"
+                        >mdi-drag-vertical</v-icon
+                      >{{ m.label }}
                     </div>
                     <div v-if="!u.members.length" class="member-empty">—</div>
                   </div>
