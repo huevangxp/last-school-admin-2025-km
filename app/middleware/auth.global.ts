@@ -33,15 +33,18 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 
-  // Student guard: the student role is read-only and limited to four pages
-  // (teacher org chart, score report, timetable, class organization). Any other
-  // URL — dashboard included — is redirected to the score report so a student
-  // can never open score entry, financial, admin, etc. by typing the URL.
+  // Role-scoped URL guards. The sidebar already hides pages a role shouldn't
+  // see, but these also block reaching them by typing the URL, so menu gating
+  // and URL access stay in sync.
   if (token.value) {
     const role = (useCookie<string>("role").value || "").toLowerCase();
+    // Strip the i18n locale prefix so it matches the unprefixed allow-lists.
+    const path = (to?.path || "/").replace(/^\/(en|la)(?=\/|$)/, "") || "/";
+    const matches = (list: string[]) =>
+      list.some((a) => path === a || path.startsWith(a + "/"));
+
+    // Student: read-only, limited to five pages. Anything else → score report.
     if (role === "student") {
-      // Strip the i18n locale prefix so it matches the unprefixed allow-list.
-      const path = (to?.path || "/").replace(/^\/(en|la)(?=\/|$)/, "") || "/";
       const allowed = [
         "/teachers/organization",
         "/scores/report",
@@ -49,9 +52,29 @@ export default defineNuxtRouteMiddleware((to) => {
         "/class/organization",
         "/announcement",
       ];
-      const ok = allowed.some((a) => path === a || path.startsWith(a + "/"));
-      if (!ok) {
+      if (!matches(allowed)) {
         return navigateTo("/scores/report");
+      }
+    }
+
+    // Teacher: everything the teacher sidebar shows (non-admin items) plus the
+    // profile pages. Admin-only management pages (students, classes, subjects,
+    // news, gallery, contact, configuration, …) are off-limits by URL too.
+    if (role === "teacher") {
+      const allowedPrefixes = [
+        "/announcement",
+        "/class/organization",
+        "/scores", // score entry + /scores/report
+        "/timetable",
+        "/teachers/organization",
+        "/financial",
+        "/settings",
+      ];
+      // "/" (dashboard) and "/admin" (profile "information") are allowed exactly,
+      // but not their admin-only sub-routes (e.g. /admin/add).
+      const allowedExact = ["/", "/admin"];
+      if (!(allowedExact.includes(path) || matches(allowedPrefixes))) {
+        return navigateTo("/teachers/organization");
       }
     }
   }
