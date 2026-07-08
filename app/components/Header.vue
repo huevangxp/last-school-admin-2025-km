@@ -655,4 +655,20 @@ const logoutButton = () => {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+
+/* ---- Mobile bottom navigation ---- */
+.mobile-bottom-nav {
+  border-top: 1px solid #e2e8f0;
+  z-index: 102 !important; /* above the app-bar/drawer on mobile */
+}
+.bottom-nav-btn {
+  min-width: 0 !important;
+  text-transform: none !important;
+}
+.bottom-nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1;
+}
 </style>
