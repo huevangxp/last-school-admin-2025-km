@@ -138,6 +138,25 @@ ul::before {
   height: 26px;
 }
 
+/* Wrapped leaf group: many people hang off one parent as a compact grid that
+   flows onto multiple rows instead of a single very wide line. The per-sibling
+   connector lines don't make sense across wrapped rows, so we drop them and
+   keep just the single drop-line from the parent into the block. */
+ul.children--wrap {
+  flex-wrap: wrap;
+  max-width: 760px;
+  margin: 0 auto;
+  row-gap: 10px;
+  column-gap: 4px;
+}
+ul.children--wrap > li {
+  padding-top: 18px;
+}
+ul.children--wrap > li::before,
+ul.children--wrap > li::after {
+  display: none;
+}
+
 /* Node card — fixed width & height so every card is identical in size. */
 .org-node {
   display: inline-flex;
