@@ -57,6 +57,7 @@
           rounded="0"
           style="max-width: 280px"
           color="primary"
+          :disabled="isStudent"
         ></v-select>
         <v-select
           v-model="selectedYearId"
