@@ -474,7 +474,7 @@ const allMenuSections: MenuSection[] = [
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
       { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
       { title: "scores", icon: "mdi-star-outline", to: "/scores", studentVisible: true },
-      { title: "study_schedule", icon: "mdi-timetable", to: "/timetable", studentVisible: true, teacherHidden: true },
+      { title: "study_schedule", icon: "mdi-timetable", to: "/timetable", studentVisible: true },
       { title: "teaching_schedule", icon: "mdi-human-male-board", to: "/timetable/teaching" },
       { title: "student_fees", icon: "mdi-cash-multiple", to: "/fees", adminOnly: true },
       { title: "academic", icon: "mdi-calendar-check", to: "/academic", adminOnly: true },
