@@ -1,7 +1,23 @@
 <template>
   <div class="dashboard-viewport pb-12">
     <!-- Quick Actions Bar (Replacement for large header) -->
-    <div class="d-flex justify-end mb-6 fade-in">
+    <div
+      class="d-flex flex-column flex-sm-row align-sm-center justify-space-between ga-3 mb-6 fade-in"
+    >
+      <div style="min-width: 260px">
+        <v-select
+          v-model="yearId"
+          :items="academicYears"
+          item-title="title"
+          item-value="id"
+          :placeholder="t('academic_title')"
+          variant="outlined"
+          density="compact"
+          rounded="0"
+          hide-details
+          prepend-inner-icon="mdi-calendar-check"
+        ></v-select>
+      </div>
       <div class="action-stack d-flex ga-2">
         <v-btn
           variant="flat"
