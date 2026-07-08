@@ -40,6 +40,28 @@ export const useScheduleStore = defineStore("schedule", {
       }
     },
 
+    // All timetable cells for one teacher (across their classes) + year. Each
+    // cell also carries its classroom (tb_classroom) so the grid can show which
+    // room/class the teacher teaches each period.
+    async fetchTeacherSchedule(teacher_id: string, academic_year_id: string) {
+      const { $axios } = useNuxtApp();
+      this.loading = true;
+      this.error = "";
+      try {
+        const res = await $axios.get("/get-teacher-schedule", {
+          params: { teacher_id, academic_year_id },
+        });
+        this.cells = res.data?.data ?? [];
+      } catch (error: any) {
+        console.error("fetchTeacherSchedule error:", error);
+        this.error =
+          error.response?.data?.message || "Failed to load schedule.";
+        this.cells = [];
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async saveCell(payload: {
       classroom_id: string;
       academic_year_id: string;
