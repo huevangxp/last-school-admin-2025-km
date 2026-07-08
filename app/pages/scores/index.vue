@@ -484,7 +484,7 @@ const buildRows = async () => {
         enrollment_id: e.id,
         student_id: s.id,
         name: `${s.first_name} ${s.last_name}`,
-        score: existing ? Number(existing.score) : 0,
+        score: existing ? Number(existing.score) : "",
       };
     });
 };
