@@ -9,7 +9,6 @@
   "generate_fees_desc": "Create a fee for every enrolled student in this year",
   "amount_due": "Amount due",
   "amount_paid": "Paid",
-  "balance": "Balance",
   "outstanding": "Outstanding",
   "collected": "Collected",
   "total_due": "Total due",
