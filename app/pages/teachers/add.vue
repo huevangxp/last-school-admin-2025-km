@@ -299,13 +299,7 @@ onMounted(async () => {
   } catch (error) {
     console.error("Failed to load teachers:", error);
   }
-  subjectStore.fetchSubjects();
 });
-
-// Subjects for the "main subject" picker.
-const subjectOptions = computed(() =>
-  subjectStore.subjects.map((s: any) => ({ id: s.id, label: s.subject_name }))
-);
 
 // Org layer of each existing teacher: no manager = Layer 1, otherwise
 // one deeper than their manager (cycle-safe).
