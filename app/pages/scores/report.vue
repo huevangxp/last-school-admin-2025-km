@@ -172,6 +172,11 @@ onMounted(async () => {
     classroomStore.fetchMyClassrooms(),
     classroomStore.fetchAcademicYears(),
   ]);
+  // Student/teacher have only their own class(es) — default to the first so the
+  // report loads immediately. Admins keep choosing from all classes.
+  if (!isAdmin.value) {
+    selectedClassId.value = classOptions.value[0]?.id || "";
+  }
 });
 
 const yearId = computed(() => classroomStore.latestAcademicYearId || "");
