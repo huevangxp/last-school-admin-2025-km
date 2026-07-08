@@ -495,6 +495,7 @@ import { useTeacherStore } from "~/stores/apiTeacher";
 definePageMeta({ requiresAdmin: true });
 
 const { t } = useI18n();
+const router = useRouter();
 
 const selectedName = ref<string | null>(null);
 const selectedRole = ref<string | null>(null);
