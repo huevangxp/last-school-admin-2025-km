@@ -118,8 +118,8 @@
                   class="slot-cell"
                   :class="{ editable: isAdmin }"
                 >
-                  <!-- Admin: click to assign / change / clear -->
-                  <v-menu v-if="isAdmin" :close-on-content-click="true">
+                  <!-- Admin/teacher: click to assign / change / clear -->
+                  <v-menu v-if="canEdit" :close-on-content-click="true">
                     <template v-slot:activator="{ props }">
                       <div
                         v-bind="props"
