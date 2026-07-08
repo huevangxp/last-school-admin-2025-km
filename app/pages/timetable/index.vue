@@ -379,42 +379,34 @@ const currentDayKey = computed(
 const classId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
+// Class picker options (admins / students only — teachers have no picker).
 const classOptions = computed(() => {
-  // Teachers: only the distinct classes they teach this year.
-  if (isTeacher.value) {
-    const seen = new Map<string, any>();
-    teachingStore.myTeaching
-      .filter((a: any) => a.academic_year_id === yearId.value && a.tb_classroom)
-      .forEach((a: any) => {
-        if (!seen.has(a.classroom_id)) {
-          seen.set(a.classroom_id, {
-            id: a.classroom_id,
-            label: a.tb_classroom.classroom_name,
-          });
-        }
-      });
-    return [...seen.values()];
-  }
   const source = isStudent.value
     ? classroomStore.myClassrooms
     : classroomStore.classrooms;
   return source.map((c: any) => ({ id: c.id, label: c.classroom_name }));
 });
 
-// Subject → teacher pairs available to fill a cell. Admins pick from every
-// assignment in the class; teachers pick only from their own assignments.
+// Options to fill a cell.
+//  • Teachers: every one of their own assignments (across all classes) —
+//    labelled "subject · class" — so a slot can be set for any class they teach.
+//  • Admins: every assignment in the selected class, labelled "subject · teacher".
 const assignmentOptions = computed(() => {
-  const source = isTeacher.value
-    ? teachingStore.myTeaching.filter(
-        (a: any) =>
-          a.classroom_id === classId.value &&
-          a.academic_year_id === yearId.value
-      )
-    : teachingStore.assignments;
-  return source.map((a: any) => ({
+  if (isTeacher.value) {
+    return teachingStore.myTeaching
+      .filter((a: any) => a.academic_year_id === yearId.value)
+      .map((a: any) => ({
+        id: a.id,
+        classroom_id: a.classroom_id,
+        subject: a.tb_subject?.subject_name || "—",
+        secondary: a.tb_classroom?.classroom_name || "—",
+      }));
+  }
+  return teachingStore.assignments.map((a: any) => ({
     id: a.id,
+    classroom_id: classId.value,
     subject: a.tb_subject?.subject_name || "—",
-    teacher: a.tb_teacher?.full_name || a.tb_teacher?.username || t("teacher"),
+    secondary: a.tb_teacher?.full_name || a.tb_teacher?.username || t("teacher"),
   }));
 });
 
@@ -426,28 +418,36 @@ const cellFor = (periodId: string, day: string) =>
 
 const subjectOf = (cell: any) =>
   cell?.assignment?.tb_subject?.subject_name || "—";
-// Second line of a cell: the teacher who teaches it.
+// The classroom of a cell (teacher's cross-class table carries tb_classroom).
+const classroomOf = (cell: any) => cell?.tb_classroom?.classroom_name || "—";
+// Second line of a cell: teachers see the class they teach; admins & students
+// see the teacher's name.
 const secondaryOf = (cell: any) =>
-  cell?.assignment?.tb_teacher?.full_name ||
-  cell?.assignment?.tb_teacher?.username ||
-  "—";
+  isTeacher.value
+    ? classroomOf(cell)
+    : cell?.assignment?.tb_teacher?.full_name ||
+      cell?.assignment?.tb_teacher?.username ||
+      "—";
 
-// Everyone needs both a class and a year selected.
-const ready = computed(() => !!classId.value && !!yearId.value);
+// Teachers only need a year (their table spans every class they teach); admins
+// and students also need a class.
+const ready = computed(() =>
+  isTeacher.value ? !!yearId.value : !!classId.value && !!yearId.value
+);
 
 const loadGrid = async () => {
   if (!yearId.value) return;
-  // Teachers: (re)load the classes/assignments they teach for this year, and
-  // keep the class selection valid.
+  // Teacher: one cross-class table of their own schedule + their assignments.
   if (isTeacher.value) {
-    await teachingStore.fetchMyTeaching(yearId.value);
-    if (!classOptions.value.some((c) => c.id === classId.value)) {
-      classId.value = classOptions.value[0]?.id || null;
-    }
+    if (!idCookie.value) return;
+    await Promise.all([
+      scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value),
+      teachingStore.fetchMyTeaching(yearId.value),
+    ]);
+    return;
   }
   if (!classId.value) return;
   await scheduleStore.fetchSchedule(classId.value, yearId.value);
-  // Admins load every assignment for the class (teachers use myTeaching above).
   if (isAdmin.value) {
     await teachingStore.fetchAssignments({
       classroom_id: classId.value,
@@ -467,30 +467,49 @@ onMounted(async () => {
     scheduleStore.fetchPeriods(),
   ]);
   yearId.value = classroomStore.latestAcademicYearId || null;
-  // Teachers need their teaching list before the class picker can populate.
-  if (isTeacher.value && yearId.value) {
-    await teachingStore.fetchMyTeaching(yearId.value);
-  }
-  classId.value = classOptions.value[0]?.id || null;
+  if (!isTeacher.value) classId.value = classOptions.value[0]?.id || null;
   await loadGrid();
 });
 
 watch([classId, yearId], loadGrid);
+
+// Reload after any change: teachers refetch their cross-class schedule; others
+// refetch the selected class's schedule.
+const reloadCells = async () => {
+  if (isTeacher.value && idCookie.value) {
+    await scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value!);
+  } else if (classId.value) {
+    await scheduleStore.fetchSchedule(classId.value, yearId.value!);
+  }
+};
 
 const assignCell = async (
   periodId: string,
   day: string,
   assignmentId: string
 ) => {
+  // The target class comes from the chosen assignment (teachers) or the picked
+  // class (admins).
+  const opt = assignmentOptions.value.find((o) => o.id === assignmentId);
+  const classroomId = opt?.classroom_id || classId.value;
+  if (!classroomId) return;
   try {
+    // A teacher can't be in two rooms at once: if this slot already holds a
+    // different class, clear it first before assigning the new one.
+    if (isTeacher.value) {
+      const existing = cellFor(periodId, day);
+      if (existing && existing.classroom_id !== classroomId) {
+        await scheduleStore.deleteCell(existing.id);
+      }
+    }
     await scheduleStore.saveCell({
-      classroom_id: classId.value!,
+      classroom_id: classroomId,
       academic_year_id: yearId.value!,
       period_id: periodId,
       day_of_week: day,
       teaching_assignment_id: assignmentId,
     });
-    await scheduleStore.fetchSchedule(classId.value!, yearId.value!);
+    await reloadCells();
   } catch (error: any) {
     ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
   }
@@ -500,7 +519,7 @@ const clearCell = async (cell: any) => {
   if (!cell) return;
   try {
     await scheduleStore.deleteCell(cell.id);
-    await scheduleStore.fetchSchedule(classId.value!, yearId.value!);
+    await reloadCells();
   } catch (error) {
     ui.notify(t("failed-to-clear"), "error");
   }
