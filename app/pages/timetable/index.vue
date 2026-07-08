@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
+  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header -->
@@ -46,6 +46,7 @@
           style="max-width: 260px"
           color="primary"
           prepend-inner-icon="mdi-google-classroom"
+          :disabled="isStudent"
         ></v-select>
         <v-select
           v-model="yearId"
