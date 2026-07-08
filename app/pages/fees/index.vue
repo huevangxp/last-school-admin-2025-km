@@ -522,12 +522,32 @@ const doCollect = async () => {
   }
   collecting.value = true;
   try {
+    const today = new Date().toISOString().slice(0, 10);
     await feesStore.collectPayment(collectTarget.value.id, {
       amount,
       method: collectForm.value.method,
-      transaction_date: new Date().toISOString().slice(0, 10),
+      transaction_date: today,
     });
+    // Build the bill/receipt from what we already know about the row + payment.
+    const target = collectTarget.value;
+    receipt.value = {
+      no:
+        "RC" +
+        today.replace(/-/g, "") +
+        "-" +
+        String(target.id).replace(/-/g, "").slice(0, 6).toUpperCase(),
+      date: today,
+      name: target.name,
+      className: target.className,
+      gradeName: target.gradeName,
+      amountDue: target.amount_due,
+      paidNow: amount,
+      totalPaid: target.amount_paid + amount,
+      balance: target.balance - amount,
+      method: collectForm.value.method,
+    };
     collectDialog.value = false;
+    receiptDialog.value = true;
     await reload();
     ui.notify(t("saved"), "success");
   } catch (error: any) {
@@ -536,6 +556,285 @@ const doCollect = async () => {
     collecting.value = false;
   }
 };
+
+// ---- Shared export / print helpers (Excel via SheetJS, image/PDF via
+// html2canvas so Lao text renders, print via a clean window). ----
+const exporting = ref(false);
+
+const esc = (s: any) =>
+  String(s ?? "").replace(
+    /[&<>]/g,
+    (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[ch] || ch
+  );
+
+const withOffscreen = async (
+  html: string,
+  fn: (node: HTMLElement) => Promise<void>
+) => {
+  const holder = document.createElement("div");
+  holder.style.position = "fixed";
+  holder.style.left = "-10000px";
+  holder.style.top = "0";
+  holder.style.width = "820px";
+  holder.style.background = "#ffffff";
+  holder.innerHTML = html;
+  document.body.appendChild(holder);
+  try {
+    await fn(holder);
+  } finally {
+    document.body.removeChild(holder);
+  }
+};
+
+const downloadPng = async (html: string, filename: string) => {
+  const html2canvas = (await import("html2canvas")).default;
+  await withOffscreen(html, async (node) => {
+    const canvas = await html2canvas(node, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+    });
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+};
+
+const downloadPdfFromHtml = async (
+  html: string,
+  filename: string,
+  orientation: "portrait" | "landscape"
+) => {
+  const html2canvas = (await import("html2canvas")).default;
+  const { jsPDF } = await import("jspdf");
+  await withOffscreen(html, async (node) => {
+    const canvas = await html2canvas(node, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+    });
+    const img = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({ orientation, unit: "pt", format: "a4" });
+    const margin = 24;
+    const pw = pdf.internal.pageSize.getWidth() - margin * 2;
+    const ph = pdf.internal.pageSize.getHeight() - margin * 2;
+    let iw = pw;
+    let ih = (canvas.height / canvas.width) * iw;
+    if (ih > ph) {
+      ih = ph;
+      iw = (canvas.width / canvas.height) * ih;
+    }
+    pdf.addImage(img, "PNG", margin, margin, iw, ih);
+    pdf.save(filename);
+  });
+};
+
+const printHtml = (html: string, title: string) => {
+  const w = window.open("", "_blank", "width=1000,height=700");
+  if (!w) return;
+  w.document.write(
+    `<!doctype html><html><head><meta charset="utf-8"><title>${esc(
+      title
+    )}</title></head><body>${html}</body></html>`
+  );
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 350);
+};
+
+// ---- Fee table export ----
+const yearLabel = computed(
+  () =>
+    (classroomStore.academicYears.find((y: any) => y.id === yearId.value) || {})
+      .title || ""
+);
+const classLabel = computed(
+  () =>
+    classFilterOptions.value.find((c) => c.id === classId.value)?.label || ""
+);
+const tableTitle = computed(() =>
+  [t("student_fees"), classLabel.value, yearLabel.value]
+    .filter(Boolean)
+    .join(" · ")
+);
+const feeFileBase = () =>
+  [t("student_fees"), classLabel.value, yearLabel.value]
+    .filter(Boolean)
+    .join("_")
+    .replace(/[\\/:*?"<>|]+/g, "")
+    .replace(/\s+/g, "_") || "student_fees";
+
+const TABLE_CSS = `
+  .rpt{font-family:'Noto Sans Lao','Phetsarath OT',system-ui,-apple-system,sans-serif;color:#0f172a;background:#fff;padding:16px}
+  .rpt h2{font-size:16px;margin:0 0 12px}
+  .rpt table{border-collapse:collapse;width:100%;font-size:12px}
+  .rpt th,.rpt td{border:1px solid #cbd5e1;padding:6px 8px;text-align:left}
+  .rpt th{background:#f1f5f9;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+  .rpt td.num{text-align:right;white-space:nowrap}
+  .rpt tr:nth-child(even) td{background:#fafafa}
+`;
+
+const buildTableHtml = () => {
+  const head = `<tr><th>${esc(t("student"))}</th><th>${esc(
+    t("class")
+  )}</th><th>${esc(t("grade"))}</th><th>${esc(t("amount_due"))}</th><th>${esc(
+    t("amount_paid")
+  )}</th><th>${esc(t("balance"))}</th><th>${esc(t("status"))}</th></tr>`;
+  const body = rows.value
+    .map(
+      (r) =>
+        `<tr><td>${esc(r.name)}</td><td>${esc(r.className)}</td><td>${esc(
+          r.gradeName
+        )}</td><td class="num">₭${money(r.amount_due)}</td><td class="num">₭${money(
+          r.amount_paid
+        )}</td><td class="num">₭${money(r.balance)}</td><td>${esc(
+          t(r.status)
+        )}</td></tr>`
+    )
+    .join("");
+  return `<style>${TABLE_CSS}</style><div class="rpt"><h2>${esc(
+    tableTitle.value
+  )}</h2><table><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+};
+
+const exportExcel = async () => {
+  exporting.value = true;
+  try {
+    const XLSX = await import("xlsx");
+    const header = [
+      t("student"),
+      t("class"),
+      t("grade"),
+      t("amount_due"),
+      t("amount_paid"),
+      t("balance"),
+      t("status"),
+    ];
+    const body = rows.value.map((r) => [
+      r.name,
+      r.className,
+      r.gradeName,
+      r.amount_due,
+      r.amount_paid,
+      r.balance,
+      t(r.status),
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([
+      [tableTitle.value],
+      [],
+      header,
+      ...body,
+    ]);
+    ws["!cols"] = header.map((_, i) => ({ wch: i === 0 ? 24 : 16 }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Fees");
+    XLSX.writeFile(wb, `${feeFileBase()}.xlsx`);
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const exportImage = async () => {
+  exporting.value = true;
+  try {
+    await downloadPng(buildTableHtml(), `${feeFileBase()}.png`);
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const exportPdf = async () => {
+  exporting.value = true;
+  try {
+    await downloadPdfFromHtml(buildTableHtml(), `${feeFileBase()}.pdf`, "landscape");
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const printTable = () => printHtml(buildTableHtml(), tableTitle.value);
+
+// ---- Payment receipt ----
+const receiptDialog = ref(false);
+const receipt = ref<any>(null);
+
+const methodLabel = (m: string) =>
+  ({
+    Cash: t("cash"),
+    "Bank Transfer": t("bank-transfer"),
+    "Online Payment": t("online-payment"),
+  })[m] || m;
+
+const RECEIPT_CSS = `
+  .rcpt{font-family:'Noto Sans Lao','Phetsarath OT',system-ui,-apple-system,sans-serif;color:#0f172a;background:#fff;padding:20px;max-width:420px;margin:0 auto}
+  .rcpt .hd{text-align:center;border-bottom:2px solid #0f172a;padding-bottom:10px;margin-bottom:12px}
+  .rcpt .hd .sch{font-size:16px;font-weight:900}
+  .rcpt .hd .ttl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#0f766e;font-weight:800;margin-top:2px}
+  .rcpt .meta{display:flex;justify-content:space-between;font-size:11px;color:#64748b;margin-bottom:12px}
+  .rcpt .who{font-size:13px;margin-bottom:12px}
+  .rcpt .who b{font-weight:800}
+  .rcpt table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px}
+  .rcpt td{padding:5px 0;border-bottom:1px dashed #e2e8f0}
+  .rcpt td.r{text-align:right;font-weight:700;white-space:nowrap}
+  .rcpt .paid td{color:#0f766e;font-weight:900;font-size:14px;border-bottom:none}
+  .rcpt .bal td{color:#b91c1c;font-weight:800}
+  .rcpt .ft{text-align:center;font-size:11px;color:#64748b;border-top:1px dashed #cbd5e1;padding-top:10px}
+`;
+
+const buildReceiptHtml = (r: any) => {
+  if (!r) return "";
+  return `<style>${RECEIPT_CSS}</style><div class="rcpt">
+    <div class="hd"><div class="sch">${esc(t("schoolmanagement"))}</div><div class="ttl">${esc(
+      t("payment_receipt")
+    )}</div></div>
+    <div class="meta"><span>${esc(t("receipt_no"))}: ${esc(
+      r.no
+    )}</span><span>${esc(t("date"))}: ${esc(r.date)}</span></div>
+    <div class="who"><b>${esc(r.name)}</b><br>${esc(r.className)} · ${esc(
+      r.gradeName
+    )}</div>
+    <table>
+      <tr><td>${esc(t("amount_due"))}</td><td class="r">₭${money(
+        r.amountDue
+      )}</td></tr>
+      <tr class="paid"><td>${esc(t("paid_now"))}</td><td class="r">₭${money(
+        r.paidNow
+      )}</td></tr>
+      <tr><td>${esc(t("total_paid"))}</td><td class="r">₭${money(
+        r.totalPaid
+      )}</td></tr>
+      <tr class="bal"><td>${esc(t("balance_remaining"))}</td><td class="r">₭${money(
+        r.balance
+      )}</td></tr>
+      <tr><td>${esc(t("payment-method"))}</td><td class="r">${esc(
+        methodLabel(r.method)
+      )}</td></tr>
+    </table>
+    <div class="ft">${esc(t("thank_you"))}</div>
+  </div>`;
+};
+
+const receiptHtml = computed(() => buildReceiptHtml(receipt.value));
+
+const downloadReceiptImage = async () => {
+  if (!receipt.value) return;
+  exporting.value = true;
+  try {
+    await downloadPng(receiptHtml.value, `receipt_${receipt.value.no}.png`);
+  } catch (e: any) {
+    ui.notify(e?.message || t("failed-to-save"), "error");
+  } finally {
+    exporting.value = false;
+  }
+};
+
+const printReceipt = () =>
+  printHtml(receiptHtml.value, `${t("payment_receipt")} ${receipt.value?.no || ""}`);
 </script>
 
 <style scoped>
