@@ -94,6 +94,84 @@
       </v-col>
     </v-row>
 
+    <!-- Section: Teacher & Financial charts -->
+    <v-row class="mb-6 ga-y-4">
+      <!-- Teacher distribution (Doughnut) -->
+      <v-col cols="12" md="5">
+        <v-card elevation="0" class="intelligence-card h-100 pa-6">
+          <div class="d-flex justify-space-between align-center mb-4">
+            <div>
+              <div class="text-title mb-1">{{ t("teacher_distribution") }}</div>
+              <div class="text-detail">{{ t("by_department") }}</div>
+            </div>
+            <v-chip
+              color="indigo-lighten-5"
+              class="text-indigo font-weight-black"
+              size="x-small"
+              variant="flat"
+            >
+              {{ teacherCount }} {{ t("total") }}
+            </v-chip>
+          </div>
+          <div style="height: 280px">
+            <div
+              v-if="!teacherDistribution.labels.length"
+              class="d-flex align-center justify-center text-detail"
+              style="height: 100%"
+            >
+              {{ t("loading") }}
+            </div>
+            <ClientOnly v-else>
+              <DashboardDoughnutChart
+                :labels="teacherDistribution.labels"
+                :values="teacherDistribution.values"
+              />
+            </ClientOnly>
+          </div>
+        </v-card>
+      </v-col>
+
+      <!-- Income vs Expense (Bar) -->
+      <v-col cols="12" md="7">
+        <v-card elevation="0" class="intelligence-card h-100 pa-6">
+          <div class="d-flex justify-space-between align-center mb-4">
+            <div>
+              <div class="text-title mb-1">{{ t("income_vs_expense") }}</div>
+              <div class="text-detail">{{ t("by_category") }}</div>
+            </div>
+            <v-chip
+              :color="financeStore.balance >= 0 ? 'green-lighten-5' : 'red-lighten-5'"
+              :class="
+                financeStore.balance >= 0
+                  ? 'text-green-darken-2'
+                  : 'text-red-darken-2'
+              "
+              size="x-small"
+              variant="flat"
+              class="font-weight-black"
+            >
+              {{ financeStore.balance.toLocaleString() }}
+            </v-chip>
+          </div>
+          <div style="height: 280px">
+            <div
+              v-if="!financeChart.labels.length"
+              class="d-flex align-center justify-center text-detail"
+              style="height: 100%"
+            >
+              {{ t("no-data") }}
+            </div>
+            <ClientOnly v-else>
+              <DashboardBarChart
+                :labels="financeChart.labels"
+                :datasets="financeChart.datasets"
+              />
+            </ClientOnly>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+
     <!-- Section: Primary Intelligence Area -->
     <v-row>
       <!-- Intelligence Column -->
