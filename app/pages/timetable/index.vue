@@ -131,7 +131,7 @@
                             {{ subjectOf(cellFor(p.id, d.key)) }}
                           </div>
                           <div class="tchr">
-                            {{ teacherOf(cellFor(p.id, d.key)) }}
+                            {{ secondaryOf(cellFor(p.id, d.key)) }}
                           </div>
                         </template>
                         <v-icon v-else size="18" color="grey-lighten-1">
@@ -188,7 +188,7 @@
                         {{ subjectOf(cellFor(p.id, d.key)) }}
                       </div>
                       <div class="tchr">
-                        {{ teacherOf(cellFor(p.id, d.key)) }}
+                        {{ secondaryOf(cellFor(p.id, d.key)) }}
                       </div>
                     </template>
                     <span v-else class="text-detail-tiny text-grey-lighten-1"
