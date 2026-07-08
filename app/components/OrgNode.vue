@@ -50,14 +50,31 @@
       </v-chip> -->
     </div>
 
-    <ul v-if="node.children && node.children.length">
+    <ul
+      v-if="node.children && node.children.length"
+      :class="{ 'children--wrap': wrapLeaves }"
+    >
       <OrgNode v-for="child in node.children" :key="child.uuid" :node="child" />
     </ul>
   </li>
 </template>
 
 <script setup lang="ts">
-defineProps<{ node: any }>();
+import { computed } from "vue";
+
+const props = defineProps<{ node: any }>();
+
+// A big row of leaf people (e.g. all teachers under a deputy) is what makes the
+// tree explode sideways. When a node's children are all leaves and there are
+// several of them, wrap them into a compact multi-row grid instead of one long
+// horizontal row.
+const wrapLeaves = computed(() => {
+  const children = props.node?.children || [];
+  return (
+    children.length > 4 &&
+    children.every((c: any) => !(c.children && c.children.length))
+  );
+});
 </script>
 
 <style scoped>
