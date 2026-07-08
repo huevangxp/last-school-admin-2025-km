@@ -255,7 +255,8 @@
             }}</v-alert>
           </v-col>
         </v-row>
-        
+        <v-card-text>
+          
       <div class="d-flex justify-end ga-3">
         <v-btn
           variant="flat"
@@ -277,6 +278,7 @@
           {{ t("save") }}
         </v-btn>
       </div>
+        </v-card-text>
       </v-card>
 
     </v-form>
