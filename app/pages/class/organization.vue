@@ -15,10 +15,12 @@
           <div class="text-detail">{{ t("class-leadership-desc") }}</div>
         </div>
       </div>
-      <!-- Write actions (back to class list, assign roles) are hidden from the
-           read-only student role; students only view the org chart below. -->
+      <!-- Write actions are hidden from the read-only student role. The "Classes"
+           link goes to the admin-only class list, so it shows for admins only;
+           teachers still get "Assign Roles" to set their class's org. -->
       <div v-if="!isStudent" class="d-flex gap-2 align-center mt-4 mt-md-0">
         <v-btn
+          v-if="isAdmin"
           variant="flat"
           color="white"
           class="modern-action-btn secondary border flex-grow-1 flex-md-grow-0"
