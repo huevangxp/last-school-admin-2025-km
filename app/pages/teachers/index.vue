@@ -784,7 +784,6 @@ const saveEdit = async () => {
       status: editForm.value.status,
       position: editForm.value.position,
       department: editForm.value.department,
-      subject_id: editForm.value.subject_id,
       layer: editForm.value.layer,
       manager_id: editForm.value.manager_id,
     });
