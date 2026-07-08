@@ -21,7 +21,7 @@
         <v-btn
           variant="flat"
           color="white"
-          class="modern-action-btn secondary border"
+          class="modern-action-btn secondary border flex-grow-1 flex-md-grow-0"
           height="36"
           to="/class"
         >
@@ -31,7 +31,7 @@
         <v-btn
           variant="flat"
           color="primary"
-          class="modern-action-btn primary elevation-4"
+          class="modern-action-btn primary elevation-4 flex-grow-1 flex-md-grow-0"
           height="36"
           :disabled="!selectedClassId"
           @click="openManage"
