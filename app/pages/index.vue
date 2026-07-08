@@ -309,7 +309,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import DashboardChart from "~/components/DashboardChart.vue";
 const { t } = useI18n();
 
@@ -324,6 +324,11 @@ const subjectCount = ref(0);
 const recentStudents = ref<any[]>([]);
 const academicYears = ref<any[]>([]);
 const recentClasses = ref<any[]>([]);
+
+// Academic-year scoped state (merged from the former /overview page).
+const yearId = ref<string | null>(null);
+const yearClassrooms = ref<any[]>([]);
+const yearEnrollments = ref<any[]>([]);
 
 const MONTHS = [
   "JAN",
