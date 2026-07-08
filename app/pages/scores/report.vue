@@ -12,7 +12,9 @@
           {{ $t("full-class-results") }}
         </div>
       </div>
+      <!-- Score entry is off-limits to the read-only student role. -->
       <v-btn
+        v-if="!isStudent"
         variant="flat"
         color="white"
         class="modern-action-btn secondary border"
@@ -140,6 +142,12 @@ import { useScoreStore } from "~/stores/apiScore";
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
 const scoreStore = useScoreStore();
+
+// Students view the report read-only — hide the link into score entry.
+const roleCookie = useCookie<string>("role");
+const isStudent = computed(
+  () => (roleCookie.value || "").toLowerCase() === "student"
+);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
