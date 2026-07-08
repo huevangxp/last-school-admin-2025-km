@@ -49,11 +49,13 @@ export default defineNuxtRouteMiddleware((to) => {
       const allowed = [
         "/teachers/organization",
         "/scores",
-        "/timetable",
         "/class/organization",
         "/announcement",
       ];
-      if (!matches(allowed)) {
+      // Only the study timetable (/timetable). The teaching timetable
+      // (/timetable/teaching) is a teacher/admin page, so match /timetable
+      // exactly rather than as a prefix.
+      if (path !== "/timetable" && !matches(allowed)) {
         return navigateTo("/scores");
       }
     }
