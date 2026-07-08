@@ -257,7 +257,7 @@
         </v-row>
         <v-card-text>
           
-      <div class="d-flex justify-end ">
+      <div class="d-flex justify-end ga-3">
         <v-btn
           variant="flat"
           color="grey-lighten-4"
