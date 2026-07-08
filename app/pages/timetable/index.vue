@@ -41,7 +41,7 @@
           :label="t('class')"
           variant="outlined"
           density="compact"
-          class="mb-4"
+          class="mb-4 mb-md-0"
           hide-details
           rounded="0"
           style="max-width: 260px"
