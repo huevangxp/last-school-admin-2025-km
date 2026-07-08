@@ -170,10 +170,10 @@
           class="mb-3"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("subject") }}</label>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
         <v-select
-          v-model="form.subject_id"
-          :items="dialogSubjectOptions"
+          v-model="form.teacher_id"
+          :items="teacherOptions"
           item-title="label"
           item-value="id"
           variant="outlined"
@@ -183,10 +183,10 @@
           class="mb-3"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
+        <label class="text-detail-tiny mb-1 d-block">{{ t("subject") }}</label>
         <v-select
-          v-model="form.teacher_id"
-          :items="teacherOptions"
+          v-model="form.subject_id"
+          :items="dialogSubjectOptions"
           item-title="label"
           item-value="id"
           variant="outlined"
