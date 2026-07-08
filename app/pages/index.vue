@@ -438,6 +438,50 @@ const chartValues = computed(() =>
   yearClassrooms.value.map((c) => countByClass.value[c.id] || 0)
 );
 
+// Doughnut: teachers grouped by department (falls back to position / gender).
+const teacherDistribution = computed(() => {
+  const map: Record<string, number> = {};
+  for (const tc of teachers.value) {
+    const key =
+      tc.department || tc.position || tc.gender || t("unassigned");
+    map[key] = (map[key] || 0) + 1;
+  }
+  return {
+    labels: Object.keys(map),
+    values: Object.values(map),
+  };
+});
+
+// Bar: income vs expense per category, from the finance ledger.
+const financeChart = computed(() => {
+  const income: Record<string, number> = {};
+  const expense: Record<string, number> = {};
+  for (const f of financeStore.finances) {
+    const cat = f.category || t("other");
+    const amt = Number(f.amount || 0);
+    if (f.type === "expense") expense[cat] = (expense[cat] || 0) + amt;
+    else income[cat] = (income[cat] || 0) + amt;
+  }
+  const labels = Array.from(
+    new Set([...Object.keys(income), ...Object.keys(expense)])
+  );
+  return {
+    labels,
+    datasets: [
+      {
+        label: t("income"),
+        data: labels.map((c) => income[c] || 0),
+        color: "#10b981",
+      },
+      {
+        label: t("expense"),
+        data: labels.map((c) => expense[c] || 0),
+        color: "#ef4444",
+      },
+    ],
+  };
+});
+
 const stats = computed(() => [
   {
     title: t("students"),
