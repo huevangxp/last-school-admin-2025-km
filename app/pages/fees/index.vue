@@ -305,6 +305,38 @@
         </div>
       </v-card>
     </v-dialog>
+
+    <!-- Payment receipt / bill (shown after a successful collection) -->
+    <v-dialog v-model="receiptDialog" width="460">
+      <v-card v-if="receipt" rounded="0" class="pa-4">
+        <!-- The receipt itself (also what gets printed / saved as image) -->
+        <div v-html="receiptHtml"></div>
+
+        <div class="d-flex justify-end ga-2 mt-4">
+          <v-btn variant="text" @click="receiptDialog = false">{{
+            t("close")
+          }}</v-btn>
+          <v-btn
+            variant="flat"
+            color="white"
+            class="modern-action-btn secondary border"
+            :loading="exporting"
+            @click="downloadReceiptImage"
+          >
+            <v-icon icon="mdi-file-image-outline" start size="18"></v-icon>
+            {{ t("download_image") }}
+          </v-btn>
+          <v-btn
+            color="primary"
+            class="modern-action-btn primary"
+            @click="printReceipt"
+          >
+            <v-icon icon="mdi-printer" start size="18"></v-icon>
+            {{ t("print") }}
+          </v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
