@@ -461,6 +461,7 @@ const allMenuSections: MenuSection[] = [
     icon: "mdi-view-dashboard-outline",
     items: [
       { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
+      { title: "announcement", icon: "mdi-bullhorn-outline", to: "/announcement", studentVisible: true },
       { title: "reports", icon: "mdi-chart-box-outline", to: "/reports", adminOnly: true },
       { title: "overview", icon: "mdi-chart-box-outline", to: "/overview", adminOnly: true },
     ],
@@ -588,6 +589,7 @@ const flatNavItems = computed(() =>
 //   student → Score Report · Timetable · Class Org · Teacher Org (all four)
 const BOTTOM_PRIORITY = [
   "/",
+  "/announcement",
   "/students",
   "/class",
   "/scores",
