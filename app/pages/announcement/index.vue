@@ -5,8 +5,8 @@
     <!-- Header -->
     <div class="feed-column mx-auto d-flex align-center justify-space-between mb-4">
       <div class="d-flex align-center">
-        <v-avatar color="deep-orange-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="deep-orange-darken-2" size="22">mdi-bullhorn-outline</v-icon>
+        <v-avatar color="primary-lighten-5" size="44" class="mr-3 rounded-0">
+          <v-icon color="primary" size="22">mdi-bullhorn-outline</v-icon>
         </v-avatar>
         <div>
           <div class="text-title">{{ t("announcements") }}</div>
@@ -19,8 +19,8 @@
         v-if="isStudent"
         size="small"
         rounded="0"
-        color="deep-orange-lighten-5"
-        class="text-deep-orange-darken-2 font-weight-bold"
+        color="primary-lighten-5"
+        class="text-primary font-weight-bold"
         variant="flat"
       >
         <v-icon start size="14">mdi-eye-outline</v-icon>
@@ -32,8 +32,8 @@
       <!-- Composer (teachers / admins) -->
       <v-card v-if="!isStudent" rounded="0" elevation="0" class="fb-card mb-4">
         <div class="pa-4 d-flex align-center ga-3">
-          <v-avatar color="deep-orange-lighten-5" size="40">
-            <v-icon color="deep-orange-darken-2" size="20"
+          <v-avatar color="primary-lighten-5" size="40">
+            <v-icon color="primary" size="20"
               >mdi-bullhorn-outline</v-icon
             >
           </v-avatar>
@@ -53,7 +53,7 @@
             class="composer-cta"
             @click="openCreate"
           >
-            <v-icon start size="18" color="deep-orange-darken-2"
+            <v-icon start size="18" color="primary"
               >mdi-image-outline</v-icon
             >
             {{ t("post-announcement") }}
@@ -86,8 +86,8 @@
         >
           <!-- Post header -->
           <div class="pa-4 pb-2 d-flex align-center">
-            <v-avatar color="deep-orange-lighten-5" size="44" class="mr-3">
-              <v-icon color="deep-orange-darken-2" size="22">mdi-bullhorn</v-icon>
+            <v-avatar color="primary-lighten-5" size="44" class="mr-3">
+              <v-icon color="primary" size="22">mdi-bullhorn</v-icon>
             </v-avatar>
             <div>
               <div class="fb-author">{{ t("announcement_author") }}</div>
