@@ -56,14 +56,21 @@
             <label class="text-detail-tiny mb-2 d-block"
               >{{ $t("transaction-date") }}</label
             >
+            <DialogDate
+              v-model="showDatePicker"
+              :date="form.date"
+              @update:date="form.date = $event"
+            />
             <v-text-field
               v-model="form.date"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showDatePicker = true"
             ></v-text-field>
           </v-col>
 

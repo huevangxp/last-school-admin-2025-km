@@ -187,13 +187,20 @@
           </v-col>
           <v-col cols="6">
             <label class="text-detail-tiny mb-1 d-block">{{ t("activity_date") }}</label>
+            <DialogDate
+              v-model="showActivityDatePicker"
+              :date="form.activity_date"
+              @update:date="form.activity_date = $event"
+            />
             <v-text-field
               v-model="form.activity_date"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showActivityDatePicker = true"
             ></v-text-field>
           </v-col>
         </v-row>
