@@ -15,6 +15,9 @@ import { Doughnut } from "vue-chartjs";
 
 ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
+// Canvas text ignores page CSS — set the Lao-capable font on Chart.js directly.
+ChartJS.defaults.font.family = "'Noto Sans Lao', 'Inter', sans-serif";
+
 const PALETTE = [
   "#14b8a6",
   "#448AFF",
