@@ -276,14 +276,26 @@
                     v-if="i !== activities.length - 1"
                   ></div>
                 </div>
-                <div class="feed-content">
-                  <div class="message text-detail mb-1">
-                    <span class="font-weight-black text-slate-800">{{
-                      log.user
-                    }}</span>
-                    <span class="text-grey-darken-1 ml-1">{{
-                      log.action
-                    }}</span>
+                <div class="feed-content flex-grow-1">
+                  <div
+                    class="message text-detail mb-1 d-flex align-center justify-space-between"
+                  >
+                    <span>
+                      <span class="font-weight-black text-slate-800">{{
+                        log.user
+                      }}</span>
+                      <span class="text-grey-darken-1 ml-1">{{
+                        log.action
+                      }}</span>
+                    </span>
+                    <v-chip
+                      size="x-small"
+                      color="primary-lighten-5"
+                      variant="flat"
+                      class="text-primary font-weight-black"
+                    >
+                      {{ log.students }}
+                    </v-chip>
                   </div>
                   <div class="meta text-detail-tiny">{{ log.time }}</div>
                 </div>
