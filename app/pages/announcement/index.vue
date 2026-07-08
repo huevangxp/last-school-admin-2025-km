@@ -276,12 +276,53 @@ onMounted(() => {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
   color: white !important;
 }
-/* Clamp the body text so cards stay uniform height. */
-.announcement-body {
+
+/* ---- Facebook-style feed ---- */
+/* A single narrow, centered column of posts. */
+.feed-column {
+  max-width: 600px;
+  width: 100%;
+}
+.fb-card {
+  background: white;
+  border: 1px solid #e4e6eb;
+  border-radius: 12px;
+}
+.fb-author {
+  font-weight: 800;
+  font-size: 14px;
+  color: #1e293b;
+}
+/* Full post text, preserving line breaks (no clamp — feed style). */
+.fb-content {
   white-space: pre-line;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.5;
+}
+/* The "Write an announcement…" pill that opens the composer. */
+.composer-input {
+  text-align: left;
+  background: #f0f2f5;
+  border-radius: 9999px;
+  padding: 10px 16px;
+  color: #65676b;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.composer-input:hover {
+  background: #e4e6eb;
+}
+.composer-cta {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  color: #65676b !important;
+}
+.fb-actions {
+  padding: 4px;
+}
+.fb-action-btn {
+  text-transform: none !important;
+  font-weight: 700 !important;
+  color: #65676b !important;
 }
 </style>
