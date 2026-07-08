@@ -32,4 +32,26 @@ export default defineNuxtRouteMiddleware((to) => {
       return navigateTo("/teachers/organization");
     }
   }
+
+  // Student guard: the student role is read-only and limited to four pages
+  // (teacher org chart, score report, timetable, class organization). Any other
+  // URL — dashboard included — is redirected to the score report so a student
+  // can never open score entry, financial, admin, etc. by typing the URL.
+  if (token.value) {
+    const role = (useCookie<string>("role").value || "").toLowerCase();
+    if (role === "student") {
+      // Strip the i18n locale prefix so it matches the unprefixed allow-list.
+      const path = (to?.path || "/").replace(/^\/(en|la)(?=\/|$)/, "") || "/";
+      const allowed = [
+        "/teachers/organization",
+        "/scores/report",
+        "/timetable",
+        "/class/organization",
+      ];
+      const ok = allowed.some((a) => path === a || path.startsWith(a + "/"));
+      if (!ok) {
+        return navigateTo("/scores/report");
+      }
+    }
+  }
 });
