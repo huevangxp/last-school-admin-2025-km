@@ -315,8 +315,6 @@ import { ref, computed, onMounted, watch } from "vue";
 import DashboardChart from "~/components/DashboardChart.vue";
 const { t } = useI18n();
 
-const chartPeriod = ref("monthly");
-
 const { $axios } = useNuxtApp();
 
 const studentCount = ref(0);
