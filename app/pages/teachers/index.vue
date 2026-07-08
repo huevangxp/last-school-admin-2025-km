@@ -151,6 +151,8 @@
       >
 
       <v-data-table
+        v-model:page="page"
+        :items-per-page="itemsPerPage"
         :headers="headers"
         :items="filteredTeachers"
         :loading="teacherStore.loading"
