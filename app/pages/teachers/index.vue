@@ -490,7 +490,7 @@ definePageMeta({ requiresAdmin: true });
 
 const { t } = useI18n();
 
-const search = ref("");
+const selectedName = ref<string | null>(null);
 const selectedRole = ref<string | null>(null);
 const selectedStatus = ref<string | null>(null);
 
