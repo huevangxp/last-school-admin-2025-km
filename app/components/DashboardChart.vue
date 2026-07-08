@@ -1,8 +1,9 @@
 <template>
-   <Line :data="chartData" :options="chartOptions" />
+  <Line :data="chartData" :options="chartOptions" />
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,9 +13,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
-} from 'chart.js'
-import { Line } from 'vue-chartjs'
+  Filler,
+} from "chart.js";
+import { Line } from "vue-chartjs";
 
 ChartJS.register(
   CategoryScale,
@@ -25,67 +26,72 @@ ChartJS.register(
   Tooltip,
   Legend,
   Filler
-)
+);
 
-const chartData = {
-  labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
+// Real data is passed in from the parent (e.g. enrolled students per class for
+// the selected academic year). Falls back to empty so the canvas still renders.
+const props = withDefaults(
+  defineProps<{
+    labels?: string[];
+    values?: number[];
+    seriesLabel?: string;
+  }>(),
+  {
+    labels: () => [],
+    values: () => [],
+    seriesLabel: "",
+  }
+);
+
+const chartData = computed(() => ({
+  labels: props.labels,
   datasets: [
     {
-      label: 'Completed tasks',
-      backgroundColor: 'rgba(68, 138, 255, 0.1)', // Blue light
-      borderColor: '#448AFF', // Blue
-      pointBackgroundColor: '#448AFF',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: '#448AFF',
+      label: props.seriesLabel || "Value",
+      backgroundColor: "rgba(20, 184, 166, 0.12)", // teal light
+      borderColor: "#14b8a6", // teal
+      pointBackgroundColor: "#14b8a6",
+      pointBorderColor: "#fff",
+      pointHoverBackgroundColor: "#fff",
+      pointHoverBorderColor: "#14b8a6",
       fill: true,
       tension: 0.4,
-      data: [30, 45, 35, 50, 40, 60]
+      data: props.values,
     },
-    {
-      label: 'Created tasks',
-      backgroundColor: 'rgba(0, 230, 118, 0.05)', // Green light
-      borderColor: '#00E676', // Green
-      pointBackgroundColor: '#00E676',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: '#00E676',
-      fill: true,
-      tension: 0.4,
-      data: [20, 35, 40, 30, 45, 55]
-    }
-  ]
-}
+  ],
+}));
 
-const chartOptions:any = {
+const chartOptions: any = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      display: false // We'll build a custom legend if needed, or use the default but styled
+      display: false,
     },
     tooltip: {
-      backgroundColor: '#fff',
-      titleColor: '#333',
-      bodyColor: '#666',
-      borderColor: '#eee',
+      backgroundColor: "#fff",
+      titleColor: "#333",
+      bodyColor: "#666",
+      borderColor: "#eee",
       borderWidth: 1,
       padding: 10,
       displayColors: true,
       usePointStyle: true,
-    }
+    },
   },
   scales: {
     y: {
-      display: false, // Hide Y axis labels as per design often, or keep minimal
+      beginAtZero: true,
       grid: {
         display: true,
-        color: '#f0f0f0',
+        color: "#f0f0f0",
         drawBorder: false,
       },
       ticks: {
-        display: false
-      }
+        precision: 0,
+        color: "#9E9E9E",
+        font: { size: 11 },
+      },
     },
     x: {
       grid: {
@@ -93,16 +99,16 @@ const chartOptions:any = {
         drawBorder: false,
       },
       ticks: {
-        color: '#9E9E9E',
+        color: "#9E9E9E",
         font: {
-          size: 12
-        }
-      }
-    }
+          size: 12,
+        },
+      },
+    },
   },
   interaction: {
     intersect: false,
-    mode: 'index',
+    mode: "index",
   },
-}
+};
 </script>
