@@ -9,7 +9,9 @@
         <v-avatar :color="`${color}-lighten-5`" size="72" class="mb-4">
           <v-icon :icon="icon" :color="color" size="36"></v-icon>
         </v-avatar>
-        <h3 class="text-h6 font-weight-black mb-2">{{ title }}</h3>
+        <h3 class="text-h6 font-weight-black mb-2">
+          {{ title || t("are_you_sure") }}
+        </h3>
         <p class="text-body-2 text-grey-darken-1 px-6">{{ message }}</p>
       </div>
       <v-card-actions class="ga-3 px-4 pb-4">
