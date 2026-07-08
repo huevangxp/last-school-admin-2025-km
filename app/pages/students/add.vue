@@ -341,19 +341,19 @@ const breadcrumbs = [
 const showDobPicker = ref(false);
 
 const form = ref({
-  firstName: "ສົມສະໜຸກ",
-  lastName: "ວົງສາ",
-  username: "somsanuk" + Math.floor(Math.random() * 10000),
-  password: "12345678",
+  firstName: "",
+  lastName: "",
+  username: "",
+  password: "",
   gender: "male",
-  dob: "2010-05-15",
-  phone: "+856 20 5555 1234",
-  bloodGroup: "O+",
+  dob: "",
+  phone: "",
+  bloodGroup: "",
   ethnicity: "",
-  height: "165",
-  weight: "55",
-  parentName: "ທ້າວ ວົງສາ",
-  parentPhone: "+856 20 5555 5678",
+  height: "",
+  weight: "",
+  parentName: "",
+  parentPhone: "",
   classId: null,
 });
 
