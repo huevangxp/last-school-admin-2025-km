@@ -153,7 +153,6 @@
       <v-data-table
         :headers="headers"
         :items="filteredTeachers"
-        :search="search"
         :loading="teacherStore.loading"
         class="premium-table"
         hover
