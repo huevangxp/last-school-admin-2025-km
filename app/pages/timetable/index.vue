@@ -70,7 +70,7 @@
 
     <!-- Prompt to choose a class -->
     <v-card
-      v-if="!classId || !yearId"
+      v-if="!ready"
       elevation="0"
       class="intelligence-card pa-10 text-center text-detail"
     >
