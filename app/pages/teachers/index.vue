@@ -775,6 +775,7 @@ const openEdit = (item: any) => {
     status: item.statusRaw || "active",
     position: item.position || "",
     department: item.department || "",
+    subject_id: item.subjectId || null,
     layer: item.layer ?? null,
     manager_id: item.managerId || null,
   };
