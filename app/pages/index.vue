@@ -181,7 +181,7 @@
           <div class="pa-6">
             <div class="d-flex justify-space-between align-center mb-6">
               <div>
-                <div class="text-title mb-1">{{ t("students") }} · {{ t("classes") }}</div>
+                <div class="text-title mb-1">{{ t("active_students_monthly") }}</div>
                 <div class="text-detail">
                   {{ selectedYearTitle || t("global-performance-metrics") }}
                 </div>
@@ -206,8 +206,8 @@
               </div>
               <ClientOnly v-else>
                 <DashboardChart
-                  :labels="chartLabels"
-                  :values="chartValues"
+                  :labels="studentTrend.labels"
+                  :values="studentTrend.values"
                   :series-label="t('students')"
                 />
               </ClientOnly>
