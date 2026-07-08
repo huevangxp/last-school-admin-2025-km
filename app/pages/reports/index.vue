@@ -202,6 +202,9 @@ ChartJS.register(
   DoughnutController,
 );
 
+// Canvas text ignores page CSS — set the Lao-capable font on Chart.js directly.
+ChartJS.defaults.font.family = "'Noto Sans Lao', 'Inter', sans-serif";
+
 const { t } = useI18n();
 const { $axios } = useNuxtApp();
 
