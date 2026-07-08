@@ -97,15 +97,22 @@
           </v-col>
           <v-col cols="12" md="3">
             <label class="text-detail-tiny mb-2 d-block">{{ t("dob") }} *</label>
+            <DialogDate
+              v-model="showDobPicker"
+              :date="form.dob"
+              @update:date="form.dob = $event"
+            />
             <v-text-field
               v-model="form.dob"
-              type="date"
               variant="outlined"
               density="compact"
               rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showDobPicker = true"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="3">
