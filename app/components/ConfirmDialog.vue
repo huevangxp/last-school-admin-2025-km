@@ -35,7 +35,7 @@
           :disabled="loading"
           @click="$emit('update:modelValue', false)"
         >
-          {{ cancelText }}
+          {{ cancelText || t("cancel") }}
         </v-btn>
       </v-card-actions>
     </v-card>
