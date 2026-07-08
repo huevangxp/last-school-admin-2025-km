@@ -17,8 +17,9 @@
           </div>
         </div>
       </div>
+      <!-- Only students are read-only; teachers can now edit their classes. -->
       <v-chip
-        v-if="!isAdmin"
+        v-if="isStudent"
         size="small"
         rounded="0"
         color="indigo-lighten-5"
