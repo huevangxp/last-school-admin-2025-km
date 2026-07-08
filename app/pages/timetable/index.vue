@@ -33,7 +33,9 @@
     <!-- Filters: class + academic year -->
     <v-card elevation="0" class="intelligence-card pa-4 mb-6">
       <div class="d-flex flex-column flex-md-row gap-3">
+        <!-- Teachers have no class picker — they see their own schedule. -->
         <v-select
+          v-if="!isTeacher"
           v-model="classId"
           :items="classOptions"
           item-title="label"
