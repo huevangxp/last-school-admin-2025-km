@@ -30,7 +30,7 @@
 
     <div class="feed-column mx-auto">
       <!-- Composer (teachers / admins) -->
-      <v-card v-if="!isStudent" elevation="0" class="fb-card mb-4">
+      <v-card v-if="!isStudent" rounded="0" elevation="0" class="fb-card mb-4">
         <div class="pa-4 d-flex align-center ga-3">
           <v-avatar color="deep-orange-lighten-5" size="40">
             <v-icon color="deep-orange-darken-2" size="20"
