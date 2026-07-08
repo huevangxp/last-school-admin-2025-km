@@ -437,6 +437,14 @@ const studyClassId = ref<string | null>(null);
 const teacherId = ref<string | null>(null);
 const yearId = ref<string | null>(null);
 
+// Inline "add teaching time" dialog (admin, teaching board).
+const addDialog = ref(false);
+const adding = ref(false);
+const addPeriodId = ref<string | null>(null);
+const addDay = ref<string | null>(null);
+const addClassId = ref<string | null>(null);
+const addSubjectId = ref<string | null>(null);
+
 // Class picker options (admins / students only). Students see just their class.
 const classOptions = computed(() => {
   const source = isStudent.value
