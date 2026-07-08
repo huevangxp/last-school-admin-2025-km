@@ -222,9 +222,6 @@
               clearable
               :no-data-text="t('no-other-staff')"
             ></v-select>
-          </v-col>
-
-          <v-col cols="12">
             <div class="layer-hint d-flex align-center flex-wrap ga-2 pa-3">
               <v-icon color="teal-darken-1" size="18"
                 >mdi-file-tree-outline</v-icon
@@ -247,6 +244,10 @@
                 {{ t("suggested-layer-hint", { n: suggestedLayer }) }}
               </span>
             </div>
+          </v-col>
+
+          <v-col cols="12">
+         
           </v-col>
 
           <v-col cols="12" v-if="errorMessage">
