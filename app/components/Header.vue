@@ -581,13 +581,13 @@ const flatNavItems = computed(() =>
 const BOTTOM_PRIORITY = [
   "/",
   "/announcement",
-  "/students",
-  "/class",
-  "/scores",
+  "/teachers/organization",
   "/scores/report",
   "/timetable",
   "/class/organization",
-  "/teachers/organization",
+  "/scores",
+  "/students",
+  "/class",
 ];
 const bottomItems = computed(() => {
   const byTo = new Map(flatNavItems.value.map((i) => [i.to, i]));
@@ -601,7 +601,7 @@ const bottomItems = computed(() => {
   }
   // Append any remaining visible items not covered by the priority list.
   for (const i of flatNavItems.value) if (byTo.has(i.to)) ordered.push(i);
-  return ordered.slice(0, 4);
+  return ordered.slice(0, 5);
 });
 const hasMoreNav = computed(
   () => flatNavItems.value.length > bottomItems.value.length
