@@ -65,7 +65,7 @@ export default defineNuxtRouteMiddleware((to) => {
       const allowedPrefixes = [
         "/announcement",
         "/class/organization",
-        "/scores", // score entry + /scores/report
+        "/scores", // score entry + report (single page)
         "/timetable",
         "/teachers/organization",
         "/financial",
