@@ -26,7 +26,6 @@
               variant="outlined"
               density="compact"
               rounded="0"
-              class="premium-input"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
