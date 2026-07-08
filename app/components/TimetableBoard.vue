@@ -665,6 +665,77 @@ const clearCell = async (cell: any) => {
     ui.notify(t("failed-to-clear"), "error");
   }
 };
+
+// --- Inline "add teaching time" (admin, teaching board) ---
+// Open the dialog for a slot, pre-filling from an existing cell if there is one.
+const openAdd = (periodId: string, day: string) => {
+  addPeriodId.value = periodId;
+  addDay.value = day;
+  const existing = cellFor(periodId, day);
+  addClassId.value = existing?.classroom_id || null;
+  addSubjectId.value = existing?.assignment?.subject_id || null;
+  addDialog.value = true;
+};
+
+// Create the teaching assignment (teacher + subject + class + year) if needed,
+// then schedule it in the chosen slot.
+const addTeachingTime = async () => {
+  if (
+    !teacherId.value ||
+    !addClassId.value ||
+    !addSubjectId.value ||
+    !addPeriodId.value ||
+    !addDay.value ||
+    !yearId.value
+  )
+    return;
+  adding.value = true;
+  try {
+    // create-teaching-assignment is idempotent per (subject, class, year): it
+    // reuses the row if it exists, so this never creates duplicates.
+    const res = await teachingStore.createAssignment({
+      teacher_id: teacherId.value,
+      subject_id: addSubjectId.value,
+      classroom_id: addClassId.value,
+      academic_year_id: yearId.value,
+    });
+    const assignmentId = res?.data?.id;
+    if (!assignmentId) throw new Error("no assignment id");
+
+    // A teacher can't be in two rooms at once: clear a different class already
+    // holding this slot before assigning the new one.
+    const existing = cellFor(addPeriodId.value, addDay.value);
+    if (existing && existing.classroom_id !== addClassId.value) {
+      await scheduleStore.deleteCell(existing.id);
+    }
+    await scheduleStore.saveCell({
+      classroom_id: addClassId.value,
+      academic_year_id: yearId.value,
+      period_id: addPeriodId.value,
+      day_of_week: addDay.value,
+      teaching_assignment_id: assignmentId,
+    });
+    // Refresh the teacher's assignments (so the new one is known) and the grid.
+    await teachingStore.fetchAssignments({
+      teacher_id: teacherId.value,
+      academic_year_id: yearId.value,
+    });
+    await reloadCells();
+    addDialog.value = false;
+  } catch (error: any) {
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+  } finally {
+    adding.value = false;
+  }
+};
+
+// Clear the slot the dialog is editing.
+const clearFromDialog = async () => {
+  if (!addPeriodId.value || !addDay.value) return;
+  const existing = cellFor(addPeriodId.value, addDay.value);
+  if (existing) await clearCell(existing);
+  addDialog.value = false;
+};
 </script>
 
 <style scoped>
