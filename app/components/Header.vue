@@ -453,7 +453,7 @@ const allMenuSections: MenuSection[] = [
     items: [
       { title: "dashboard", icon: "mdi-view-dashboard-outline", to: "/" },
       { title: "announcement", icon: "mdi-bullhorn-outline", to: "/announcement", studentVisible: true },
-      { title: "reports", icon: "mdi-chart-box-outline", to: "/reports", adminOnly: true },
+      { title: "analytics", icon: "mdi-chart-box-outline", to: "/reports", adminOnly: true },
       { title: "overview", icon: "mdi-chart-box-outline", to: "/overview", adminOnly: true },
     ],
   },
