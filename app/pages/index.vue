@@ -550,18 +550,6 @@ const flaggedStudents = computed(() =>
     statusColor: statusColorMap[String(s.status)] || "primary",
   }))
 );
-
-const events = computed(() =>
-  academicYears.value.slice(0, 4).map((y) => {
-    const d = y.start_date ? new Date(y.start_date) : null;
-    return {
-      day: d ? String(d.getUTCDate()).padStart(2, "0") : "--",
-      month: d ? MONTHS[d.getUTCMonth()] : "--",
-      title: y.title || "—",
-      time: y.status || "",
-    };
-  })
-);
 </script>
 
 <style scoped>
