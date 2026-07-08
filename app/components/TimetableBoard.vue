@@ -17,18 +17,79 @@
           </div>
         </div>
       </div>
-      <!-- Only students are read-only; teachers can edit their own subjects. -->
-      <v-chip
-        v-if="isStudent"
-        size="small"
-        rounded="0"
-        color="indigo-lighten-5"
-        class="text-indigo-darken-2 font-weight-bold"
-        variant="flat"
-      >
-        <v-icon start size="14">mdi-eye-outline</v-icon>
-        {{ t("view_only") }}
-      </v-chip>
+      <div class="d-flex align-center ga-2 mt-3 mt-md-0">
+        <!-- Only students are read-only; teachers can edit their own subjects. -->
+        <v-chip
+          v-if="isStudent"
+          size="small"
+          rounded="0"
+          color="indigo-lighten-5"
+          class="text-indigo-darken-2 font-weight-bold"
+          variant="flat"
+        >
+          <v-icon start size="14">mdi-eye-outline</v-icon>
+          {{ t("view_only") }}
+        </v-chip>
+
+        <!-- Export / print the current timetable -->
+        <v-menu v-if="ready">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              variant="tonal"
+              color="indigo-darken-2"
+              rounded="0"
+              size="small"
+              :loading="exporting"
+            >
+              <v-icon start size="18">mdi-tray-arrow-down</v-icon>
+              {{ t("export") }}
+              <v-icon end size="16">mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list density="compact" min-width="200">
+            <v-list-item rounded="0" @click="exportExcel">
+              <template v-slot:prepend>
+                <v-icon size="18" color="green-darken-2">
+                  mdi-file-excel-outline
+                </v-icon>
+              </template>
+              <v-list-item-title class="text-detail">
+                {{ t("download_excel") }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item rounded="0" @click="exportImage">
+              <template v-slot:prepend>
+                <v-icon size="18" color="blue-darken-2">
+                  mdi-file-image-outline
+                </v-icon>
+              </template>
+              <v-list-item-title class="text-detail">
+                {{ t("download_image") }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item rounded="0" @click="exportPdf">
+              <template v-slot:prepend>
+                <v-icon size="18" color="red-darken-2">
+                  mdi-file-pdf-box
+                </v-icon>
+              </template>
+              <v-list-item-title class="text-detail">
+                {{ t("download_pdf") }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-divider class="my-1"></v-divider>
+            <v-list-item rounded="0" @click="printTimetable">
+              <template v-slot:prepend>
+                <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
+              </template>
+              <v-list-item-title class="text-detail">
+                {{ t("print") }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </div>
 
     <!-- Filters -->
