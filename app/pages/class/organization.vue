@@ -42,8 +42,9 @@
       </div>
     </div>
 
-    <!-- Filters -->
-    <v-card elevation="0" class="intelligence-card pa-4 mb-6">
+    <!-- Filters — admins only. Teachers/students are locked to their own class
+         and the latest academic year (auto-selected), so no filter is shown. -->
+    <v-card v-if="isAdmin" elevation="0" class="intelligence-card pa-4 mb-6">
       <div class="d-flex flex-column flex-md-row gap-3">
         <v-select
           v-model="selectedClassId"
