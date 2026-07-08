@@ -517,10 +517,17 @@ const statusOptions = [
 ];
 
 const teacherStore = useTeacherStore();
+const subjectStore = useSubjectStore();
 
 onMounted(() => {
   teacherStore.fetchTeachers(100, 1);
+  subjectStore.fetchSubjects();
 });
+
+// Subjects for the "main subject" picker in the edit dialog.
+const subjectOptions = computed(() =>
+  subjectStore.subjects.map((s: any) => ({ id: s.id, label: s.subject_name }))
+);
 
 const capitalize = (s?: string) =>
   s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
