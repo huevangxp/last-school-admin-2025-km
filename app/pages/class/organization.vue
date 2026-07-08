@@ -283,6 +283,12 @@ const enrollmentStore = useEnrollmentStore();
 const classRoleStore = useClassRoleStore();
 const teacherStore = useTeacherStore();
 
+// Students view the class org chart read-only — no role-assignment actions.
+const roleCookie = useCookie<string>("role");
+const isStudent = computed(
+  () => (roleCookie.value || "").toLowerCase() === "student"
+);
+
 const CAPS = { monitor: 1, committee: 2, unit_head: 5 };
 
 const breadcrumbs = [
