@@ -127,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, watch, onMounted } from "vue";
+import { ref, computed, nextTick, watch, onMounted, onBeforeUnmount } from "vue";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
 const { t } = useI18n();
