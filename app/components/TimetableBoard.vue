@@ -461,6 +461,25 @@ const teacherOptions = computed(() =>
   }))
 );
 
+// Subject options for the inline-add dialog.
+const subjectOptions = computed(() =>
+  subjectStore.subjects.map((s: any) => ({
+    id: s.id,
+    label: s.subject_name || s.subject_code,
+  }))
+);
+
+// Name of the teacher the teaching board is currently showing (dialog title).
+const currentTeacherLabel = computed(
+  () => teacherOptions.value.find((o) => o.id === teacherId.value)?.label || ""
+);
+// Human label for the slot being edited, e.g. "P1 · Monday".
+const addSlotLabel = computed(() => {
+  const p = scheduleStore.periods.find((x: any) => x.id === addPeriodId.value);
+  const dayTitle = addDay.value ? t(addDay.value) : "";
+  return [p?.period_name, dayTitle].filter(Boolean).join(" · ");
+});
+
 // Options to fill a cell.
 //  • Teaching board: every assignment of the chosen teacher (across all
 //    classes), labelled "subject · class".
