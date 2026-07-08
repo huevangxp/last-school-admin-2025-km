@@ -104,7 +104,7 @@
           variant="text"
           color="white"
           @click="toggleSidebar"
-          class="mr-4 d-none d-md-inline-flex"
+          :class="['mr-4', hasMoreNav ? '' : 'd-none d-md-inline-flex']"
         ></v-btn>
 
         <!-- Mobile-only compact brand so the top-left isn't empty. -->
