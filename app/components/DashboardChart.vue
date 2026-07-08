@@ -28,6 +28,9 @@ ChartJS.register(
   Filler
 );
 
+// Canvas text ignores page CSS — set the Lao-capable font on Chart.js directly.
+ChartJS.defaults.font.family = "'Noto Sans Lao', 'Inter', sans-serif";
+
 // Real data is passed in from the parent (e.g. enrolled students per class for
 // the selected academic year). Falls back to empty so the canvas still renders.
 const props = withDefaults(
