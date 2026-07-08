@@ -16,7 +16,7 @@
       <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
         <v-btn
           variant="outlined"
-          color="teal-darken-1"
+          color="primary"
           class="modern-action-btn secondary border"
           height="32"
           prepend-icon="mdi-content-copy"
