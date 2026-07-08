@@ -103,33 +103,35 @@
           <div class="pa-6">
             <div class="d-flex justify-space-between align-center mb-6">
               <div>
-                <div class="text-title mb-1">{{ t("academic-pulse") }}</div>
+                <div class="text-title mb-1">{{ t("students") }} · {{ t("classes") }}</div>
                 <div class="text-detail">
-                  {{ t("global-performance-metrics") }}
+                  {{ selectedYearTitle || t("global-performance-metrics") }}
                 </div>
               </div>
-              <div class="chart-controls d-flex ga-1">
-                <v-btn
-                  v-for="p in ['Daily', 'Weekly', 'Monthly']"
-                  :key="p"
-                  variant="flat"
-                  :color="
-                    chartPeriod === p.toLowerCase()
-                      ? 'primary'
-                      : 'grey-lighten-4'
-                  "
-                  height="28"
-                  class="rounded-0 text-none text-detail font-weight-bold"
-                  @click="chartPeriod = p.toLowerCase()"
-                >
-                  {{ t(p.toLowerCase()) }}
-                </v-btn>
-              </div>
+              <v-chip
+                color="primary-lighten-5"
+                class="text-primary font-weight-black"
+                size="x-small"
+                variant="flat"
+              >
+                {{ yearEnrollments.length }} {{ t("total") }}
+              </v-chip>
             </div>
 
             <div class="chart-container" style="height: 300px">
-              <ClientOnly>
-                <DashboardChart />
+              <div
+                v-if="!chartLabels.length"
+                class="d-flex align-center justify-center text-detail"
+                style="height: 100%"
+              >
+                {{ t("loading") }}
+              </div>
+              <ClientOnly v-else>
+                <DashboardChart
+                  :labels="chartLabels"
+                  :values="chartValues"
+                  :series-label="t('students')"
+                />
               </ClientOnly>
             </div>
           </div>
