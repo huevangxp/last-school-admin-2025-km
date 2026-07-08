@@ -517,7 +517,7 @@ const saveAll = async () => {
       subject_id: selectedSubjectId.value,
       semester: selectedSemester.value,
       month: selectedMonth.value,
-      score: Math.min(100, Math.max(0, Math.round(Number(r.score) || 0))),
+      score: Math.min(10, Math.max(0, Number(r.score) || 0)),
     }));
     const res = await scoreStore.bulkUpsertScores(payload);
     ui.notify(res?.message || t("scores-saved-successfully"), "success");
