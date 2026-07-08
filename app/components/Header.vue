@@ -532,11 +532,7 @@ const groupedMenuItems = computed<MenuSection[]>(() =>
     .map((sec) => ({
       ...sec,
       items: sec.items.filter((it) =>
-        isStudent.value
-          ? it.studentVisible
-          : isAdmin.value
-            ? true
-            : !it.adminOnly && !it.teacherHidden
+        isStudent.value ? it.studentVisible : isAdmin.value || !it.adminOnly
       ),
     }))
     .filter((sec) => sec.items.length > 0)
