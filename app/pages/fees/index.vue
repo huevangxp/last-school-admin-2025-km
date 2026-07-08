@@ -36,6 +36,63 @@
           <v-icon icon="mdi-account-multiple-plus-outline" start size="18"></v-icon>
           {{ t("generate_fees") }}
         </v-btn>
+
+        <!-- Export / print the fee list -->
+        <v-menu v-if="rows.length">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              variant="flat"
+              color="white"
+              class="modern-action-btn secondary border"
+              height="36"
+              :loading="exporting"
+            >
+              <v-icon icon="mdi-tray-arrow-down" start size="18"></v-icon>
+              {{ t("export") }}
+              <v-icon icon="mdi-chevron-down" end size="16"></v-icon>
+            </v-btn>
+          </template>
+          <v-list density="compact" min-width="200">
+            <v-list-item rounded="0" @click="exportExcel">
+              <template v-slot:prepend>
+                <v-icon size="18" color="green-darken-2"
+                  >mdi-file-excel-outline</v-icon
+                >
+              </template>
+              <v-list-item-title class="text-detail">{{
+                t("download_excel")
+              }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item rounded="0" @click="exportImage">
+              <template v-slot:prepend>
+                <v-icon size="18" color="blue-darken-2"
+                  >mdi-file-image-outline</v-icon
+                >
+              </template>
+              <v-list-item-title class="text-detail">{{
+                t("download_image")
+              }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item rounded="0" @click="exportPdf">
+              <template v-slot:prepend>
+                <v-icon size="18" color="red-darken-2">mdi-file-pdf-box</v-icon>
+              </template>
+              <v-list-item-title class="text-detail">{{
+                t("download_pdf")
+              }}</v-list-item-title>
+            </v-list-item>
+            <v-divider class="my-1"></v-divider>
+            <v-list-item rounded="0" @click="printTable">
+              <template v-slot:prepend>
+                <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
+              </template>
+              <v-list-item-title class="text-detail">{{
+                t("print")
+              }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </div>
     </div>
 
