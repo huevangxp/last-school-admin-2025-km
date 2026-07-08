@@ -263,11 +263,12 @@ const fitToScreen = () => {
   nextTick(centerView);
 };
 
-// Center once the faculty data has rendered.
+// Fit the whole chart into view once the faculty data has rendered, so it's
+// visible on screen by default instead of overflowing wide.
 watch(
   () => teacherStore.teachers.length,
   (len) => {
-    if (len > 0) nextTick(centerView);
+    if (len > 0) nextTick(fitToScreen);
   }
 );
 
