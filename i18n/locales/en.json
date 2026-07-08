@@ -1,5 +1,11 @@
 {
   "more": "More",
+  "announcement": "Announcement",
+  "announcements": "Announcements",
+  "post": "Post",
+  "post-announcement": "Post Announcement",
+  "no-announcements-yet": "No announcements yet",
+  "announcement-feed-subtitle": "News and notices from the school",
   "welcome": "welcome",
   "welcomeText": "Sign in to continue to your dashboard",
   "dashboard": "Dashboard",
