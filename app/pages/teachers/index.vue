@@ -487,11 +487,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
-import {
-  positionOptions,
-  departmentOptions,
-  layerOptions,
-} from "~/utils/orgPresets";
+import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
 
 // Managing teachers (list / edit / delete) is admin-only; teachers are sent to
