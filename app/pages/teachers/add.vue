@@ -337,6 +337,8 @@ const breadcrumbs = [
   { title: t("add"), disabled: true, to: "/teachers/add" },
 ];
 
+const showDobPicker = ref(false);
+
 const form = ref({
   firstName: "",
   lastName: "",

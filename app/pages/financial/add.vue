@@ -147,6 +147,8 @@ const breadcrumbs = [
   { title: t("add-record"), disabled: true, to: "" },
 ];
 
+const showDatePicker = ref(false);
+
 const form = ref({
   type: "Revenue",
   amount: "",

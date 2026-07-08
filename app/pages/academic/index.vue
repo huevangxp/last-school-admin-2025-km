@@ -345,6 +345,9 @@ const breadcrumbs = [
 const editDialog = ref(false);
 const saving = ref(false);
 const editError = ref("");
+const showStartDatePicker = ref(false);
+const showEndDatePicker = ref(false);
+
 const editForm = ref({
   id: "",
   title: "",

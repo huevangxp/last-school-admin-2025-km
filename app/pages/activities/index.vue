@@ -308,6 +308,8 @@ const formError = ref("");
 // New activities default their date to today.
 const todayStr = () => new Date().toISOString().substring(0, 10);
 
+const showActivityDatePicker = ref(false);
+
 const form = ref({
   id: "",
   title: "",

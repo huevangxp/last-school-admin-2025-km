@@ -338,6 +338,8 @@ const breadcrumbs = [
   { title: t("addStudent"), disabled: true, to: "/students/add" },
 ];
 
+const showDobPicker = ref(false);
+
 const form = ref({
   firstName: "ສົມສະໜຸກ",
   lastName: "ວົງສາ",
