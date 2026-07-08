@@ -423,6 +423,7 @@ const save = async () => {
       role: f.role,
       position: f.position || null,
       department: f.department || null,
+      subject_id: f.subjectId || null,
       layer: f.layer || null,
       manager_id: f.managerId || null,
       avatar: "https://picsum.photos/200",
