@@ -170,16 +170,14 @@
           <label class="text-detail-tiny mb-1 d-block">
             {{ g.grade_level_name }}
           </label>
-          <v-text-field
+          <MoneyInput
             v-model="structureForm[g.id]"
-            type="number"
-            prefix="₭"
             variant="outlined"
             density="compact"
             rounded="0"
             hide-details
             color="primary"
-          ></v-text-field>
+          ></MoneyInput>
         </div>
 
         <div class="d-flex justify-end ga-2 mt-6">
@@ -204,17 +202,15 @@
         </div>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("amount") }}</label>
-        <v-text-field
+        <MoneyInput
           v-model="collectForm.amount"
-          type="number"
-          prefix="₭"
           variant="outlined"
           density="compact"
           rounded="0"
           hide-details
           color="primary"
           class="mb-3"
-        ></v-text-field>
+        ></MoneyInput>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("payment-method") }}</label>
         <v-select
