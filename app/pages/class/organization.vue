@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
+  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
     <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
 
     <!-- Header -->
@@ -56,6 +56,7 @@
           hide-details
           rounded="0"
           style="max-width: 280px"
+          class="filter-select"
           color="primary"
           :disabled="isStudent"
         ></v-select>
@@ -70,6 +71,7 @@
           hide-details
           rounded="0"
           style="max-width: 220px"
+          class="filter-select"
           color="primary"
         ></v-select>
       </div>
