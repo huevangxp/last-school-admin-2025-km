@@ -354,6 +354,29 @@ const dialogSubjectOptions = computed(() => {
   return list.map((s: any) => ({ id: s.id, label: s.subject_name }));
 });
 
+// The subject a teacher already teaches (by name), from their existing
+// assignments this year — used to auto-fill the subject in the create dialog.
+const teacherSubjectName = (teacherId: string): string | null => {
+  const a = teachingStore.assignments.find(
+    (x: any) => x.teacher_id === teacherId && x.tb_subject
+  );
+  return a?.tb_subject?.subject_name || null;
+};
+
+// Once a class + teacher are chosen, auto-select the subject the teacher
+// teaches — matched by name against the class's grade subjects. The user can
+// still change it manually afterwards.
+watch(
+  () => [form.value.classroom_id, form.value.teacher_id],
+  () => {
+    if (!form.value.teacher_id) return;
+    const name = teacherSubjectName(form.value.teacher_id);
+    if (!name) return;
+    const opt = dialogSubjectOptions.value.find((o) => o.label === name);
+    if (opt) form.value.subject_id = opt.id;
+  }
+);
+
 const openCreate = () => {
   formError.value = "";
   form.value = {
