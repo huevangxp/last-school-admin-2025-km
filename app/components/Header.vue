@@ -707,10 +707,4 @@ const logoutButton = () => {
   min-width: 0 !important;
   text-transform: none !important;
 }
-.bottom-nav-label {
-  font-size: 10px;
-  font-weight: 700;
-  margin-top: 2px;
-  line-height: 1;
-}
 </style>
