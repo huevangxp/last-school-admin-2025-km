@@ -143,12 +143,20 @@ const isAdmin = computed(() =>
 
 const viewport = ref<HTMLElement | null>(null);
 
+// Re-fit the chart to the viewport whenever the window resizes so it stays
+// visible without endless horizontal scrolling.
+const onResize = () => nextTick(fitToScreen);
+
 onMounted(() => {
   teacherStore.fetchTeachers(100, 1);
+  window.addEventListener("resize", onResize);
 });
+onBeforeUnmount(() => window.removeEventListener("resize", onResize));
 
 // ---- Zoom ----
-const MIN_ZOOM = 0.4;
+// Allow shrinking well below 100% so even a wide faculty fits on smaller
+// screens (users can zoom back in / pan to read detail).
+const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 1.6;
 const ZOOM_STEP = 0.1;
 const zoom = ref(1);
