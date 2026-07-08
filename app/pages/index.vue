@@ -313,9 +313,13 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from "vue";
 import DashboardChart from "~/components/DashboardChart.vue";
+import DashboardBarChart from "~/components/DashboardBarChart.vue";
+import DashboardDoughnutChart from "~/components/DashboardDoughnutChart.vue";
+import { useFinanceStore } from "~/stores/apiFinance";
 const { t } = useI18n();
 
 const { $axios } = useNuxtApp();
+const financeStore = useFinanceStore();
 
 const studentCount = ref(0);
 const teacherCount = ref(0);
@@ -324,6 +328,7 @@ const subjectCount = ref(0);
 const recentStudents = ref<any[]>([]);
 const academicYears = ref<any[]>([]);
 const recentClasses = ref<any[]>([]);
+const teachers = ref<any[]>([]);
 
 // Academic-year scoped state (merged from the former /overview page).
 const yearId = ref<string | null>(null);
