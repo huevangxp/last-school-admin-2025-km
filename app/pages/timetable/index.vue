@@ -345,11 +345,13 @@ const isAdmin = computed(
 const isStudent = computed(
   () => (roleCookie.value || "").toLowerCase() === "student"
 );
-// Teachers see their OWN weekly schedule across every class they teach (one
-// table), with each cell showing the subject + the classroom taught.
+// Teachers pick from the classes they teach and can set the timetable for those
+// classes (scoped to their own subjects on the server).
 const isTeacher = computed(
   () => (roleCookie.value || "").toLowerCase() === "teacher"
 );
+// Admins and teachers may edit cells; students are read-only.
+const canEdit = computed(() => isAdmin.value || isTeacher.value);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
