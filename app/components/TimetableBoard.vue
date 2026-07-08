@@ -587,6 +587,12 @@ const subjectOptions = computed(() =>
 const currentTeacherLabel = computed(
   () => teacherOptions.value.find((o) => o.id === teacherId.value)?.label || ""
 );
+// The cell the dialog is currently editing (null when adding to an empty slot).
+const addDialogCell = computed(() =>
+  addPeriodId.value && addDay.value
+    ? cellFor(addPeriodId.value, addDay.value)
+    : null
+);
 // Human label for the slot being edited, e.g. "P1 · Monday".
 const addSlotLabel = computed(() => {
   const p = scheduleStore.periods.find((x: any) => x.id === addPeriodId.value);
