@@ -633,6 +633,33 @@ const filteredTeachers = computed(() =>
   })
 );
 
+// ---- Pagination (client-side, over the filtered rows) ----
+const page = ref(1);
+const itemsPerPage = ref(10);
+
+const pageCount = computed(() =>
+  Math.max(1, Math.ceil(filteredTeachers.value.length / itemsPerPage.value))
+);
+const pages = computed(() =>
+  Array.from({ length: pageCount.value }, (_, i) => i + 1)
+);
+const rangeStart = computed(() =>
+  filteredTeachers.value.length === 0
+    ? 0
+    : (page.value - 1) * itemsPerPage.value + 1
+);
+const rangeEnd = computed(() =>
+  Math.min(page.value * itemsPerPage.value, filteredTeachers.value.length)
+);
+
+// Any filter change resets to the first page (and never leave an empty page).
+watch([selectedName, selectedRole, selectedStatus], () => {
+  page.value = 1;
+});
+watch(pageCount, (count) => {
+  if (page.value > count) page.value = count;
+});
+
 // ---- Confirm popup (shared for delete + block) ----
 const confirm = ref({
   show: false,
