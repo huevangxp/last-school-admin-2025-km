@@ -148,6 +148,9 @@ const roleCookie = useCookie<string>("role");
 const isStudent = computed(
   () => (roleCookie.value || "").toLowerCase() === "student"
 );
+const isAdmin = computed(() =>
+  ["admin", "administrator"].includes((roleCookie.value || "").toLowerCase())
+);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
