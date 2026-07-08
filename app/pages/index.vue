@@ -370,9 +370,54 @@ onMounted(async () => {
     subjectCount.value = subRes.data?.data?.pagination?.total ?? 0;
 
     academicYears.value = yRes.data?.data ?? [];
+    // Default to the latest academic year (active first, else newest start).
+    if (academicYears.value.length) {
+      const latest = [...academicYears.value].sort((a: any, b: any) => {
+        const act =
+          (b.status === "active" ? 1 : 0) - (a.status === "active" ? 1 : 0);
+        if (act !== 0) return act;
+        return (
+          new Date(b.start_date || 0).getTime() -
+          new Date(a.start_date || 0).getTime()
+        );
+      })[0];
+      yearId.value = latest.id;
+    }
   } catch (error) {
     console.error("dashboard load error:", error);
   }
+});
+
+// Reload the year-scoped classroom breakdown whenever the selected year changes.
+const loadYear = async () => {
+  if (!yearId.value) return;
+  try {
+    const [cRes, eRes] = await Promise.all([
+      $axios.get(
+        `/get-all-classrooms?academic_year_id=${yearId.value}&limit=100`
+      ),
+      $axios.get(`/enrollments?academic_year_id=${yearId.value}&status=active`),
+    ]);
+    yearClassrooms.value = cRes.data?.data?.classrooms ?? [];
+    yearEnrollments.value = eRes.data?.data ?? [];
+  } catch (error) {
+    console.error("dashboard year load error:", error);
+  }
+};
+
+watch(yearId, loadYear);
+
+const selectedYearTitle = computed(
+  () => academicYears.value.find((y) => y.id === yearId.value)?.title || ""
+);
+
+// Count of active enrolled students per classroom for the selected year.
+const countByClass = computed(() => {
+  const map: Record<string, number> = {};
+  for (const e of yearEnrollments.value) {
+    map[e.class_id] = (map[e.class_id] || 0) + 1;
+  }
+  return map;
 });
 
 const stats = computed(() => [
