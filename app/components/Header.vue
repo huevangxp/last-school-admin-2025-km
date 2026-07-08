@@ -560,7 +560,37 @@ watch(
 const flatNavItems = computed(() =>
   groupedMenuItems.value.flatMap((s) => s.items).filter((i) => i.to)
 );
-const bottomItems = computed(() => flatNavItems.value.slice(0, 4));
+
+// Preferred order for the bottom bar's primary tabs. Whichever of these the
+// current role can see fill the (max 4) tabs first; anything left over stays in
+// the drawer behind "More". Each role naturally gets a sensible set:
+//   admin   → Dashboard · Students · Classes · Scores
+//   teacher → Dashboard · Scores · Score Report · Timetable
+//   student → Score Report · Timetable · Class Org · Teacher Org (all four)
+const BOTTOM_PRIORITY = [
+  "/",
+  "/students",
+  "/class",
+  "/scores",
+  "/scores/report",
+  "/timetable",
+  "/class/organization",
+  "/teachers/organization",
+];
+const bottomItems = computed(() => {
+  const byTo = new Map(flatNavItems.value.map((i) => [i.to, i]));
+  const ordered: any[] = [];
+  for (const to of BOTTOM_PRIORITY) {
+    const hit = byTo.get(to);
+    if (hit) {
+      ordered.push(hit);
+      byTo.delete(to);
+    }
+  }
+  // Append any remaining visible items not covered by the priority list.
+  for (const i of flatNavItems.value) if (byTo.has(i.to)) ordered.push(i);
+  return ordered.slice(0, 4);
+});
 const hasMoreNav = computed(
   () => flatNavItems.value.length > bottomItems.value.length
 );
