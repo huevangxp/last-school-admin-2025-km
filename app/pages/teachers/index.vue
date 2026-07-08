@@ -493,7 +493,6 @@ import {
   layerOptions,
 } from "~/utils/orgPresets";
 import { useTeacherStore } from "~/stores/apiTeacher";
-import { useSubjectStore } from "~/stores/apiSubject";
 
 // Managing teachers (list / edit / delete) is admin-only; teachers are sent to
 // the read-only org chart instead.
