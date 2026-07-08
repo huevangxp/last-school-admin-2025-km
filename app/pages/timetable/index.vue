@@ -336,7 +336,6 @@ const ui = useUiStore();
 
 // Admin edits the timetable; teachers & students only view it.
 const roleCookie = useCookie<string>("role");
-const idCookie = useCookie<string>("id");
 const isAdmin = computed(
   () => (roleCookie.value || "").toLowerCase() === "admin"
 );
