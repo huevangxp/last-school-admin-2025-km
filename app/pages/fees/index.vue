@@ -256,6 +256,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
 import { useFeesStore } from "~/stores/apiFees";
 import { useUiStore } from "~/stores/ui";
+import { formatMoney as money } from "@/utils/money";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
@@ -270,9 +271,6 @@ const breadcrumbs = [
 const yearId = ref("");
 const classId = ref<string | null>(null);
 const search = ref("");
-
-const money = (v: any) =>
-  Number(v || 0).toLocaleString("en-US", { maximumFractionDigits: 2 });
 
 const classFilterOptions = computed(() =>
   classroomStore.classrooms.map((c: any) => ({
