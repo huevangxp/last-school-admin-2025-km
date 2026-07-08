@@ -148,7 +148,7 @@
                 {{ t("students") }}
               </th>
               <th class="col-score text-detail-tiny">
-                {{ t("scores") }} (0–100)
+                {{ t("scores") }} (0–10)
               </th>
             </tr>
           </thead>
