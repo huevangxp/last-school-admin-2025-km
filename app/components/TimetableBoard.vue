@@ -354,6 +354,7 @@ import { useClassroomStore } from "~/stores/apiClassroom";
 import { useTeachingStore } from "~/stores/apiTeaching";
 import { useScheduleStore } from "~/stores/apiSchedule";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { useSubjectStore } from "~/stores/apiSubject";
 import { useUiStore } from "~/stores/ui";
 
 // Which "page" this board is: the class-centric study schedule or the
@@ -366,6 +367,7 @@ const classroomStore = useClassroomStore();
 const teachingStore = useTeachingStore();
 const scheduleStore = useScheduleStore();
 const teacherStore = useTeacherStore();
+const subjectStore = useSubjectStore();
 const ui = useUiStore();
 
 const roleCookie = useCookie<string>("role");
