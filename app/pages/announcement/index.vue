@@ -81,6 +81,7 @@
           v-for="a in feed"
           :key="a.id"
           elevation="0"
+          rounded="0"
           class="fb-card mb-4 overflow-hidden"
         >
           <!-- Post header -->
