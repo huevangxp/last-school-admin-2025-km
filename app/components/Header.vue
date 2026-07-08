@@ -427,8 +427,8 @@ const allMenuSections: MenuSection[] = [
       { title: "subject", icon: "mdi-book-open-variant", to: "/subjects", adminOnly: true },
       { title: "teaching_assignments", icon: "mdi-clipboard-account-outline", to: "/teaching", adminOnly: true },
       { title: "scores", icon: "mdi-star-outline", to: "/scores" },
-      { title: "score_report", icon: "mdi-table-large", to: "/scores/report" },
-      { title: "study_schedule", icon: "mdi-timetable", to: "/timetable" },
+      { title: "score_report", icon: "mdi-table-large", to: "/scores/report", studentVisible: true },
+      { title: "study_schedule", icon: "mdi-timetable", to: "/timetable", studentVisible: true },
       { title: "academic", icon: "mdi-calendar-check", to: "/academic", adminOnly: true },
     ],
   },
@@ -439,7 +439,7 @@ const allMenuSections: MenuSection[] = [
     icon: "mdi-account-tie-outline",
     items: [
       { title: "teachers", icon: "mdi-account-tie-outline", to: "/teachers", adminOnly: true },
-      { title: "organization", icon: "mdi-sitemap-outline", to: "/teachers/organization" },
+      { title: "organization", icon: "mdi-sitemap-outline", to: "/teachers/organization", studentVisible: true },
     ],
   },
  
@@ -482,7 +482,9 @@ const groupedMenuItems = computed<MenuSection[]>(() =>
     .filter((sec) => isAdmin.value || !sec.adminOnly)
     .map((sec) => ({
       ...sec,
-      items: sec.items.filter((it) => isAdmin.value || !it.adminOnly),
+      items: sec.items.filter((it) =>
+        isStudent.value ? it.studentVisible : isAdmin.value || !it.adminOnly
+      ),
     }))
     .filter((sec) => sec.items.length > 0)
 );
