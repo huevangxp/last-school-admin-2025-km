@@ -382,7 +382,6 @@ const classCount = ref(0);
 const subjectCount = ref(0);
 const recentStudents = ref<any[]>([]);
 const academicYears = ref<any[]>([]);
-const recentClasses = ref<any[]>([]);
 const teachers = ref<any[]>([]);
 
 // Academic-year scoped state (merged from the former /overview page).
