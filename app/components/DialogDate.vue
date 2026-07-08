@@ -70,8 +70,10 @@ const close = () => {
 
 const save = () => {
   if (selectedDate.value) {
-    // Format date to YYYY-MM-DD for consistency
-    const formattedDate = selectedDate.value.toISOString().substr(0, 10);
+    // Format to YYYY-MM-DD using LOCAL date parts. Using toISOString() here
+    // would convert to UTC and, in +7 timezones, shift to the previous day.
+    const d = selectedDate.value;
+    const formattedDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     emit("update:date", formattedDate);
     emit("save", formattedDate);
   }
