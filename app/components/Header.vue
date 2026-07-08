@@ -592,6 +592,7 @@ const BOTTOM_PRIORITY = [
   "/teachers/organization",
   "/scores",
   "/timetable",
+  "/timetable/teaching",
   "/class/organization",
   "/students",
   "/class",
