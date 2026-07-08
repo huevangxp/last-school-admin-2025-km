@@ -198,6 +198,122 @@
           </table>
         </div>
       </v-card>
+
+      <!-- Mobile: one day at a time — a day selector plus a vertical list of
+           periods. Replaces the wide horizontally-scrolling table on phones. -->
+      <div class="d-md-none">
+        <v-chip-group
+          v-model="selectedDayIdx"
+          mandatory
+          class="day-chips mb-3"
+          selected-class="day-chip-on"
+        >
+          <v-chip
+            v-for="(d, i) in days"
+            :key="d.key"
+            :value="i"
+            rounded="0"
+            variant="flat"
+            size="small"
+            class="font-weight-bold"
+          >
+            {{ t(d.key) }}
+          </v-chip>
+        </v-chip-group>
+
+        <v-card
+          v-for="p in scheduleStore.periods"
+          :key="p.id"
+          elevation="0"
+          class="intelligence-card mb-2 overflow-hidden"
+        >
+          <div class="mobile-row d-flex align-stretch">
+            <div class="mobile-period-badge">
+              <div class="text-title-small">{{ p.period_name }}</div>
+              <div class="text-detail-tiny">{{ p.period_code }}</div>
+            </div>
+
+            <!-- Admin: tap to assign / change / clear -->
+            <v-menu v-if="isAdmin" :close-on-content-click="true">
+              <template v-slot:activator="{ props }">
+                <div
+                  v-bind="props"
+                  class="mobile-slot"
+                  :class="{ filled: cellFor(p.id, currentDayKey) }"
+                >
+                  <template v-if="cellFor(p.id, currentDayKey)">
+                    <div class="subj">
+                      {{ subjectOf(cellFor(p.id, currentDayKey)) }}
+                    </div>
+                    <div class="tchr">
+                      {{ teacherOf(cellFor(p.id, currentDayKey)) }}
+                    </div>
+                  </template>
+                  <span
+                    v-else
+                    class="text-primary font-weight-bold d-inline-flex align-center"
+                  >
+                    <v-icon size="16" start>mdi-plus</v-icon>{{ t("add") }}
+                  </span>
+                </div>
+              </template>
+              <v-list density="compact" class="pa-1" min-width="220">
+                <v-list-subheader class="text-detail-tiny">
+                  {{ t("subject") }} — {{ t("teacher") }}
+                </v-list-subheader>
+                <v-list-item
+                  v-for="opt in assignmentOptions"
+                  :key="opt.id"
+                  rounded="0"
+                  @click="assignCell(p.id, currentDayKey, opt.id)"
+                >
+                  <v-list-item-title class="text-detail">
+                    <span class="font-weight-bold text-teal-darken-2">{{
+                      opt.subject
+                    }}</span>
+                    · {{ opt.teacher }}
+                  </v-list-item-title>
+                </v-list-item>
+                <template v-if="cellFor(p.id, currentDayKey)">
+                  <v-divider class="my-1"></v-divider>
+                  <v-list-item
+                    rounded="0"
+                    @click="clearCell(cellFor(p.id, currentDayKey))"
+                  >
+                    <template v-slot:prepend>
+                      <v-icon size="16" color="error">
+                        mdi-close-circle-outline
+                      </v-icon>
+                    </template>
+                    <v-list-item-title
+                      class="text-detail text-error font-weight-bold"
+                    >
+                      {{ t("clear") }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-list>
+            </v-menu>
+
+            <!-- Teacher / student: read-only -->
+            <div
+              v-else
+              class="mobile-slot"
+              :class="{ filled: cellFor(p.id, currentDayKey) }"
+            >
+              <template v-if="cellFor(p.id, currentDayKey)">
+                <div class="subj">
+                  {{ subjectOf(cellFor(p.id, currentDayKey)) }}
+                </div>
+                <div class="tchr">
+                  {{ teacherOf(cellFor(p.id, currentDayKey)) }}
+                </div>
+              </template>
+              <span v-else class="text-detail-tiny text-grey-lighten-1">—</span>
+            </div>
+          </div>
+        </v-card>
+      </div>
     </template>
   </v-container>
 </template>
