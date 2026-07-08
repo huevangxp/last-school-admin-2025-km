@@ -466,7 +466,17 @@ const assignmentOptions = computed(() => {
         secondary: a.tb_classroom?.classroom_name || "—",
       }));
   }
-  return teachingStore.assignments.map((a: any) => ({
+  // Study board. Admins list every assignment in the class (from the admin-only
+  // endpoint); teachers list just their own (from /my-teaching) for this class,
+  // which is also all they're allowed to schedule.
+  const studySource = isTeacher.value
+    ? teachingStore.myTeaching.filter(
+        (a: any) =>
+          a.academic_year_id === yearId.value &&
+          a.classroom_id === studyClassId.value
+      )
+    : teachingStore.assignments;
+  return studySource.map((a: any) => ({
     id: a.id,
     classroom_id: studyClassId.value,
     subject: a.tb_subject?.subject_name || "—",
