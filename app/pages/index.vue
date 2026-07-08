@@ -354,21 +354,6 @@ const yearId = ref<string | null>(null);
 const yearClassrooms = ref<any[]>([]);
 const yearEnrollments = ref<any[]>([]);
 
-const MONTHS = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
-
 onMounted(async () => {
   try {
     const [sRes, tRes, cRes, subRes, yRes] = await Promise.all([
