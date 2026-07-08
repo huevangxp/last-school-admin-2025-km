@@ -448,7 +448,7 @@ const clampScore = (row: any) => {
     row.score = 0;
     return;
   }
-  row.score = Math.min(100, Math.max(0, Math.round(n)));
+  row.score = Math.min(10, Math.max(0, n));
 };
 
 // (Re)build the grid: students of the class, prefilled with any saved score
