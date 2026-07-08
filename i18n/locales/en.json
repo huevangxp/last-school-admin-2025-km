@@ -127,6 +127,7 @@
   "subject": "Subject",
   "scores": "Score",
   "financial": "Financial",
+  "active_students_monthly": "Active Students / Month",
   "teacher_distribution": "Teacher Distribution",
   "by_department": "By department",
   "income_vs_expense": "Income vs Expense",
