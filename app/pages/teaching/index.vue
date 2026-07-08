@@ -355,14 +355,11 @@ const dialogSubjectOptions = computed(() => {
 });
 
 // The subject a teacher teaches (by name), used to auto-fill the create dialog.
-// Prefers the teacher's configured main subject; falls back to inferring it
-// from an existing assignment this year.
+// Uses the teacher's subject group (ໝວດວິຊາ / department); falls back to
+// inferring the subject from an existing assignment this year.
 const teacherSubjectName = (teacherId: string): string | null => {
   const tc = teacherStore.teachers.find((x: any) => x.id === teacherId);
-  if (tc?.subject_id) {
-    const subj = subjectStore.subjects.find((s: any) => s.id === tc.subject_id);
-    if (subj?.subject_name) return subj.subject_name;
-  }
+  if (tc?.department) return tc.department;
   const a = teachingStore.assignments.find(
     (x: any) => x.teacher_id === teacherId && x.tb_subject
   );
