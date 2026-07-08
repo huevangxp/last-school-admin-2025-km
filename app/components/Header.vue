@@ -311,6 +311,43 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <!-- Mobile bottom navigation — replaces the sidebar on small screens.
+         Primary destinations sit as tabs; any overflow lives behind "More",
+         which opens the full menu drawer as an overlay. -->
+    <ClientOnly>
+      <v-bottom-navigation
+        v-if="mobile"
+        v-model="bottomTab"
+        class="mobile-bottom-nav"
+        color="primary"
+        bg-color="surface"
+        grow
+        height="66"
+        elevation="0"
+      >
+        <v-btn
+          v-for="item in bottomItems"
+          :key="item.to"
+          :to="item.to"
+          :value="item.to"
+          :exact="item.to === '/'"
+          class="bottom-nav-btn"
+        >
+          <v-icon size="22">{{ item.icon }}</v-icon>
+          <span class="bottom-nav-label">{{ t(item.title) }}</span>
+        </v-btn>
+        <v-btn
+          v-if="hasMoreNav"
+          value="__more"
+          class="bottom-nav-btn"
+          @click="drawer = true"
+        >
+          <v-icon size="22">mdi-dots-horizontal</v-icon>
+          <span class="bottom-nav-label">{{ t("more") }}</span>
+        </v-btn>
+      </v-bottom-navigation>
+    </ClientOnly>
   </div>
 </template>
 
