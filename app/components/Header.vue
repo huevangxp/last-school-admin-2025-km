@@ -342,7 +342,7 @@
         color="primary"
         bg-color="surface"
         grow
-        height="66"
+        height="58"
         elevation="0"
       >
         <v-btn
@@ -351,19 +351,10 @@
           :to="item.to"
           :value="item.to"
           :exact="item.to === '/'"
+          :title="t(item.title)"
           class="bottom-nav-btn"
         >
-          <v-icon size="22">{{ item.icon }}</v-icon>
-          <span class="bottom-nav-label">{{ t(item.title) }}</span>
-        </v-btn>
-        <v-btn
-          v-if="hasMoreNav"
-          value="__more"
-          class="bottom-nav-btn"
-          @click="drawer = true"
-        >
-          <v-icon size="22">mdi-dots-horizontal</v-icon>
-          <span class="bottom-nav-label">{{ t("more") }}</span>
+          <v-icon size="24">{{ item.icon }}</v-icon>
         </v-btn>
       </v-bottom-navigation>
     </ClientOnly>
