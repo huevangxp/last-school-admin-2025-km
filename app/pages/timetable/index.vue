@@ -424,33 +424,28 @@ const cellFor = (periodId: string, day: string) =>
 
 const subjectOf = (cell: any) =>
   cell?.assignment?.tb_subject?.subject_name || "—";
-const teacherOf = (cell: any) =>
+// Second line of a cell: the teacher who teaches it.
+const secondaryOf = (cell: any) =>
   cell?.assignment?.tb_teacher?.full_name ||
   cell?.assignment?.tb_teacher?.username ||
   "—";
-// The classroom a teacher teaches for a given cell (teacher view only).
-const classroomOf = (cell: any) => cell?.tb_classroom?.classroom_name || "—";
-// Second line of a cell: teachers see the classroom they teach; admins and
-// students see the teacher's name.
-const secondaryOf = (cell: any) =>
-  isTeacher.value ? classroomOf(cell) : teacherOf(cell);
 
-// Teachers only need a year selected (their schedule spans all classes);
-// everyone else needs both a class and a year.
-const ready = computed(() =>
-  isTeacher.value ? !!yearId.value : !!classId.value && !!yearId.value
-);
+// Everyone needs both a class and a year selected.
+const ready = computed(() => !!classId.value && !!yearId.value);
 
 const loadGrid = async () => {
-  // Teacher: load their own schedule across every class they teach.
+  if (!yearId.value) return;
+  // Teachers: (re)load the classes/assignments they teach for this year, and
+  // keep the class selection valid.
   if (isTeacher.value) {
-    if (!yearId.value || !idCookie.value) return;
-    await scheduleStore.fetchTeacherSchedule(idCookie.value, yearId.value);
-    return;
+    await teachingStore.fetchMyTeaching(yearId.value);
+    if (!classOptions.value.some((c) => c.id === classId.value)) {
+      classId.value = classOptions.value[0]?.id || null;
+    }
   }
-  if (!classId.value || !yearId.value) return;
+  if (!classId.value) return;
   await scheduleStore.fetchSchedule(classId.value, yearId.value);
-  // Assignment options are admin-only (the endpoint requires admin).
+  // Admins load every assignment for the class (teachers use myTeaching above).
   if (isAdmin.value) {
     await teachingStore.fetchAssignments({
       classroom_id: classId.value,
@@ -461,7 +456,6 @@ const loadGrid = async () => {
 
 onMounted(async () => {
   await Promise.all([
-    // Teachers don't pick a class, so skip the (admin-only) class list for them.
     isStudent.value
       ? classroomStore.fetchMyClassrooms()
       : isTeacher.value
@@ -471,7 +465,11 @@ onMounted(async () => {
     scheduleStore.fetchPeriods(),
   ]);
   yearId.value = classroomStore.latestAcademicYearId || null;
-  if (!isTeacher.value) classId.value = classOptions.value[0]?.id || null;
+  // Teachers need their teaching list before the class picker can populate.
+  if (isTeacher.value && yearId.value) {
+    await teachingStore.fetchMyTeaching(yearId.value);
+  }
+  classId.value = classOptions.value[0]?.id || null;
   await loadGrid();
 });
 
