@@ -22,10 +22,24 @@ export const useApiAuthStore = defineStore("apiAuth", {
       try {
         const { $axios } = useNuxtApp();
 
-        const response = await $axios.post("/login-teacher", {
-          username: user,
-          password: password,
-        });
+        // One form serves both account types. Try the teacher/admin login first;
+        // if the username isn't a teacher (404), fall back to the student login.
+        let response;
+        try {
+          response = await $axios.post("/login-teacher", {
+            username: user,
+            password: password,
+          });
+        } catch (err: any) {
+          if (err.response?.status === 404) {
+            response = await $axios.post("/login-student", {
+              username: user,
+              password: password,
+            });
+          } else {
+            throw err;
+          }
+        }
 
         if (response.status === 200 && response.data) {
           // Set authentication state
