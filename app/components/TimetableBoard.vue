@@ -286,8 +286,31 @@
               <div class="text-detail-tiny">{{ p.period_code }}</div>
             </div>
 
-            <!-- Admin/teacher: tap to assign / change / clear -->
-            <v-menu v-if="canEdit" :close-on-content-click="true">
+            <!-- Admin teaching board: tap opens the add/change dialog -->
+            <div
+              v-if="canInlineCreate"
+              class="mobile-slot"
+              :class="{ filled: cellFor(p.id, currentDayKey) }"
+              @click="openAdd(p.id, currentDayKey)"
+            >
+              <template v-if="cellFor(p.id, currentDayKey)">
+                <div class="subj">
+                  {{ subjectOf(cellFor(p.id, currentDayKey)) }}
+                </div>
+                <div class="tchr">
+                  {{ secondaryOf(cellFor(p.id, currentDayKey)) }}
+                </div>
+              </template>
+              <span
+                v-else
+                class="text-primary font-weight-bold d-inline-flex align-center"
+              >
+                <v-icon size="16" start>mdi-plus</v-icon>{{ t("add") }}
+              </span>
+            </div>
+
+            <!-- Teacher / admin study board: pick from existing assignments -->
+            <v-menu v-else-if="canEdit" :close-on-content-click="true">
               <template v-slot:activator="{ props }">
                 <div
                   v-bind="props"
