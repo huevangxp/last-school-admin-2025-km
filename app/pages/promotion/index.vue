@@ -208,6 +208,7 @@ import { useClassroomStore } from "~/stores/apiClassroom";
 import { useEnrollmentStore } from "~/stores/apiEnrollment";
 
 const { t } = useI18n();
+const { mediaUrl } = useMedia();
 const classroomStore = useClassroomStore();
 const enrollmentStore = useEnrollmentStore();
 
