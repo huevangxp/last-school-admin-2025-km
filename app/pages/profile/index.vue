@@ -317,28 +317,26 @@ const save = async () => {
 
   loading.value = true;
   try {
-    const id = String(userId.value);
-    if (isStudent.value) {
-      await studentStore.updateStudent(id, {
-        first_name: form.value.first_name,
-        last_name: form.value.last_name,
-        gender: form.value.gender,
-        dob: form.value.dob,
-        phone_number: form.value.phone_number,
-        avatar: form.value.avatar,
-      });
-    } else {
-      await teacherStore.updateTeacher(id, {
-        full_name: form.value.full_name,
-        gender: form.value.gender,
-        dob: form.value.dob,
-        phone_number: form.value.phone_number,
-        avatar: form.value.avatar,
-        // Preserve role/status — they are not owner-editable here.
-        role: form.value.role,
-        status: form.value.status,
-      });
-    }
+    // One self-service call for every role; the server picks teacher vs student
+    // by the token and only accepts safe fields (name/gender/dob/phone/avatar).
+    await authStore.updateMyProfile(
+      isStudent.value
+        ? {
+            first_name: form.value.first_name,
+            last_name: form.value.last_name,
+            gender: form.value.gender,
+            dob: form.value.dob,
+            phone_number: form.value.phone_number,
+            avatar: form.value.avatar,
+          }
+        : {
+            full_name: form.value.full_name,
+            gender: form.value.gender,
+            dob: form.value.dob,
+            phone_number: form.value.phone_number,
+            avatar: form.value.avatar,
+          }
+    );
 
     // Reflect the changes in the header immediately. The header's display name
     // is the login handle (the `username` cookie), so it is left untouched; only
