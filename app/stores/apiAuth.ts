@@ -138,6 +138,15 @@ export const useApiAuthStore = defineStore("apiAuth", {
       return response.data;
     },
 
+    async updateMyPassword(current_password: string, new_password: string) {
+      const { $axios } = useNuxtApp();
+      const response = await $axios.put("/my-password", {
+        current_password,
+        new_password,
+      });
+      return response.data;
+    },
+
     logout() {
       const token = useCookie("token");
       const userId = useCookie("id");
