@@ -79,7 +79,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="4">
                 <label class="text-detail-tiny mb-2 d-block">{{ t("username") }}</label>
                 <v-text-field
                   :model-value="username"
@@ -91,19 +91,6 @@
                   readonly
                   disabled
                   prepend-inner-icon="mdi-at"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{ t("email") }}</label>
-                <v-text-field
-                  v-model="form.email"
-                  placeholder="name@example.com"
-                  variant="outlined"
-                  density="compact"
-                  rounded="0"
-                  hide-details="auto"
-                  color="primary"
-                  prepend-inner-icon="mdi-email-outline"
                 ></v-text-field>
               </v-col>
 
