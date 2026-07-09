@@ -795,7 +795,7 @@ const RECEIPT_CSS = `
 const buildReceiptHtml = (r: any) => {
   if (!r) return "";
   return `<style>${RECEIPT_CSS}</style><div class="rcpt">
-    <div class="hd"><div class="sch">${esc(t("schoolmanagement"))}</div><div class="ttl">${esc(
+    <div class="hd"><div class="sch">${esc(schoolTitle.value)}</div><div class="ttl">${esc(
       t("payment_receipt")
     )}</div></div>
     <div class="meta"><span>${esc(t("receipt_no"))}: ${esc(
