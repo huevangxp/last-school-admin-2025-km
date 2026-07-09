@@ -531,6 +531,7 @@ import { useScheduleStore } from "~/stores/apiSchedule";
 import { useTeacherStore } from "~/stores/apiTeacher";
 import { useSubjectStore } from "~/stores/apiSubject";
 import { useUiStore } from "~/stores/ui";
+import { useSettingStore } from "~/stores/apiSetting";
 
 // Which "page" this board is: the class-centric study schedule or the
 // teacher-centric teaching schedule. Fixed by the route (two menu items), so
