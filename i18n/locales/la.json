@@ -529,5 +529,9 @@
   "active": "ໃຊ້ງານຢູ່",
   "pending": "ກຳລັງລໍຖ້າ",
   "account-will-close": "ບັນຊີນີ້ຈະຖືກປິດ (inactive).",
-  "account-will-open": "ບັນຊີນີ້ຈະຖືກເປີດຄືນ (active)."
+  "account-will-open": "ບັນຊີນີ້ຈະຖືກເປີດຄືນ (active).",
+  "profile": "ໂປຣໄຟລ໌ຂອງຂ້ອຍ",
+  "personal-information": "ຂໍ້ມູນສ່ວນຕົວ",
+  "my-profile-subtitle": "ເບິ່ງ ແລະ ອັບເດດຂໍ້ມູນບັນຊີຂອງທ່ານ",
+  "no-results-found": "ບໍ່ພົບຜົນລັບ"
 }
