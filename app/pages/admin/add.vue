@@ -269,8 +269,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useTeacherStore } from "~/stores/apiTeacher";
+import { useUiStore } from "~/stores/ui";
+
+// Creating admin/staff accounts is admin-only.
+definePageMeta({ requiresAdmin: true });
+
 const { t } = useI18n();
 const router = useRouter();
+const teacherStore = useTeacherStore();
+const ui = useUiStore();
+const { uploadImage } = useUpload();
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
@@ -278,15 +287,21 @@ const breadcrumbs = [
   { title: t("add"), disabled: true, to: "/admin/add" },
 ];
 
+const loading = ref(false);
+const errorMessage = ref("");
+const showDob = ref(false);
+
 const form = ref({
   fullName: "",
   username: "",
   gender: null,
   phone: "",
+  dob: "",
   role: "admin",
   status: "active",
   password: "",
   confirmPassword: "",
+  avatar: "",
 });
 
 const genderOptions = [
