@@ -533,5 +533,18 @@
   "profile": "My Profile",
   "personal-information": "Personal Information",
   "my-profile-subtitle": "View and update your account information",
-  "no-results-found": "No results found"
+  "no-results-found": "No results found",
+  "activity_log": "Activity Log",
+  "activity_logs": "Activity Logs",
+  "activity-log-subtitle": "Every create, update and delete by all users.",
+  "module": "Module",
+  "user": "User",
+  "details": "Details",
+  "no-logs-yet": "No activity yet.",
+  "all-actions": "All actions",
+  "clear-logs": "Clear log",
+  "logs-cleared": "Log cleared",
+  "created": "Created",
+  "updated": "Updated",
+  "deleted": "Deleted"
 }
