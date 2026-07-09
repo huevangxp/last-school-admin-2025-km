@@ -529,5 +529,9 @@
   "active": "Active",
   "pending": "Pending",
   "account-will-close": "This account will be set inactive.",
-  "account-will-open": "This account will be reactivated."
+  "account-will-open": "This account will be reactivated.",
+  "profile": "My Profile",
+  "personal-information": "Personal Information",
+  "my-profile-subtitle": "View and update your account information",
+  "no-results-found": "No results found"
 }
