@@ -326,6 +326,7 @@ onMounted(async () => {
         department: teacher.department || "",
         layer: teacher.layer ?? null,
         manager_id: teacher.manager_id || null,
+        avatar: teacher.avatar && teacher.avatar !== "null" ? teacher.avatar : "",
       };
     }
   } catch (error) {
