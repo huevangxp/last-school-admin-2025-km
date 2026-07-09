@@ -221,7 +221,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useUiStore } from "~/stores/ui";
+
+// Creating academic years is admin-only.
+definePageMeta({ requiresAdmin: true });
+
 const { t } = useI18n();
+const router = useRouter();
+const ui = useUiStore();
 
 const loading = ref(false);
 const formRef = ref();
