@@ -416,6 +416,7 @@ const headers = [
 
 // Map live API students into the shape this table expects. Field names are
 // resolved defensively because the backend list is currently empty.
+const { mediaUrl } = useMedia();
 const { exportRows } = useExcel();
 const exportList = () =>
   exportRows(
