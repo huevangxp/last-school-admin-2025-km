@@ -32,7 +32,7 @@
             <div
               class="text-subtitle-1 font-weight-black text-high-emphasis tracking-tight line-height-1"
             >
-              {{ t("schoolmanagement") }}
+              {{ brandTitle }}
             </div>
             <div class="text-caption text-medium-emphasis font-weight-bold">
               {{ t("management") }}
