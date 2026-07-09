@@ -450,6 +450,7 @@
   "change_teaching_time": "ປ່ຽນຄາບສອນ",
   "no-assignments-for-class": "ຍັງບໍ່ມີການມອບໝາຍການສອນສຳລັບຫ້ອງນີ້",
   "no-assignments-for-teacher": "ຍັງບໍ່ມີການມອບໝາຍການສອນສຳລັບອາຈານທ່ານນີ້",
+  "teacher-time-conflict": "ອາຈານທ່ານນີ້ກຳລັງສອນ {class} ໃນຄາບເວລານີ້ຢູ່ແລ້ວ",
   "failed-to-clear": "ລຶບອອກບໍ່ສຳເລັດ.",
   "teacher-identity-login": "ຂໍ້ມູນ ແລະ ການເຂົ້າສູ່ລະບົບຂອງອາຈານ",
   "select-or-type": "ເລືອກ ຫຼື ພິມ",
