@@ -414,6 +414,23 @@ const headers = [
 
 // Map live API students into the shape this table expects. Field names are
 // resolved defensively because the backend list is currently empty.
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "students",
+    [
+      { label: t("student-id"), key: "studentId" },
+      { label: t("name"), key: "name" },
+      { label: t("gender"), key: "genderRaw" },
+      { label: t("class"), key: "className" },
+      { label: t("grade"), key: "gradeName" },
+      { label: t("phone"), key: "phoneRaw" },
+      { label: t("guardian-name"), key: "parentName" },
+      { label: t("parentphone"), key: "parentContact" },
+    ],
+    students.value
+  );
+
 const students = computed(() =>
   studentStore.students.map((s) => {
     const fullName =
