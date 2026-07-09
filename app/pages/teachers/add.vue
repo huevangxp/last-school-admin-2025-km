@@ -424,7 +424,7 @@ const save = async () => {
       department: f.department || null,
       layer: f.layer || null,
       manager_id: f.managerId || null,
-      avatar: "https://picsum.photos/200",
+      avatar: f.avatar || "https://picsum.photos/200",
       status: "active",
     });
     router.push("/teachers");
