@@ -345,12 +345,18 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
 import { useFeesStore } from "~/stores/apiFees";
 import { useUiStore } from "~/stores/ui";
+import { useSettingStore } from "~/stores/apiSetting";
 import { formatMoney as money } from "@/utils/money";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
 const feesStore = useFeesStore();
 const ui = useUiStore();
+// School name for the receipt header (configured on the Settings page).
+const settingStore = useSettingStore();
+const schoolTitle = computed(
+  () => settingStore.settings.school_name || t("schoolmanagement")
+);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
