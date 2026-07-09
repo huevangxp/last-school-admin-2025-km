@@ -288,10 +288,7 @@ const breadcrumbs = [
 
 onMounted(async () => {
   try {
-    const id = String(userId.value);
-    const me = isStudent.value
-      ? await studentStore.fetchStudentById(id)
-      : await teacherStore.fetchTeacherById(id);
+    const me = await authStore.fetchMyProfile();
     if (me) {
       form.value = {
         full_name: me.full_name || "",
