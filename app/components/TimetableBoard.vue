@@ -843,7 +843,7 @@ const assignCell = async (
     });
     await reloadCells();
   } catch (error: any) {
-    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+    notifyError(error);
   }
 };
 
