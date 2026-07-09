@@ -295,7 +295,7 @@
               rounded="0"
               class="mb-1"
               prepend-icon="mdi-account-outline"
-              to="/admin"
+              to="/profile"
             >
               <v-list-item-title class="text-subtitle-2">{{
                 t("information")
