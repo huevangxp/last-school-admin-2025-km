@@ -444,16 +444,22 @@ const headers = [
 
 // Map live API teachers into the shape this table expects.
 const teachers = computed(() =>
-  teacherStore.teachers.map((tc) => ({
+  teacherStore.teachers.map((tc) => {
+    // Subjects the teacher actually teaches (from assignments); the subject
+    // group (ໝວດວິຊາ / department) is the fallback when none are assigned yet.
+    const subs = Array.from(subjectsByTeacher.value.get(tc.id) || []);
+    return {
     uuid: tc.id,
     id: tc.teacher_id,
     image: tc.avatar,
     username: tc.full_name || tc.username,
     fullName: tc.full_name,
     email: tc.username,
-    teacherSubject: capitalize(tc.role),
+    teacherSubject: subs.length ? subs.join(", ") : tc.department || "—",
     role: tc.role,
-    grade: tc.gender ? capitalize(tc.gender) : "",
+    // Sub-line: show the subject group when subjects are listed above, else the
+    // job position — never a hard-coded placeholder.
+    grade: subs.length ? tc.department || "" : tc.position || "",
     genderRaw: tc.gender,
     dob: tc.dob ? String(tc.dob).substring(0, 10) : "",
     phone: tc.phone_number,
