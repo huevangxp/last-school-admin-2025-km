@@ -250,7 +250,6 @@ onMounted(async () => {
     if (me) {
       form.value = {
         full_name: me.full_name || "",
-        email: me.email || emailCookie.value || "",
         gender: me.gender || "",
         dob: me.dob ? String(me.dob).substring(0, 10) : "",
         phone_number: me.phone_number || "",
