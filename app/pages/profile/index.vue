@@ -208,24 +208,21 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useTeacherStore } from "~/stores/apiTeacher";
-import { useStudentStore } from "~/stores/apiStudent";
+import { useApiAuthStore } from "~/stores/apiAuth";
 import { useUiStore } from "~/stores/ui";
 
 // Own-profile page — available to EVERY logged-in account (admin, teacher and
-// student). It edits the logged-in user's own record (identified by the `id`
-// cookie), never anyone else's, so it is intentionally NOT admin-gated. Each
-// role loads/saves through its own store: students via the student endpoints,
-// admins & teachers via the teacher endpoints.
+// student). It reads/writes the logged-in user's OWN record through the
+// self-service `/my-profile` endpoint, which resolves the target row from the
+// auth token server-side — so no user id is sent from the client and no one can
+// edit anyone else's account. role/status are not editable here.
 const { t } = useI18n();
-const teacherStore = useTeacherStore();
-const studentStore = useStudentStore();
+const authStore = useApiAuthStore();
 const ui = useUiStore();
 const { mediaUrl } = useMedia();
 
-// Logged-in user id + cookies mirrored into the header. Updating the profile
-// keeps these in sync so the top bar reflects the new name/avatar immediately.
-const userId = useCookie<string>("id");
+// Cookies mirrored into the header so the top bar reflects a new name/avatar
+// immediately after saving.
 const username = useCookie<string>("username", { default: () => "" });
 const roleCookie = useCookie<string>("role", { default: () => "" });
 const phoneCookie = useCookie<string>("phone");
