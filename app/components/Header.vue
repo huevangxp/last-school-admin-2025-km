@@ -571,6 +571,7 @@ const allMenuSections: MenuSection[] = [
       { title: "ethnic_group", icon: "mdi-account-group-outline", to: "/ethnic-group" },
       { title: "admin", icon: "mdi-shield-account-outline", to: "/admin", adminOnly: true },
       { title: "settings", icon: "mdi-cog-outline", to: "/settings" },
+      { title: "activity_log", icon: "mdi-history", to: "/logs", adminOnly: true },
     ],
   },
 
