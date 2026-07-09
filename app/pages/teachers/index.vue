@@ -442,6 +442,11 @@ const headers = [
   class: "text-detail-tiny pb-2",
 }));
 
+// Uploaded avatars are stored as a relative path (/uploads/images/x.png) served
+// from the API origin; mediaUrl() prepends the domain so they render (seeded
+// absolute URLs pass through unchanged).
+const { mediaUrl } = useMedia();
+
 // Map live API teachers into the shape this table expects.
 const teachers = computed(() =>
   teacherStore.teachers.map((tc) => {
