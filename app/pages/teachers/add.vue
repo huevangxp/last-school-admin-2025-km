@@ -16,6 +16,21 @@
         </div>
 
         <v-row class="ga-y-2">
+          <v-col cols="12">
+            <label class="text-detail-tiny mb-2 d-block">{{
+              t("admin-profile-photo")
+            }}</label>
+            <div class="d-flex align-center ga-4">
+              <v-avatar size="72" color="primary-lighten-5" rounded="0" class="elevation-1">
+                <v-img v-if="avatarPreview" :src="avatarPreview" cover></v-img>
+                <v-icon v-else color="primary" size="32">mdi-account</v-icon>
+              </v-avatar>
+              <div class="flex-grow-1">
+                <ImagePicker v-model="form.avatar" :label="t('image')" />
+              </div>
+            </div>
+          </v-col>
+
           <v-col cols="12" md="6">
             <label class="text-detail-tiny mb-2 d-block"
               >{{ t("firstname") }} *</label
