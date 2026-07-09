@@ -449,6 +449,24 @@ const headers = [
 const { mediaUrl } = useMedia();
 
 // Map live API teachers into the shape this table expects.
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "teachers",
+    [
+      { label: t("id"), key: "id" },
+      { label: t("name"), key: "fullName" },
+      { label: t("username"), key: "email" },
+      { label: t("role"), key: "role" },
+      { label: t("phone"), key: "phone" },
+      { label: t("dob"), key: "dob" },
+      { label: t("status"), key: "statusRaw" },
+      { label: t("position"), key: "position" },
+      { label: t("department"), key: "department" },
+    ],
+    teachers.value
+  );
+
 const teachers = computed(() =>
   teacherStore.teachers.map((tc) => {
     // Subjects the teacher actually teaches (from assignments); the subject
