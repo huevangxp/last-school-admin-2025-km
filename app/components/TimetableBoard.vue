@@ -779,8 +779,13 @@ onMounted(async () => {
       );
     }
   } else {
-    // Study board: admins and teachers both pick from the class list.
-    tasks.push(classroomStore.fetchClassrooms(200));
+    // Study board: admins pick from every class; a teacher is scoped to the
+    // classes they homeroom (via /my-classrooms).
+    tasks.push(
+      isAdmin.value
+        ? classroomStore.fetchClassrooms(200)
+        : classroomStore.fetchMyClassrooms()
+    );
   }
   await Promise.all(tasks);
 
