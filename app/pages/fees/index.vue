@@ -439,6 +439,7 @@ const reload = async () => {
 watch([yearId, classId], reload);
 
 onMounted(async () => {
+  if (!settingStore.settings.id) settingStore.fetchSettings();
   await Promise.all([
     classroomStore.fetchAcademicYears(),
     classroomStore.fetchClassrooms(200),
