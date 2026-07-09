@@ -200,6 +200,72 @@
               </v-btn>
             </div>
           </v-card>
+
+          <!-- Change password -->
+          <v-card class="intelligence-card pa-6 mt-4" elevation="0">
+            <div class="d-flex align-center mb-6">
+              <v-avatar color="orange-lighten-5" size="40" class="mr-3 rounded-0">
+                <v-icon color="orange-darken-2" size="20">mdi-lock-outline</v-icon>
+              </v-avatar>
+              <div>
+                <h2 class="text-title">{{ t("change-password") }}</h2>
+                <p class="text-detail">{{ t("security-desc") }}</p>
+              </div>
+            </div>
+            <v-row class="ga-y-2">
+              <v-col cols="12" md="4">
+                <label class="text-detail-tiny mb-2 d-block">{{ t("current-password") }}</label>
+                <v-text-field
+                  v-model="pw.current"
+                  type="password"
+                  variant="outlined"
+                  density="compact"
+                  rounded="0"
+                  hide-details
+                  color="primary"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <label class="text-detail-tiny mb-2 d-block">{{ t("new-password") }}</label>
+                <v-text-field
+                  v-model="pw.next"
+                  type="password"
+                  variant="outlined"
+                  density="compact"
+                  rounded="0"
+                  hide-details
+                  color="primary"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="4">
+                <label class="text-detail-tiny mb-2 d-block">{{ t("confirmPassword") }}</label>
+                <v-text-field
+                  v-model="pw.confirm"
+                  type="password"
+                  variant="outlined"
+                  density="compact"
+                  rounded="0"
+                  hide-details
+                  color="primary"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" v-if="pwError">
+                <v-alert type="error" variant="tonal" density="compact">{{ pwError }}</v-alert>
+              </v-col>
+            </v-row>
+            <div class="d-flex justify-end mt-6">
+              <v-btn
+                variant="flat"
+                color="primary"
+                class="modern-action-btn primary"
+                height="42"
+                :loading="pwSaving"
+                @click="changePassword"
+              >
+                {{ t("change-password") }}
+              </v-btn>
+            </div>
+          </v-card>
         </v-col>
       </v-row>
     </v-form>
