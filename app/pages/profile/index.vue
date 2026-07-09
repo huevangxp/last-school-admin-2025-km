@@ -196,7 +196,6 @@ const userId = useCookie<string>("id");
 const username = useCookie<string>("username", { default: () => "" });
 const roleCookie = useCookie<string>("role", { default: () => "" });
 const phoneCookie = useCookie<string>("phone");
-const emailCookie = useCookie<string>("email");
 const avatarCookie = useCookie<string>("avatar");
 
 const loading = ref(false);
