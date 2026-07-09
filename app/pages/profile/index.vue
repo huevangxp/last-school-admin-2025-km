@@ -340,9 +340,11 @@ const save = async () => {
 
     // Reflect the changes in the header immediately. The header's display name
     // is the login handle (the `username` cookie), so it is left untouched; only
-    // the avatar and phone we mirror there are refreshed.
+    // the avatar and phone we mirror there are refreshed. `userAvatar` is a
+    // shared useState the header reads, so the new photo shows there at once.
     phoneCookie.value = form.value.phone_number || "";
     avatarCookie.value = form.value.avatar || "";
+    useState<string>("userAvatar").value = form.value.avatar || "";
 
     ui.notify(t("saved-successfully"), "success");
   } catch (error: any) {
