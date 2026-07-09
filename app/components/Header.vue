@@ -150,10 +150,15 @@
 
       <v-spacer></v-spacer>
 
-      <!-- Global Search -->
+      <!-- Global Search — jumps to any menu page the current role can see.
+           Uses the already role-filtered menu list, so an admin searches the
+           full menu and a teacher only their own reduced set. -->
       <div class="header-search d-none d-md-flex mr-8">
-        <v-text-field
+        <v-autocomplete
+          v-model="searchSelection"
+          :items="searchItems"
           :placeholder="t('search')"
+          :no-data-text="t('no-results-found')"
           prepend-inner-icon="mdi-magnify"
           variant="solo-filled"
           density="compact"
@@ -161,7 +166,26 @@
           class="modern-search-input"
           flat
           rounded="0"
-        ></v-text-field>
+          item-title="label"
+          return-object
+          auto-select-first
+          hide-selected
+          menu-icon=""
+          @update:model-value="onSearchSelect"
+        >
+          <template v-slot:item="{ props, item }">
+            <v-list-item
+              v-bind="props"
+              :title="item.raw.label"
+              :subtitle="item.raw.section"
+              rounded="0"
+            >
+              <template v-slot:prepend>
+                <v-icon size="18" color="primary">{{ item.raw.icon }}</v-icon>
+              </template>
+            </v-list-item>
+          </template>
+        </v-autocomplete>
       </div>
 
       <!-- Action Icons -->
