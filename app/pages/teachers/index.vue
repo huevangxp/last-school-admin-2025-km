@@ -194,7 +194,7 @@
               {{ item.teacherSubject }}
             </div>
             <div class="text-detail-tiny text-grey">
-              {{ item.grade || "Grade 10-A" }}
+              {{ item.grade || "—" }}
             </div>
           </div>
         </template>
