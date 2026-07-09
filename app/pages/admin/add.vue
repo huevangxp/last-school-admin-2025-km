@@ -364,7 +364,7 @@ const save = async () => {
       phone_number: f.phone || null,
       role: f.role,
       status: f.status,
-      avatar: f.avatar || "https://picsum.photos/200",
+      avatar: f.avatar || null,
     });
     ui.notify(t("saved-successfully"), "success");
     router.push("/admin");
