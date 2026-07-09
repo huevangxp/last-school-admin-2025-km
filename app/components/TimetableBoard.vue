@@ -1062,7 +1062,13 @@ const exportExcel = async () => {
           : ""
       ),
     ]);
-    const ws = XLSX.utils.aoa_to_sheet([[docTitle.value], [], header, ...rows]);
+    const ws = XLSX.utils.aoa_to_sheet([
+      [schoolTitle.value],
+      [docTitle.value],
+      [],
+      header,
+      ...rows,
+    ]);
     ws["!cols"] = header.map((_, i) => ({ wch: i === 0 ? 14 : 22 }));
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Timetable");
