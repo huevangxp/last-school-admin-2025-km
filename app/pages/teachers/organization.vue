@@ -281,12 +281,17 @@ const breadcrumbs = [
   { title: t("organization"), disabled: true, to: "/teachers/organization" },
 ];
 
+// Uploaded avatars are relative paths served from the API origin; mediaUrl()
+// prepends the domain so they render on the org-chart nodes (seeded absolute
+// URLs pass through unchanged).
+const { mediaUrl } = useMedia();
+
 // Normalized faculty list.
 const teachers = computed(() =>
   teacherStore.teachers.map((tc) => ({
     uuid: tc.id,
     username: tc.full_name || tc.username,
-    image: tc.avatar,
+    image: mediaUrl(tc.avatar),
     role: tc.role,
     status: capitalize(tc.status),
     position: tc.position || "",
