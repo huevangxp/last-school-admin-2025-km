@@ -410,6 +410,7 @@ const withHeaderClass = (arr: any[]) =>
 const allHeaders = withHeaderClass([
   { title: t("subject"), key: "title", align: "start" as const, sortable: true },
   { title: t("grade"), key: "grade", align: "start" as const, sortable: true },
+  { title: t("teachers"), key: "teachers", align: "start" as const, sortable: false },
   { title: t("coefficient"), key: "coefficient", align: "start" as const, sortable: true },
   { title: t("status"), key: "status", align: "start" as const, sortable: true },
   { title: "", key: "actions", align: "end" as const, sortable: false },
@@ -418,6 +419,7 @@ const allHeaders = withHeaderClass([
 const groupedHeaders = withHeaderClass([
   { title: t("subject"), key: "title", align: "start" as const, sortable: true },
   { title: t("classes"), key: "classes", align: "start" as const, sortable: false },
+  { title: t("teachers"), key: "teachers", align: "start" as const, sortable: false },
   { title: t("coefficient"), key: "coefficient", align: "start" as const, sortable: true },
 ]);
 
