@@ -546,5 +546,9 @@
   "logs-cleared": "Log cleared",
   "created": "Created",
   "updated": "Updated",
-  "deleted": "Deleted"
+  "deleted": "Deleted",
+  "current-password": "Current Password",
+  "new-password": "New Password",
+  "passwords-do-not-match": "Passwords do not match.",
+  "password-min-6": "Password must be at least 6 characters."
 }
