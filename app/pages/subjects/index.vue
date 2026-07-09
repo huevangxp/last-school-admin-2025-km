@@ -448,6 +448,20 @@ const displayHeaders = computed(() =>
   viewMode.value === "grouped" ? groupedHeaders : allHeaders
 );
 
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "subjects",
+    [
+      { label: t("code"), key: "id" },
+      { label: t("subject-name"), key: "title" },
+      { label: t("grade"), key: "grade" },
+      { label: t("coefficient"), key: "coefficient" },
+      { label: t("status"), key: "subjectStatusRaw" },
+    ],
+    subjects.value
+  );
+
 // Flat rows: one per subject-grade record.
 const subjects = computed(() =>
   subjectStore.subjects.map((s) => ({
