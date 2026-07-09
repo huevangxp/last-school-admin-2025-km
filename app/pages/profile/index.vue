@@ -284,8 +284,9 @@ const save = async () => {
       status: form.value.status,
     });
 
-    // Reflect the changes in the header immediately.
-    username.value = form.value.full_name || username.value;
+    // Reflect the changes in the header immediately. The header's display name
+    // is the login handle (the `username` cookie), so it is left untouched; only
+    // the avatar and phone we mirror there are refreshed.
     phoneCookie.value = form.value.phone_number || "";
     avatarCookie.value = form.value.avatar || "";
 
