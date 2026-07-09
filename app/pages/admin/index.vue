@@ -391,6 +391,21 @@ const headers = [
   class: "text-detail-tiny pb-2",
 }));
 
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "admins",
+    [
+      { label: t("id"), key: "id" },
+      { label: t("name"), key: "name" },
+      { label: t("username"), key: "email" },
+      { label: t("role"), key: "role" },
+      { label: t("phone"), key: "phone" },
+      { label: t("status"), key: "statusRaw" },
+    ],
+    admins.value
+  );
+
 const admins = computed(() =>
   teacherStore.teachers.map((u) => ({
     uuid: u.id,
