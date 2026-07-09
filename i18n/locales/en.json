@@ -450,6 +450,7 @@
   "change_teaching_time": "Change teaching time",
   "no-assignments-for-class": "No teaching assignments for this class yet.",
   "no-assignments-for-teacher": "No teaching assignments for this teacher yet.",
+  "teacher-time-conflict": "This teacher is already teaching {class} in this period.",
   "failed-to-clear": "Failed to clear.",
   "teacher-identity-login": "Teacher identity & login",
   "select-or-type": "Select or type",
