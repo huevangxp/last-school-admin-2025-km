@@ -415,8 +415,13 @@ const avatarCookie = useCookie<string>("avatar");
 const isEmpty = (v?: string | null) =>
   !v || v === "null" || v === "undefined" || v === "";
 
+// Uploaded avatars are stored as a relative path (/uploads/images/x.png) served
+// from the API origin, while seeded ones are absolute URLs. mediaUrl() handles
+// both, so a freshly uploaded photo shows here in the header too — not just on
+// the profile page.
+const { mediaUrl } = useMedia();
 const userAvatar = computed(() =>
-  isEmpty(avatarCookie.value) ? "" : avatarCookie.value
+  isEmpty(avatarCookie.value) ? "" : mediaUrl(avatarCookie.value)
 );
 
 const logoutDialog = ref(false);
