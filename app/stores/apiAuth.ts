@@ -154,6 +154,7 @@ export const useApiAuthStore = defineStore("apiAuth", {
       email.value = null;
       avatar.value = null;
       username.value = null;
+      useState<string>("userAvatar").value = "";
       this.authenticated = false;
       this.profile = {} as Profile;
 
