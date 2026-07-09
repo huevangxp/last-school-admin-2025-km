@@ -376,6 +376,36 @@ onMounted(async () => {
   }
 });
 
+// ---- Change password ----
+const pw = ref({ current: "", next: "", confirm: "" });
+const pwError = ref("");
+const pwSaving = ref(false);
+const changePassword = async () => {
+  pwError.value = "";
+  if (!pw.value.current || !pw.value.next) {
+    pwError.value = t("all-fields-required");
+    return;
+  }
+  if (pw.value.next.length < 6) {
+    pwError.value = t("password-min-6");
+    return;
+  }
+  if (pw.value.next !== pw.value.confirm) {
+    pwError.value = t("passwords-do-not-match");
+    return;
+  }
+  pwSaving.value = true;
+  try {
+    await authStore.updateMyPassword(pw.value.current, pw.value.next);
+    pw.value = { current: "", next: "", confirm: "" };
+    ui.notify(t("saved-successfully"), "success");
+  } catch (error: any) {
+    pwError.value = error.response?.data?.message || t("failed-to-save");
+  } finally {
+    pwSaving.value = false;
+  }
+};
+
 const save = async () => {
   errorMessage.value = "";
   const { valid } = await formRef.value.validate();
