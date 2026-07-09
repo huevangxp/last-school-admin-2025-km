@@ -550,5 +550,7 @@
   "current-password": "Current Password",
   "new-password": "New Password",
   "passwords-do-not-match": "Passwords do not match.",
-  "password-min-6": "Password must be at least 6 characters."
+  "password-min-6": "Password must be at least 6 characters.",
+  "total-sessions": "Total Sessions",
+  "nothing-to-export": "Nothing to export."
 }
