@@ -989,7 +989,8 @@ const esc = (s: any) =>
 // for the off-screen node the image/PDF are rasterised from.
 const TT_CSS = `
   .tt-wrap{font-family:'Noto Sans Lao','Phetsarath OT',system-ui,-apple-system,sans-serif;color:#0f172a;background:#fff;padding:16px}
-  .tt-wrap h2{font-size:16px;margin:0 0 12px}
+  .tt-wrap .tt-school{font-size:18px;font-weight:800;text-align:center;margin:0 0 2px}
+  .tt-wrap h2{font-size:16px;margin:0 0 12px;text-align:center;font-weight:600;color:#475569}
   table.tt{border-collapse:collapse;width:100%;min-width:680px;table-layout:fixed}
   table.tt th,table.tt td{border:1px solid #cbd5e1;padding:6px 8px;text-align:center;vertical-align:middle;font-size:12px}
   table.tt th{background:#eef2ff;color:#3730a3;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
