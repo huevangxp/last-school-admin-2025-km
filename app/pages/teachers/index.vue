@@ -456,7 +456,7 @@ const teachers = computed(() =>
     return {
     uuid: tc.id,
     id: tc.teacher_id,
-    image: tc.avatar,
+    image: mediaUrl(tc.avatar),
     username: tc.full_name || tc.username,
     fullName: tc.full_name,
     email: tc.username,
