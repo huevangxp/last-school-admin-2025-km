@@ -12,7 +12,7 @@
               <v-icon v-else color="primary" size="56">mdi-account</v-icon>
             </v-avatar>
             <div class="text-title mb-1 text-capitalize">
-              {{ form.full_name || t("information") }}
+              {{ displayName || t("information") }}
             </div>
             <div class="text-detail mb-4">@{{ username }}</div>
 
@@ -65,7 +65,8 @@
             </div>
 
             <v-row v-else class="ga-y-2">
-              <v-col cols="12">
+              <!-- Teacher / admin: single full name. Student: first + last. -->
+              <v-col v-if="!isStudent" cols="12">
                 <label class="text-detail-tiny mb-2 d-block">{{ t("name") }} *</label>
                 <v-text-field
                   v-model="form.full_name"
@@ -78,6 +79,34 @@
                   :rules="[rules.required]"
                 ></v-text-field>
               </v-col>
+              <template v-else>
+                <v-col cols="12" md="6">
+                  <label class="text-detail-tiny mb-2 d-block">{{ t("firstname") }} *</label>
+                  <v-text-field
+                    v-model="form.first_name"
+                    :placeholder="t('eg-firstname')"
+                    variant="outlined"
+                    density="compact"
+                    rounded="0"
+                    hide-details="auto"
+                    color="primary"
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <label class="text-detail-tiny mb-2 d-block">{{ t("lastname") }} *</label>
+                  <v-text-field
+                    v-model="form.last_name"
+                    :placeholder="t('eg-lastname')"
+                    variant="outlined"
+                    density="compact"
+                    rounded="0"
+                    hide-details="auto"
+                    color="primary"
+                    :rules="[rules.required]"
+                  ></v-text-field>
+                </v-col>
+              </template>
 
               <v-col cols="12" md="4">
                 <label class="text-detail-tiny mb-2 d-block">{{ t("username") }}</label>
@@ -180,13 +209,17 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { useStudentStore } from "~/stores/apiStudent";
 import { useUiStore } from "~/stores/ui";
 
-// Own-profile page — available to both admin and teacher accounts. It edits the
-// logged-in user's own record (identified by the `id` cookie), not someone
-// else's, so it is intentionally NOT marked `requiresAdmin`.
+// Own-profile page — available to EVERY logged-in account (admin, teacher and
+// student). It edits the logged-in user's own record (identified by the `id`
+// cookie), never anyone else's, so it is intentionally NOT admin-gated. Each
+// role loads/saves through its own store: students via the student endpoints,
+// admins & teachers via the teacher endpoints.
 const { t } = useI18n();
 const teacherStore = useTeacherStore();
+const studentStore = useStudentStore();
 const ui = useUiStore();
 const { mediaUrl } = useMedia();
 
@@ -198,6 +231,9 @@ const roleCookie = useCookie<string>("role", { default: () => "" });
 const phoneCookie = useCookie<string>("phone");
 const avatarCookie = useCookie<string>("avatar");
 
+const role = computed(() => (roleCookie.value || "").toLowerCase());
+const isStudent = computed(() => role.value === "student");
+
 const loading = ref(false);
 const loadingData = ref(true);
 const errorMessage = ref("");
@@ -206,6 +242,8 @@ const showDobPicker = ref(false);
 
 const form = ref({
   full_name: "",
+  first_name: "",
+  last_name: "",
   gender: "",
   dob: "",
   phone_number: "",
@@ -213,6 +251,12 @@ const form = ref({
   role: "teacher",
   status: "active",
 });
+
+const displayName = computed(() =>
+  isStudent.value
+    ? `${form.value.first_name} ${form.value.last_name}`.trim()
+    : form.value.full_name
+);
 
 // Show the newly picked avatar (relative path → absolute) or fall back to the
 // cookie the header already uses.
@@ -224,11 +268,12 @@ const avatarPreview = computed(() =>
       : ""
 );
 
-const roleKey = computed(() =>
-  ["admin", "administrator"].includes((form.value.role || "").toLowerCase())
+const roleKey = computed(() => {
+  if (isStudent.value) return "student";
+  return ["admin", "administrator"].includes((form.value.role || "").toLowerCase())
     ? "administrator"
-    : "teacher"
-);
+    : "teacher";
+});
 
 const genderOptions = [
   { title: t("male"), value: "male" },
@@ -246,10 +291,15 @@ const breadcrumbs = [
 
 onMounted(async () => {
   try {
-    const me = await teacherStore.fetchTeacherById(String(userId.value));
+    const id = String(userId.value);
+    const me = isStudent.value
+      ? await studentStore.fetchStudentById(id)
+      : await teacherStore.fetchTeacherById(id);
     if (me) {
       form.value = {
         full_name: me.full_name || "",
+        first_name: me.first_name || "",
+        last_name: me.last_name || "",
         gender: me.gender || "",
         dob: me.dob ? String(me.dob).substring(0, 10) : "",
         phone_number: me.phone_number || "",
@@ -273,16 +323,28 @@ const save = async () => {
 
   loading.value = true;
   try {
-    await teacherStore.updateTeacher(String(userId.value), {
-      full_name: form.value.full_name,
-      gender: form.value.gender,
-      dob: form.value.dob,
-      phone_number: form.value.phone_number,
-      avatar: form.value.avatar,
-      // Preserve role/status — they are not owner-editable here.
-      role: form.value.role,
-      status: form.value.status,
-    });
+    const id = String(userId.value);
+    if (isStudent.value) {
+      await studentStore.updateStudent(id, {
+        first_name: form.value.first_name,
+        last_name: form.value.last_name,
+        gender: form.value.gender,
+        dob: form.value.dob,
+        phone_number: form.value.phone_number,
+        avatar: form.value.avatar,
+      });
+    } else {
+      await teacherStore.updateTeacher(id, {
+        full_name: form.value.full_name,
+        gender: form.value.gender,
+        dob: form.value.dob,
+        phone_number: form.value.phone_number,
+        avatar: form.value.avatar,
+        // Preserve role/status — they are not owner-editable here.
+        role: form.value.role,
+        status: form.value.status,
+      });
+    }
 
     // Reflect the changes in the header immediately. The header's display name
     // is the login handle (the `username` cookie), so it is left untouched; only
