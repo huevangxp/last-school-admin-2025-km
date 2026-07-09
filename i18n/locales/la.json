@@ -533,5 +533,18 @@
   "profile": "ໂປຣໄຟລ໌ຂອງຂ້ອຍ",
   "personal-information": "ຂໍ້ມູນສ່ວນຕົວ",
   "my-profile-subtitle": "ເບິ່ງ ແລະ ອັບເດດຂໍ້ມູນບັນຊີຂອງທ່ານ",
-  "no-results-found": "ບໍ່ພົບຜົນລັບ"
+  "no-results-found": "ບໍ່ພົບຜົນລັບ",
+  "activity_log": "ບັນທຶກການເຄື່ອນໄຫວ",
+  "activity_logs": "ບັນທຶກການເຄື່ອນໄຫວ",
+  "activity-log-subtitle": "ທຸກການເພີ່ມ, ແກ້ໄຂ ແລະ ລຶບ ຂອງຜູ້ໃຊ້ທັງໝົດ.",
+  "module": "ໂມດູນ",
+  "user": "ຜູ້ໃຊ້",
+  "details": "ລາຍລະອຽດ",
+  "no-logs-yet": "ຍັງບໍ່ມີການເຄື່ອນໄຫວ.",
+  "all-actions": "ທຸກການກະທຳ",
+  "clear-logs": "ລ້າງບັນທຶກ",
+  "logs-cleared": "ລ້າງບັນທຶກແລ້ວ",
+  "created": "ເພີ່ມແລ້ວ",
+  "updated": "ແກ້ໄຂແລ້ວ",
+  "deleted": "ລຶບແລ້ວ"
 }
