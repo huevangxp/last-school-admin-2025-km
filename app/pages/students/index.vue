@@ -447,7 +447,7 @@ const students = computed(() =>
     return {
       uuid: s.id,
       studentId: id,
-      avatar: `https://i.pravatar.cc/150?u=${encodeURIComponent(String(id))}`,
+      avatar: s.avatar ? mediaUrl(s.avatar as string) : "",
       name: fullName,
       firstName: s.first_name || s.firstName || "",
       lastName: s.last_name || s.lastName || "",
