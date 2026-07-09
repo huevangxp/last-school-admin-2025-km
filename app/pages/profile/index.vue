@@ -275,7 +275,6 @@ const save = async () => {
   try {
     await teacherStore.updateTeacher(String(userId.value), {
       full_name: form.value.full_name,
-      email: form.value.email,
       gender: form.value.gender,
       dob: form.value.dob,
       phone_number: form.value.phone_number,
@@ -288,7 +287,6 @@ const save = async () => {
     // Reflect the changes in the header immediately.
     username.value = form.value.full_name || username.value;
     phoneCookie.value = form.value.phone_number || "";
-    emailCookie.value = form.value.email || "";
     avatarCookie.value = form.value.avatar || "";
 
     ui.notify(t("saved-successfully"), "success");
