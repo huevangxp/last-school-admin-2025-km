@@ -620,11 +620,13 @@ const addDay = ref<string | null>(null);
 const addClassId = ref<string | null>(null);
 const addSubjectId = ref<string | null>(null);
 
-// Class picker options (admins / students only). Students see just their class.
+// Class picker options. Admins pick from every class; teachers are scoped to
+// the classes they homeroom (ອາຈານປະຈຳຫ້ອງ) and students to their own class —
+// both via /my-classrooms — so a teacher never sees other classes here.
 const classOptions = computed(() => {
-  const source = isStudent.value
-    ? classroomStore.myClassrooms
-    : classroomStore.classrooms;
+  const source = isAdmin.value
+    ? classroomStore.classrooms
+    : classroomStore.myClassrooms;
   return source.map((c: any) => ({ id: c.id, label: c.classroom_name }));
 });
 
