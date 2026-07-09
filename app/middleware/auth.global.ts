@@ -51,6 +51,7 @@ export default defineNuxtRouteMiddleware((to) => {
         "/scores",
         "/class/organization",
         "/announcement",
+        "/profile", // own-info page (each person edits their own record)
       ];
       // Only the study timetable (/timetable). The teaching timetable
       // (/timetable/teaching) is a teacher/admin page, so match /timetable
