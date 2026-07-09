@@ -545,6 +545,11 @@ const scheduleStore = useScheduleStore();
 const teacherStore = useTeacherStore();
 const subjectStore = useSubjectStore();
 const ui = useUiStore();
+// School name for printed/exported timetables (configured on the Settings page).
+const settingStore = useSettingStore();
+const schoolTitle = computed(
+  () => settingStore.settings.school_name || t("schoolmanagement")
+);
 
 const roleCookie = useCookie<string>("role");
 const idCookie = useCookie<string>("id");
