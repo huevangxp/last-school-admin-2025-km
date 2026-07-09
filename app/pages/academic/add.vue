@@ -273,9 +273,10 @@ const save = async () => {
   try {
     const { $axios } = useNuxtApp();
     await $axios.post("/add-academic-year", form.value);
-    // Success handling logic here
-  } catch (error) {
-    console.error(error);
+    ui.notify(t("saved-successfully"), "success");
+    router.push("/academic");
+  } catch (error: any) {
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
   } finally {
     loading.value = false;
   }
