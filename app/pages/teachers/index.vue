@@ -321,6 +321,8 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTeacherStore } from "~/stores/apiTeacher";
+import { useTeachingStore } from "~/stores/apiTeaching";
+import { useClassroomStore } from "~/stores/apiClassroom";
 
 // Managing teachers (list / edit / delete) is admin-only; teachers are sent to
 // the read-only org chart instead.
