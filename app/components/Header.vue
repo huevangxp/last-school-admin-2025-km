@@ -599,6 +599,28 @@ const flatNavItems = computed(() =>
   groupedMenuItems.value.flatMap((s) => s.items).filter((i) => i.to)
 );
 
+// ---- Header global search ----
+// Flatten the (already role-filtered) menu into searchable, translated entries.
+// Filtering/matching is handled by v-autocomplete against `label`.
+const searchItems = computed(() =>
+  groupedMenuItems.value.flatMap((section) =>
+    section.items
+      .filter((it) => it.to)
+      .map((it) => ({
+        label: t(it.title),
+        section: t(section.label),
+        icon: it.icon,
+        to: it.to as string,
+      }))
+  )
+);
+const searchSelection = ref<any>(null);
+const onSearchSelect = (val: any) => {
+  if (val?.to) navigateTo(val.to);
+  // Reset so the same page can be picked again and the field clears.
+  nextTick(() => (searchSelection.value = null));
+};
+
 // Preferred order for the bottom bar's primary tabs. Whichever of these the
 // current role can see fill the (max 4) tabs first; anything left over stays in
 // the drawer behind "More". Each role naturally gets a sensible set:
