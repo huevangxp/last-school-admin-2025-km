@@ -206,7 +206,6 @@ const showDobPicker = ref(false);
 
 const form = ref({
   full_name: "",
-  email: "",
   gender: "",
   dob: "",
   phone_number: "",
