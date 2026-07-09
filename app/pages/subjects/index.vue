@@ -171,6 +171,26 @@
           </div>
         </template>
 
+        <!-- Teachers Slot (who teaches this subject, from teaching assignments) -->
+        <template v-slot:item.teachers="{ item }">
+          <div class="d-flex flex-wrap ga-1 py-2">
+            <v-chip
+              v-for="tName in item.teachers"
+              :key="tName"
+              size="x-small"
+              color="indigo-lighten-5"
+              class="text-indigo-darken-2 font-weight-bold"
+              variant="flat"
+            >
+              <v-icon start size="12">mdi-account-tie-outline</v-icon>
+              {{ tName }}
+            </v-chip>
+            <span v-if="!item.teachers?.length" class="text-detail-tiny text-grey">
+              {{ t("unassigned") }}
+            </span>
+          </div>
+        </template>
+
         <!-- Coefficient Slot -->
         <template v-slot:item.coefficient="{ item }">
           <v-chip
