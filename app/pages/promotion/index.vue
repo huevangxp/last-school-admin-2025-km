@@ -22,10 +22,28 @@
             <h3 class="text-title">1. {{ t("from") }}</h3>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">{{ t("source-class") }}</label>
+          <label class="text-detail-tiny mb-2 d-block">{{
+            t("source-academic-year")
+          }}</label>
+          <v-select
+            v-model="sourceYearId"
+            :items="classroomStore.academicYears"
+            item-title="title"
+            item-value="id"
+            variant="outlined"
+            density="compact"
+            rounded="0"
+            hide-details
+            class="mb-4"
+            prepend-inner-icon="mdi-calendar-arrow-left"
+          ></v-select>
+
+          <label class="text-detail-tiny mb-2 d-block">{{
+            t("source-class")
+          }}</label>
           <v-select
             v-model="sourceClassId"
-            :items="classroomStore.classrooms"
+            :items="sourceClassOptions"
             :item-title="classLabel"
             item-value="id"
             :placeholder="t('select-current-class')"
@@ -33,6 +51,7 @@
             density="compact"
             rounded="0"
             hide-details
+            prepend-inner-icon="mdi-google-classroom"
           ></v-select>
         </v-card>
 
@@ -47,30 +66,44 @@
             <h3 class="text-title">2. {{ t("to") }}</h3>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">{{ t("target-class") }}</label>
+          <label class="text-detail-tiny mb-2 d-block">{{
+            t("target-academic-year")
+          }}</label>
+          <v-select
+            v-model="targetYearId"
+            :items="classroomStore.academicYears"
+            item-title="title"
+            item-value="id"
+            variant="outlined"
+            density="compact"
+            rounded="0"
+            hide-details
+            class="mb-4"
+            prepend-inner-icon="mdi-calendar-check"
+          ></v-select>
+
+          <label class="text-detail-tiny mb-2 d-block">{{
+            t("target-class")
+          }}</label>
           <v-select
             v-model="targetClassId"
             :items="targetClassOptions"
             :item-title="classLabel"
             item-value="id"
-            :placeholder="t('select-next-class')"
+            :placeholder="
+              sourceClassId ? t('select-next-class') : t('select-source-first')
+            "
+            :disabled="!sourceClassId"
             variant="outlined"
             density="compact"
             rounded="0"
-            class="mb-4"
             hide-details
+            prepend-inner-icon="mdi-google-classroom"
           ></v-select>
-
-          <label class="text-detail-tiny mb-2 d-block">{{ t("target-academic-year") }}</label>
-          <v-text-field
-            :model-value="classroomStore.latestAcademicYear?.title || '—'"
-            readonly
-            variant="outlined"
-            density="compact"
-            rounded="0"
-            hide-details
-            prepend-inner-icon="mdi-calendar-check"
-          ></v-text-field>
+          <div class="text-detail-tiny text-grey mt-2">
+            <v-icon size="13" class="mr-1">mdi-information-outline</v-icon>
+            {{ t("higher-grade-only") }}
+          </div>
 
           <v-alert
             v-if="message"
@@ -122,6 +155,15 @@
             {{ t("select-source-class-hint") }}
           </div>
           <div
+            v-else-if="enrollmentStore.loading"
+            class="py-8 text-center"
+          >
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+          </div>
+          <div
             v-else-if="!sourceStudents.length"
             class="text-detail py-8 text-center"
           >
@@ -162,17 +204,16 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from "vue";
 import { useClassroomStore } from "~/stores/apiClassroom";
-import { useStudentStore } from "~/stores/apiStudent";
 import { useEnrollmentStore } from "~/stores/apiEnrollment";
 
 const { t } = useI18n();
 const classroomStore = useClassroomStore();
-const studentStore = useStudentStore();
 const enrollmentStore = useEnrollmentStore();
 
+const sourceYearId = ref<string | null>(null);
 const sourceClassId = ref<string | null>(null);
-const targetClassId = ref<string | null>(null);
 const targetYearId = ref<string | null>(null);
+const targetClassId = ref<string | null>(null);
 const selected = ref<string[]>([]);
 const promoting = ref(false);
 const message = ref("");
@@ -184,15 +225,62 @@ const breadcrumbs = [
 ];
 
 onMounted(async () => {
-  classroomStore.fetchClassrooms(100);
-  studentStore.fetchStudents();
-  // Load academic years and default the target to the latest (current) one.
-  await classroomStore.fetchAcademicYears();
+  await Promise.all([
+    classroomStore.fetchClassrooms(300),
+    classroomStore.fetchAcademicYears(),
+    classroomStore.fetchGradeLevels(),
+  ]);
+  // Target defaults to the latest (current) year; source to the previous one.
   targetYearId.value = classroomStore.latestAcademicYearId;
+  sourceYearId.value = previousYearId.value;
 });
 
 const classLabel = (c: any) =>
-  `${c.classroom_name}${c.gradeLevel?.grade_level_name ? " · " + c.gradeLevel.grade_level_name : ""}`;
+  `${c.classroom_name}${
+    c.gradeLevel?.grade_level_name ? " · " + c.gradeLevel.grade_level_name : ""
+  }`;
+
+// Grade ordering comes from the grade-level list order (ປ.1 … ມ.7), so a higher
+// index = a higher grade. Used to enforce "promote only to a higher grade".
+const gradeOrder = computed<Record<string, number>>(() => {
+  const map: Record<string, number> = {};
+  classroomStore.gradeLevels.forEach((g: any, i: number) => (map[g.id] = i));
+  return map;
+});
+const gradeIndexOf = (classId: string | null) => {
+  const c = classroomStore.classrooms.find((x: any) => x.id === classId);
+  return c ? gradeOrder.value[c.grade_level_id] ?? -1 : -1;
+};
+
+// Years sorted newest-first, so we can offer the previous year as the source.
+const sortedYears = computed(() =>
+  [...classroomStore.academicYears].sort(
+    (a: any, b: any) =>
+      new Date(b.start_date).getTime() - new Date(a.start_date).getTime()
+  )
+);
+const previousYearId = computed(() => {
+  const latest = classroomStore.latestAcademicYearId;
+  const others = sortedYears.value.filter((y: any) => y.id !== latest);
+  return others[0]?.id || latest;
+});
+
+// Classrooms belonging to a given academic year.
+const classroomsInYear = (yearId: string | null) =>
+  classroomStore.classrooms.filter((c: any) => c.academic_year_id === yearId);
+
+const sourceClassOptions = computed(() => classroomsInYear(sourceYearId.value));
+
+// Target classes: those in the target year whose grade is strictly higher than
+// the source class's grade (ມ3 → only ມ4 and up).
+const targetClassOptions = computed(() => {
+  const all = classroomsInYear(targetYearId.value);
+  const srcIdx = gradeIndexOf(sourceClassId.value);
+  if (srcIdx < 0) return all;
+  return all.filter(
+    (c: any) => (gradeOrder.value[c.grade_level_id] ?? -1) > srcIdx
+  );
+});
 
 interface DisplayStudent {
   id: string;
@@ -202,12 +290,14 @@ interface DisplayStudent {
   avatar: string;
 }
 
-// Students currently in the selected source class (mapped to a typed shape).
-const sourceStudents = computed<DisplayStudent[]>(() => {
-  if (!sourceClassId.value) return [];
-  return studentStore.students
-    .filter((s) => s.class_id === sourceClassId.value)
-    .map((s) => {
+// Students enrolled in the chosen source class for the source year — this is
+// the class roster as it was that year (from the enrollment history), not the
+// students' current class.
+const sourceStudents = computed<DisplayStudent[]>(() =>
+  enrollmentStore.enrollments
+    .map((e: any) => e.tb_student)
+    .filter(Boolean)
+    .map((s: any) => {
       const id = String(s.id ?? "");
       return {
         id,
@@ -220,22 +310,45 @@ const sourceStudents = computed<DisplayStudent[]>(() => {
             String(s.student_id ?? id)
           )}`,
       };
-    });
-});
-
-// Don't allow promoting into the same class.
-const targetClassOptions = computed(() =>
-  classroomStore.classrooms.filter((c) => c.id !== sourceClassId.value)
+    })
 );
 
 const canPromote = computed(
   () =>
-    selected.value.length > 0 && !!targetClassId.value && !!targetYearId.value
+    selected.value.length > 0 &&
+    !!targetClassId.value &&
+    !!targetYearId.value &&
+    targetYearId.value !== sourceYearId.value // must promote into a new year
 );
 
-watch(sourceClassId, () => {
+// Load the source class roster for the chosen (class, year).
+const reloadSource = async () => {
   selected.value = [];
   message.value = "";
+  enrollmentStore.enrollments = [];
+  if (!sourceClassId.value || !sourceYearId.value) return;
+  await enrollmentStore.fetchEnrollments({
+    class_id: sourceClassId.value,
+    academic_year_id: sourceYearId.value,
+    status: "active",
+  });
+};
+
+watch([sourceClassId, sourceYearId], reloadSource);
+
+// Changing the source year invalidates the picked source class.
+watch(sourceYearId, () => {
+  sourceClassId.value = null;
+});
+
+// If the current target class is no longer a valid (higher-grade) option, drop it.
+watch([sourceClassId, targetYearId, targetClassOptions], () => {
+  if (
+    targetClassId.value &&
+    !targetClassOptions.value.some((c: any) => c.id === targetClassId.value)
+  ) {
+    targetClassId.value = null;
+  }
 });
 
 const toggle = (id: string) => {
@@ -263,7 +376,7 @@ const promote = async () => {
     messageType.value = "success";
     message.value = res?.message || t("promoted-successfully");
     selected.value = [];
-    await studentStore.fetchStudents(); // refresh class assignments
+    // The source-year roster is unchanged (kept as history); nothing to refetch.
   } catch (error: any) {
     messageType.value = "error";
     message.value =
@@ -289,7 +402,7 @@ const promote = async () => {
   font-size: 13px !important;
 }
 .modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
+  background: linear-gradient(135deg, #0a3154 0%, #082741 100%) !important;
   color: white !important;
 }
 .source-student {
@@ -298,5 +411,4 @@ const promote = async () => {
 .source-student:hover {
   background-color: #f8fafc;
 }
-
 </style>
