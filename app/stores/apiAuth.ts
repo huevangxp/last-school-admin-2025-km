@@ -118,6 +118,20 @@ export const useApiAuthStore = defineStore("apiAuth", {
       }
     },
 
+    // Self-service profile — any logged-in role. The backend targets the
+    // caller's own record via the token, so no id is passed from the client.
+    async fetchMyProfile() {
+      const { $axios } = useNuxtApp();
+      const response = await $axios.get("/my-profile");
+      return response.data?.data ?? null;
+    },
+
+    async updateMyProfile(payload: Record<string, unknown>) {
+      const { $axios } = useNuxtApp();
+      const response = await $axios.put("/my-profile", payload);
+      return response.data;
+    },
+
     logout() {
       const token = useCookie("token");
       const userId = useCookie("id");
