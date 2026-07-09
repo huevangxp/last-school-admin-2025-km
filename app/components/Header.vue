@@ -126,15 +126,6 @@
 
         <div class="d-none d-sm-flex align-center ga-2">
           <v-chip
-            size="small"
-            variant="flat"
-            color="white"
-            rounded="0"
-            class="text-primary font-weight-bold px-3"
-          >
-            v2.4.0
-          </v-chip>
-          <v-chip
             v-if="classroomStore.latestAcademicYear"
             size="small"
             variant="flat"
