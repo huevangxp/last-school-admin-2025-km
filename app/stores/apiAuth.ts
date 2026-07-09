@@ -73,6 +73,12 @@ export const useApiAuthStore = defineStore("apiAuth", {
           avatar.value = String(response.data.data.avatar);
           username.value = String(response.data.data.username);
 
+          // Seed the shared avatar state the header reads, so a re-login in the
+          // same tab shows the new account's photo (not the previous one).
+          useState<string>("userAvatar").value = String(
+            response.data.data.avatar ?? ""
+          );
+
           // console.log('Login successful, token saved', response.data);
 
           // Navigate to home page
