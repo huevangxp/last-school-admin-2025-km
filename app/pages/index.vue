@@ -24,6 +24,7 @@
           color="white"
           class="modern-action-btn secondary border"
           height="36"
+          @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="16"></v-icon>
           {{ t("export") }}
@@ -33,9 +34,10 @@
           color="primary"
           class="modern-action-btn primary elevation-4"
           height="36"
+          to="/students/add"
         >
           <v-icon icon="mdi-plus" start size="16"></v-icon>
-          {{ t("action") }}
+          {{ t("enroll") }}
         </v-btn>
       </div>
     </div>
