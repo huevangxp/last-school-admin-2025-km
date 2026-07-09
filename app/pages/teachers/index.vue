@@ -348,9 +348,30 @@ const statusOptions = [
 ];
 
 const teacherStore = useTeacherStore();
+const teachingStore = useTeachingStore();
+const classroomStore = useClassroomStore();
 
-onMounted(() => {
-  teacherStore.fetchTeachers(100, 1);
+onMounted(async () => {
+  await Promise.all([
+    teacherStore.fetchTeachers(100, 1),
+    classroomStore.fetchAcademicYears(),
+  ]);
+  // The teacher ↔ subject relationship lives in the teaching assignments; load
+  // the latest year's so the Subject column can show what each teacher teaches.
+  const yearId = classroomStore.latestAcademicYearId;
+  if (yearId) await teachingStore.fetchAssignments({ academic_year_id: yearId });
+});
+
+// teacher_id → the distinct subjects they teach this year.
+const subjectsByTeacher = computed(() => {
+  const map = new Map<string, Set<string>>();
+  for (const a of teachingStore.assignments as any[]) {
+    const name = a.tb_subject?.subject_name;
+    if (!a.teacher_id || !name) continue;
+    if (!map.has(a.teacher_id)) map.set(a.teacher_id, new Set());
+    map.get(a.teacher_id)!.add(name);
+  }
+  return map;
 });
 
 const capitalize = (s?: string) =>
