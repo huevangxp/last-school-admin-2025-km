@@ -231,12 +231,14 @@
           </v-list>
         </v-menu>
 
+        <!-- Notifications → announcement feed -->
         <v-btn
-          icon="mdi-bell-outline"
           variant="text"
           color="white"
           size="small"
           class="rounded-0 action-btn"
+          to="/announcement"
+          :title="t('announcements')"
         >
           <v-badge dot color="error" offset-x="2" offset-y="2">
             <v-icon size="22">mdi-bell-outline</v-icon>
