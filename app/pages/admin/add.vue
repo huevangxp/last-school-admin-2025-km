@@ -255,6 +255,7 @@
               class="modern-action-btn primary elevation-4"
               height="40"
               type="submit"
+              :loading="loading"
             >
               {{ t("save") }}
             </v-btn>
