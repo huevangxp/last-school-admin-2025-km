@@ -1018,7 +1018,9 @@ const buildTableHtml = () => {
           .join("")}</tr>`
     )
     .join("");
-  return `<div class="tt-wrap"><h2>${esc(
+  return `<div class="tt-wrap"><div class="tt-school">${esc(
+    schoolTitle.value
+  )}</div><h2>${esc(
     docTitle.value
   )}</h2><table class="tt"><thead>${header}</thead><tbody>${body}</tbody></table></div>`;
 };
