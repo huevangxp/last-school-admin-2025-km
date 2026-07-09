@@ -287,10 +287,14 @@
               >
                 <td class="pl-6">
                   <div class="d-flex align-center py-3">
-                    <v-avatar size="32" class="mr-3 elevation-1 border-white">
-                      <v-img
-                        :src="`https://ui-avatars.com/api/?name=${student.name}&background=random`"
-                      ></v-img>
+                    <v-avatar
+                      size="32"
+                      color="primary-lighten-5"
+                      class="mr-3 elevation-1 border-white"
+                    >
+                      <span class="text-caption font-weight-black text-primary">{{
+                        (student.name || "?").charAt(0)
+                      }}</span>
                     </v-avatar>
                     <div>
                       <div class="text-title-small">{{ student.name }}</div>
