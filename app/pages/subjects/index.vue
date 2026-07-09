@@ -461,6 +461,7 @@ const groupedSubjects = computed(() => {
         id: s.subject_code,
         coefficient: s.coefficient,
         grades: [] as { id: string; name: string }[],
+        teachers: Array.from(teachersBySubjectName.value.get(s.subject_name) || []),
       });
     }
     map.get(key).grades.push({ id: s.grade_id, name: gradeName(s.grade_id) });
