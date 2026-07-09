@@ -419,6 +419,10 @@ const brandTitle = computed(
   () => settingStore.settings.school_name || t("schoolmanagement")
 );
 
+// Drive the browser tab title from the school name too (falls back to the
+// generic label). Applies on every authenticated page (Header is in the layout).
+useHead({ title: () => brandTitle.value });
+
 // Logged-in user (set on login in apiAuth store)
 const username = useCookie<string>("username", { default: () => "Admin" });
 const role = useCookie<string>("role", { default: () => "Administrator" });
