@@ -767,6 +767,7 @@ const loadGrid = async () => {
 };
 
 onMounted(async () => {
+  if (!settingStore.settings.id) settingStore.fetchSettings();
   const tasks: Promise<any>[] = [
     classroomStore.fetchAcademicYears(),
     scheduleStore.fetchPeriods(),
