@@ -439,6 +439,7 @@ const subjects = computed(() =>
     subjectCode: s.subject_code,
     coefficientRaw: s.coefficient,
     gradeId: s.grade_id,
+    teachers: Array.from(teachersBySubjectId.value.get(s.id) || []),
   }))
 );
 
