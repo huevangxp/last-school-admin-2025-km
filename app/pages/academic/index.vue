@@ -406,6 +406,20 @@ const removeAcademic = async (item: any) => {
   }
 };
 
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "academic-years",
+    [
+      { label: t("academic"), key: "title" },
+      { label: t("start_date"), key: "start_date" },
+      { label: t("end_date"), key: "end_date" },
+      { label: t("status"), key: "status" },
+      { label: t("description"), key: "description" },
+    ],
+    academics.value || []
+  );
+
 // Real KPIs derived from the loaded academic years (no more hardcoded mock).
 const academicStats = computed(() => {
   const list = academics.value || [];
