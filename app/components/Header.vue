@@ -120,7 +120,7 @@
           <span
             class="text-white font-weight-black text-body-2 text-truncate"
             style="max-width: 150px"
-            >{{ t("schoolmanagement") }}</span
+            >{{ brandTitle }}</span
           >
         </div>
 
