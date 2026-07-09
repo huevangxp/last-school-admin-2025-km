@@ -10,6 +10,17 @@
         <h1 class="text-title mb-1">{{ $t("settings") }}</h1>
         <p class="text-detail">{{ $t("settings-subtitle") }}</p>
       </div>
+      <v-chip
+        v-if="!isAdmin"
+        color="orange-lighten-4"
+        class="text-orange-darken-4 font-weight-black mt-3 mt-md-0"
+        size="small"
+        variant="flat"
+        label
+        prepend-icon="mdi-eye-outline"
+      >
+        {{ $t("view_only") }}
+      </v-chip>
     </div>
 
     <!-- Settings Cards Grid -->
@@ -27,6 +38,15 @@
                 {{ $t("general-settings-desc") }}
               </p>
             </div>
+            <v-spacer></v-spacer>
+            <v-btn
+              v-if="isAdmin"
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="x-small"
+              color="primary"
+              @click="openSchoolDialog"
+            ></v-btn>
           </div>
 
           <v-divider class="mb-2 opacity-10"></v-divider>
@@ -49,16 +69,8 @@
                 item.title
               }}</v-list-item-title>
               <v-list-item-subtitle class="text-detail">{{
-                item.value
+                item.value || "—"
               }}</v-list-item-subtitle>
-              <template v-slot:append>
-                <v-btn
-                  icon="mdi-pencil-outline"
-                  variant="text"
-                  size="x-small"
-                  color="primary"
-                ></v-btn>
-              </template>
             </v-list-item>
           </v-list>
         </v-card>
@@ -77,11 +89,21 @@
               <h3 class="text-title">{{ $t("academic-config") }}</h3>
               <p class="text-detail-tiny">{{ $t("academic-config-desc") }}</p>
             </div>
+            <v-spacer></v-spacer>
+            <v-btn
+              v-if="isAdmin"
+              icon="mdi-pencil-outline"
+              variant="text"
+              size="x-small"
+              color="primary"
+              @click="openSemesterDialog"
+            ></v-btn>
           </div>
 
           <v-divider class="mb-2 opacity-10"></v-divider>
 
           <v-list class="bg-transparent" lines="two">
+            <!-- Active academic year — real data from tb_academic_year. -->
             <v-list-item class="px-0 py-1">
               <template v-slot:prepend>
                 <div
@@ -93,51 +115,71 @@
                   >
                 </div>
               </template>
-              <v-list-item-title class="text-title-small"
-                >{{ $t("academic-year") }}</v-list-item-title
-              >
-              <v-list-item-subtitle class="text-detail"
-                >2024-2025</v-list-item-subtitle
-              >
+              <v-list-item-title class="text-title-small">{{
+                $t("academic-year")
+              }}</v-list-item-title>
+              <v-list-item-subtitle class="text-detail">{{
+                activeYear?.title || "—"
+              }}</v-list-item-subtitle>
               <template v-slot:append>
                 <v-chip
-                  color="green-lighten-4"
+                  v-if="activeYear"
+                  :color="
+                    activeYear.status === 'active'
+                      ? 'green-lighten-4'
+                      : 'grey-lighten-3'
+                  "
                   class="text-dark font-weight-black"
                   size="x-small"
                   variant="flat"
                   label
-                  >{{ $t("active") }}</v-chip
+                  >{{
+                    activeYear.status === "active"
+                      ? $t("active")
+                      : $t("inactive")
+                  }}</v-chip
                 >
               </template>
             </v-list-item>
 
-            <v-list-item
-              class="px-0 py-1"
-              v-for="(item, i) in academicDetails"
-              :key="i"
-            >
+            <!-- Semester — stored in settings. -->
+            <v-list-item class="px-0 py-1">
               <template v-slot:prepend>
                 <div
                   class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
-                  <v-icon color="secondary" size="16">{{ item.icon }}</v-icon>
+                  <v-icon color="secondary" size="16"
+                    >mdi-calendar-range-outline</v-icon
+                  >
                 </div>
               </template>
               <v-list-item-title class="text-title-small">{{
-                item.title
+                $t("semester")
               }}</v-list-item-title>
               <v-list-item-subtitle class="text-detail">{{
-                item.value
+                settings.semester || "—"
               }}</v-list-item-subtitle>
-              <template v-slot:append>
-                <v-btn
-                  icon="mdi-pencil-outline"
-                  variant="text"
-                  size="x-small"
-                  color="primary"
-                ></v-btn>
+            </v-list-item>
+
+            <!-- Timeline — derived from the active year's dates (read-only). -->
+            <v-list-item class="px-0 py-1">
+              <template v-slot:prepend>
+                <div
+                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
+                  style="width: 32px; height: 32px"
+                >
+                  <v-icon color="secondary" size="16"
+                    >mdi-clock-time-four-outline</v-icon
+                  >
+                </div>
               </template>
+              <v-list-item-title class="text-title-small">{{
+                $t("timeline")
+              }}</v-list-item-title>
+              <v-list-item-subtitle class="text-detail">{{
+                yearTimeline
+              }}</v-list-item-subtitle>
             </v-list-item>
           </v-list>
         </v-card>
@@ -147,11 +189,7 @@
       <v-col cols="12" md="6">
         <v-card class="intelligence-card pa-4 h-100" elevation="0">
           <div class="d-flex align-center mb-4">
-            <v-avatar
-              color="purple-lighten-5"
-              size="40"
-              class="mr-3 rounded-0"
-            >
+            <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-0">
               <v-icon color="purple-darken-2" size="20"
                 >mdi-bell-outline</v-icon
               >
@@ -165,8 +203,8 @@
           <v-list class="bg-transparent">
             <v-list-item
               class="px-0 py-1"
-              v-for="(notif, i) in notifications"
-              :key="i"
+              v-for="notif in notifications"
+              :key="notif.key"
             >
               <template v-slot:prepend>
                 <div
@@ -181,11 +219,13 @@
               }}</v-list-item-title>
               <template v-slot:append>
                 <v-switch
-                  v-model="notif.enabled"
+                  :model-value="settings[notif.key]"
                   color="primary"
                   hide-details
                   density="compact"
                   inset
+                  :disabled="!isAdmin || saving"
+                  @update:model-value="toggle(notif.key, $event)"
                 ></v-switch>
               </template>
             </v-list-item>
@@ -197,11 +237,7 @@
       <v-col cols="12" md="6">
         <v-card class="intelligence-card pa-4 h-100" elevation="0">
           <div class="d-flex align-center mb-4">
-            <v-avatar
-              color="orange-lighten-5"
-              size="40"
-              class="mr-3 rounded-0"
-            >
+            <v-avatar color="orange-lighten-5" size="40" class="mr-3 rounded-0">
               <v-icon color="orange-darken-2" size="20"
                 >mdi-shield-lock-outline</v-icon
               >
@@ -219,43 +255,23 @@
                   class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
                   style="width: 32px; height: 32px"
                 >
-                  <v-icon color="secondary" size="16">mdi-key-outline</v-icon>
-                </div>
-              </template>
-              <v-list-item-title class="text-title-small"
-                >{{ $t("change-password") }}</v-list-item-title
-              >
-              <template v-slot:append>
-                <v-btn
-                  variant="tonal"
-                  size="x-small"
-                  color="primary"
-                  class="font-weight-black"
-                  >{{ $t("reset") }}</v-btn
-                >
-              </template>
-            </v-list-item>
-            <v-list-item class="px-0 py-1">
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
                   <v-icon color="secondary" size="16"
                     >mdi-two-factor-authentication</v-icon
                   >
                 </div>
               </template>
-              <v-list-item-title class="text-title-small"
-                >{{ $t("two-factor-auth") }}</v-list-item-title
-              >
+              <v-list-item-title class="text-title-small">{{
+                $t("two-factor-auth")
+              }}</v-list-item-title>
               <template v-slot:append>
                 <v-switch
-                  v-model="twoFactorAuth"
+                  :model-value="settings.two_factor"
                   color="primary"
                   hide-details
                   density="compact"
                   inset
+                  :disabled="!isAdmin || saving"
+                  @update:model-value="toggle('two_factor', $event)"
                 ></v-switch>
               </template>
             </v-list-item>
@@ -263,48 +279,174 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <!-- Edit school info -->
+    <v-dialog v-model="schoolDialog" width="460">
+      <v-card rounded="0" class="pa-6">
+        <div class="text-title mb-4">{{ $t("general-settings") }}</div>
+        <label class="text-detail-tiny mb-1 d-block">{{ $t("school-name") }}</label>
+        <v-text-field
+          v-model="schoolForm.school_name"
+          variant="outlined"
+          density="compact"
+          rounded="0"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <label class="text-detail-tiny mb-1 d-block">{{ $t("address") }}</label>
+        <v-text-field
+          v-model="schoolForm.address"
+          variant="outlined"
+          density="compact"
+          rounded="0"
+          hide-details
+          class="mb-3"
+        ></v-text-field>
+        <label class="text-detail-tiny mb-1 d-block">{{ $t("phone") }}</label>
+        <v-text-field
+          v-model="schoolForm.phone"
+          variant="outlined"
+          density="compact"
+          rounded="0"
+          hide-details
+        ></v-text-field>
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="schoolDialog = false">{{ $t("cancel") }}</v-btn>
+          <v-btn color="primary" :loading="saving" @click="saveSchool">{{ $t("save") }}</v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
+
+    <!-- Edit semester -->
+    <v-dialog v-model="semesterDialog" width="420">
+      <v-card rounded="0" class="pa-6">
+        <div class="text-title mb-4">{{ $t("semester") }}</div>
+        <v-text-field
+          v-model="semesterForm"
+          variant="outlined"
+          density="compact"
+          rounded="0"
+          hide-details
+          placeholder="Semester 1"
+        ></v-text-field>
+        <div class="d-flex justify-end ga-2 mt-6">
+          <v-btn variant="text" @click="semesterDialog = false">{{ $t("cancel") }}</v-btn>
+          <v-btn color="primary" :loading="saving" @click="saveSemester">{{ $t("save") }}</v-btn>
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useSettingStore } from "~/stores/apiSetting";
+import { useClassroomStore } from "~/stores/apiClassroom";
+import { useUiStore } from "~/stores/ui";
+
 const { t } = useI18n();
+const settingStore = useSettingStore();
+const classroomStore = useClassroomStore();
+const ui = useUiStore();
+
+// Editing global settings is admin-only (mirrors the backend PUT guard).
+const role = useCookie<string>("role", { default: () => "" });
+const isAdmin = computed(() =>
+  ["admin", "administrator"].includes((role.value || "").toLowerCase())
+);
+
+const settings = computed(() => settingStore.settings);
+const saving = ref(false);
 
 const breadcrumbs = [
   { title: t("dashboard"), disabled: false, to: "/" },
   { title: t("settings"), disabled: true, to: "/settings" },
 ];
 
-const schoolDetails = [
-  { title: t("school-name"), value: "ມ.ສ ກາງໃໝ່", icon: "mdi-school-outline" },
-  {
-    title: t("address"),
-    value: "ບ້ານ ກາງໃໝ່, ເມືອງ ໄຊທານີ",
-    icon: "mdi-map-marker-outline",
-  },
-  { title: t("phone"), value: "+856 20 5555 5555", icon: "mdi-phone-outline" },
-];
+onMounted(() => {
+  settingStore.fetchSettings();
+  if (!classroomStore.academicYears.length) classroomStore.fetchAcademicYears();
+});
 
-const academicDetails = [
-  {
-    title: t("semester"),
-    value: "Semester 1",
-    icon: "mdi-calendar-range-outline",
-  },
-  {
-    title: t("timeline"),
-    value: "01/09/24 - 30/06/25",
-    icon: "mdi-clock-time-four-outline",
-  },
-];
+// ---- Academic year (real data) ----
+const activeYear = computed(() => classroomStore.latestAcademicYear);
+const fmt = (d?: string) => (d ? String(d).substring(0, 10) : "");
+const yearTimeline = computed(() => {
+  const y = activeYear.value;
+  if (!y || (!y.start_date && !y.end_date)) return "—";
+  return `${fmt(y.start_date)} → ${fmt(y.end_date)}`;
+});
 
-const notifications = ref([
-  { title: t("email-notifications"), enabled: true, icon: "mdi-email-outline" },
-  { title: t("sms-alerts"), enabled: false, icon: "mdi-message-text-outline" },
-  { title: t("push-system"), enabled: true, icon: "mdi-bell-ring-outline" },
+// ---- Displayed school rows ----
+const schoolDetails = computed(() => [
+  { title: t("school-name"), value: settings.value.school_name, icon: "mdi-school-outline" },
+  { title: t("address"), value: settings.value.address, icon: "mdi-map-marker-outline" },
+  { title: t("phone"), value: settings.value.phone, icon: "mdi-phone-outline" },
 ]);
 
-const twoFactorAuth = ref(false);
+const notifications = [
+  { key: "notif_email" as const, title: t("email-notifications"), icon: "mdi-email-outline" },
+  { key: "notif_sms" as const, title: t("sms-alerts"), icon: "mdi-message-text-outline" },
+  { key: "notif_push" as const, title: t("push-system"), icon: "mdi-bell-ring-outline" },
+];
+
+// ---- Toggle a boolean setting and persist immediately ----
+const toggle = async (key: string, value: boolean | null) => {
+  if (!isAdmin.value) return;
+  saving.value = true;
+  try {
+    await settingStore.updateSettings({ [key]: !!value });
+    ui.notify(t("saved-successfully"), "success");
+  } catch (error: any) {
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+  } finally {
+    saving.value = false;
+  }
+};
+
+// ---- School info dialog ----
+const schoolDialog = ref(false);
+const schoolForm = ref({ school_name: "", address: "", phone: "" });
+const openSchoolDialog = () => {
+  schoolForm.value = {
+    school_name: settings.value.school_name || "",
+    address: settings.value.address || "",
+    phone: settings.value.phone || "",
+  };
+  schoolDialog.value = true;
+};
+const saveSchool = async () => {
+  saving.value = true;
+  try {
+    await settingStore.updateSettings({ ...schoolForm.value });
+    schoolDialog.value = false;
+    ui.notify(t("saved-successfully"), "success");
+  } catch (error: any) {
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+  } finally {
+    saving.value = false;
+  }
+};
+
+// ---- Semester dialog ----
+const semesterDialog = ref(false);
+const semesterForm = ref("");
+const openSemesterDialog = () => {
+  semesterForm.value = settings.value.semester || "";
+  semesterDialog.value = true;
+};
+const saveSemester = async () => {
+  saving.value = true;
+  try {
+    await settingStore.updateSettings({ semester: semesterForm.value });
+    semesterDialog.value = false;
+    ui.notify(t("saved-successfully"), "success");
+  } catch (error: any) {
+    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+  } finally {
+    saving.value = false;
+  }
+};
 </script>
 
 <style scoped>
