@@ -405,32 +405,37 @@ const removeAcademic = async (item: any) => {
   }
 };
 
-const academicStats = [
-  {
-    label: "Total Sessions",
-    value: "12",
-    icon: "mdi-calendar-range",
-    color: "blue",
-  },
-  {
-    label: "Active Year",
-    value: "2024-25",
-    icon: "mdi-check-circle",
-    color: "green",
-  },
-  {
-    label: "Students",
-    value: "3,450",
-    icon: "mdi-account-group",
-    color: "purple",
-  },
-  {
-    label: "Efficiency",
-    value: "95%",
-    icon: "mdi-chart-line",
-    color: "orange",
-  },
-];
+// Real KPIs derived from the loaded academic years (no more hardcoded mock).
+const academicStats = computed(() => {
+  const list = academics.value || [];
+  const active = list.find((a: any) => a.status === "active");
+  return [
+    {
+      label: t("total-sessions"),
+      value: String(list.length),
+      icon: "mdi-calendar-range",
+      color: "blue",
+    },
+    {
+      label: t("active"),
+      value: active?.title || "—",
+      icon: "mdi-check-circle",
+      color: "green",
+    },
+    {
+      label: t("upcoming"),
+      value: String(list.filter((a: any) => a.status === "upcoming").length),
+      icon: "mdi-clock-outline",
+      color: "purple",
+    },
+    {
+      label: t("archived"),
+      value: String(list.filter((a: any) => a.status === "archived").length),
+      icon: "mdi-archive-outline",
+      color: "orange",
+    },
+  ];
+});
 
 const headers = [
   { title: "ID", key: "id", align: "start" as const, sortable: true },
