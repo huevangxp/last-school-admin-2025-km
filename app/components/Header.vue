@@ -415,13 +415,18 @@ const avatarCookie = useCookie<string>("avatar");
 const isEmpty = (v?: string | null) =>
   !v || v === "null" || v === "undefined" || v === "";
 
+// Shared, app-wide avatar so a change made on the profile page shows here in the
+// header immediately (useCookie refs aren't synced across components). Seeded on
+// first render from the cookie; the profile page writes both on save.
+const avatarState = useState<string>("userAvatar", () => avatarCookie.value || "");
+
 // Uploaded avatars are stored as a relative path (/uploads/images/x.png) served
 // from the API origin, while seeded ones are absolute URLs. mediaUrl() handles
 // both, so a freshly uploaded photo shows here in the header too — not just on
 // the profile page.
 const { mediaUrl } = useMedia();
 const userAvatar = computed(() =>
-  isEmpty(avatarCookie.value) ? "" : mediaUrl(avatarCookie.value)
+  isEmpty(avatarState.value) ? "" : mediaUrl(avatarState.value)
 );
 
 const logoutDialog = ref(false);
