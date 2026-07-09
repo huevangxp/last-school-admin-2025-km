@@ -433,7 +433,7 @@ const save = async () => {
       username: f.username,
       password: f.password,
       role: "student",
-      avatar: "https://picsum.photos/200",
+      avatar: null,
       gender: f.gender,
       status: "active",
       phone_number: f.phone,
