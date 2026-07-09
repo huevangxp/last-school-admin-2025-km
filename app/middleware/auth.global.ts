@@ -73,9 +73,9 @@ export default defineNuxtRouteMiddleware((to) => {
         "/financial",
         "/settings",
       ];
-      // "/" (dashboard) and "/admin" (profile "information") are allowed exactly,
-      // but not their admin-only sub-routes (e.g. /admin/add).
-      const allowedExact = ["/", "/admin"];
+      // "/" (dashboard) and "/profile" (own-info page) are allowed exactly,
+      // but not the admin-only /admin sub-routes (e.g. /admin/add).
+      const allowedExact = ["/", "/profile"];
       if (!(allowedExact.includes(path) || matches(allowedPrefixes))) {
         return navigateTo("/teachers/organization");
       }
