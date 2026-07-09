@@ -19,6 +19,7 @@
           color="white"
           class="modern-action-btn secondary border"
           height="36"
+          @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
