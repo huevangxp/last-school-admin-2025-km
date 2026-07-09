@@ -161,7 +161,36 @@
                   hide-details
                 ></v-text-field>
               </v-col>
+              <v-col cols="12" md="6">
+                <label class="text-detail-tiny mb-2 d-block">{{
+                  t("dob").toUpperCase()
+                }}</label>
+                <DialogDate
+                  v-model="showDob"
+                  :date="form.dob"
+                  @update:date="form.dob = $event"
+                />
+                <v-text-field
+                  v-model="form.dob"
+                  variant="outlined"
+                  density="compact"
+                  rounded="0"
+                  hide-details
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  @click="showDob = true"
+                ></v-text-field>
+              </v-col>
             </v-row>
+
+            <v-alert
+              v-if="errorMessage"
+              type="error"
+              variant="tonal"
+              density="compact"
+              class="mt-4"
+              >{{ errorMessage }}</v-alert
+            >
           </v-card>
 
           <v-card class="intelligence-card pa-6 mb-8" elevation="0">
