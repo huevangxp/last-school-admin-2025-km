@@ -546,5 +546,9 @@
   "logs-cleared": "ລ້າງບັນທຶກແລ້ວ",
   "created": "ເພີ່ມແລ້ວ",
   "updated": "ແກ້ໄຂແລ້ວ",
-  "deleted": "ລຶບແລ້ວ"
+  "deleted": "ລຶບແລ້ວ",
+  "current-password": "ລະຫັດຜ່ານປັດຈຸບັນ",
+  "new-password": "ລະຫັດຜ່ານໃໝ່",
+  "passwords-do-not-match": "ລະຫັດຜ່ານບໍ່ກົງກັນ.",
+  "password-min-6": "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວອັກສອນ."
 }
