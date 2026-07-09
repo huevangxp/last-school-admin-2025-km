@@ -355,6 +355,7 @@ const save = async () => {
       department: form.value.department,
       layer: form.value.layer,
       manager_id: form.value.manager_id,
+      avatar: form.value.avatar,
     });
     router.push("/teachers");
   } catch (error: any) {
