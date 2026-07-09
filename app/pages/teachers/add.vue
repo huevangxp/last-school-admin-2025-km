@@ -371,7 +371,14 @@ const form = ref({
   department: "",
   layer: null as number | null,
   managerId: null as string | null,
+  avatar: "",
 });
+
+// Preview the picked photo (relative upload path → absolute URL).
+const { mediaUrl } = useMedia();
+const avatarPreview = computed(() =>
+  form.value.avatar ? mediaUrl(form.value.avatar) : ""
+);
 
 const genderOptions = [
   { title: t("male"), value: "male" },
