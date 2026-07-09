@@ -805,6 +805,16 @@ const reloadCells = async () => {
   }
 };
 
+// Show a clear message for a teacher double-booking (409), else the raw error.
+const notifyError = (error: any) => {
+  const data = error?.response?.data;
+  if (data?.code === "TEACHER_CONFLICT") {
+    ui.notify(t("teacher-time-conflict", { class: data.classroom || "" }), "error");
+  } else {
+    ui.notify(data?.message || t("failed-to-save"), "error");
+  }
+};
+
 const assignCell = async (
   periodId: string,
   day: string,
