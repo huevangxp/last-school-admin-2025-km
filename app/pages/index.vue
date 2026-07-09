@@ -318,8 +318,9 @@
                     size="x-small"
                     class="rounded-0 font-weight-bold text-none"
                     height="28"
+                    to="/students"
                   >
-                    {{ t("action") }}
+                    {{ t("view") }}
                   </v-btn>
                 </td>
               </tr>
