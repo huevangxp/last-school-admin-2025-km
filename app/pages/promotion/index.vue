@@ -305,11 +305,7 @@ const sourceStudents = computed<DisplayStudent[]>(() =>
         student_id: String(s.student_id ?? ""),
         first_name: String(s.first_name ?? ""),
         last_name: String(s.last_name ?? ""),
-        avatar:
-          (s.avatar as string) ||
-          `https://i.pravatar.cc/100?u=${encodeURIComponent(
-            String(s.student_id ?? id)
-          )}`,
+        avatar: s.avatar ? mediaUrl(s.avatar as string) : "",
       };
     })
 );
