@@ -469,7 +469,8 @@ const teachers = computed(() =>
     department: tc.department || "",
     layer: tc.layer ?? null,
     managerId: tc.manager_id || null,
-  }))
+    };
+  })
 );
 
 // Distinct teacher names for the searchable name filter.
