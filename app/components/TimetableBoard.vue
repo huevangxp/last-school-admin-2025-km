@@ -914,7 +914,7 @@ const addTeachingTime = async () => {
     await reloadCells();
     addDialog.value = false;
   } catch (error: any) {
-    ui.notify(error.response?.data?.message || t("failed-to-save"), "error");
+    notifyError(error);
   } finally {
     adding.value = false;
   }
