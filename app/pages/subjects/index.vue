@@ -307,6 +307,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useSubjectStore } from "~/stores/apiSubject";
 import { useClassroomStore } from "~/stores/apiClassroom";
+import { useTeachingStore } from "~/stores/apiTeaching";
 import { useUiStore } from "~/stores/ui";
 
 const { t } = useI18n();
@@ -314,11 +315,41 @@ const { t } = useI18n();
 const search = ref("");
 const subjectStore = useSubjectStore();
 const classroomStore = useClassroomStore();
+const teachingStore = useTeachingStore();
 const ui = useUiStore();
 
-onMounted(() => {
-  subjectStore.fetchSubjects();
-  classroomStore.fetchGradeLevels();
+onMounted(async () => {
+  await Promise.all([
+    subjectStore.fetchSubjects(),
+    classroomStore.fetchGradeLevels(),
+    classroomStore.fetchAcademicYears(),
+  ]);
+  // Load this year's teaching assignments so each subject can show its teachers.
+  const yearId = classroomStore.latestAcademicYearId;
+  if (yearId) await teachingStore.fetchAssignments({ academic_year_id: yearId });
+});
+
+// subject_id → teachers who teach it; and by subject name for the grouped view.
+const teachersBySubjectId = computed(() => {
+  const map = new Map<string, Set<string>>();
+  for (const a of teachingStore.assignments as any[]) {
+    const name = a.tb_teacher?.full_name || a.tb_teacher?.username;
+    if (!a.subject_id || !name) continue;
+    if (!map.has(a.subject_id)) map.set(a.subject_id, new Set());
+    map.get(a.subject_id)!.add(name);
+  }
+  return map;
+});
+const teachersBySubjectName = computed(() => {
+  const map = new Map<string, Set<string>>();
+  for (const a of teachingStore.assignments as any[]) {
+    const sname = a.tb_subject?.subject_name;
+    const tname = a.tb_teacher?.full_name || a.tb_teacher?.username;
+    if (!sname || !tname) continue;
+    if (!map.has(sname)) map.set(sname, new Set());
+    map.get(sname)!.add(tname);
+  }
+  return map;
 });
 
 const breadcrumbs = [
