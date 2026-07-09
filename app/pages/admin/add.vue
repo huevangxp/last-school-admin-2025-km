@@ -326,22 +326,54 @@ const triggerFileInput = () => {
   fileInput.value?.click();
 };
 
-const handleFileChange = (event: Event) => {
+const handleFileChange = async (event: Event) => {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files[0]) {
-    const file = target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      previewImage.value = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
+  const file = target.files?.[0];
+  if (!file) return;
+  // Show an instant local preview, then upload to get the stored URL.
+  const reader = new FileReader();
+  reader.onload = (e) => (previewImage.value = e.target?.result as string);
+  reader.readAsDataURL(file);
+  try {
+    form.value.avatar = await uploadImage(file);
+  } catch {
+    errorMessage.value = t("failed-to-upload-images");
   }
 };
 
-const save = () => {
-  // TODO: wire to a create-admin endpoint when the backend exposes one.
-  console.log("Admin form submitted:", form.value);
-  router.push("/admin");
+const save = async () => {
+  errorMessage.value = "";
+  const f = form.value;
+  // Required by the backend: full_name, username, password, gender, dob.
+  if (!f.fullName || !f.username || !f.password || !f.gender || !f.dob) {
+    errorMessage.value = t("all-fields-required");
+    return;
+  }
+  if (f.password !== f.confirmPassword) {
+    errorMessage.value = t("passwords-do-not-match");
+    return;
+  }
+  loading.value = true;
+  try {
+    await teacherStore.createTeacher({
+      full_name: f.fullName,
+      username: f.username,
+      password: f.password,
+      gender: f.gender,
+      dob: f.dob,
+      phone_number: f.phone || null,
+      role: f.role,
+      status: f.status,
+      avatar: f.avatar || "https://picsum.photos/200",
+    });
+    ui.notify(t("saved-successfully"), "success");
+    router.push("/admin");
+  } catch (error: any) {
+    errorMessage.value =
+      error.response?.data?.message || t("failed-create-teacher");
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
