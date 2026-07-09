@@ -586,6 +586,19 @@ const flaggedStudents = computed(() =>
     statusColor: statusColorMap[String(s.status)] || "primary",
   }))
 );
+
+const { exportRows } = useExcel();
+const exportList = () =>
+  exportRows(
+    "recent-students",
+    [
+      { label: t("student-id"), key: "id" },
+      { label: t("name"), key: "name" },
+      { label: t("gender"), key: "grade" },
+      { label: t("status"), key: "status" },
+    ],
+    flaggedStudents.value
+  );
 </script>
 
 <style scoped>
