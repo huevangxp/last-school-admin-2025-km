@@ -391,21 +391,33 @@
 import { useDisplay } from "vuetify";
 import { useApiAuthStore } from "~/stores/apiAuth";
 import { useClassroomStore } from "~/stores/apiClassroom";
+import { useSettingStore } from "~/stores/apiSetting";
 
 const apiAuthStore = useApiAuthStore();
 const { logout } = apiAuthStore;
 
 // Current academic year shown as a chip in the top bar.
 const classroomStore = useClassroomStore();
+// School name configured on the Settings page (falls back to the default label).
+const settingStore = useSettingStore();
 onMounted(() => {
   if (!classroomStore.academicYears.length) {
     classroomStore.fetchAcademicYears();
+  }
+  if (!settingStore.settings.id) {
+    settingStore.fetchSettings();
   }
 });
 
 const langName = useCookie("lang_name", { default: () => "English" });
 const langFlag = useCookie("lang_flag", { default: () => "/eng.png" });
 const { locales, setLocale, t } = useI18n();
+
+// Brand title shown in the sidebar / mobile header: the configured school name
+// when set, otherwise the generic i18n label.
+const brandTitle = computed(
+  () => settingStore.settings.school_name || t("schoolmanagement")
+);
 
 // Logged-in user (set on login in apiAuth store)
 const username = useCookie<string>("username", { default: () => "Admin" });
