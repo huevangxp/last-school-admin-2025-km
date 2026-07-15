@@ -46,15 +46,40 @@ export default defineNuxtConfig({
     vueI18n: "./i18n.config.ts",
   },
 
+  devServer: {
+    port: 3000,
+  },
+
+  // Dev-only: forward same-origin API/upload calls to the Express server so the
+  // admin works whether you open it directly (:3000) or via the proxy/ngrok.
+  // (Through the :8080 proxy these prefixes never reach Nuxt; this covers :3000.)
+  nitro: {
+    devProxy: {
+      // changeOrigin rewrites Host; headers.origin blanks the browser Origin so
+      // the API server's strict CORS treats tunnelled (ngrok) calls as
+      // same-origin instead of rejecting the unknown origin with a 500.
+      "/api": {
+        target: "http://localhost:4000/api",
+        changeOrigin: true,
+        headers: { origin: "" },
+      },
+      "/uploads": {
+        target: "http://localhost:4000/uploads",
+        changeOrigin: true,
+        headers: { origin: "" },
+      },
+    },
+  },
+
+  // Allow tunnelled hosts (ngrok) to reach the Vite dev server in dev.
   vite: {
+    server: {
+      allowedHosts: true,
+    },
     vue: {
       template: {
         transformAssetUrls,
       },
     },
-  
-  },
-  devServer: {
-    port: 3000,
   },
 });
