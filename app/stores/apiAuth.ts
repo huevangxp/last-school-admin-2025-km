@@ -52,7 +52,12 @@ export const useApiAuthStore = defineStore("apiAuth", {
           // Define cookie options once
           const cookieOptions = {
             maxAge: 60 * 60, // 1 hour — matches the JWT token lifetime
-            secure: false, // HTTPS only in production
+            // Mark the cookies HTTPS-only whenever the page itself is served over
+            // HTTPS, so the bearer token is never sent in the clear. Derived from
+            // the actual protocol rather than hardcoded, so plain-HTTP local dev
+            // (and an http:// LAN deployment) still logs in.
+            secure:
+              import.meta.client && window.location.protocol === "https:",
             sameSite: "lax" as const, // 'strict' might cause issues with redirects
             path: "/",
           };
