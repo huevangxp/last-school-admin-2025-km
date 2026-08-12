@@ -22,8 +22,11 @@ export const useApiAuthStore = defineStore("apiAuth", {
       try {
         const { $axios } = useNuxtApp();
 
-        // One form serves both account types. Try the teacher/admin login first;
-        // if the username isn't a teacher (404), fall back to the student login.
+        // One form serves both account types. Try the teacher/admin login first,
+        // then fall back to the student login. Both endpoints answer 401 for an
+        // unknown username AND a wrong password (deliberately indistinguishable,
+        // so the API can't be used to enumerate accounts), so 401 is the signal
+        // to try the other table rather than a definitive failure.
         let response: any;
         try {
           response = await $axios.post("/login-teacher", {
@@ -31,7 +34,7 @@ export const useApiAuthStore = defineStore("apiAuth", {
             password: password,
           });
         } catch (err: any) {
-          if (err.response?.status === 404) {
+          if (err.response?.status === 401 || err.response?.status === 404) {
             response = await $axios.post("/login-student", {
               username: user,
               password: password,
