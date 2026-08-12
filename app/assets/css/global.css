@@ -64,9 +64,9 @@ body,
   }
 }
 
-/* Global Button System — buttons are square (no rounded corners) */
+/* Global Button System — buttons use the 8px "lg" radius shared with cards. */
 .modern-action-btn {
-  border-radius: 0 !important;
+  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 700 !important;
   font-size: 14px !important;
@@ -75,10 +75,9 @@ body,
   letter-spacing: 0px !important;
 }
 
-/* High specificity so this beats the per-page scoped
-   `.modern-action-btn { border-radius: 8px }` rules and keeps every button square. */
+/* High specificity so the 8px radius survives Vuetify's own .v-btn rules. */
 .v-application .v-btn.modern-action-btn {
-  border-radius: 0 !important;
+  border-radius: 8px !important;
 }
 
 .modern-action-btn.primary {

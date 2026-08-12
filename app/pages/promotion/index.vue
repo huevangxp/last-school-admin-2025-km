@@ -32,7 +32,6 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             class="mb-4"
             prepend-inner-icon="mdi-calendar-arrow-left"
@@ -49,7 +48,6 @@
             :placeholder="t('select-current-class')"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             prepend-inner-icon="mdi-google-classroom"
           ></v-select>
@@ -76,7 +74,6 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             class="mb-4"
             prepend-inner-icon="mdi-calendar-check"
@@ -96,7 +93,6 @@
             :disabled="!sourceClassId"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             prepend-inner-icon="mdi-google-classroom"
           ></v-select>

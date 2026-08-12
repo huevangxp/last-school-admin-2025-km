@@ -57,7 +57,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           style="max-width: 280px"
           class="filter-select"
           color="primary"
@@ -72,7 +71,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           style="max-width: 220px"
           class="filter-select"
           color="primary"
@@ -187,7 +185,7 @@
 
       <!-- Assignment panel (dialog) -->
       <v-dialog v-model="manageDialog" width="560" scrollable>
-        <v-card rounded="0" class="pa-6">
+        <v-card class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div class="text-title-small">{{ t("assign_roles") }}</div>
           <v-btn
@@ -214,7 +212,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           clearable
           class="mb-4"
@@ -232,7 +229,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           multiple
           chips
@@ -252,7 +248,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           multiple
           chips

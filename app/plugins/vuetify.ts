@@ -6,16 +6,43 @@ import { createVuetify } from "vuetify";
 
 export default defineNuxtPlugin((app: any) => {
   const vuetify = createVuetify({
+    // Corner radius is set once here rather than per-component. Everything
+    // shares the "lg" (8px) radius; change these lines to reshape the whole app.
     defaults: {
       VBtn: {
         style: "text-transform: none;",
         fontWeight: "bold",
         letterSpacing: "0.5px",
-        rounded: "0", // square buttons (no rounded corners)
+        rounded: "lg",
       },
       VCard: {
         elevation: 0,
+        rounded: "lg",
       },
+      VSheet: { rounded: "lg" },
+      VSnackbar: { rounded: "lg" },
+      VBtnToggle: { rounded: "lg" },
+      VAlert: { rounded: "lg" },
+      VChip: { rounded: "lg" },
+      VList: { rounded: "lg" },
+      VListItem: { rounded: "lg" },
+      VImg: { rounded: "lg" },
+      VTable: { rounded: "lg" },
+      VToolbar: { rounded: "lg" },
+      VBanner: { rounded: "lg" },
+      VExpansionPanel: { rounded: "lg" },
+      VSkeletonLoader: { rounded: "lg" },
+      VProgressLinear: { rounded: "lg" },
+      // Form controls: Vuetify reads `rounded` on the field wrapper.
+      VTextField: { rounded: "lg" },
+      VTextarea: { rounded: "lg" },
+      VSelect: { rounded: "lg" },
+      VAutocomplete: { rounded: "lg" },
+      VCombobox: { rounded: "lg" },
+      VFileInput: { rounded: "lg" },
+      // Avatars were square (rounded="0") across the app; "lg" softens them to
+      // match everything else. Switch to "circle" here for round profile photos.
+      VAvatar: { rounded: "lg" },
     },
     theme: {
       defaultTheme: "light",

@@ -72,7 +72,6 @@
               :placeholder="t('select-role')"
               variant="outlined"
               density="compact"
-              rounded="0"
               class="mb-4"
               hide-details
             ></v-select>
@@ -85,7 +84,6 @@
               :items="statusOptions"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-select>
           </v-card>
@@ -117,7 +115,6 @@
                   :placeholder="t('enter-full-name')"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -130,7 +127,6 @@
                   :placeholder="t('enter-username')"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -144,7 +140,6 @@
                   :placeholder="t('select-gender')"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-select>
               </v-col>
@@ -157,7 +152,6 @@
                   placeholder="+856 20 ..."
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -174,7 +168,6 @@
                   v-model="form.dob"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                   prepend-inner-icon="mdi-calendar"
                   readonly
@@ -218,7 +211,6 @@
                   placeholder="••••••••"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-text-field>
               </v-col>
@@ -232,7 +224,6 @@
                   placeholder="••••••••"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                 ></v-text-field>
               </v-col>

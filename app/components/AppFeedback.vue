@@ -2,7 +2,7 @@
   <div>
     <!-- Confirm card -->
     <v-dialog v-model="showConfirm" width="420" persistent>
-      <v-card rounded="0" class="overflow-hidden feedback-card">
+      <v-card class="overflow-hidden feedback-card">
         <div class="text-center pt-8 px-6">
           <v-avatar :color="`${c.color}-lighten-5`" size="76" class="mb-4">
             <v-icon :icon="c.icon" :color="c.color" size="38"></v-icon>
@@ -45,7 +45,6 @@
       :color="snackColor"
       location="top right"
       :timeout="3200"
-      rounded="0"
       elevation="8"
       class="feedback-snack"
     >

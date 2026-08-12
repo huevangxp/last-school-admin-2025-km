@@ -39,7 +39,6 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -69,7 +68,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
       </div>
 
@@ -91,7 +89,6 @@
               color="purple-lighten-5"
               size="32"
               class="mr-3 elevation-1 border-white"
-              rounded="0"
             >
               <v-icon icon="mdi-calendar-star" size="16" color="purple-darken-2"></v-icon>
             </v-avatar>
@@ -148,7 +145,7 @@
 
     <!-- Create / Edit Dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">
           {{ isEdit ? t("edit") : t("add") }} {{ $t("activities") }}
         </div>
@@ -158,7 +155,6 @@
           v-model="form.title"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -168,7 +164,6 @@
           v-model="form.description"
           variant="outlined"
           density="compact"
-          rounded="0"
           rows="4"
           hide-details
           class="mb-3"
@@ -181,7 +176,6 @@
               v-model="form.location"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -196,7 +190,6 @@
               v-model="form.activity_date"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
               prepend-inner-icon="mdi-calendar"
               readonly
@@ -216,7 +209,6 @@
           item-value="value"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-select>
 

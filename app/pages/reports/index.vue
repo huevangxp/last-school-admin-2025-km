@@ -97,7 +97,6 @@
           <div class="d-flex align-center mb-6">
             <v-avatar
               color="orange-lighten-5"
-              rounded="0"
               size="40"
               class="mr-4"
             >

@@ -12,7 +12,6 @@
         v-else
         size="42"
         color="white"
-        rounded="0"
         class="mb-1 border-white elevation-1"
       >
         <v-img v-if="node.image" :src="node.image" cover></v-img>

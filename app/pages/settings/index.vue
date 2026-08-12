@@ -282,14 +282,13 @@
 
     <!-- Edit school info -->
     <v-dialog v-model="schoolDialog" width="460">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ $t("general-settings") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ $t("school-name") }}</label>
         <v-text-field
           v-model="schoolForm.school_name"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -298,7 +297,6 @@
           v-model="schoolForm.address"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -307,7 +305,6 @@
           v-model="schoolForm.phone"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-text-field>
         <div class="d-flex justify-end ga-2 mt-6">
@@ -319,13 +316,12 @@
 
     <!-- Edit semester -->
     <v-dialog v-model="semesterDialog" width="420">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ $t("semester") }}</div>
         <v-text-field
           v-model="semesterForm"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           placeholder="Semester 1"
         ></v-text-field>

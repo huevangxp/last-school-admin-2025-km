@@ -21,7 +21,7 @@
               t("admin-profile-photo")
             }}</label>
             <div class="d-flex align-center ga-4">
-              <v-avatar size="72" color="primary-lighten-5" rounded="0" class="elevation-1">
+              <v-avatar size="72" color="primary-lighten-5" class="elevation-1">
                 <v-img v-if="avatarPreview" :src="avatarPreview" cover></v-img>
                 <v-icon v-else color="primary" size="32">mdi-account</v-icon>
               </v-avatar>
@@ -40,7 +40,6 @@
               :placeholder="t('eg-firstname')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -55,7 +54,6 @@
               :placeholder="t('eg-lastname')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -71,7 +69,6 @@
               :placeholder="t('login-username')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -87,7 +84,6 @@
               placeholder="••••••••"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -104,7 +100,6 @@
               :placeholder="t('select')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -121,7 +116,6 @@
               v-model="form.dob"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               :rules="[rules.required]"
@@ -137,7 +131,6 @@
               placeholder="+856 20 ..."
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
             ></v-text-field>
@@ -151,7 +144,6 @@
               :items="roleOptions"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
             ></v-select>
@@ -167,7 +159,6 @@
               :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               clearable
@@ -183,7 +174,6 @@
               :placeholder="t('select-or-type')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               clearable
@@ -197,7 +187,6 @@
               :placeholder="t('select-layer')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               clearable
@@ -213,7 +202,6 @@
               :placeholder="t('select-manager-optional')"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details="auto"
               color="primary"
               clearable

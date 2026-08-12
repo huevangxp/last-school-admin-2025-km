@@ -18,7 +18,6 @@
       <v-chip
         v-if="isStudent"
         size="small"
-        rounded="0"
         color="primary-lighten-5"
         class="text-primary font-weight-bold"
         variant="flat"
@@ -30,7 +29,7 @@
 
     <div class="feed-column mx-auto">
       <!-- Composer (teachers / admins) -->
-      <v-card v-if="!isStudent" rounded="0" elevation="0" class="fb-card mb-4">
+      <v-card v-if="!isStudent" elevation="0" class="fb-card mb-4">
         <div class="pa-4 d-flex align-center ga-3">
           <v-avatar color="primary-lighten-5" size="40">
             <v-icon color="primary" size="20"
@@ -81,7 +80,6 @@
           v-for="a in feed"
           :key="a.id"
           elevation="0"
-          rounded="0"
           class="fb-card mb-4 overflow-hidden"
         >
           <!-- Post header -->
@@ -135,7 +133,7 @@
 
     <!-- Post dialog (teachers / admins) -->
     <v-dialog v-model="dialog" width="560">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ t("post-announcement") }}</div>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
@@ -143,7 +141,6 @@
           v-model="form.title"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -153,7 +150,6 @@
           v-model="form.content"
           variant="outlined"
           density="compact"
-          rounded="0"
           rows="5"
           hide-details
           class="mb-3"

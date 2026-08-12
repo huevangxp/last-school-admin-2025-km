@@ -29,7 +29,6 @@
               variant="outlined"
               density="compact"
               color="primary"
-              rounded="0"
               :placeholder="$t('name')"
               hide-details="auto"
             ></v-text-field>

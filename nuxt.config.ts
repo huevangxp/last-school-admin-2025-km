@@ -18,8 +18,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // API server origin (serves both /api and /uploads). Nuxt auto-overrides
-      // this from the NUXT_PUBLIC_API_BASE env var in production.
-      apiBase: "https://huevang.store",
+      // this from the NUXT_PUBLIC_API_BASE env var in production, which MUST be
+      // set there now that the default points at the local Express server.
+      apiBase: "http://localhost:4000",
     },
   },
   build: {
@@ -59,12 +60,12 @@ export default defineNuxtConfig({
       // the API server's strict CORS treats tunnelled (ngrok) calls as
       // same-origin instead of rejecting the unknown origin with a 500.
       "/api": {
-        target: "https://huevang.store/api",
+        target: "http://localhost:4000/api",
         changeOrigin: true,
         headers: { origin: "" },
       },
       "/uploads": {
-        target: "https://huevang.store/uploads",
+        target: "http://localhost:4000/uploads",
         changeOrigin: true,
         headers: { origin: "" },
       },

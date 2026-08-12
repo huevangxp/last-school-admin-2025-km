@@ -35,7 +35,6 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -63,7 +62,6 @@
           style="max-width: 320px"
           bg-color="white"
           color="primary"
-          rounded="0"
         ></v-text-field>
 
         <v-select
@@ -76,7 +74,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           style="min-width: 150px; max-width: 180px"
           prepend-inner-icon="mdi-filter-variant"
           color="primary"
@@ -105,7 +102,6 @@
               :color="item.type === 'income' ? 'green-lighten-5' : 'red-lighten-5'"
               size="32"
               class="mr-3 elevation-1 border-white"
-              rounded="0"
             >
               <v-icon
                 :color="item.type === 'income' ? 'green-darken-1' : 'red-darken-1'"
@@ -150,7 +146,6 @@
             :color="item.status === 'paid' ? 'success' : 'orange'"
             size="x-small"
             variant="flat"
-            rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status === "paid" ? $t("paid") : $t("pending") }}

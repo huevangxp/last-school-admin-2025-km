@@ -13,7 +13,6 @@
           :placeholder="t('academic_title')"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           prepend-inner-icon="mdi-calendar-check"
         ></v-select>
@@ -263,7 +262,6 @@
               color="primary"
               variant="flat"
               size="x-small"
-              rounded="0"
               class="font-weight-black px-2"
             >
               {{ studentCount }} {{ t("total") }}

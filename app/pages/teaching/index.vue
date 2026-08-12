@@ -43,7 +43,7 @@
                 <p class="text-detail-tiny mb-1">{{ s.label }}</p>
                 <h2 class="text-title">{{ s.value }}</h2>
               </div>
-              <v-avatar :color="`${s.color}-lighten-5`" rounded="0" size="40">
+              <v-avatar :color="`${s.color}-lighten-5`" size="40">
                 <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
               </v-avatar>
             </div>
@@ -63,7 +63,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             clearable
             style="max-width: 260px"
             color="primary"
@@ -77,7 +76,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             style="max-width: 220px"
             color="primary"
           ></v-select>
@@ -110,7 +108,6 @@
           <div class="text-title-small">{{ grp.classroom }}</div>
           <v-chip
             size="x-small"
-            rounded="0"
             class="ml-3 font-weight-bold text-indigo-darken-2"
             color="indigo-lighten-5"
             variant="flat"
@@ -126,7 +123,6 @@
         >
           <v-chip
             size="small"
-            rounded="0"
             color="teal-lighten-5"
             variant="flat"
             class="text-teal-darken-2 font-weight-bold mr-3 subject-chip"
@@ -154,7 +150,7 @@
 
     <!-- Create dialog -->
     <v-dialog v-model="dialog" width="480">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ t("add") }} {{ $t("teaching_assignments") }}</div>
 
         <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
@@ -165,7 +161,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -178,7 +173,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -191,7 +185,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-select>
 

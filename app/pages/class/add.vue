@@ -25,7 +25,6 @@
               placeholder="e.g. M1/A"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               :rules="[rules.required]"
             ></v-text-field>
@@ -39,7 +38,6 @@
               placeholder="e.g. M1A-2025"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -57,7 +55,6 @@
               :placeholder="t('select-grade-level')"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -72,7 +69,6 @@
               readonly
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
               prepend-inner-icon="mdi-calendar-check"
@@ -92,7 +88,6 @@
               :placeholder="t('select-homeroom-teacher')"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -107,7 +102,6 @@
               placeholder="e.g. 101"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-text-field>
@@ -122,7 +116,6 @@
               placeholder="e.g. 40"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-text-field>

@@ -49,7 +49,6 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -80,7 +79,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -89,7 +87,6 @@
             density="compact"
             variant="outlined"
             hide-details
-            rounded="0"
             style="min-width: 130px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
@@ -120,7 +117,6 @@
               color="blue-lighten-5"
               size="32"
               class="mr-3 elevation-1 border-white"
-              rounded="0"
             >
               <v-icon
                 icon="mdi-calendar-range"
@@ -155,7 +151,6 @@
                   : 'red'
             "
             size="x-small"
-            rounded="0"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
@@ -224,14 +219,13 @@
 
     <!-- Edit Academic Year Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("academic") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
         <v-text-field
           v-model="editForm.title"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -249,7 +243,6 @@
               v-model="editForm.startDate"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
               prepend-inner-icon="mdi-calendar-start"
               readonly
@@ -269,7 +262,6 @@
               v-model="editForm.endDate"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
               prepend-inner-icon="mdi-calendar-end"
               readonly
@@ -284,7 +276,6 @@
           v-model="editForm.description"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -294,7 +285,6 @@
           :items="['active', 'inactive']"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-select>
 

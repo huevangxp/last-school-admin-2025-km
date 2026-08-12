@@ -24,7 +24,6 @@
           density="compact"
           variant="outlined"
           divided
-          rounded="0"
           color="primary"
         >
           <v-btn value="enter" size="small" class="text-none">
@@ -64,7 +63,6 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
             :disabled="isStudent"
@@ -79,7 +77,6 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -91,7 +88,6 @@
             :items="semesterOptions"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -103,7 +99,6 @@
             :items="monthOptions"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -117,7 +112,6 @@
             item-value="id"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
           ></v-select>
@@ -167,7 +161,6 @@
                   variant="outlined"
                   density="compact"
                   hide-details
-                  rounded="0"
                   style="max-width: 120px; margin: 0 auto"
                   @focus="$event.target.select()"
                   @blur="clampScore(row)"

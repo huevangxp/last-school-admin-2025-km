@@ -22,7 +22,7 @@
               <p class="text-detail-tiny mb-1">{{ t("total-messages") }}</p>
               <h2 class="text-title">{{ contactStore.contacts.length }}</h2>
             </div>
-            <v-avatar color="cyan-lighten-5" rounded="0" size="40">
+            <v-avatar color="cyan-lighten-5" size="40">
               <v-icon color="cyan-darken-2" size="18">mdi-email-multiple-outline</v-icon>
             </v-avatar>
           </div>
@@ -35,7 +35,7 @@
               <p class="text-detail-tiny mb-1">{{ t("unread") }}</p>
               <h2 class="text-title">{{ unreadCount }}</h2>
             </div>
-            <v-avatar color="deep-orange-lighten-5" rounded="0" size="40">
+            <v-avatar color="deep-orange-lighten-5" size="40">
               <v-icon color="deep-orange-darken-2" size="18">mdi-email-alert-outline</v-icon>
             </v-avatar>
           </div>
@@ -56,7 +56,6 @@
           style="max-width: 320px"
           bg-color="white"
           color="primary"
-          rounded="0"
         ></v-text-field>
       </div>
 
@@ -84,7 +83,7 @@
               offset-x="2"
               offset-y="2"
             >
-              <v-avatar color="cyan-lighten-5" size="32" rounded="0">
+              <v-avatar color="cyan-lighten-5" size="32">
                 <v-icon icon="mdi-account-outline" size="16" color="cyan-darken-2"></v-icon>
               </v-avatar>
             </v-badge>
@@ -114,7 +113,6 @@
           <v-chip
             :color="item.status === 'unread' ? 'deep-orange' : 'grey'"
             size="x-small"
-            rounded="0"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
@@ -145,14 +143,14 @@
 
     <!-- Detail dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card v-if="selected" rounded="0" class="pa-6">
+      <v-card v-if="selected" class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div class="text-title">{{ selected.subject || t("message") }}</div>
           <v-btn icon="mdi-close" variant="text" size="small" @click="dialog = false"></v-btn>
         </div>
 
         <div class="d-flex align-center mb-4">
-          <v-avatar color="cyan-lighten-5" size="40" rounded="0" class="mr-3">
+          <v-avatar color="cyan-lighten-5" size="40" class="mr-3">
             <v-icon icon="mdi-account-outline" color="cyan-darken-2"></v-icon>
           </v-avatar>
           <div>

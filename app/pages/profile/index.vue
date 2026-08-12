@@ -7,7 +7,7 @@
         <!-- Identity card: avatar + read-only account facts -->
         <v-col cols="12" md="4">
           <v-card class="intelligence-card pa-6 text-center" elevation="0">
-            <v-avatar size="120" color="primary-lighten-5" rounded="0" class="mb-4 elevation-1 mx-auto">
+            <v-avatar size="120" color="primary-lighten-5" class="mb-4 elevation-1 mx-auto">
               <v-img v-if="avatarPreview" :src="avatarPreview" cover></v-img>
               <v-icon v-else color="primary" size="56">mdi-account</v-icon>
             </v-avatar>
@@ -21,7 +21,6 @@
                 color="primary"
                 variant="flat"
                 size="small"
-                rounded="0"
                 class="font-weight-black text-capitalize"
               >
                 {{ t(roleKey) }}
@@ -30,7 +29,6 @@
                 :color="form.status === 'active' ? 'success' : 'grey'"
                 variant="flat"
                 size="small"
-                rounded="0"
                 class="font-weight-black text-uppercase"
               >
                 {{ form.status === 'active' ? t('active') : t('inactive') }}
@@ -73,7 +71,6 @@
                   :placeholder="t('enter-full-name')"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details="auto"
                   color="primary"
                   :rules="[rules.required]"
@@ -87,7 +84,6 @@
                     :placeholder="t('eg-firstname')"
                     variant="outlined"
                     density="compact"
-                    rounded="0"
                     hide-details="auto"
                     color="primary"
                     :rules="[rules.required]"
@@ -100,7 +96,6 @@
                     :placeholder="t('eg-lastname')"
                     variant="outlined"
                     density="compact"
-                    rounded="0"
                     hide-details="auto"
                     color="primary"
                     :rules="[rules.required]"
@@ -114,7 +109,6 @@
                   :model-value="username"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details="auto"
                   color="primary"
                   readonly
@@ -131,7 +125,6 @@
                   :placeholder="t('select')"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details="auto"
                   color="primary"
                   :rules="[rules.required]"
@@ -148,7 +141,6 @@
                   v-model="form.dob"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details="auto"
                   color="primary"
                   prepend-inner-icon="mdi-calendar"
@@ -163,7 +155,6 @@
                   placeholder="+856 20 ..."
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details="auto"
                   color="primary"
                   prepend-inner-icon="mdi-phone-outline"
@@ -220,7 +211,6 @@
                   type="password"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                   color="primary"
                 ></v-text-field>
@@ -232,7 +222,6 @@
                   type="password"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                   color="primary"
                 ></v-text-field>
@@ -244,7 +233,6 @@
                   type="password"
                   variant="outlined"
                   density="compact"
-                  rounded="0"
                   hide-details
                   color="primary"
                 ></v-text-field>

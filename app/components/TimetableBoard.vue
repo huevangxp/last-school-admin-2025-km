@@ -22,7 +22,6 @@
         <v-chip
           v-if="isStudent"
           size="small"
-          rounded="0"
           color="indigo-lighten-5"
           class="text-indigo-darken-2 font-weight-bold"
           variant="flat"
@@ -38,7 +37,6 @@
               v-bind="props"
               variant="tonal"
               color="indigo-darken-2"
-              rounded="0"
               size="small"
               :loading="exporting"
             >
@@ -48,7 +46,7 @@
             </v-btn>
           </template>
           <v-list density="compact" min-width="200">
-            <v-list-item rounded="0" @click="exportExcel">
+            <v-list-item @click="exportExcel">
               <template v-slot:prepend>
                 <v-icon size="18" color="green-darken-2">
                   mdi-file-excel-outline
@@ -58,7 +56,7 @@
                 {{ t("download_excel") }}
               </v-list-item-title>
             </v-list-item>
-            <v-list-item rounded="0" @click="exportImage">
+            <v-list-item @click="exportImage">
               <template v-slot:prepend>
                 <v-icon size="18" color="blue-darken-2">
                   mdi-file-image-outline
@@ -68,7 +66,7 @@
                 {{ t("download_image") }}
               </v-list-item-title>
             </v-list-item>
-            <v-list-item rounded="0" @click="exportPdf">
+            <v-list-item @click="exportPdf">
               <template v-slot:prepend>
                 <v-icon size="18" color="red-darken-2">
                   mdi-file-pdf-box
@@ -79,7 +77,7 @@
               </v-list-item-title>
             </v-list-item>
             <v-divider class="my-1"></v-divider>
-            <v-list-item rounded="0" @click="printTimetable">
+            <v-list-item @click="printTimetable">
               <template v-slot:prepend>
                 <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
               </template>
@@ -107,7 +105,6 @@
           density="compact"
           class="mb-4 mb-md-0"
           hide-details
-          rounded="0"
           style="max-width: 260px"
           color="primary"
           prepend-inner-icon="mdi-google-classroom"
@@ -127,7 +124,6 @@
           density="compact"
           class="mb-4 mb-md-0"
           hide-details
-          rounded="0"
           style="max-width: 260px"
           color="primary"
           prepend-inner-icon="mdi-account-tie"
@@ -142,7 +138,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           style="max-width: 220px"
           color="primary"
           prepend-inner-icon="mdi-calendar-check"
@@ -166,7 +161,6 @@
         type="info"
         variant="tonal"
         density="compact"
-        rounded="0"
         class="mb-4"
       >
         {{
@@ -257,7 +251,6 @@
                       <v-list-item
                         v-for="opt in assignmentOptions"
                         :key="opt.id"
-                        rounded="0"
                         @click="assignCell(p.id, d.key, opt.id)"
                       >
                         <v-list-item-title class="text-detail">
@@ -270,7 +263,6 @@
                       <template v-if="cellFor(p.id, d.key)">
                         <v-divider class="my-1"></v-divider>
                         <v-list-item
-                          rounded="0"
                           @click="clearCell(cellFor(p.id, d.key))"
                         >
                           <template v-slot:prepend>
@@ -326,7 +318,6 @@
             v-for="(d, i) in days"
             :key="d.key"
             :value="i"
-            rounded="0"
             variant="flat"
             size="small"
             class="font-weight-bold"
@@ -402,7 +393,6 @@
                 <v-list-item
                   v-for="opt in assignmentOptions"
                   :key="opt.id"
-                  rounded="0"
                   @click="assignCell(p.id, currentDayKey, opt.id)"
                 >
                   <v-list-item-title class="text-detail">
@@ -415,7 +405,6 @@
                 <template v-if="cellFor(p.id, currentDayKey)">
                   <v-divider class="my-1"></v-divider>
                   <v-list-item
-                    rounded="0"
                     @click="clearCell(cellFor(p.id, currentDayKey))"
                   >
                     <template v-slot:prepend>
@@ -456,7 +445,7 @@
 
     <!-- Inline add/change teaching time (admin, teaching board) -->
     <v-dialog v-model="addDialog" max-width="440">
-      <v-card rounded="0" class="pa-2">
+      <v-card class="pa-2">
         <v-card-title class="d-flex align-center text-title-small">
           <v-icon start size="20" color="indigo-darken-2">
             mdi-clock-plus-outline
@@ -475,7 +464,6 @@
             :label="t('class')"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             class="mb-3"
             prepend-inner-icon="mdi-google-classroom"
@@ -488,7 +476,6 @@
             :label="t('subject')"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             prepend-inner-icon="mdi-book-open-variant"
           ></v-select>
@@ -498,19 +485,17 @@
             v-if="addDialogCell"
             color="error"
             variant="text"
-            rounded="0"
             @click="clearFromDialog"
           >
             {{ t("clear") }}
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn variant="text" rounded="0" @click="addDialog = false">
+          <v-btn variant="text" @click="addDialog = false">
             {{ t("cancel") }}
           </v-btn>
           <v-btn
             color="primary"
             variant="flat"
-            rounded="0"
             :disabled="!addClassId || !addSubjectId"
             :loading="adding"
             @click="addTeachingTime"

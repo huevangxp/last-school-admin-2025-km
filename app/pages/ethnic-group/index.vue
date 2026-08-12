@@ -54,7 +54,6 @@
             </div>
             <v-avatar
               color="blue-lighten-5"
-              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -84,7 +83,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
       </div>
 

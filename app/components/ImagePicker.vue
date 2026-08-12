@@ -6,7 +6,6 @@
         width="120"
         height="80"
         cover
-        rounded="0"
         class="border"
       ></v-img>
       <v-btn
@@ -23,7 +22,6 @@
       accept="image/*"
       variant="outlined"
       density="compact"
-      rounded="0"
       hide-details
       prepend-icon=""
       prepend-inner-icon="mdi-image-outline"

@@ -54,7 +54,7 @@
             </v-btn>
           </template>
           <v-list density="compact" min-width="200">
-            <v-list-item rounded="0" @click="exportExcel">
+            <v-list-item @click="exportExcel">
               <template v-slot:prepend>
                 <v-icon size="18" color="green-darken-2"
                   >mdi-file-excel-outline</v-icon
@@ -64,7 +64,7 @@
                 t("download_excel")
               }}</v-list-item-title>
             </v-list-item>
-            <v-list-item rounded="0" @click="exportImage">
+            <v-list-item @click="exportImage">
               <template v-slot:prepend>
                 <v-icon size="18" color="blue-darken-2"
                   >mdi-file-image-outline</v-icon
@@ -74,7 +74,7 @@
                 t("download_image")
               }}</v-list-item-title>
             </v-list-item>
-            <v-list-item rounded="0" @click="exportPdf">
+            <v-list-item @click="exportPdf">
               <template v-slot:prepend>
                 <v-icon size="18" color="red-darken-2">mdi-file-pdf-box</v-icon>
               </template>
@@ -83,7 +83,7 @@
               }}</v-list-item-title>
             </v-list-item>
             <v-divider class="my-1"></v-divider>
-            <v-list-item rounded="0" @click="printTable">
+            <v-list-item @click="printTable">
               <template v-slot:prepend>
                 <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
               </template>
@@ -108,7 +108,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           style="max-width: 220px"
           class="w-100"
           color="primary"
@@ -122,7 +121,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          rounded="0"
           clearable
           style="max-width: 260px"
           class="w-100"
@@ -140,7 +138,7 @@
               <p class="text-detail-tiny mb-1">{{ s.label }}</p>
               <h2 class="text-title">{{ s.value }}</h2>
             </div>
-            <v-avatar :color="`${s.color}-lighten-5`" rounded="0" size="40">
+            <v-avatar :color="`${s.color}-lighten-5`" size="40">
               <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
             </v-avatar>
           </div>
@@ -158,7 +156,6 @@
         density="compact"
         hide-details
         style="max-width: 320px"
-        rounded="0"
         color="primary"
         class="mb-4"
       ></v-text-field>
@@ -194,7 +191,6 @@
           <v-chip
             :color="statusColor(item.status)"
             size="x-small"
-            rounded="0"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >
@@ -219,7 +215,7 @@
 
     <!-- Set fee amounts dialog -->
     <v-dialog v-model="structureDialog" width="480">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-1">{{ t("set_fee_amounts") }}</div>
         <div class="text-detail-tiny mb-4">{{ t("fee_amount_per_grade") }}</div>
 
@@ -231,7 +227,6 @@
             v-model="structureForm[g.id]"
             variant="outlined"
             density="compact"
-            rounded="0"
             hide-details
             color="primary"
           ></MoneyInput>
@@ -252,7 +247,7 @@
 
     <!-- Collect payment dialog -->
     <v-dialog v-model="collectDialog" width="440">
-      <v-card v-if="collectTarget" rounded="0" class="pa-6">
+      <v-card v-if="collectTarget" class="pa-6">
         <div class="text-title mb-1">{{ t("collect_payment") }}</div>
         <div class="text-detail-tiny mb-4">
           {{ collectTarget.name }} · {{ t("balance") }}: ₭{{ money(collectTarget.balance) }}
@@ -263,7 +258,6 @@
           v-model="collectForm.amount"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           color="primary"
           class="mb-3"
@@ -279,7 +273,6 @@
           ]"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           color="primary"
         ></v-select>
@@ -308,7 +301,7 @@
 
     <!-- Payment receipt / bill (shown after a successful collection) -->
     <v-dialog v-model="receiptDialog" width="460">
-      <v-card v-if="receipt" rounded="0" class="pa-4">
+      <v-card v-if="receipt" class="pa-4">
         <!-- The receipt itself (also what gets printed / saved as image) -->
         <div v-html="receiptHtml"></div>
 

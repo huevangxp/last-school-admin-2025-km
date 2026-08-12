@@ -30,7 +30,6 @@
               ]"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -46,7 +45,6 @@
               item-value="value"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -60,7 +58,6 @@
               placeholder="0"
               variant="outlined"
               density="compact"
-              rounded="0"
               class="font-weight-black"
               color="primary"
               hide-details="auto"
@@ -82,7 +79,6 @@
               v-model="form.transaction_date"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
               prepend-inner-icon="mdi-calendar"
@@ -105,7 +101,6 @@
               ]"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -122,7 +117,6 @@
               ]"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               hide-details="auto"
             ></v-select>
@@ -138,7 +132,6 @@
               :placeholder="$t('description-optional')"
               variant="outlined"
               density="compact"
-              rounded="0"
               color="primary"
               rows="3"
               hide-details="auto"

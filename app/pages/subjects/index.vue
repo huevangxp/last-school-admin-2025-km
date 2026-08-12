@@ -54,7 +54,6 @@
             </div>
             <v-avatar
               :color="`${stat.color}-lighten-5`"
-              rounded="0"
               size="40"
               class="metric-icon-box"
             >
@@ -85,7 +84,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -96,7 +94,6 @@
             color="primary"
             variant="outlined"
             divided
-            rounded="0"
             class="view-toggle"
           >
             <v-btn value="all" size="small" class="text-none">
@@ -230,7 +227,6 @@
             :color="item.status === 'Active' ? 'success' : 'grey'"
             size="x-small"
             variant="flat"
-            rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status === 'Active' ? t('open') : t('closed') }}
@@ -242,14 +238,13 @@
 
     <!-- Edit Subject Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("subject") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.subject_name"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -260,7 +255,6 @@
               v-model="editForm.subject_code"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -271,7 +265,6 @@
               type="number"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-text-field>
           </v-col>
@@ -284,7 +277,6 @@
           item-value="id"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-select>
@@ -294,7 +286,6 @@
           :items="['active', 'inactive']"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-select>
 

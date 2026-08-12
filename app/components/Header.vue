@@ -60,7 +60,6 @@
                 <v-list-item
                   v-bind="props"
                   class="mb-1 modern-nav-section"
-                  rounded="0"
                 >
                   <template v-slot:prepend>
                     <v-icon size="20" color="primary">{{ section.icon }}</v-icon>
@@ -79,7 +78,6 @@
                 :key="item.title"
                 :to="item.to"
                 class="mb-1 modern-nav-item modern-nav-child"
-                rounded="0"
                 :exact="item.to === '/'"
               >
                 <template v-slot:prepend>
@@ -112,7 +110,6 @@
           <v-avatar
             size="30"
             color="white"
-            rounded="0"
             class="mr-2 elevation-1"
           >
             <v-img src="/logo.png" alt="Logo" width="20" height="20" contain></v-img>
@@ -130,7 +127,6 @@
             size="small"
             variant="flat"
             color="white"
-            rounded="0"
             class="text-teal-darken-2 font-weight-bold px-3"
             prepend-icon="mdi-calendar-check"
           >
@@ -156,7 +152,6 @@
           hide-details
           class="modern-search-input"
           flat
-          rounded="0"
           item-title="label"
           return-object
           auto-select-first
@@ -169,7 +164,6 @@
               v-bind="props"
               :title="item.raw.label"
               :subtitle="item.raw.section"
-              rounded="0"
             >
               <template v-slot:prepend>
                 <v-icon size="18" color="primary">{{ item.raw.icon }}</v-icon>
@@ -200,12 +194,11 @@
               ></v-icon>
             </v-btn>
           </template>
-          <v-list class="modern-dropdown pa-2" width="180" rounded="0">
+          <v-list class="modern-dropdown pa-2" width="180">
             <v-list-item
               v-for="(item, index) in locales"
               :key="index"
               @click="setLanguage(item)"
-              rounded="0"
               class="mb-1"
               :active="item.name === langName"
               color="primary"
@@ -248,7 +241,6 @@
               <v-avatar
                 size="44"
                 color="white"
-                rounded="0"
                 class="elevation-2 border-2 border-white mr-3"
               >
                 <v-img v-if="userAvatar" :src="userAvatar" cover></v-img>
@@ -272,7 +264,7 @@
               ></v-icon>
             </div>
           </template>
-          <v-list class="modern-dropdown pa-2" width="240" rounded="0">
+          <v-list class="modern-dropdown pa-2" width="240">
             <div class="px-3 py-2">
               <div class="text-subtitle-2 font-weight-black text-capitalize">
                 {{ username }}
@@ -283,7 +275,6 @@
             </div>
             <v-divider class="mb-2"></v-divider>
             <v-list-item
-              rounded="0"
               class="mb-1"
               prepend-icon="mdi-account-outline"
               to="/profile"
@@ -293,7 +284,6 @@
               }}</v-list-item-title>
             </v-list-item>
             <v-list-item
-              rounded="0"
               class="mb-1"
               prepend-icon="mdi-cog-outline"
               to="/settings"
@@ -304,7 +294,6 @@
             </v-list-item>
             <v-divider class="my-2"></v-divider>
             <v-list-item
-              rounded="0"
               color="error"
               class="mb-1"
               @click="logoutDialog = true"
@@ -324,7 +313,7 @@
     </v-app-bar>
     <!-- Logout Confirmation -->
     <v-dialog v-model="logoutDialog" width="400">
-      <v-card rounded="0" class="pa-4 overflow-hidden">
+      <v-card class="pa-4 overflow-hidden">
         <div class="text-center py-6">
           <v-avatar color="red-lighten-5" size="72" class="mb-4">
             <v-icon icon="mdi-logout-variant" color="red" size="36"></v-icon>

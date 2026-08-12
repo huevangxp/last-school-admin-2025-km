@@ -82,7 +82,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -91,7 +90,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-shield-lock-outline"
             class="cream-select text-detail"
@@ -102,7 +100,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             style="min-width: 140px"
             class="cream-select text-detail"
           ></v-select>
@@ -134,7 +131,6 @@
             <v-avatar
               size="36"
               class="mr-3 elevation-1 border-white"
-              rounded="0"
             >
               <v-img :src="item.image" cover></v-img>
             </v-avatar>
@@ -173,7 +169,6 @@
             :color="item.status === 'Active' ? 'success' : 'grey'"
             size="x-small"
             variant="flat"
-            rounded="0"
             class="font-weight-black text-uppercase px-2"
           >
             {{ item.status === 'Active'
@@ -241,14 +236,13 @@
 
     <!-- Edit User Dialog -->
     <v-dialog v-model="editDialog" width="480">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">{{ t("edit") }} {{ t("admin") }}</div>
         <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.full_name"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -260,7 +254,6 @@
               :items="['teacher', 'admin']"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -271,7 +264,6 @@
               :items="['active', 'inactive']"
               variant="outlined"
               density="compact"
-              rounded="0"
               hide-details
             ></v-select>
           </v-col>
@@ -281,7 +273,6 @@
           v-model="editForm.phone_number"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-text-field>
 

@@ -82,7 +82,6 @@
           bg-color="white"
           color="primary"
           base-color="grey-lighten-1"
-          rounded="0"
         ></v-text-field>
 
         <div class="d-flex gap-2 align-center flex-wrap">
@@ -94,7 +93,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             style="min-width: 170px"
             prepend-inner-icon="mdi-google-classroom"
             class="cream-select text-detail"
@@ -109,7 +107,6 @@
             variant="outlined"
             density="compact"
             hide-details
-            rounded="0"
             style="min-width: 150px"
             prepend-inner-icon="mdi-filter-variant"
             class="cream-select text-detail"
@@ -144,7 +141,6 @@
             <v-avatar
               size="36"
               class="mr-3 elevation-1 border-white"
-              rounded="0"
               color="primary-lighten-5"
             >
               <v-img v-if="item.avatar" :src="item.avatar" cover></v-img>
@@ -191,7 +187,6 @@
           <v-chip
             :color="getStatusColor(item.status)"
             size="x-small"
-            rounded="0"
             variant="flat"
             class="font-weight-black text-uppercase px-2"
           >

@@ -1,0 +1,28 @@
+diff --git a/node_modules/get-port-please/dist/index.cjs b/node_modules/get-port-please/dist/index.cjs
+index 31985b2..933f2ab 100644
+--- a/node_modules/get-port-please/dist/index.cjs
++++ b/node_modules/get-port-please/dist/index.cjs
+@@ -148,8 +148,7 @@ const unsafePorts = /* @__PURE__ */ new Set([
+   // sip
+   5061,
+   // sips
+-  6e3,
+-  // X11
++  // 6e3 (X11) removed: this project pins its Nuxt dev server to port 6000
+   6566,
+   // sane-port
+   6665,
+diff --git a/node_modules/get-port-please/dist/index.mjs b/node_modules/get-port-please/dist/index.mjs
+index d3f8476..febee71 100644
+--- a/node_modules/get-port-please/dist/index.mjs
++++ b/node_modules/get-port-please/dist/index.mjs
+@@ -146,8 +146,7 @@ const unsafePorts = /* @__PURE__ */ new Set([
+   // sip
+   5061,
+   // sips
+-  6e3,
+-  // X11
++  // 6e3 (X11) removed: this project pins its Nuxt dev server to port 6000
+   6566,
+   // sane-port
+   6665,

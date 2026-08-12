@@ -63,7 +63,6 @@
             </div>
             <v-chip
               size="x-small"
-              rounded="0"
               variant="flat"
               class="count-chip font-weight-bold"
             >
@@ -76,7 +75,6 @@
               <div class="text-title-small text-truncate">{{ g.title }}</div>
               <v-chip
                 size="x-small"
-                rounded="0"
                 variant="flat"
                 :color="
                   g.gallery_status === 'active' ? 'success' : 'grey-lighten-2'
@@ -112,7 +110,7 @@
 
     <!-- View lightbox -->
     <v-dialog v-model="viewDialog" width="900">
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="d-flex align-center justify-space-between mb-4">
           <div>
             <div class="text-title">{{ viewing?.title }}</div>
@@ -139,7 +137,6 @@
               :src="mediaUrl(img.image_url)"
               aspect-ratio="1"
               cover
-              rounded="0"
               class="border"
             ></v-img>
           </v-col>
@@ -155,7 +152,7 @@
 
     <!-- Create / Edit dialog -->
     <v-dialog v-model="dialog" width="640" persistent>
-      <v-card rounded="0" class="pa-6">
+      <v-card class="pa-6">
         <div class="text-title mb-4">
           {{ isEdit ? t("edit") : t("add") }} {{ t("gallery") }}
         </div>
@@ -165,7 +162,6 @@
           v-model="form.title"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           class="mb-3"
         ></v-text-field>
@@ -175,7 +171,6 @@
           v-model="form.description"
           variant="outlined"
           density="compact"
-          rounded="0"
           rows="2"
           hide-details
           class="mb-3"
@@ -187,7 +182,6 @@
           multiple
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
           prepend-icon=""
           prepend-inner-icon="mdi-image-plus-outline"
@@ -219,7 +213,6 @@
           item-value="value"
           variant="outlined"
           density="compact"
-          rounded="0"
           hide-details
         ></v-select>
 
@@ -228,7 +221,6 @@
           type="error"
           variant="tonal"
           density="compact"
-          rounded="0"
           class="mt-4"
           >{{ formError }}</v-alert
         >
