@@ -107,6 +107,7 @@
           <v-img
             v-if="a.image_url"
             :src="mediaUrl(a.image_url)"
+            :alt="a.title || t('announcements')"
             cover
             max-height="520"
           ></v-img>
