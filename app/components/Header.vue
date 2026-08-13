@@ -185,7 +185,7 @@
               height="44"
             >
               <v-avatar size="24" class="mr-2">
-                <v-img :src="langFlag" cover></v-img>
+                <v-img :src="langFlag" cover alt=""></v-img>
               </v-avatar>
               <v-icon
                 icon="mdi-chevron-down"
@@ -205,7 +205,7 @@
             >
               <template v-slot:prepend>
                 <v-avatar size="20" class="mr-2">
-                  <v-img :src="getFlag(item)" cover></v-img>
+                  <v-img :src="getFlag(item)" cover alt=""></v-img>
                 </v-avatar>
               </template>
               <v-list-item-title class="text-subtitle-2 font-weight-bold">
@@ -243,7 +243,7 @@
                 color="white"
                 class="elevation-2 border-2 border-white mr-3"
               >
-                <v-img v-if="userAvatar" :src="userAvatar" cover></v-img>
+                <v-img v-if="userAvatar" :src="userAvatar" cover alt=""></v-img>
                 <v-icon v-else color="primary">mdi-account</v-icon>
               </v-avatar>
               <div class="d-none d-lg-block">

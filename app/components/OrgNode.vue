@@ -6,7 +6,7 @@
         size="44"
         class="mb-1 org-root-logo"
       >
-        <v-img src="/logo.png" contain></v-img>
+        <v-img src="/logo.png" contain alt=""></v-img>
       </v-avatar>
       <v-avatar
         v-else
@@ -14,7 +14,7 @@
         color="white"
         class="mb-1 border-white elevation-1"
       >
-        <v-img v-if="node.image" :src="node.image" cover></v-img>
+        <v-img v-if="node.image" :src="node.image" cover alt=""></v-img>
         <v-icon v-else color="primary">mdi-account</v-icon>
       </v-avatar>
 

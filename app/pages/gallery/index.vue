@@ -56,8 +56,7 @@
               v-if="g.images?.length"
               :src="mediaUrl(g.images[0].image_url)"
               height="180"
-              cover
-            ></v-img>
+              cover alt=""></v-img>
             <div v-else class="no-cover d-flex align-center justify-center">
               <v-icon size="40" color="grey-lighten-1">mdi-image-off-outline</v-icon>
             </div>
@@ -137,8 +136,7 @@
               :src="mediaUrl(img.image_url)"
               aspect-ratio="1"
               cover
-              class="border"
-            ></v-img>
+              class="border" alt=""></v-img>
           </v-col>
         </v-row>
         <div
@@ -192,7 +190,7 @@
 
         <div v-if="form.images.length" class="d-flex flex-wrap ga-2 mt-3">
           <div v-for="(img, i) in form.images" :key="i" class="thumb">
-            <v-img :src="mediaUrl(img)" width="88" height="66" cover></v-img>
+            <v-img :src="mediaUrl(img)" width="88" height="66" cover alt=""></v-img>
             <v-btn
               icon
               size="x-small"

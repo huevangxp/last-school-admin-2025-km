@@ -18,7 +18,7 @@
                 color="slate-50"
                 class="border-dashed rounded-0 overflow-hidden"
               >
-                <v-img v-if="previewImage" :src="previewImage" cover></v-img>
+                <v-img v-if="previewImage" :src="previewImage" cover alt=""></v-img>
                 <v-icon v-else size="48" color="slate-300"
                   >mdi-camera-plus-outline</v-icon
                 >

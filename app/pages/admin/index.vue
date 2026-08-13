@@ -132,7 +132,7 @@
               size="36"
               class="mr-3 elevation-1 border-white"
             >
-              <v-img :src="item.image" cover></v-img>
+              <v-img :src="item.image" cover alt=""></v-img>
             </v-avatar>
             <div>
               <div class="text-title-small">{{ item.name }}</div>

@@ -143,7 +143,7 @@
               class="mr-3 elevation-1 border-white"
               color="primary-lighten-5"
             >
-              <v-img v-if="item.avatar" :src="item.avatar" cover></v-img>
+              <v-img v-if="item.avatar" :src="item.avatar" cover alt=""></v-img>
               <v-icon v-else color="primary" size="20">mdi-account</v-icon>
             </v-avatar>
             <div>

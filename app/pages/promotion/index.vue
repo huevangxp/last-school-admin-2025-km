@@ -180,7 +180,7 @@
                   @click.stop="toggle(s.id)"
                 ></v-checkbox-btn>
                 <v-avatar size="34" class="mr-3" color="primary-lighten-5">
-                  <v-img v-if="s.avatar" :src="s.avatar" cover></v-img>
+                  <v-img v-if="s.avatar" :src="s.avatar" cover alt=""></v-img>
                   <v-icon v-else color="primary" size="18">mdi-account</v-icon>
                 </v-avatar>
               </template>

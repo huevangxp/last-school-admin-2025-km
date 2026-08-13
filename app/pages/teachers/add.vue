@@ -22,7 +22,7 @@
             }}</label>
             <div class="d-flex align-center ga-4">
               <v-avatar size="72" color="primary-lighten-5" class="elevation-1">
-                <v-img v-if="avatarPreview" :src="avatarPreview" cover></v-img>
+                <v-img v-if="avatarPreview" :src="avatarPreview" cover alt=""></v-img>
                 <v-icon v-else color="primary" size="32">mdi-account</v-icon>
               </v-avatar>
               <div class="flex-grow-1">

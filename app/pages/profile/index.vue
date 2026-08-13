@@ -8,7 +8,7 @@
         <v-col cols="12" md="4">
           <v-card class="intelligence-card pa-6 text-center" elevation="0">
             <v-avatar size="120" color="primary-lighten-5" class="mb-4 elevation-1 mx-auto">
-              <v-img v-if="avatarPreview" :src="avatarPreview" cover></v-img>
+              <v-img v-if="avatarPreview" :src="avatarPreview" cover alt=""></v-img>
               <v-icon v-else color="primary" size="56">mdi-account</v-icon>
             </v-avatar>
             <div class="text-title mb-1 text-capitalize">

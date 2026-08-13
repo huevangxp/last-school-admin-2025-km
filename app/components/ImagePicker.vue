@@ -6,8 +6,7 @@
         width="120"
         height="80"
         cover
-        class="border"
-      ></v-img>
+        class="border" alt=""></v-img>
       <v-btn
         size="small"
         variant="text"

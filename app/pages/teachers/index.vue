@@ -164,7 +164,7 @@
         <template v-slot:item.name="{ item }">
           <div class="d-flex align-center py-2">
             <v-avatar size="32" class="mr-3 elevation-1 border-white">
-              <v-img :src="item.image" cover></v-img>
+              <v-img :src="item.image" cover alt=""></v-img>
             </v-avatar>
             <div>
               <div class="text-title-small">
