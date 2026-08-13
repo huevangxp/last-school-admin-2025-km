@@ -256,6 +256,7 @@
   "select-class-subject-teacher": "ເລືອກຫ້ອງ, ວິຊາ ແລະ ອາຈານ",
   "no-students-enrolled": "ບໍ່ມີນັກຮຽນໃນຫ້ອງນີ້",
   "scores-saved-successfully": "ບັນທຶກຄະແນນສຳເລັດແລ້ວ.",
+  "unsaved-changes-warning": "ທ່ານມີການປ່ຽນແປງທີ່ຍັງບໍ່ໄດ້ບັນທຶກ. ອອກຈາກໜ້ານີ້ ແລະ ຍົກເລີກການປ່ຽນແປງບໍ?",
   "failed-to-save-scores": "ບັນທຶກຄະແນນລົ້ມເຫລວ.",
   "back-to-academic-archives": "ກັບໄປຫາຄັງຂໍ້ມູນສົກຮຽນ",
   "draft-mode": "ໂໝດຮ່າງ",
