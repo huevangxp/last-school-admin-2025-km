@@ -256,6 +256,7 @@
   "select-class-subject-teacher": "Select class, subject and teacher to begin.",
   "no-students-enrolled": "No students enrolled in this class/year.",
   "scores-saved-successfully": "Scores saved successfully.",
+  "unsaved-changes-warning": "You have unsaved changes. Leave this page and discard them?",
   "failed-to-save-scores": "Failed to save scores.",
   "back-to-academic-archives": "Back to Academic Archives",
   "draft-mode": "Draft Mode",
