@@ -185,7 +185,7 @@
               height="44"
             >
               <v-avatar size="24" class="mr-2">
-                <v-img :src="langFlag" cover alt=""></v-img>
+                <v-img :src="langFlag" :alt="langName" cover></v-img>
               </v-avatar>
               <v-icon
                 icon="mdi-chevron-down"

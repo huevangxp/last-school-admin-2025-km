@@ -55,8 +55,10 @@
             <v-img
               v-if="g.images?.length"
               :src="mediaUrl(g.images[0].image_url)"
+              :alt="g.title || t('gallery')"
               height="180"
-              cover alt=""></v-img>
+              cover
+            ></v-img>
             <div v-else class="no-cover d-flex align-center justify-center">
               <v-icon size="40" color="grey-lighten-1">mdi-image-off-outline</v-icon>
             </div>
