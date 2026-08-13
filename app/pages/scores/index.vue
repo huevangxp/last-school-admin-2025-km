@@ -153,6 +153,9 @@
                 {{ row.name }}
               </td>
               <td class="text-center score-cell">
+                <!-- Enter / ArrowDown move to the next student and ArrowUp back,
+                     so a whole class can be entered from the keyboard without
+                     reaching for the mouse between every row. -->
                 <v-text-field
                   v-model="row.score"
                   type="number"
@@ -161,9 +164,14 @@
                   variant="outlined"
                   density="compact"
                   hide-details
+                  class="score-input"
+                  :data-score-index="index"
                   style="max-width: 120px; margin: 0 auto"
                   @focus="$event.target.select()"
                   @blur="clampScore(row)"
+                  @keydown.enter.prevent="focusScore(index + 1)"
+                  @keydown.down.prevent="focusScore(index + 1)"
+                  @keydown.up.prevent="focusScore(index - 1)"
                 ></v-text-field>
               </td>
             </tr>
