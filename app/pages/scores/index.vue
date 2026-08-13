@@ -504,6 +504,17 @@ const buildRows = async () => {
   savedSnapshot.value = snapshotOf(mapped);
 };
 
+// Move focus between score inputs by row index; ignores out-of-range so Enter
+// on the last student simply stays put instead of throwing.
+const focusScore = (index: number) => {
+  if (index < 0 || index >= rows.value.length) return;
+  const el = document.querySelector<HTMLInputElement>(
+    `.score-input[data-score-index="${index}"] input`
+  );
+  el?.focus();
+  el?.select();
+};
+
 /* ---------- unsaved-changes guard ---------- */
 
 // Compare only what the teacher can actually change, so re-fetches and added
