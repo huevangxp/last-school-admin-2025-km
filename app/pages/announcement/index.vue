@@ -297,12 +297,4 @@ onMounted(() => {
   font-weight: 700 !important;
   color: #65676b !important;
 }
-.fb-actions {
-  padding: 4px;
-}
-.fb-action-btn {
-  text-transform: none !important;
-  font-weight: 700 !important;
-  color: #65676b !important;
-}
 </style>
