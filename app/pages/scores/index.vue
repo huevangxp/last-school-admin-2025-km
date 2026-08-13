@@ -527,6 +527,9 @@ const saveAll = async () => {
       score: Math.min(10, Math.max(0, Number(r.score) || 0)),
     }));
     const res = await scoreStore.bulkUpsertScores(payload);
+    // The sheet on screen is now what's stored, so stop warning about it.
+    savedSnapshot.value = snapshotOf(rows.value);
+    markClean();
     ui.notify(res?.message || t("scores-saved-successfully"), "success");
   } catch (error: any) {
     ui.notify(
