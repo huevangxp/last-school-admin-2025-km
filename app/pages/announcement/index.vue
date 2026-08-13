@@ -110,23 +110,6 @@
             cover
             max-height="520"
           ></v-img>
-
-          <!-- Action bar -->
-          <v-divider></v-divider>
-          <div class="d-flex fb-actions">
-            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
-              <v-icon start size="18">mdi-thumb-up-outline</v-icon>
-              {{ t("like") }}
-            </v-btn>
-            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
-              <v-icon start size="18">mdi-comment-outline</v-icon>
-              {{ t("comment") }}
-            </v-btn>
-            <v-btn variant="text" class="flex-grow-1 fb-action-btn">
-              <v-icon start size="18">mdi-share-outline</v-icon>
-              {{ t("share") }}
-            </v-btn>
-          </div>
         </v-card>
       </template>
     </div>
