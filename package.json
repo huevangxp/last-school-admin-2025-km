@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "open": "node scripts/open-admin.mjs",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "patch-package && nuxt prepare"
