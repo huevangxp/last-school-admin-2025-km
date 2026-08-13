@@ -491,7 +491,21 @@ const buildRows = async () => {
   );
 
   rows.value = mapped;
+  // Baseline for the unsaved-changes guard: whatever was on screen right after
+  // loading counts as "saved".
+  savedSnapshot.value = snapshotOf(mapped);
 };
+
+/* ---------- unsaved-changes guard ---------- */
+
+// Compare only what the teacher can actually change, so re-fetches and added
+// fields never make a clean sheet look dirty.
+const snapshotOf = (list: any[]) =>
+  JSON.stringify(list.map((r) => [r.student_id, Number(r.score) || 0]));
+
+const savedSnapshot = ref("");
+const isDirty = computed(() => snapshotOf(rows.value) !== savedSnapshot.value);
+const { markClean } = useUnsavedChanges(isDirty);
 
 watch(
   [ready, selectedClassId, selectedSubjectId, selectedSemester, selectedMonth],
