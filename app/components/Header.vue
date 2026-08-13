@@ -205,7 +205,7 @@
             >
               <template v-slot:prepend>
                 <v-avatar size="20" class="mr-2">
-                  <v-img :src="getFlag(item)" cover alt=""></v-img>
+                  <v-img :src="getFlag(item)" :alt="item.name" cover></v-img>
                 </v-avatar>
               </template>
               <v-list-item-title class="text-subtitle-2 font-weight-bold">
