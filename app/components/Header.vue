@@ -6,18 +6,17 @@
         :rail="rail"
         rail-width="76"
         width="280"
-        color="surface"
-        class="modern-sidebar border-e-sm"
+        class="modern-sidebar"
         elevation="0"
         floating
       >
         <!-- Sidebar Brand Wrapper -->
         <div
-          class="sidebar-brand-wrapper d-flex align-center border-b"
+          class="sidebar-brand-wrapper d-flex align-center"
           :class="rail ? 'px-0 py-6 justify-center' : 'px-6 py-8'"
         >
           <div
-            class="brand-logo-container bg-primary-lighten-5 rounded-0 elevation-1"
+            class="brand-logo-container rounded-lg"
             :class="{ 'mr-3': !rail }"
           >
             <v-img
@@ -30,11 +29,11 @@
           </div>
           <div v-if="!rail" class="brand-text">
             <div
-              class="text-subtitle-1 font-weight-black text-high-emphasis tracking-tight line-height-1"
+              class="text-subtitle-1 font-weight-black text-white tracking-tight line-height-1"
             >
               {{ brandTitle }}
             </div>
-            <div class="text-caption text-medium-emphasis font-weight-bold">
+            <div class="text-caption text-white sidebar-brand-sub font-weight-bold">
               {{ t("management") }}
             </div>
           </div>
@@ -46,7 +45,7 @@
           <v-list
             nav
             class="pa-0"
-            color="primary"
+            color="white"
             open-strategy="single"
             v-model:opened="openedGroups"
           >
@@ -62,7 +61,7 @@
                   class="mb-1 modern-nav-section"
                 >
                   <template v-slot:prepend>
-                    <v-icon size="20" color="primary">{{ section.icon }}</v-icon>
+                    <v-icon size="20">{{ section.icon }}</v-icon>
                   </template>
                   <v-list-item-title
                     class="text-subtitle-2 font-weight-black"
@@ -93,14 +92,14 @@
 
       </v-navigation-drawer>
     </ClientOnly>
-    <v-app-bar elevation="0" height="72" color="primary" class="px-6 glass-header">
+    <v-app-bar elevation="0" height="72" color="surface" class="px-6 glass-header">
       <div class="d-flex align-center">
         <!-- Desktop: toggles the sidebar (rail). Hidden on mobile, where the
              bottom navigation bar is the primary nav. -->
         <v-btn
           :icon="rail ? 'mdi-menu' : 'mdi-menu-open'"
           variant="text"
-          color="white"
+          color="primary"
           @click="toggleSidebar"
           :class="['mr-4', hasMoreNav ? '' : 'd-none d-md-inline-flex']"
         ></v-btn>
@@ -109,13 +108,13 @@
         <div class="d-flex d-md-none align-center mr-2">
           <v-avatar
             size="30"
-            color="white"
-            class="mr-2 elevation-1"
+            color="primary-lighten-5"
+            class="mr-2"
           >
             <v-img src="/logo.png" alt="Logo" width="20" height="20" contain></v-img>
           </v-avatar>
           <span
-            class="text-white font-weight-black text-body-2 text-truncate"
+            class="text-primary font-weight-black text-body-2 text-truncate"
             style="max-width: 150px"
             >{{ brandTitle }}</span
           >
@@ -126,8 +125,8 @@
             v-if="classroomStore.latestAcademicYear"
             size="small"
             variant="flat"
-            color="white"
-            class="text-teal-darken-2 font-weight-bold px-3"
+            color="primary-lighten-5"
+            class="text-primary font-weight-bold px-3"
             prepend-icon="mdi-calendar-check"
           >
             {{ classroomStore.latestAcademicYear.title }}
@@ -190,7 +189,7 @@
               <v-icon
                 icon="mdi-chevron-down"
                 size="16"
-                color="white"
+                color="grey-darken-1"
               ></v-icon>
             </v-btn>
           </template>
@@ -218,7 +217,7 @@
         <!-- Notifications → announcement feed -->
         <v-btn
           variant="text"
-          color="white"
+          color="primary"
           size="small"
           class="rounded-0 action-btn"
           to="/announcement"
@@ -229,7 +228,7 @@
           </v-badge>
         </v-btn>
 
-        <v-divider vertical inset class="mx-2 my-4 opacity-10"></v-divider>
+        <v-divider vertical inset class="mx-2 my-4"></v-divider>
 
         <!-- Profile Menu -->
         <v-menu location="bottom end" transition="slide-y-transition">
@@ -240,27 +239,27 @@
             >
               <v-avatar
                 size="44"
-                color="white"
-                class="elevation-2 border-2 border-white mr-3"
+                color="primary-lighten-5"
+                class="mr-3"
               >
                 <v-img v-if="userAvatar" :src="userAvatar" cover alt=""></v-img>
                 <v-icon v-else color="primary">mdi-account</v-icon>
               </v-avatar>
               <div class="d-none d-lg-block">
                 <div
-                  class="text-subtitle-2 font-weight-black line-height-1 mb-1 text-capitalize text-white"
+                  class="text-subtitle-2 font-weight-black line-height-1 mb-1 text-capitalize text-high-emphasis"
                 >
                   {{ username }}
                 </div>
-                <div class="text-caption text-capitalize text-white opacity-75">
+                <div class="text-caption text-capitalize text-medium-emphasis">
                   {{ role }}
                 </div>
               </div>
               <v-icon
                 icon="mdi-chevron-down"
                 size="16"
-                color="white"
-                class="d-none d-lg-block ml-3 opacity-75"
+                color="grey-darken-1"
+                class="d-none d-lg-block ml-3"
               ></v-icon>
             </div>
           </template>
@@ -686,15 +685,29 @@ const logoutButton = () => {
 </script>
 
 <style scoped>
-/* App-bar must sit above the drawer; both handled by Vuetify color props. */
+/* App-bar: white surface with a hairline bottom border; sits above the drawer. */
 .glass-header {
   z-index: 100 !important;
-}
-.modern-sidebar {
-  z-index: 101 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
-/* Logo tile — sizing only; color comes from the bg-primary-lighten-5 class. */
+/* Sidebar: navy gradient background with light text. */
+.modern-sidebar {
+  z-index: 101 !important;
+  background: linear-gradient(180deg, #0a3154 0%, #082741 55%, #06202f 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: 4px 0 24px rgba(6, 32, 47, 0.18);
+}
+
+.sidebar-brand-wrapper {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.sidebar-brand-sub {
+  opacity: 0.6;
+}
+
+/* Logo tile — frosted white chip on the navy background. */
 .brand-logo-container {
   width: 44px;
   height: 44px;
@@ -702,6 +715,39 @@ const logoutButton = () => {
   align-items: center;
   justify-content: center;
   padding: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(6px);
+}
+
+/* Nav items: muted white by default, full white + translucent pill on hover,
+   and a teal accent bar on the active route. */
+.modern-nav-section,
+.modern-nav-item {
+  color: rgba(255, 255, 255, 0.72) !important;
+  border-radius: 10px !important;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.modern-nav-section :deep(.v-icon),
+.modern-nav-item :deep(.v-icon) {
+  color: inherit !important;
+  opacity: 1 !important;
+}
+.modern-nav-section:hover,
+.modern-nav-item:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06);
+}
+.nav-group.v-list-group--open > :deep(.v-list-group__header) {
+  color: #fff !important;
+}
+.modern-nav-item.v-list-item--active {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 3px 0 0 #2dd4bf;
+}
+.modern-nav-item.v-list-item--active :deep(.v-list-item__overlay) {
+  opacity: 0 !important;
 }
 
 /* Nested (child) items sit slightly indented under their parent group. */
@@ -752,6 +798,7 @@ const logoutButton = () => {
   min-height: 0;
   overflow-y: auto;
   scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 /* ---- Mobile bottom navigation ---- */

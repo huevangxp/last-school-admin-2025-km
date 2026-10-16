@@ -1,25 +1,26 @@
 <template>
-    <div class="mb-6">
-      <v-breadcrumbs 
-        :items="breadcrumbs" 
-        class="pa-0 text-secondary" 
-        divider="-"
-      ></v-breadcrumbs>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  // Remove unused ref import
-  
-  // Define proper TypeScript interface for breadcrumb items
-  interface BreadcrumbItem {
-    title: string
-    disabled?: boolean
-    href?: string
-    to?: string | object
-  }
-  
-  const props = defineProps<{
-    breadcrumbs: BreadcrumbItem[]
-  }>()
-  </script>
+  <!-- Standalone breadcrumb trail. Prefer <PageHeader :breadcrumbs> which
+       renders the same trail above a page title. -->
+  <v-breadcrumbs
+    :items="breadcrumbs"
+    class="page-crumbs pa-0 mb-4"
+    density="compact"
+  >
+    <template #divider>
+      <v-icon size="14">mdi-chevron-right</v-icon>
+    </template>
+  </v-breadcrumbs>
+</template>
+
+<script setup lang="ts">
+interface BreadcrumbItem {
+  title: string;
+  disabled?: boolean;
+  href?: string;
+  to?: string | object;
+}
+
+defineProps<{
+  breadcrumbs: BreadcrumbItem[];
+}>();
+</script>

@@ -1,126 +1,113 @@
 <template>
-  <div class="dashboard-viewport pb-12">
-    <!-- Quick Actions Bar (Replacement for large header) -->
-    <div
-      class="d-flex flex-column flex-sm-row align-sm-center justify-space-between ga-3 mb-6 fade-in"
-    >
-      <div style="min-width: 260px">
-        <v-select
-          v-model="yearId"
-          :items="academicYears"
-          item-title="title"
-          item-value="id"
-          :placeholder="t('academic_title')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          prepend-inner-icon="mdi-calendar-check"
-        ></v-select>
-      </div>
-      <div class="action-stack d-flex ga-2">
-        <v-btn
-          variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
-          @click="exportList"
-        >
-          <v-icon icon="mdi-file-download-outline" start size="16"></v-icon>
-          {{ t("export") }}
-        </v-btn>
-        <v-btn
-          variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
-          to="/students/add"
-        >
-          <v-icon icon="mdi-plus" start size="16"></v-icon>
-          {{ t("enroll") }}
-        </v-btn>
-      </div>
-    </div>
+  <div class="dashboard-viewport pb-10">
+    <!-- ───────── Hero / welcome banner ───────── -->
+    <section class="hero-card fade-in mb-6">
+      <div class="hero-glow hero-glow--1"></div>
+      <div class="hero-glow hero-glow--2"></div>
 
-    <!-- Section: High-Signal Metrics -->
-    <v-row class="mb-6 ga-y-4">
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-eyebrow">
+            <v-icon size="14" class="mr-1">mdi-view-dashboard-outline</v-icon>
+            {{ t("dashboard") }}
+          </div>
+          <h1 class="hero-title">
+            <span class="text-capitalize">{{ t("welcome") }}</span>,
+            <span class="text-capitalize">{{ username }}</span> 👋
+          </h1>
+          <p class="hero-subtitle">
+            <v-icon size="14" class="mr-1">mdi-calendar-check</v-icon>
+            {{ selectedYearTitle || t("overview") }}
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <v-select
+            v-model="yearId"
+            :items="academicYears"
+            item-title="title"
+            item-value="id"
+            :placeholder="t('academic_title')"
+            variant="solo"
+            bg-color="white"
+            density="compact"
+            hide-details
+            flat
+            prepend-inner-icon="mdi-calendar-check"
+            class="hero-select"
+          ></v-select>
+          <div class="hero-buttons">
+            <v-btn
+              variant="flat"
+              class="hero-btn hero-btn--ghost"
+              height="40"
+              @click="exportList"
+            >
+              <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
+              {{ t("export") }}
+            </v-btn>
+            <v-btn
+              variant="flat"
+              color="accent"
+              class="hero-btn text-primary"
+              height="40"
+              to="/students/add"
+            >
+              <v-icon icon="mdi-plus" start size="18"></v-icon>
+              {{ t("enroll") }}
+            </v-btn>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── KPI cards ───────── -->
+    <v-row class="mb-2 fade-in">
       <v-col
-        cols="12"
-        sm="6"
-        lg="3"
         v-for="(stat, index) in stats"
         :key="index"
+        cols="6"
+        lg="3"
       >
-        <v-card elevation="0" class="metric-card h-100 overflow-hidden">
-          <div class="pa-4">
-            <div class="d-flex justify-space-between align-center">
-          <div class="d-flex align-center ga-3">
-            <div :class="`metric-icon-box bg-${stat.iconColor}-lighten-5`">
-                <v-icon
-                  :icon="stat.icon"
-                  :color="stat.iconColor"
-                  size="18"
-                ></v-icon>
-                
-              </div>
-              <div class="metric-info">
-              <div class="text-detail mb-1">
-                {{ stat.title }}
-              </div>
-              <div class="text-title">
-                {{ stat.value }}
-              </div>
+        <v-card
+          elevation="0"
+          class="stat-card h-100"
+          :to="stat.to"
+          :style="{ '--stat-color': stat.color, '--stat-tint': stat.tint }"
+        >
+          <div class="stat-top">
+            <div class="stat-icon">
+              <v-icon :icon="stat.icon" size="20"></v-icon>
             </div>
+            <span class="stat-pill">
+              <span class="stat-pulse"></span>
+              {{ stat.trendValue }}
+            </span>
           </div>
-              <div class="trend-badge" :class="stat.trendUp ? 'up' : 'down'">
-                <v-icon
-                  :icon="
-                    stat.trendUp
-                      ? 'mdi-arrow-top-right'
-                      : 'mdi-arrow-bottom-left'
-                  "
-                  size="10"
-                  class="mr-1"
-                ></v-icon>
-                {{ stat.trendValue }}
-              </div>
-            </div>
-
-         
-          </div>
-          <div
-            class="metric-footer-line"
-            :style="`background: var(--v-${stat.iconColor}-base)`"
-          ></div>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.title }}</div>
+          <div class="stat-bar"></div>
         </v-card>
       </v-col>
     </v-row>
 
-    <!-- Section: Teacher & Financial charts -->
-    <v-row class="mb-6 ga-y-4">
-      <!-- Teacher distribution (Doughnut) -->
+    <!-- ───────── Teachers & finance ───────── -->
+    <v-row class="mb-2 fade-in">
       <v-col cols="12" md="5">
-        <v-card elevation="0" class="intelligence-card h-100 pa-6">
-          <div class="d-flex justify-space-between align-center mb-4">
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
             <div>
-              <div class="text-title mb-1">{{ t("teacher_distribution") }}</div>
-              <div class="text-detail">{{ t("by_department") }}</div>
+              <div class="panel-title">{{ t("teacher_distribution") }}</div>
+              <div class="panel-sub">{{ t("by_department") }}</div>
             </div>
-            <v-chip
-              color="indigo-lighten-5"
-              class="text-indigo font-weight-black"
-              size="x-small"
-              variant="flat"
-            >
+            <span class="panel-chip panel-chip--indigo">
               {{ teacherCount }} {{ t("total") }}
-            </v-chip>
+            </span>
           </div>
-          <div style="height: 280px">
-            <div
-              v-if="!teacherDistribution.labels.length"
-              class="d-flex align-center justify-center text-detail"
-              style="height: 100%"
-            >
-              {{ t("loading") }}
+          <div class="chart-box">
+            <div v-if="!teacherDistribution.labels.length" class="chart-empty">
+              <v-progress-circular indeterminate size="22" width="2" color="primary" />
+              <span>{{ t("loading") }}</span>
             </div>
             <ClientOnly v-else>
               <DashboardDoughnutChart
@@ -132,35 +119,27 @@
         </v-card>
       </v-col>
 
-      <!-- Income vs Expense (Bar) -->
       <v-col cols="12" md="7">
-        <v-card elevation="0" class="intelligence-card h-100 pa-6">
-          <div class="d-flex justify-space-between align-center mb-4">
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
             <div>
-              <div class="text-title mb-1">{{ t("income_vs_expense") }}</div>
-              <div class="text-detail">{{ t("by_category") }}</div>
+              <div class="panel-title">{{ t("income_vs_expense") }}</div>
+              <div class="panel-sub">{{ t("by_category") }}</div>
             </div>
-            <v-chip
-              :color="financeStore.balance >= 0 ? 'green-lighten-5' : 'red-lighten-5'"
-              :class="
-                financeStore.balance >= 0
-                  ? 'text-green-darken-2'
-                  : 'text-red-darken-2'
-              "
-              size="x-small"
-              variant="flat"
-              class="font-weight-black"
+            <span
+              class="panel-chip"
+              :class="financeStore.balance >= 0 ? 'panel-chip--green' : 'panel-chip--red'"
             >
+              <v-icon size="12" class="mr-1">
+                {{ financeStore.balance >= 0 ? "mdi-trending-up" : "mdi-trending-down" }}
+              </v-icon>
               {{ financeStore.balance.toLocaleString() }}
-            </v-chip>
+            </span>
           </div>
-          <div style="height: 280px">
-            <div
-              v-if="!financeChart.labels.length"
-              class="d-flex align-center justify-center text-detail"
-              style="height: 100%"
-            >
-              {{ t("no-data") }}
+          <div class="chart-box">
+            <div v-if="!financeChart.labels.length" class="chart-empty">
+              <v-icon size="28" class="mb-1">mdi-chart-bar</v-icon>
+              <span>{{ t("no-data") }}</span>
             </div>
             <ClientOnly v-else>
               <DashboardBarChart
@@ -173,161 +152,180 @@
       </v-col>
     </v-row>
 
-    <!-- Section: Primary Intelligence Area -->
-    <v-row>
-      <!-- Intelligence Column -->
+    <!-- ───────── Students trend & classes ───────── -->
+    <v-row class="mb-2 fade-in">
       <v-col cols="12" lg="8">
-        <!-- Academic Performance Visualization -->
-        <v-card elevation="0" class="intelligence-card h-100">
-          <div class="pa-6">
-            <div class="d-flex justify-space-between align-center mb-6">
-              <div>
-                <div class="text-title mb-1">{{ t("active_students_monthly") }}</div>
-                <div class="text-detail">
-                  {{ selectedYearTitle || t("global-performance-metrics") }}
-                </div>
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">{{ t("active_students_monthly") }}</div>
+              <div class="panel-sub">
+                {{ selectedYearTitle || t("global-performance-metrics") }}
               </div>
-              <v-chip
-                color="primary-lighten-5"
-                class="text-primary font-weight-black"
-                size="x-small"
-                variant="flat"
-              >
-                {{ yearEnrollments.length }} {{ t("total") }}
-              </v-chip>
             </div>
-
-            <div class="chart-container" style="height: 300px">
-              <div
-                v-if="!chartLabels.length"
-                class="d-flex align-center justify-center text-detail"
-                style="height: 100%"
-              >
-                {{ t("loading") }}
-              </div>
-              <ClientOnly v-else>
-                <DashboardChart
-                  :labels="studentTrend.labels"
-                  :values="studentTrend.values"
-                  :series-label="t('students')"
-                />
-              </ClientOnly>
+            <span class="panel-chip panel-chip--navy">
+              {{ yearEnrollments.length }} {{ t("total") }}
+            </span>
+          </div>
+          <div class="chart-box chart-box--tall">
+            <div v-if="!chartLabels.length" class="chart-empty">
+              <v-progress-circular indeterminate size="22" width="2" color="primary" />
+              <span>{{ t("loading") }}</span>
             </div>
+            <ClientOnly v-else>
+              <DashboardChart
+                :labels="studentTrend.labels"
+                :values="studentTrend.values"
+                :series-label="t('students')"
+              />
+            </ClientOnly>
           </div>
         </v-card>
       </v-col>
 
-      <!-- Contextual Utilities Column -->
       <v-col cols="12" lg="4">
-        <!-- Class distribution (Pie) -->
-        <v-card elevation="0" class="utility-card pb-4 h-100">
-          <div class="pa-6 pb-2">
-            <h3 class="text-title mb-1">
-              {{ t("classes") }}
-              <span v-if="selectedYearTitle" class="text-detail"
-                >— {{ selectedYearTitle }}</span
-              >
-            </h3>
-            <p class="text-detail mb-6">{{ t("recent-classrooms") }}</p>
-
-            <div style="height: 300px">
-              <div
-                v-if="!chartLabels.length"
-                class="d-flex align-center justify-center text-detail"
-                style="height: 100%"
-              >
-                {{ t("loading") }}
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">{{ t("classes") }}</div>
+              <div class="panel-sub">
+                {{ selectedYearTitle || t("recent-classrooms") }}
               </div>
-              <ClientOnly v-else>
-                <DashboardPieChart :labels="chartLabels" :values="chartValues" />
-              </ClientOnly>
             </div>
+            <span class="panel-chip panel-chip--navy">
+              {{ chartLabels.length }} {{ t("total") }}
+            </span>
+          </div>
+          <div class="chart-box chart-box--tall">
+            <div v-if="!chartLabels.length" class="chart-empty">
+              <v-progress-circular indeterminate size="22" width="2" color="primary" />
+              <span>{{ t("loading") }}</span>
+            </div>
+            <ClientOnly v-else>
+              <DashboardPieChart :labels="chartLabels" :values="chartValues" />
+            </ClientOnly>
           </div>
         </v-card>
       </v-col>
     </v-row>
 
-    <!-- Section: Latest registered students (full width) -->
-    <v-row class="mt-2">
+    <!-- ───────── Latest students ───────── -->
+    <v-row class="fade-in">
       <v-col cols="12">
-        <v-card elevation="0" class="intelligence-card overflow-hidden">
-          <header
-            class="pa-6 d-flex justify-space-between align-center border-b"
-          >
+        <v-card elevation="0" class="panel panel--flush">
+          <div class="panel-head panel-head--bordered">
             <div>
-              <div class="text-title mb-1">{{ t("students") }}</div>
-              <div class="text-detail">{{ t("latest-registered-students") }}</div>
+              <div class="panel-title">{{ t("students") }}</div>
+              <div class="panel-sub">{{ t("latest-registered-students") }}</div>
             </div>
-            <v-chip
-              color="primary"
-              variant="flat"
-              size="x-small"
-              class="font-weight-black px-2"
-            >
-              {{ studentCount }} {{ t("total") }}
-            </v-chip>
-          </header>
+            <div class="d-flex align-center ga-2">
+              <span class="panel-chip panel-chip--navy">
+                {{ studentCount }} {{ t("total") }}
+              </span>
+              <v-btn
+                variant="text"
+                color="primary"
+                size="small"
+                class="font-weight-bold d-none d-sm-inline-flex"
+                to="/students"
+                append-icon="mdi-arrow-right"
+              >
+                {{ t("all") }}
+              </v-btn>
+            </div>
+          </div>
 
-          <v-table class="premium-table">
-            <thead>
-              <tr>
-                <th class="text-detail">{{ t("stakeholder") }}</th>
-                <th class="text-detail">{{ t("context") }}</th>
-                <th class="text-detail">{{ t("alert") }}</th>
-                <th class="text-right text-detail pr-6">{{ t("action") }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
+          <!-- Empty state -->
+          <div v-if="!flaggedStudents.length" class="chart-empty py-10">
+            <v-icon size="28" class="mb-1">mdi-account-search-outline</v-icon>
+            <span>{{ t("no-data") }}</span>
+          </div>
+
+          <template v-else>
+            <!-- Desktop / tablet: table -->
+            <div class="table-wrap d-none d-sm-block">
+              <v-table class="premium-table">
+                <thead>
+                  <tr>
+                    <th class="pl-6">{{ t("name") }}</th>
+                    <th>{{ t("gender") }}</th>
+                    <th>{{ t("status") }}</th>
+                    <th class="text-right pr-6">{{ t("action") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(student, i) in flaggedStudents" :key="i">
+                    <td class="pl-6">
+                      <div class="d-flex align-center py-2">
+                        <div class="avatar-chip mr-3">
+                          {{ (student.name || "?").charAt(0) }}
+                        </div>
+                        <div>
+                          <div class="cell-title">{{ student.name }}</div>
+                          <div class="cell-sub">{{ student.id }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="cell-title text-capitalize">{{ student.grade }}</span>
+                    </td>
+                    <td>
+                      <span
+                        class="status-pill text-capitalize"
+                        :style="{ '--status-color': student.statusColor }"
+                      >
+                        <span class="status-dot"></span>
+                        {{ student.status }}
+                      </span>
+                    </td>
+                    <td class="text-right pr-6">
+                      <v-btn
+                        variant="tonal"
+                        color="primary"
+                        size="small"
+                        class="font-weight-bold"
+                        to="/students"
+                      >
+                        {{ t("view") }}
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </v-table>
+            </div>
+
+            <!-- Phone: stacked list -->
+            <div class="mobile-list d-sm-none">
+              <NuxtLink
                 v-for="(student, i) in flaggedStudents"
                 :key="i"
-                class="table-row-hover"
+                to="/students"
+                class="mobile-row"
               >
-                <td class="pl-6">
-                  <div class="d-flex align-center py-3">
-                    <v-avatar
-                      size="32"
-                      color="primary-lighten-5"
-                      class="mr-3 elevation-1 border-white"
-                    >
-                      <span class="text-caption font-weight-black text-primary">{{
-                        (student.name || "?").charAt(0)
-                      }}</span>
-                    </v-avatar>
-                    <div>
-                      <div class="text-title-small">{{ student.name }}</div>
-                      <div class="text-detail-tiny">{{ student.id }}</div>
-                    </div>
+                <div class="avatar-chip mr-3">
+                  {{ (student.name || "?").charAt(0) }}
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="cell-title text-truncate">{{ student.name }}</div>
+                  <div class="cell-sub">
+                    {{ student.id }} · <span class="text-capitalize">{{ student.grade }}</span>
                   </div>
-                </td>
-                <td>
-                  <div class="text-title-small">{{ student.grade }}</div>
-                </td>
-                <td>
-                  <div class="d-flex align-center">
-                    <div :class="`status-dot bg-${student.statusColor}`"></div>
-                    <span
-                      :class="`text-detail-tiny font-weight-black text-uppercase text-${student.statusColor}`"
-                    >
-                      {{ student.status }}
-                    </span>
-                  </div>
-                </td>
-                <td class="text-right pr-6">
-                  <v-btn
-                    variant="tonal"
-                    color="primary"
-                    size="x-small"
-                    class="rounded-0 font-weight-bold text-none"
-                    height="28"
-                    to="/students"
-                  >
-                    {{ t("view") }}
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
+                </div>
+                <span
+                  class="status-pill text-capitalize ml-2"
+                  :style="{ '--status-color': student.statusColor }"
+                >
+                  <span class="status-dot"></span>
+                  {{ student.status }}
+                </span>
+                <v-icon size="18" class="ml-2 text-medium-emphasis">mdi-chevron-right</v-icon>
+              </NuxtLink>
+              <NuxtLink to="/students" class="mobile-all">
+                {{ t("all") }}
+                <v-icon size="16" class="ml-1">mdi-arrow-right</v-icon>
+              </NuxtLink>
+            </div>
+          </template>
         </v-card>
       </v-col>
     </v-row>
@@ -345,6 +343,7 @@ const { t } = useI18n();
 
 const { $axios } = useNuxtApp();
 const financeStore = useFinanceStore();
+const username = useCookie<string>("username", { default: () => "Admin" });
 
 const studentCount = ref(0);
 const teacherCount = ref(0);
@@ -541,42 +540,46 @@ const financeChart = computed(() => {
 const stats = computed(() => [
   {
     title: t("students"),
-    value: String(studentCount.value),
-    trendUp: true,
+    value: studentCount.value.toLocaleString(),
     trendValue: t("live"),
     icon: "mdi-account-multiple",
-    iconColor: "primary",
+    color: "#0A3154",
+    tint: "#E6ECF2",
+    to: "/students",
   },
   {
     title: t("teachers"),
-    value: String(teacherCount.value),
-    trendUp: true,
+    value: teacherCount.value.toLocaleString(),
     trendValue: t("live"),
     icon: "mdi-account-tie",
-    iconColor: "indigo",
+    color: "#4F46E5",
+    tint: "#EEF2FF",
+    to: "/teachers",
   },
   {
     title: t("classes"),
-    value: String(classCount.value),
-    trendUp: true,
+    value: classCount.value.toLocaleString(),
     trendValue: t("live"),
     icon: "mdi-google-classroom",
-    iconColor: "amber-darken-2",
+    color: "#D97706",
+    tint: "#FFFBEB",
+    to: "/class",
   },
   {
     title: t("subject"),
-    value: String(subjectCount.value),
-    trendUp: true,
+    value: subjectCount.value.toLocaleString(),
     trendValue: t("live"),
     icon: "mdi-book-open-variant",
-    iconColor: "emerald-darken-1",
+    color: "#059669",
+    tint: "#ECFDF5",
+    to: "/subjects",
   },
 ]);
 
 const statusColorMap: Record<string, string> = {
-  active: "emerald",
-  inactive: "amber",
-  block: "rose",
+  active: "#10B981",
+  inactive: "#F59E0B",
+  block: "#EF4444",
 };
 
 const flaggedStudents = computed(() =>
@@ -585,7 +588,7 @@ const flaggedStudents = computed(() =>
     name: `${s.first_name || ""} ${s.last_name || ""}`.trim() || "—",
     grade: s.gender ? String(s.gender) : "—",
     status: s.status || "active",
-    statusColor: statusColorMap[String(s.status)] || "primary",
+    statusColor: statusColorMap[String(s.status)] || "#0A3154",
   }))
 );
 
@@ -604,163 +607,453 @@ const exportList = () =>
 </script>
 
 <style scoped>
-/* Core Layout */
+/* ───────── Layout ───────── */
 .dashboard-viewport {
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* Metric Cards */
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+/* ───────── Hero banner ───────── */
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 28px 28px;
+  color: #fff;
+  background: linear-gradient(135deg, #0a3154 0%, #0c3d68 55%, #0f4c7a 100%);
+  box-shadow: 0 18px 40px -20px rgba(10, 49, 84, 0.55);
+}
+.hero-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+}
+.hero-glow--1 {
+  width: 320px;
+  height: 320px;
+  right: -90px;
+  top: -140px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.35) 0%, rgba(45, 212, 191, 0) 70%);
+}
+.hero-glow--2 {
+  width: 260px;
+  height: 260px;
+  left: 30%;
+  bottom: -180px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 70%);
+}
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+}
+.hero-subtitle {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+}
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.hero-select {
+  width: 100%;
+}
+.hero-select :deep(.v-field) {
+  border-radius: 10px !important;
+  box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.5);
+}
+.hero-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.hero-btn {
+  border-radius: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+.hero-btn--ghost {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+}
+.hero-btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
 }
 
-.metric-icon-box {
-  width: 40px;
-  height: 40px;
+@media (min-width: 960px) {
+  .hero-card {
+    padding: 32px 36px;
+  }
+  .hero-title {
+    font-size: 28px;
+  }
+  .hero-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .hero-actions {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+  }
+  .hero-select {
+    width: 240px;
+  }
+  .hero-buttons {
+    display: flex;
+  }
+}
+
+/* ───────── KPI cards ───────── */
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px 18px 20px;
+  border-radius: 16px !important;
+  background: #fff;
+  border: 1px solid #eef2f7;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: transparent;
+  box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.35);
+}
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--stat-color);
+  background: var(--stat-tint);
 }
-
-.trend-badge {
-  display: flex;
+.stat-pill {
+  display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
+  gap: 6px;
   font-size: 10px;
   font-weight: 800;
-}
-
-.trend-badge.up {
-  background: #f0fdf4;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: #16a34a;
+  background: #f0fdf4;
+  border-radius: 999px;
+  padding: 3px 8px;
 }
-.trend-badge.down {
-  background: #fef2f2;
-  color: #dc2626;
+.stat-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.6);
+  animation: pulse 1.8s infinite;
 }
-
-.metric-footer-line {
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+.stat-value {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+.stat-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 3px;
-  width: 100%;
-  opacity: 0.15;
+  background: linear-gradient(90deg, var(--stat-color), transparent);
+  opacity: 0.7;
+}
+@media (max-width: 599px) {
+  .stat-card {
+    padding: 14px 14px 16px;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+  .stat-value {
+    font-size: 22px;
+  }
+  .stat-label {
+    font-size: 12px;
+  }
+  .stat-pill {
+    padding: 3px 6px;
+  }
 }
 
-/* Intelligence Cards */
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+/* ───────── Panels (chart & table cards) ───────── */
+.panel {
+  padding: 20px;
+  border-radius: 16px !important;
+  background: #fff;
+  border: 1px solid #eef2f7;
+  overflow: hidden;
+}
+.panel--flush {
+  padding: 0;
+}
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.panel--flush .panel-head {
+  padding: 20px;
+  margin-bottom: 0;
+}
+.panel-head--bordered {
+  border-bottom: 1px solid #f1f5f9;
+}
+.panel-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.3;
+}
+.panel-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 2px;
+}
+.panel-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 4px 10px;
+  color: #0a3154;
+  background: #e6ecf2;
+}
+.panel-chip--navy {
+  color: #0a3154;
+  background: #e6ecf2;
+}
+.panel-chip--indigo {
+  color: #4338ca;
+  background: #eef2ff;
+}
+.panel-chip--green {
+  color: #15803d;
+  background: #f0fdf4;
+}
+.panel-chip--red {
+  color: #b91c1c;
+  background: #fef2f2;
+}
+@media (min-width: 960px) {
+  .panel {
+    padding: 24px;
+  }
+  .panel--flush {
+    padding: 0;
+  }
+  .panel--flush .panel-head {
+    padding: 22px 24px;
+  }
 }
 
-/* Premium Table */
+/* Chart area: shorter on phones, taller on desktop */
+.chart-box {
+  position: relative;
+  height: 240px;
+}
+.chart-box--tall {
+  height: 260px;
+}
+@media (min-width: 960px) {
+  .chart-box {
+    height: 280px;
+  }
+  .chart-box--tall {
+    height: 320px;
+  }
+}
+.chart-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+  border: 1.5px dashed #e2e8f0;
+  border-radius: 12px;
+}
+
+/* ───────── Table ───────── */
+.table-wrap {
+  overflow-x: auto;
+}
 .premium-table {
   background: transparent !important;
+  min-width: 560px;
 }
-
 .premium-table :deep(th) {
   background: #f8fafc !important;
   height: 44px !important;
-  border: none !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b !important;
+  white-space: nowrap;
 }
-
 .premium-table :deep(td) {
   border-bottom: 1px solid #f1f5f9 !important;
-  height: 56px !important;
+  height: 60px !important;
 }
-
+.premium-table :deep(tbody tr:last-child td) {
+  border-bottom: none !important;
+}
+.premium-table :deep(tbody tr:hover) {
+  background: #f8fafc;
+}
+.avatar-chip {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 900;
+  color: #0a3154;
+  background: #e6ecf2;
+  text-transform: uppercase;
+}
+.cell-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.cell-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--status-color);
+  background: color-mix(in srgb, var(--status-color) 12%, #fff);
+  white-space: nowrap;
+}
 .status-dot {
   width: 6px;
   height: 6px;
-  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--status-color);
 }
 
-/* Utility Cards & Sidebar */
-.utility-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.utility-card.dark {
-  background: #0f172a !important;
-}
-
-/* Schedule Items */
-.schedule-item {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.date-shard {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.12);
+/* Phone list */
+.mobile-list {
   display: flex;
   flex-direction: column;
+}
+.mobile-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s ease;
+}
+.mobile-row:active {
+  background: #f8fafc;
+}
+.mobile-all {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
-}
-
-.date-shard .day {
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  color: white;
-}
-.date-shard .month {
-  font-size: 8px;
+  padding: 12px;
+  font-size: 13px;
   font-weight: 800;
-  opacity: 0.6;
-  color: white;
+  color: #0a3154;
+  text-decoration: none;
+}
+.min-w-0 {
+  min-width: 0;
 }
 
-.schedule-item .title {
-  font-size: 12px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 2px;
-}
-.schedule-item .time {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.5);
-  font-weight: 600;
-}
-
-/* Feed System */
-.feed-item {
-  display: flex;
-  gap: 12px;
-  padding-bottom: 16px;
-}
-
-.feed-indicator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 24px;
-}
-
-.feed-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-}
-
-.feed-line {
-  width: 1.5px;
-  background: #f1f5f9;
-  flex-grow: 1;
-  margin-top: 6px;
-}
-
-/* Animations */
+/* ───────── Motion ───────── */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -771,8 +1064,11 @@ const exportList = () =>
     transform: translateY(0);
   }
 }
-
 .fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
+  animation: fadeIn 0.5s ease-out both;
 }
+.fade-in:nth-child(2) { animation-delay: 0.05s; }
+.fade-in:nth-child(3) { animation-delay: 0.1s; }
+.fade-in:nth-child(4) { animation-delay: 0.15s; }
+.fade-in:nth-child(5) { animation-delay: 0.2s; }
 </style>

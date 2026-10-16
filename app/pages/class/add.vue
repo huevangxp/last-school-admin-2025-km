@@ -1,43 +1,44 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
+  <div class="page page--narrow">
+    <PageHeader
+      :title="t('register-section')"
+      :subtitle="t('configure-class-desc')"
+      icon="mdi-google-classroom"
+      :breadcrumbs="breadcrumbs"
+      back="/class"
+    />
 
-    <v-card elevation="0" class="intelligence-card pa-6">
-      <div class="d-flex align-center mb-6">
-        <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-0">
-          <v-icon color="primary" size="20">mdi-google-classroom</v-icon>
-        </v-avatar>
-        <div>
-          <h2 class="text-title">{{ t("register-section") }}</h2>
-          <p class="text-detail">
-            {{ t("configure-class-desc") }}
-          </p>
-        </div>
-      </div>
-
+    <v-card elevation="0" class="panel fade-in">
       <v-form ref="formRef" @submit.prevent="save">
-        <v-row class="ga-y-2">
+        <!-- Class information -->
+        <div class="form-section">
+          <v-icon size="16">mdi-google-classroom</v-icon>
+          {{ t("class") }} {{ t("information") }}
+        </div>
+
+        <v-row dense>
           <!-- Class Name -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("class-name") }} *</label>
+            <label class="field-label">{{ t("class-name") }} *</label>
             <v-text-field
               v-model="form.className"
               placeholder="e.g. M1/A"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
+              hide-details="auto"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
           <!-- Class Code -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("class-code") }} *</label>
+            <label class="field-label">{{ t("class-code") }} *</label>
             <v-text-field
               v-model="form.code"
               placeholder="e.g. M1A-2025"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -46,7 +47,7 @@
 
           <!-- Grade Level -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("grade-level") }} *</label>
+            <label class="field-label">{{ t("grade-level") }} *</label>
             <v-select
               v-model="form.gradeLevelId"
               :items="classroomStore.gradeLevels"
@@ -54,7 +55,7 @@
               item-value="id"
               :placeholder="t('select-grade-level')"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
@@ -63,23 +64,30 @@
 
           <!-- Academic Year (auto: latest / current) -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("academic-year") }} *</label>
+            <label class="field-label">{{ t("academic-year") }} *</label>
             <v-text-field
               :model-value="classroomStore.latestAcademicYear?.title || '—'"
               readonly
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               prepend-inner-icon="mdi-calendar-check"
+              class="readonly-field"
             ></v-text-field>
           </v-col>
+        </v-row>
 
+        <!-- Homeroom & room details -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-account-tie</v-icon>
+          {{ t("details") }}
+        </div>
+
+        <v-row dense>
           <!-- Homeroom Teacher (required) -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block"
-              >{{ t("homeroom_teacher") }} *</label
-            >
+            <label class="field-label">{{ t("homeroom_teacher") }} *</label>
             <v-select
               v-model="form.homeroomTeacherId"
               :items="teacherStore.teachers"
@@ -87,63 +95,63 @@
               item-value="id"
               :placeholder="t('select-homeroom-teacher')"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-account-outline"
               :rules="[rules.required]"
             ></v-select>
           </v-col>
 
           <!-- Room -->
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("room_number") }}</label>
+          <v-col cols="6" md="3">
+            <label class="field-label">{{ t("room_number") }}</label>
             <v-text-field
               v-model="form.room"
               placeholder="e.g. 101"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-door-open"
             ></v-text-field>
           </v-col>
 
           <!-- Max students -->
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("max_students") }}</label>
+          <v-col cols="6" md="3">
+            <label class="field-label">{{ t("max_students") }}</label>
             <v-text-field
               v-model="form.maxStudent"
               type="number"
               placeholder="e.g. 40"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-account-group-outline"
             ></v-text-field>
           </v-col>
 
-          <v-col cols="12" v-if="errorMessage">
-            <v-alert type="error" variant="tonal" density="compact">{{
-              errorMessage
-            }}</v-alert>
+          <v-col v-if="errorMessage" cols="12">
+            <v-alert type="error" variant="tonal" density="compact" rounded="lg">
+              {{ errorMessage }}
+            </v-alert>
           </v-col>
         </v-row>
 
-        <div class="d-flex justify-end ga-3 pt-8">
+        <div class="form-actions">
           <v-btn
             variant="flat"
-            color="grey-lighten-4"
-            class="modern-action-btn secondary border text-slate-700"
-            height="40"
+            class="modern-action-btn secondary"
             @click="$router.push('/class')"
           >
             {{ t("cancel") }}
           </v-btn>
           <v-btn
             variant="flat"
-            color="primary"
-            class="modern-action-btn primary elevation-4"
-            height="40"
+            class="modern-action-btn primary"
             type="submit"
+            prepend-icon="mdi-check"
             :loading="loading"
           >
             {{ t("register-class") }}
@@ -151,7 +159,7 @@
         </div>
       </v-form>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -232,29 +240,17 @@ const save = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Columns in the dense rows need a little breathing room below each field */
+.v-row--dense > .v-col {
+  padding-bottom: 10px;
 }
 
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+/* Read-only academic year looks muted so it reads as "auto-filled" */
+.readonly-field :deep(.v-field) {
+  background: #f8fafc;
 }
-
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-}
-
-.text-slate-700 {
-  color: #334155 !important;
+.readonly-field :deep(input) {
+  color: var(--ds-muted);
+  font-weight: 600;
 }
 </style>

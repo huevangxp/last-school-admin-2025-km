@@ -19,7 +19,7 @@
           block
           variant="flat"
           :color="color"
-          class="rounded-0 font-weight-bold"
+          class="font-weight-bold"
           height="44"
           :loading="loading"
           @click="$emit('confirm')"
@@ -30,7 +30,7 @@
           block
           variant="text"
           color="grey-darken-1"
-          class="rounded-0 font-weight-bold"
+          class="font-weight-bold"
           height="44"
           :disabled="loading"
           @click="$emit('update:modelValue', false)"

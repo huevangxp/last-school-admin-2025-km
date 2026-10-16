@@ -1,8 +1,8 @@
 <template>
-    <v-app class="bg-bg">
+    <v-app class="app-bg">
       <Header />
-      <v-main >
-        <v-container fluid>
+      <v-main>
+        <v-container fluid class="pa-4 pa-md-6">
           <slot />
         </v-container>
       </v-main>

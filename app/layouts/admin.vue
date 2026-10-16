@@ -1,9 +1,9 @@
 <template>
-  <v-app class="bg-grey-lighten-4">
+  <v-app class="app-bg">
     <Header />
      
-    <v-main class="bg-grey-lighten-4">
-      <v-container fluid class="px-6 py-6">
+    <v-main>
+      <v-container fluid class="pa-4 pa-md-6">
         <slot />
       </v-container>
     </v-main>

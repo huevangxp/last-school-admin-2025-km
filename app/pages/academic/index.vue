@@ -1,239 +1,189 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <!-- Quick Actions Bar: Intelligence Style -->
-    <div class="d-flex justify-end mb-6 fade-in">
-      <div class="action-stack d-flex ga-2">
+  <div class="page">
+    <PageHeader
+      :title="t('academic')"
+      :subtitle="t('academic-config-desc')"
+      icon="mdi-calendar-range"
+      :breadcrumbs="breadcrumbs"
+    >
+      <template #actions>
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
         </v-btn>
-
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          class="modern-action-btn primary"
           to="/academic/add"
         >
           <v-icon icon="mdi-plus" start size="18"></v-icon>
-          {{ $t("add") }}
+          {{ t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Stats Matrix: Academic KPIs -->
-    <v-row class="mb-6 ga-y-4">
-      <v-col
-        cols="12"
-        sm="6"
-        md="3"
-        v-for="(stat, i) in academicStats"
-        :key="i"
-      >
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI cards -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in academicStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Repository: Intelligence Area -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search & Contextual Filters -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          variant="outlined"
-          :placeholder="$t('search')"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-text-field>
+    <!-- Academic years table -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">{{ t("academic") }}</div>
+          <div class="panel-sub">{{ t("academic-config-desc") }}</div>
+        </div>
+        <span class="panel-chip">
+          {{ (academics || []).length }} {{ t("total") }}
+        </span>
+      </div>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            :items="['All Years', '2023-24', '2024-25']"
-            density="compact"
+      <div class="pa-4 pa-md-5 pb-0 pb-md-0">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
             variant="outlined"
+            density="compact"
             hide-details
-            style="min-width: 130px"
-            prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
+            class="filter-search"
             color="primary"
-            base-color="grey-lighten-1"
-          ></v-select>
+          ></v-text-field>
         </div>
       </div>
 
-      <!-- Data Intelligence Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="academics"
-        :search="search"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:item.id="{ index }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
-            {{ index + 1 }}
-          </span>
-        </template>
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="academics"
+          :search="search"
+          class="premium-table"
+          hover
+        >
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState icon="mdi-calendar-blank-outline" :title="t('no-data')" />
+            </div>
+          </template>
 
-        <!-- Academic Year Descriptor Slot -->
-        <template v-slot:item.title="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              color="blue-lighten-5"
-              size="32"
-              class="mr-3 elevation-1 border-white"
+          <!-- Row number -->
+          <template v-slot:item.id="{ index }">
+            <span class="code-chip">{{ index + 1 }}</span>
+          </template>
+
+          <!-- Academic year -->
+          <template v-slot:item.title="{ item }">
+            <div class="d-flex align-center ga-3 py-2">
+              <div class="avatar-chip">
+                <v-icon icon="mdi-calendar-range" size="16"></v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title">{{ item.title }}</div>
+                <div class="cell-sub">{{ hiddenId(item.id) }}</div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Dates -->
+          <template v-slot:item.startDate="{ item }">
+            <span class="cell-title font-weight-medium">
+              {{ formatDate(item.start_date) }}
+            </span>
+          </template>
+          <template v-slot:item.endDate="{ item }">
+            <span class="cell-title font-weight-medium">
+              {{ formatDate(item.end_date) }}
+            </span>
+          </template>
+
+          <!-- Status -->
+          <template v-slot:item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="
+                item.status === 'active'
+                  ? 'status-pill--green'
+                  : item.status === 'upcoming'
+                    ? 'status-pill--indigo'
+                    : 'status-pill--grey'
+              "
             >
-              <v-icon
-                icon="mdi-calendar-range"
-                size="16"
-                color="blue-darken-2"
-              ></v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.title }}</div>
-              <div class="text-detail-tiny">{{ hiddenId(item.id) }}</div>
-            </div>
-          </div>
-        </template>
+              <span class="status-dot"></span>
+              {{
+                item.status === "active"
+                  ? t("active")
+                  : item.status === "upcoming"
+                    ? t("upcoming")
+                    : t("archived")
+              }}
+            </span>
+          </template>
 
-        <!-- Dates Specification Slot -->
-        <template v-slot:item.startDate="{ item }">
-          <div class="text-title-small">{{ formatDate(item.start_date) }}</div>
-        </template>
-
-        <template v-slot:item.endDate="{ item }">
-          <div class="text-title-small">{{ formatDate(item.end_date) }}</div>
-        </template>
-
-        <!-- Lifecycle Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="
-              item.status === 'active'
-                ? 'success'
-                : item.status === 'upcoming'
-                  ? 'info'
-                  : 'red'
-            "
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === 'active'
-              ? t('ເປີດ')
-              : item.status === 'upcoming'
-                ? t('ກຳລັງເປີດ')
-                : t('ປິດ') }}
-          </v-chip>
-        </template>
-
-        <!-- Intelligence Actions Slot -->
-        <template v-slot:item.action="{ item }">
-          <div class="d-flex ga-1 justify-end">
-            <v-btn
-              icon="mdi-pencil-outline"
-              size="x-small"
-              variant="text"
-              color="primary"
-              @click="openEdit(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-trash-can-outline"
-              size="x-small"
-              variant="text"
-              color="error"
-              @click="removeAcademic(item)"
-            ></v-btn>
-          </div>
-        </template>
-
-        <!-- Navigation Architecture Slot -->
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              Displaying 1-{{ academics.length }} of
-              {{ academics.length }} academic records
-            </div>
-            <div class="d-flex gap-1 align-center">
+          <!-- Actions -->
+          <template v-slot:item.action="{ item }">
+            <div class="row-actions">
               <v-btn
-                icon="mdi-chevron-left"
+                icon="mdi-pencil-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
-              ></v-btn>
-              <v-btn
+                size="small"
                 color="primary"
-                size="x-small"
-                variant="flat"
-                class="font-weight-black rounded-0"
-                style="min-width: 24px; height: 24px"
-              >
-                1
-              </v-btn>
+                @click="openEdit(item)"
+              ></v-btn>
               <v-btn
-                icon="mdi-chevron-right"
+                icon="mdi-trash-can-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
+                size="small"
+                color="error"
+                @click="removeAcademic(item)"
               ></v-btn>
             </div>
-          </div>
-        </template>
-      </v-data-table>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Edit Academic Year Dialog -->
-    <v-dialog v-model="editDialog" width="480">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ t("edit") }} {{ t("academic") }}</div>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
+    <v-dialog v-model="editDialog" width="520">
+      <v-card elevation="0" class="pa-5 pa-md-6">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">{{ t("edit") }} {{ t("academic") }}</div>
+            <div class="panel-sub">{{ editForm.title }}</div>
+          </div>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            @click="editDialog = false"
+          ></v-btn>
+        </div>
+
+        <label class="field-label">{{ t("title") }}</label>
         <v-text-field
           v-model="editForm.title"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
-        <v-row>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">{{
-              t("start_date")
-            }}</label>
+
+        <v-row dense>
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("start_date") }}</label>
             <DialogDate
               v-model="showStartDatePicker"
               :date="editForm.startDate"
@@ -242,17 +192,16 @@
             <v-text-field
               v-model="editForm.startDate"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
               prepend-inner-icon="mdi-calendar-start"
               readonly
+              class="mb-4"
               @click="showStartDatePicker = true"
             ></v-text-field>
           </v-col>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">{{
-              t("end_date")
-            }}</label>
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("end_date") }}</label>
             <DialogDate
               v-model="showEndDatePicker"
               :date="editForm.endDate"
@@ -261,30 +210,31 @@
             <v-text-field
               v-model="editForm.endDate"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
               prepend-inner-icon="mdi-calendar-end"
               readonly
+              class="mb-4"
               @click="showEndDatePicker = true"
             ></v-text-field>
           </v-col>
         </v-row>
-        <label class="text-detail-tiny mb-1 mt-3 d-block">{{
-          t("description")
-        }}</label>
+
+        <label class="field-label">{{ t("description") }}</label>
         <v-text-field
           v-model="editForm.description"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+
+        <label class="field-label">{{ t("status") }}</label>
         <v-select
           v-model="editForm.status"
           :items="['active', 'inactive']"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
         ></v-select>
 
@@ -293,25 +243,32 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
-          >{{ editError }}</v-alert
         >
+          {{ editError }}
+        </v-alert>
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="editDialog = false">{{
-            t("cancel")
-          }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="editDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="saveEdit"
-            >{{ t("save") }}</v-btn
           >
+            {{ t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -477,64 +434,19 @@ const headers = [
 onMounted(() => {
   fetchAcademics();
 });
+
+// Presentation-only: map the stat colour names above to hex values for StatCard.
+const statPalette: Record<string, { color: string; tint: string }> = {
+  blue: { color: "#0a3154", tint: "#e6ecf2" },
+  green: { color: "#16a34a", tint: "#f0fdf4" },
+  purple: { color: "#7c3aed", tint: "#f5f3ff" },
+  orange: { color: "#ea580c", tint: "#fff7ed" },
+};
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.metric-icon-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.intelligence-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
-}
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
+/* Date cells should never wrap onto two lines */
+.premium-table :deep(td .cell-title) {
+  white-space: nowrap;
 }
 </style>

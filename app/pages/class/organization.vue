@@ -1,53 +1,40 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="$t('class_organization')"
+      :subtitle="t('class-leadership-desc')"
+      icon="mdi-account-supervisor-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="teal-darken-1" size="22">mdi-account-supervisor-outline</v-icon>
-        </v-avatar>
-        <div>
-          <div class="text-title">{{ $t("class_organization") }}</div>
-          <div class="text-detail">{{ t("class-leadership-desc") }}</div>
-        </div>
-      </div>
       <!-- Write actions are hidden from the read-only student role. The "Classes"
            link goes to the admin-only class list, so it shows for admins only;
            teachers still get "Assign Roles" to set their class's org. -->
-      <div v-if="!isStudent" class="d-flex gap-2 align-center mt-4 mt-md-0">
+      <template v-if="!isStudent" #actions>
         <v-btn
           v-if="isAdmin"
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border flex-grow-1 flex-md-grow-0"
-          height="36"
+          class="modern-action-btn secondary"
+          prepend-icon="mdi-arrow-left"
           to="/class"
         >
-          <v-icon icon="mdi-arrow-left" start size="18"></v-icon>
           {{ t("classes") }}
         </v-btn>
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4 flex-grow-1 flex-md-grow-0"
-          height="36"
+          class="modern-action-btn primary"
+          prepend-icon="mdi-account-cog-outline"
           :disabled="!selectedClassId"
           @click="openManage"
         >
-          <v-icon icon="mdi-account-cog-outline" start size="18"></v-icon>
           {{ t("assign_roles") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <!-- Filters — admins only. Teachers/students are locked to their own class
          and the latest academic year (auto-selected), so no filter is shown. -->
-    <v-card v-if="isAdmin" elevation="0" class="intelligence-card pa-4 mb-6">
-      <div class="d-flex flex-column flex-md-row gap-3">
+    <v-card v-if="isAdmin" elevation="0" class="panel mb-6 fade-in">
+      <div class="filter-bar mb-0">
         <v-select
           v-model="selectedClassId"
           :items="classOptions"
@@ -57,8 +44,7 @@
           variant="outlined"
           density="compact"
           hide-details
-          style="max-width: 280px"
-          class="filter-select"
+          prepend-inner-icon="mdi-google-classroom"
           color="primary"
           :disabled="isStudent"
         ></v-select>
@@ -71,112 +57,133 @@
           variant="outlined"
           density="compact"
           hide-details
-          style="max-width: 220px"
-          class="filter-select"
+          prepend-inner-icon="mdi-calendar-check"
           color="primary"
         ></v-select>
       </div>
     </v-card>
 
-    <div v-if="!selectedClassId" class="text-detail text-center py-10">
-      {{ t("select-class-hint") }}
-    </div>
+    <v-card v-if="!selectedClassId" elevation="0" class="panel fade-in">
+      <EmptyState
+        icon="mdi-google-classroom"
+        :title="t('class_organization')"
+        :description="t('select-class-hint')"
+      />
+    </v-card>
 
     <template v-else>
       <!-- Org Chart — layered by level -->
-      <v-card elevation="0" class="intelligence-card pa-4 mb-6">
-        <div class="text-title-small mb-2">{{ t("organization") }}</div>
-        <div class="org-viewport">
-          <div class="lchart">
-            <!-- Layer 1 · Teacher -->
-            <div class="lband">
-              <div class="layer-tag">{{ t("layer1-homeroom") }}</div>
-              <div class="lrow">
-                <div class="lcard lcard-teacher">
-                  <div class="lcard-name">{{ homeroomTeacherName || t("homeroom_teacher") }}</div>
-                  <div class="lcard-role">{{ t("homeroom-role") }}</div>
-                </div>
-              </div>
+      <v-card elevation="0" class="panel panel--flush fade-in">
+        <div class="panel-head">
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("organization") }}</div>
+            <div class="panel-sub text-truncate">
+              {{ selectedClass?.classroom_name }}
+              <template v-if="homeroomTeacherName">
+                · {{ t("homeroom_teacher") }}: {{ homeroomTeacherName }}
+              </template>
             </div>
+          </div>
+          <span class="panel-chip panel-chip--teal">
+            {{ students.length }} {{ t("students") }}
+          </span>
+        </div>
 
-            <div class="vline"></div>
-
-            <!-- Layer 2 · Monitor -->
-            <div class="lband">
-              <div class="layer-tag">{{ t("layer2-monitor") }}</div>
-              <div class="lrow">
-                <div class="lcard" :class="{ 'lcard-empty': !monitorRow }">
-                  <div class="lcard-name">
-                    {{ monitorRow ? nameFor(monitorRow.student_id) : t("not-assigned") }}
+        <div class="table-wrap">
+          <div class="org-viewport">
+            <div class="lchart">
+              <!-- Layer 1 · Teacher -->
+              <div class="lband">
+                <div class="layer-tag">{{ t("layer1-homeroom") }}</div>
+                <div class="lrow">
+                  <div class="lcard lcard-teacher">
+                    <div class="lcard-name">{{ homeroomTeacherName || t("homeroom_teacher") }}</div>
+                    <div class="lcard-role">{{ t("homeroom-role") }}</div>
                   </div>
-                  <div class="lcard-role">{{ t("monitor-role") }}</div>
                 </div>
               </div>
-            </div>
 
-            <div class="vline"></div>
+              <div class="vline"></div>
 
-            <!-- Layer 3 · Committee -->
-            <div class="lband">
-              <div class="layer-tag">{{ t("layer3-committee") }}</div>
-              <div class="lrow">
-                <template v-if="committeeRows.length">
-                  <div v-for="c in committeeRows" :key="c.id" class="lcard lcard-committee">
-                    <div class="lcard-name">{{ nameFor(c.student_id) }}</div>
+              <!-- Layer 2 · Monitor -->
+              <div class="lband">
+                <div class="layer-tag">{{ t("layer2-monitor") }}</div>
+                <div class="lrow">
+                  <div class="lcard lcard-monitor" :class="{ 'lcard-empty': !monitorRow }">
+                    <div class="lcard-name">
+                      {{ monitorRow ? nameFor(monitorRow.student_id) : t("not-assigned") }}
+                    </div>
+                    <div class="lcard-role">{{ t("monitor-role") }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="vline"></div>
+
+              <!-- Layer 3 · Committee -->
+              <div class="lband">
+                <div class="layer-tag">{{ t("layer3-committee") }}</div>
+                <div class="lrow">
+                  <template v-if="committeeRows.length">
+                    <div v-for="c in committeeRows" :key="c.id" class="lcard lcard-committee">
+                      <div class="lcard-name">{{ nameFor(c.student_id) }}</div>
+                      <div class="lcard-role">{{ t("committee-role") }}</div>
+                    </div>
+                  </template>
+                  <div v-else class="lcard lcard-empty">
+                    <div class="lcard-name">{{ t("not-assigned") }}</div>
                     <div class="lcard-role">{{ t("committee-role") }}</div>
                   </div>
-                </template>
-                <div v-else class="lcard lcard-empty">
-                  <div class="lcard-name">{{ t("not-assigned") }}</div>
-                  <div class="lcard-role">{{ t("committee-role") }}</div>
                 </div>
               </div>
-            </div>
 
-            <div class="vline"></div>
+              <div class="vline"></div>
 
-            <!-- Layer 4 · Unit heads  +  Layer 5 · Members (split equally) -->
-            <div class="lband">
-              <div class="layer-tag">{{ t("layer4-5-tag") }}</div>
-              <div class="units-grid" v-if="unitColumns.length">
-                <div
-                  v-for="(u, i) in unitColumns"
-                  :key="u.id"
-                  class="unit-col"
-                  :class="{ 'unit-drop-active': !isStudent && dragOverUnit === i }"
-                  @dragover.prevent="!isStudent && (dragOverUnit = i)"
-                  @dragleave="dragOverUnit === i && (dragOverUnit = null)"
-                  @drop="onDropUnit(i)"
-                >
-                  <div class="lcard lcard-unit">
-                    <div class="lcard-name">{{ u.name }}</div>
-                    <div class="lcard-role">{{ t("unit-head-role", { n: i + 1 }) }}</div>
-                    <div class="unit-count">{{ t("n-members", { n: u.members.length }) }}</div>
-                  </div>
-                  <div class="unit-vline" v-if="u.members.length"></div>
-                  <div class="member-list">
-                    <div
-                      v-for="m in u.members"
-                      :key="m.id"
-                      class="member-chip"
-                      :class="{ 'member-draggable': !isStudent }"
-                      :draggable="!isStudent"
-                      @dragstart="onDragStart(m.id)"
-                      @dragend="onDragEnd"
-                    >
-                      <v-icon
-                        v-if="!isStudent"
-                        size="12"
-                        class="mr-1 drag-handle"
-                        >mdi-drag-vertical</v-icon
-                      >{{ m.label }}
+              <!-- Layer 4 · Unit heads  +  Layer 5 · Members (split equally) -->
+              <div class="lband">
+                <div class="layer-tag">{{ t("layer4-5-tag") }}</div>
+                <div class="units-grid" v-if="unitColumns.length">
+                  <div
+                    v-for="(u, i) in unitColumns"
+                    :key="u.id"
+                    class="unit-col"
+                    :class="{ 'unit-drop-active': !isStudent && dragOverUnit === i }"
+                    @dragover.prevent="!isStudent && (dragOverUnit = i)"
+                    @dragleave="dragOverUnit === i && (dragOverUnit = null)"
+                    @drop="onDropUnit(i)"
+                  >
+                    <div class="lcard lcard-unit">
+                      <div class="lcard-name">{{ u.name }}</div>
+                      <div class="lcard-role">{{ t("unit-head-role", { n: i + 1 }) }}</div>
+                      <div class="unit-count">{{ t("n-members", { n: u.members.length }) }}</div>
                     </div>
-                    <div v-if="!u.members.length" class="member-empty">—</div>
+                    <div class="unit-vline" v-if="u.members.length"></div>
+                    <div class="member-list">
+                      <div
+                        v-for="m in u.members"
+                        :key="m.id"
+                        class="member-chip"
+                        :class="{ 'member-draggable': !isStudent }"
+                        :draggable="!isStudent"
+                        @dragstart="onDragStart(m.id)"
+                        @dragend="onDragEnd"
+                      >
+                        <v-icon
+                          v-if="!isStudent"
+                          size="12"
+                          class="mr-1 drag-handle"
+                          >mdi-drag-vertical</v-icon
+                        >{{ m.label }}
+                      </div>
+                      <div v-if="!u.members.length" class="member-empty">—</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div v-else class="text-detail-tiny text-center py-4">
-                {{ t("no-unit-heads") }}
+                <div v-else class="lrow">
+                  <div class="lcard lcard-empty">
+                    <div class="lcard-name">{{ t("no-unit-heads") }}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -185,111 +192,118 @@
 
       <!-- Assignment panel (dialog) -->
       <v-dialog v-model="manageDialog" width="560" scrollable>
-        <v-card class="pa-6">
-        <div class="d-flex align-center justify-space-between mb-4">
-          <div class="text-title-small">{{ t("assign_roles") }}</div>
-          <v-btn
-            icon="mdi-close"
-            variant="text"
-            size="small"
-            @click="manageDialog = false"
-          ></v-btn>
-        </div>
-        <div class="text-detail-tiny mb-4">
-          {{ selectedClass?.classroom_name }} · {{ students.length }}
-          {{ t("students") }} · {{ t("homeroom_teacher") }}:
-          <strong>{{ homeroomTeacherName || "—" }}</strong>
-        </div>
+        <v-card class="dialog-card">
+          <div class="dialog-head">
+            <div class="page-icon">
+              <v-icon size="20">mdi-account-cog-outline</v-icon>
+            </div>
+            <div class="min-w-0 flex-grow-1">
+              <div class="panel-title">{{ t("assign_roles") }}</div>
+              <div class="panel-sub">
+                {{ selectedClass?.classroom_name }} · {{ students.length }}
+                {{ t("students") }} · {{ t("homeroom_teacher") }}:
+                <strong>{{ homeroomTeacherName || "—" }}</strong>
+              </div>
+            </div>
+            <v-btn
+              icon="mdi-close"
+              variant="text"
+              size="small"
+              class="flex-shrink-0"
+              @click="manageDialog = false"
+            ></v-btn>
+          </div>
 
-        <!-- Monitor -->
-        <label class="text-detail-tiny mb-1 d-block">
-          {{ t("monitor-label") }}
-        </label>
-        <v-select
-          v-model="form.monitor"
-          :items="optionsFor('monitor')"
-          item-title="label"
-          item-value="id"
-          variant="outlined"
-          density="compact"
-          hide-details
-          clearable
-          class="mb-4"
-          placeholder="—"
-        ></v-select>
+          <!-- Monitor -->
+          <label class="field-label">{{ t("monitor-label") }}</label>
+          <v-select
+            v-model="form.monitor"
+            :items="optionsFor('monitor')"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            clearable
+            class="mb-4"
+            placeholder="—"
+          ></v-select>
 
-        <!-- Committee -->
-        <label class="text-detail-tiny mb-1 d-block">
-          {{ t("committee-label") }}
-        </label>
-        <v-select
-          v-model="form.committee"
-          :items="optionsFor('committee')"
-          item-title="label"
-          item-value="id"
-          variant="outlined"
-          density="compact"
-          hide-details
-          multiple
-          chips
-          closable-chips
-          class="mb-4"
-          :error="form.committee.length > CAPS.committee"
-        ></v-select>
+          <!-- Committee -->
+          <label class="field-label">{{ t("committee-label") }}</label>
+          <v-select
+            v-model="form.committee"
+            :items="optionsFor('committee')"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            multiple
+            chips
+            closable-chips
+            class="mb-4"
+            :error="form.committee.length > CAPS.committee"
+          ></v-select>
 
-        <!-- Unit heads -->
-        <label class="text-detail-tiny mb-1 d-block">
-          {{ t("unit-heads-label") }}
-        </label>
-        <v-select
-          v-model="form.unit_head"
-          :items="optionsFor('unit_head')"
-          item-title="label"
-          item-value="id"
-          variant="outlined"
-          density="compact"
-          hide-details
-          multiple
-          chips
-          closable-chips
-          :error="form.unit_head.length > CAPS.unit_head"
-        ></v-select>
+          <!-- Unit heads -->
+          <label class="field-label">{{ t("unit-heads-label") }}</label>
+          <v-select
+            v-model="form.unit_head"
+            :items="optionsFor('unit_head')"
+            item-title="label"
+            item-value="id"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            multiple
+            chips
+            closable-chips
+            :error="form.unit_head.length > CAPS.unit_head"
+          ></v-select>
 
-        <v-alert
-          v-if="saveError"
-          type="error"
-          variant="tonal"
-          density="compact"
-          class="mt-4"
-          >{{ saveError }}</v-alert
-        >
-        <v-alert
-          v-if="saveOk"
-          type="success"
-          variant="tonal"
-          density="compact"
-          class="mt-4"
-          >{{ t("saved") }}</v-alert
-        >
-
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="resetForm" :disabled="saving">
-            {{ t("cancel") }}
-          </v-btn>
-          <v-btn
-            color="primary"
-            class="modern-action-btn primary"
-            :loading="saving"
-            :disabled="overCap"
-            @click="save"
+          <v-alert
+            v-if="saveError"
+            type="error"
+            variant="tonal"
+            density="compact"
+            rounded="lg"
+            class="mt-4"
+            >{{ saveError }}</v-alert
           >
-            {{ t("save") }}
-          </v-btn>
-        </div>
+          <v-alert
+            v-if="saveOk"
+            type="success"
+            variant="tonal"
+            density="compact"
+            rounded="lg"
+            class="mt-4"
+            >{{ t("saved") }}</v-alert
+          >
+
+          <div class="form-actions">
+            <v-btn
+              variant="flat"
+              class="modern-action-btn secondary"
+              :disabled="saving"
+              @click="resetForm"
+            >
+              {{ t("cancel") }}
+            </v-btn>
+            <v-btn
+              variant="flat"
+              class="modern-action-btn primary"
+              :loading="saving"
+              :disabled="overCap"
+              @click="save"
+            >
+              {{ t("save") }}
+            </v-btn>
+          </div>
         </v-card>
       </v-dialog>
     </template>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -588,27 +602,25 @@ const onDropUnit = (unitIndex: number) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* ---- Dialog ---- */
+.dialog-card {
+  padding: 20px;
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
+@media (min-width: 600px) {
+  .dialog-card {
+    padding: 24px;
+  }
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-}
+
+/* ---- Org chart board ---- */
 .org-viewport {
   position: relative;
-  overflow: auto;
   min-height: 320px;
   background: radial-gradient(circle, #e2e8f0 1px, transparent 1px) 0 0 / 22px 22px;
 }
@@ -630,12 +642,13 @@ const onDropUnit = (unitIndex: number) => {
 .layer-tag {
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #0d9488;
+  color: var(--ds-teal-700);
   background: #ccfbf1;
-  padding: 2px 12px;
-  margin-bottom: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
 }
 .lrow {
   display: flex;
@@ -646,40 +659,47 @@ const onDropUnit = (unitIndex: number) => {
 .vline {
   width: 2px;
   height: 28px;
+  border-radius: 2px;
   background: #cbd5e1;
 }
 .lcard {
   min-width: 150px;
-  max-width: 200px;
+  max-width: 220px;
   padding: 12px 16px;
   background: #fff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
   text-align: center;
   box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
 }
 .lcard-name {
   font-weight: 800;
   font-size: 13px;
-  color: #0f172a;
+  color: var(--ds-text);
   line-height: 1.25;
 }
 .lcard-role {
   font-size: 9.5px;
-  color: #64748b;
+  color: var(--ds-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
   margin-top: 2px;
 }
 .lcard-teacher {
-  background: linear-gradient(135deg, #14b8a5 0%, #0d9488 100%);
+  background: linear-gradient(135deg, var(--ds-navy) 0%, var(--ds-navy-2) 100%);
   border: 0;
+  box-shadow: 0 10px 22px -12px rgba(10, 49, 84, 0.7);
 }
 .lcard-teacher .lcard-name {
   color: #fff;
 }
 .lcard-teacher .lcard-role {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--ds-teal);
+}
+.lcard-monitor {
+  border-color: #99f6e4;
+  background: #f0fdfa;
 }
 .lcard-committee {
   border-color: #c7d2fe;
@@ -691,10 +711,12 @@ const onDropUnit = (unitIndex: number) => {
 }
 .lcard-empty {
   border-style: dashed;
+  border-color: #e2e8f0;
   background: #f8fafc;
+  box-shadow: none;
 }
 .lcard-empty .lcard-name {
-  color: #94a3b8;
+  color: var(--ds-faint);
   font-weight: 700;
 }
 .unit-count {
@@ -703,7 +725,8 @@ const onDropUnit = (unitIndex: number) => {
   font-weight: 800;
   color: #7c3aed;
   background: #ede9fe;
-  padding: 1px 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
   display: inline-block;
 }
 
@@ -720,10 +743,14 @@ const onDropUnit = (unitIndex: number) => {
   flex-direction: column;
   align-items: center;
   min-width: 150px;
+  padding: 6px;
+  border-radius: 14px;
+  transition: background 0.15s ease, outline-color 0.15s ease;
 }
 .unit-vline {
   width: 2px;
   height: 16px;
+  border-radius: 2px;
   background: #cbd5e1;
 }
 .member-list {
@@ -737,13 +764,14 @@ const onDropUnit = (unitIndex: number) => {
   font-weight: 600;
   color: #334155;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  padding: 5px 10px;
+  border: 1px solid var(--ds-border);
+  border-radius: 8px;
+  padding: 6px 10px;
   text-align: center;
 }
 .member-empty {
   font-size: 11px;
-  color: #94a3b8;
+  color: var(--ds-faint);
   text-align: center;
 }
 
@@ -758,27 +786,22 @@ const onDropUnit = (unitIndex: number) => {
   cursor: grabbing;
 }
 .drag-handle {
-  color: #94a3b8;
+  color: var(--ds-faint);
 }
 .unit-drop-active {
   background: #f0fdfa;
-  outline: 2px dashed #0d9488;
-  outline-offset: 4px;
+  outline: 2px dashed var(--ds-teal-700);
+  outline-offset: 2px;
 }
 
 /* ---- Mobile (< md): the layered chart reflows to a clean vertical stack ---- */
 @media (max-width: 959px) {
-  /* Filters take the full row width instead of the capped desktop widths. */
-  .filter-select {
-    max-width: 100% !important;
-    width: 100%;
-  }
   .org-viewport {
     min-height: 240px;
     background-size: 18px 18px;
   }
   .lchart {
-    padding: 16px 8px;
+    padding: 16px 12px;
   }
   .lcard {
     min-width: 120px;

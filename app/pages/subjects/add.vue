@@ -1,66 +1,65 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
+  <div class="page page--narrow">
+    <PageHeader
+      :title="t('register-subject')"
+      :subtitle="t('register-subject-subtitle')"
+      icon="mdi-book-open-variant-outline"
+      :breadcrumbs="breadcrumbs"
+      back="/subjects"
+    />
 
-    <v-card elevation="0" class="intelligence-card pa-6">
-      <div class="d-flex align-center mb-6">
-        <v-avatar color="indigo-lighten-5" size="40" class="mr-3 rounded-0">
-          <v-icon color="indigo-darken-2" size="20"
-            >mdi-book-open-variant-outline</v-icon
-          >
-        </v-avatar>
-        <div>
-          <h2 class="text-title">{{ $t("register-subject") }}</h2>
-          <p class="text-detail">{{ $t("register-subject-subtitle") }}</p>
-        </div>
-      </div>
-
+    <v-card elevation="0" class="panel fade-in">
       <v-form ref="formRef" @submit.prevent="save">
-        <v-row class="ga-y-2">
-          <!-- Subject Name -->
+        <!-- Subject identity -->
+        <div class="form-section">
+          <v-icon size="16">mdi-book-open-variant-outline</v-icon>
+          {{ t("subject") }}
+        </div>
+        <v-row>
           <v-col cols="12" md="8">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("subject-name") }} *</label>
+            <label class="field-label">{{ t("subject-name") }} *</label>
             <v-text-field
               v-model="form.name"
-              :placeholder="$t('subject-name-placeholder')"
+              :placeholder="t('subject-name-placeholder')"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
 
-          <!-- Subject Code -->
           <v-col cols="12" md="4">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("subject-code") }} *</label>
+            <label class="field-label">{{ t("subject-code") }} *</label>
             <v-text-field
               v-model="form.code"
               placeholder="MATH-101"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               class="uppercase-text"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
+        </v-row>
 
-          <!-- Grade Levels (multi-select) -->
+        <!-- Grade levels & weighting -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-stairs</v-icon>
+          {{ t("grade-levels") }}
+        </div>
+        <v-row>
           <v-col cols="12" md="6">
-            <div class="d-flex align-center justify-space-between mb-2">
-              <label class="text-detail-tiny d-block">{{ $t("grade-levels") }} *</label>
-              <div class="d-flex ga-2">
-                <button
-                  type="button"
-                  class="link-btn"
-                  @click="selectAllGrades"
-                >
-                  {{ $t("select-all") }}
+            <div class="d-flex align-center justify-space-between flex-wrap ga-2">
+              <label class="field-label mb-0">{{ t("grade-levels") }} *</label>
+              <div class="d-flex align-center ga-2 mb-1">
+                <button type="button" class="link-btn" @click="selectAllGrades">
+                  {{ t("select-all") }}
                 </button>
-                <span class="text-grey-lighten-1">·</span>
+                <span class="text-medium-emphasis">·</span>
                 <button type="button" class="link-btn" @click="clearGrades">
-                  {{ $t("clear") }}
+                  {{ t("clear") }}
                 </button>
               </div>
             </div>
@@ -72,64 +71,63 @@
               multiple
               chips
               closable-chips
-              :placeholder="$t('grade-levels-placeholder')"
+              :placeholder="t('grade-levels-placeholder')"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               :rules="[rules.requiredMany]"
             ></v-select>
-            <div class="text-detail-tiny text-grey mt-1">
-              {{ $t("grade-levels-hint") }}
-            </div>
+            <div class="field-hint">{{ t("grade-levels-hint") }}</div>
           </v-col>
 
-          <!-- Coefficient -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("coefficient") }} *</label>
+            <label class="field-label">{{ t("coefficient") }} *</label>
             <v-text-field
               v-model="form.coefficient"
               type="number"
-              placeholder="e.g. 2"
+              placeholder="2"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-
-          <v-col cols="12" v-if="errorMessage">
-            <v-alert type="error" variant="tonal" density="compact">{{
-              errorMessage
-            }}</v-alert>
-          </v-col>
         </v-row>
 
-        <div class="d-flex justify-end ga-3 pt-8">
+        <v-alert
+          v-if="errorMessage"
+          type="error"
+          variant="tonal"
+          density="compact"
+          rounded="lg"
+          class="mt-4"
+        >
+          {{ errorMessage }}
+        </v-alert>
+
+        <div class="form-actions">
           <v-btn
             variant="flat"
-            color="grey-lighten-4"
-            class="modern-action-btn secondary border text-slate-700"
-            height="40"
+            class="modern-action-btn secondary"
             @click="$router.push('/subjects')"
           >
             {{ t("cancel") }}
           </v-btn>
           <v-btn
             variant="flat"
-            color="primary"
-            class="modern-action-btn primary elevation-4"
-            height="40"
+            class="modern-action-btn primary"
             type="submit"
             :loading="loading"
           >
+            <v-icon icon="mdi-check" start size="18"></v-icon>
             {{ t("save") }}
           </v-btn>
         </div>
       </v-form>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -218,44 +216,8 @@ const save = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-}
-
+/* Subject codes are always shown upper-case while typing */
 .uppercase-text :deep(input) {
   text-transform: uppercase;
-}
-
-.text-slate-700 {
-  color: #334155 !important;
-}
-
-.link-btn {
-  font-size: 11px;
-  font-weight: 800;
-  color: #0d9488;
-  background: transparent;
-  cursor: pointer;
-}
-.link-btn:hover {
-  text-decoration: underline;
 }
 </style>

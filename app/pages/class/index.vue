@@ -1,101 +1,76 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header Section -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="`${t('management')} ${t('classes')}`"
+      :subtitle="t('manage_classes_desc')"
+      icon="mdi-google-classroom"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <div class="text-title mb-1">
-          {{ t("management") }} {{ t("classes") }}
-        </div>
-        <div class="text-detail">{{ t("manage_classes_desc") }}</div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
+      <template #actions>
         <v-btn
-          variant="outlined"
-          color="primary"
-          class="modern-action-btn secondary border"
-          height="32"
+          variant="flat"
+          class="modern-action-btn secondary"
           prepend-icon="mdi-content-copy"
           @click="openClone"
         >
           {{ t("copy_to_new_year") }}
         </v-btn>
-
         <v-btn
-          variant="outlined"
-          color="grey-darken-1"
-          class="modern-action-btn secondary border"
-          height="32"
+          variant="flat"
+          class="modern-action-btn secondary"
           prepend-icon="mdi-download"
         >
           {{ t("export") }}
         </v-btn>
-
         <v-btn
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="32"
+          variant="flat"
+          class="modern-action-btn primary"
           prepend-icon="mdi-plus"
           to="/class/add"
         >
           {{ $t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in classStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI cards -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in classStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Content Card -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search and Filter Section -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-text-field>
+    <!-- List -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">{{ t("classes") }}</div>
+          <div class="panel-sub">{{ t("manage_classes_desc") }}</div>
+        </div>
+        <span class="panel-chip panel-chip--navy">
+          {{ classes.length }} {{ t("total") }}
+        </span>
+      </div>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
+      <div class="list-toolbar">
+        <div class="filter-bar mb-0">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            clearable
+            class="filter-search"
+            color="primary"
+          ></v-text-field>
           <v-select
             v-model="selectedGrade"
             :items="gradeFilterOptions"
@@ -104,163 +79,170 @@
             variant="outlined"
             density="compact"
             hide-details
-            style="min-width: 160px"
             prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
             color="primary"
-            base-color="grey-lighten-1"
           ></v-select>
         </div>
       </div>
 
-      <!-- Data Table -->
-      <v-data-table
-        :headers="headers"
-        :items="classes"
-        :search="search"
-        :loading="classroomStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">{{ t("no_classrooms") }}</div>
-        </template>
-        <!-- Class Name Slot -->
-        <template v-slot:item.title="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              color="blue-lighten-5"
-              size="32"
-              class="mr-3 elevation-1 border-white"
-            >
-              <v-icon
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="classes"
+          :search="search"
+          :loading="classroomStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState
                 icon="mdi-google-classroom"
-                size="16"
-                color="blue-darken-2"
-              ></v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.title }}</div>
-              <div class="text-detail-tiny">{{ item.classId }}</div>
+                :title="t('no_classrooms')"
+              />
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- Grade Slot -->
-        <template v-slot:item.grade="{ item }">
-          <div class="text-title-small">{{ item.grade }}</div>
-          <div class="text-detail-tiny text-grey">{{ item.year }}</div>
-        </template>
-
-        <!-- Teacher Slot -->
-        <template v-slot:item.teacher="{ item }">
-          <div class="d-flex align-center">
-            <v-avatar size="32" class="mr-2 elevation-1">
-             <v-icon color="primary">mdi-account</v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.teacher }}</div>
-              <div class="text-detail-tiny">{{ item.teacherEmail }}</div>
+          <!-- Class Name -->
+          <template v-slot:item.title="{ item }">
+            <div class="d-flex align-center py-2">
+              <div class="avatar-chip mr-3">
+                <v-icon icon="mdi-google-classroom" size="18"></v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title text-truncate">{{ item.title }}</div>
+                <span class="code-chip mt-1">{{ item.classId }}</span>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="item.status === 'Active' ? 'success' : 'grey'"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === 'Active' ? t('open') : t('closed') }}
-          </v-chip>
-        </template>
+          <!-- Grade -->
+          <template v-slot:item.grade="{ item }">
+            <div class="cell-title">{{ item.grade }}</div>
+            <div class="cell-sub">{{ item.year }}</div>
+          </template>
 
-        <!-- Actions Slot -->
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              @click="openEdit(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-delete-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="removeClassroom(item)"
-            ></v-btn>
-          </div>
-        </template>
-
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              {{ t("showing") }} 1-{{ classes.length }} {{ t("of") }}
-              {{ classes.length }} {{ t("results") }}
+          <!-- Teacher -->
+          <template v-slot:item.teacher="{ item }">
+            <div class="d-flex align-center">
+              <div class="avatar-chip avatar-chip--teal mr-3">
+                <v-icon size="18">mdi-account</v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title text-truncate">{{ item.teacher }}</div>
+                <div class="cell-sub text-truncate">{{ item.teacherEmail }}</div>
+              </div>
             </div>
-          </div>
-        </template>
-      </v-data-table>
+          </template>
+
+          <!-- Status -->
+          <template v-slot:item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="item.status === 'Active' ? 'status-pill--green' : 'status-pill--grey'"
+            >
+              <span class="status-dot"></span>
+              {{ item.status === "Active" ? t("open") : t("closed") }}
+            </span>
+          </template>
+
+          <!-- Actions -->
+          <template v-slot:item.actions="{ item }">
+            <div class="row-actions">
+              <v-btn
+                icon="mdi-pencil-outline"
+                variant="text"
+                size="small"
+                color="primary"
+                @click="openEdit(item)"
+              ></v-btn>
+              <v-btn
+                icon="mdi-delete-outline"
+                variant="text"
+                size="small"
+                color="error"
+                @click="removeClassroom(item)"
+              ></v-btn>
+            </div>
+          </template>
+
+          <template v-slot:bottom>
+            <div class="table-footer px-4 px-md-6 pb-4">
+              <div class="cell-sub">
+                {{ t("showing") }} 1-{{ classes.length }} {{ t("of") }}
+                {{ classes.length }} {{ t("results") }}
+              </div>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Edit Classroom Dialog -->
-    <v-dialog v-model="editDialog" width="480">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ t("edit") }} {{ t("classes") }}</div>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+    <v-dialog v-model="editDialog" width="520">
+      <v-card class="dialog-card">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-pencil-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("edit") }} {{ t("classes") }}</div>
+            <div class="panel-sub text-truncate">{{ editForm.classroom_name }}</div>
+          </div>
+        </div>
+
+        <label class="field-label">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.classroom_name"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
-        <v-row>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">{{ t("room_number") }}</label>
+
+        <v-row dense>
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("room_number") }}</label>
             <v-text-field
               v-model="editForm.room_number"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
+              class="mb-4"
             ></v-text-field>
           </v-col>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block"
-              >{{ t("max_students") }} (≤40)</label
-            >
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("max_students") }} (≤40)</label>
             <v-text-field
               v-model="editForm.max_student"
               type="number"
               max="40"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
+              class="mb-4"
             ></v-text-field>
           </v-col>
         </v-row>
-        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("homeroom_teacher") }}</label>
+
+        <label class="field-label">{{ t("homeroom_teacher") }}</label>
         <v-select
           v-model="editForm.homeroom_teacher_id"
           :items="teacherStore.teachers"
           item-title="full_name"
           item-value="id"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-select>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+
+        <label class="field-label">{{ t("status") }}</label>
         <v-select
           v-model="editForm.classroom_status"
           :items="['active', 'inactive']"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
         ></v-select>
 
@@ -269,39 +251,45 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
           >{{ editError }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="editDialog = false">{{
-            t("cancel")
-          }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="editDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="saveEdit"
-            >{{ t("save") }}</v-btn
           >
+            {{ t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
 
     <!-- Clone classrooms to a new academic year -->
-    <v-dialog v-model="cloneDialog" width="480">
-      <v-card class="pa-6">
-        <div class="d-flex align-center mb-1">
-          <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-0">
-            <v-icon color="teal-darken-2" size="18">mdi-content-copy</v-icon>
-          </v-avatar>
-          <div class="text-title">{{ t("copy_classrooms_title") }}</div>
-        </div>
-        <div class="text-detail mb-4">
-          {{ t("copy_classrooms_desc") }}
+    <v-dialog v-model="cloneDialog" width="520">
+      <v-card class="dialog-card">
+        <div class="dialog-head">
+          <div class="page-icon page-icon--teal">
+            <v-icon size="20">mdi-content-copy</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("copy_classrooms_title") }}</div>
+            <div class="panel-sub">{{ t("copy_classrooms_desc") }}</div>
+          </div>
         </div>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("from_year") }}</label>
+        <label class="field-label">{{ t("from_year") }}</label>
         <v-select
           v-model="cloneSource"
           :items="classroomStore.academicYears"
@@ -309,12 +297,13 @@
           item-value="id"
           :placeholder="t('select_source_year')"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          prepend-inner-icon="mdi-calendar-export"
+          class="mb-4"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("to_year") }}</label>
+        <label class="field-label">{{ t("to_year") }}</label>
         <v-select
           v-model="cloneTarget"
           :items="classroomStore.academicYears"
@@ -322,8 +311,9 @@
           item-value="id"
           :placeholder="t('select_target_year')"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
+          prepend-inner-icon="mdi-calendar-import"
         ></v-select>
 
         <v-alert
@@ -331,26 +321,32 @@
           :type="cloneOk ? 'success' : 'error'"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
           >{{ cloneMsg }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="cloneDialog = false">{{
-            t("cancel")
-          }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="cloneDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="cloning"
             :disabled="!cloneSource || !cloneTarget || cloneSource === cloneTarget"
             @click="doClone"
-            >{{ t("copy") }}</v-btn
           >
+            {{ t("copy") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -464,6 +460,14 @@ const classStats = computed(() => {
   ];
 });
 
+// Presentation-only: hex accent/tint per stat colour name for <StatCard>.
+const statPalette: Record<string, { color: string; tint: string }> = {
+  blue: { color: "#0A3154", tint: "#E6ECF2" },
+  green: { color: "#0d9488", tint: "#f0fdfa" },
+  purple: { color: "#7c3aed", tint: "#f5f3ff" },
+  orange: { color: "#d97706", tint: "#fffbeb" },
+};
+
 const headers = [
   {
     title: t("classes"),
@@ -575,65 +579,40 @@ const removeClassroom = async (item: any) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Toolbar row sitting between the panel head and the table */
+.list-toolbar {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--ds-border-soft);
+}
+@media (min-width: 960px) {
+  .list-toolbar {
+    padding: 16px 24px;
+  }
 }
 
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
+/* Teal variant of the shared avatar chip (homeroom teacher) */
+.avatar-chip--teal {
+  color: var(--ds-teal-700);
+  background: #f0fdfa;
 }
 
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+/* Dialogs */
+.dialog-card {
+  padding: 20px;
 }
-
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.metric-icon-box {
+.dialog-head {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.page-icon--teal {
+  color: var(--ds-teal-700);
+  background: #f0fdfa;
 }
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
+@media (min-width: 600px) {
+  .dialog-card {
+    padding: 24px;
+  }
 }
 </style>
