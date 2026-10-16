@@ -1,223 +1,157 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header Section -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="$t('settings')"
+      :subtitle="$t('settings-subtitle')"
+      icon="mdi-cog-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <h1 class="text-title mb-1">{{ $t("settings") }}</h1>
-        <p class="text-detail">{{ $t("settings-subtitle") }}</p>
-      </div>
-      <v-chip
-        v-if="!isAdmin"
-        color="orange-lighten-4"
-        class="text-orange-darken-4 font-weight-black mt-3 mt-md-0"
-        size="small"
-        variant="flat"
-        label
-        prepend-icon="mdi-eye-outline"
-      >
-        {{ $t("view_only") }}
-      </v-chip>
-    </div>
+      <template v-if="!isAdmin" #actions>
+        <span class="panel-chip panel-chip--amber">
+          <v-icon size="14" class="mr-1">mdi-eye-outline</v-icon>
+          {{ $t("view_only") }}
+        </span>
+      </template>
+    </PageHeader>
 
-    <!-- Settings Cards Grid -->
-    <v-row class="ga-y-4">
-      <!-- General Settings -->
-      <v-col cols="12" md="6">
-        <v-card class="intelligence-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="blue-lighten-5" size="40" class="mr-3 rounded-0">
-              <v-icon color="blue-darken-2" size="20">mdi-cog-outline</v-icon>
-            </v-avatar>
-            <div>
-              <h3 class="text-title">{{ $t("general-settings") }}</h3>
-              <p class="text-detail-tiny">
-                {{ $t("general-settings-desc") }}
-              </p>
+    <v-row>
+      <!-- Left: school identity -->
+      <v-col cols="12" md="4">
+        <v-card class="panel h-100 fade-in" elevation="0">
+          <div class="school-hero">
+            <div class="school-badge">
+              <v-icon size="30">mdi-school-outline</v-icon>
             </div>
-            <v-spacer></v-spacer>
+            <div class="school-name">{{ settings.school_name || "—" }}</div>
+            <div class="school-sub">{{ $t("general-settings-desc") }}</div>
             <v-btn
               v-if="isAdmin"
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
+              variant="flat"
+              size="small"
+              class="modern-action-btn secondary mt-4"
               @click="openSchoolDialog"
-            ></v-btn>
+            >
+              <v-icon start size="16">mdi-pencil-outline</v-icon>
+              {{ $t("edit") }}
+            </v-btn>
           </div>
 
-          <v-divider class="mb-2 opacity-10"></v-divider>
+          <v-divider class="my-4"></v-divider>
 
-          <v-list class="bg-transparent" lines="two">
-            <v-list-item
-              class="px-0 py-1"
-              v-for="(item, i) in schoolDetails"
-              :key="i"
-            >
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16">{{ item.icon }}</v-icon>
-                </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                item.title
-              }}</v-list-item-title>
-              <v-list-item-subtitle class="text-detail">{{
-                item.value || "—"
-              }}</v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
+          <div class="form-section">
+            <v-icon size="16">mdi-cog-outline</v-icon>
+            {{ $t("general-settings") }}
+          </div>
+
+          <div v-for="(item, i) in schoolDetails" :key="i" class="info-row">
+            <div class="info-row-icon">
+              <v-icon size="16">{{ item.icon }}</v-icon>
+            </div>
+            <div class="min-w-0">
+              <div class="info-row-label">{{ item.title }}</div>
+              <div class="info-row-value">{{ item.value || "—" }}</div>
+            </div>
+          </div>
         </v-card>
       </v-col>
 
-      <!-- Academic Settings -->
-      <v-col cols="12" md="6">
-        <v-card class="intelligence-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="green-lighten-5" size="40" class="mr-3 rounded-0">
-              <v-icon color="green-darken-2" size="20"
-                >mdi-book-open-page-variant-outline</v-icon
-              >
-            </v-avatar>
-            <div>
-              <h3 class="text-title">{{ $t("academic-config") }}</h3>
-              <p class="text-detail-tiny">{{ $t("academic-config-desc") }}</p>
+      <!-- Right: academic / notifications / security -->
+      <v-col cols="12" md="8">
+        <!-- Academic settings -->
+        <v-card class="panel mb-4 fade-in" elevation="0">
+          <div class="panel-head">
+            <div class="d-flex align-center ga-3">
+              <div class="section-icon" style="--sec-color: #15803d; --sec-tint: #f0fdf4">
+                <v-icon size="20">mdi-book-open-page-variant-outline</v-icon>
+              </div>
+              <div>
+                <div class="panel-title">{{ $t("academic-config") }}</div>
+                <div class="panel-sub">{{ $t("academic-config-desc") }}</div>
+              </div>
             </div>
-            <v-spacer></v-spacer>
             <v-btn
               v-if="isAdmin"
               icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
+              variant="tonal"
               color="primary"
+              size="small"
               @click="openSemesterDialog"
             ></v-btn>
           </div>
 
-          <v-divider class="mb-2 opacity-10"></v-divider>
+          <!-- Active academic year — real data from tb_academic_year. -->
+          <div class="info-row">
+            <div class="info-row-icon">
+              <v-icon size="16">mdi-calendar-month-outline</v-icon>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <div class="info-row-label">{{ $t("academic-year") }}</div>
+              <div class="info-row-value">{{ activeYear?.title || "—" }}</div>
+            </div>
+            <span
+              v-if="activeYear"
+              class="status-pill"
+              :class="
+                activeYear.status === 'active'
+                  ? 'status-pill--green'
+                  : 'status-pill--grey'
+              "
+            >
+              <span class="status-dot"></span>
+              {{ activeYear.status === "active" ? $t("active") : $t("inactive") }}
+            </span>
+          </div>
 
-          <v-list class="bg-transparent" lines="two">
-            <!-- Active academic year — real data from tb_academic_year. -->
-            <v-list-item class="px-0 py-1">
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16"
-                    >mdi-calendar-month-outline</v-icon
-                  >
-                </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                $t("academic-year")
-              }}</v-list-item-title>
-              <v-list-item-subtitle class="text-detail">{{
-                activeYear?.title || "—"
-              }}</v-list-item-subtitle>
-              <template v-slot:append>
-                <v-chip
-                  v-if="activeYear"
-                  :color="
-                    activeYear.status === 'active'
-                      ? 'green-lighten-4'
-                      : 'grey-lighten-3'
-                  "
-                  class="text-dark font-weight-black"
-                  size="x-small"
-                  variant="flat"
-                  label
-                  >{{
-                    activeYear.status === "active"
-                      ? $t("active")
-                      : $t("inactive")
-                  }}</v-chip
-                >
-              </template>
-            </v-list-item>
-
-            <!-- Semester — stored in settings. -->
-            <v-list-item class="px-0 py-1">
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16"
-                    >mdi-calendar-range-outline</v-icon
-                  >
-                </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                $t("semester")
-              }}</v-list-item-title>
-              <v-list-item-subtitle class="text-detail">{{
-                settings.semester || "—"
-              }}</v-list-item-subtitle>
-            </v-list-item>
-
-            <!-- Timeline — derived from the active year's dates (read-only). -->
-            <v-list-item class="px-0 py-1">
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16"
-                    >mdi-clock-time-four-outline</v-icon
-                  >
-                </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                $t("timeline")
-              }}</v-list-item-title>
-              <v-list-item-subtitle class="text-detail">{{
-                yearTimeline
-              }}</v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
-
-      <!-- Notification Settings -->
-      <v-col cols="12" md="6">
-        <v-card class="intelligence-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="purple-lighten-5" size="40" class="mr-3 rounded-0">
-              <v-icon color="purple-darken-2" size="20"
-                >mdi-bell-outline</v-icon
-              >
-            </v-avatar>
-            <div>
-              <h3 class="text-title">{{ $t("notifications") }}</h3>
-              <p class="text-detail-tiny">{{ $t("notifications-desc") }}</p>
+          <!-- Semester — stored in settings. -->
+          <div class="info-row">
+            <div class="info-row-icon">
+              <v-icon size="16">mdi-calendar-range-outline</v-icon>
+            </div>
+            <div class="min-w-0">
+              <div class="info-row-label">{{ $t("semester") }}</div>
+              <div class="info-row-value">{{ settings.semester || "—" }}</div>
             </div>
           </div>
-          <v-divider class="mb-2 opacity-10"></v-divider>
-          <v-list class="bg-transparent">
-            <v-list-item
-              class="px-0 py-1"
-              v-for="notif in notifications"
-              :key="notif.key"
-            >
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16">{{ notif.icon }}</v-icon>
+
+          <!-- Timeline — derived from the active year's dates (read-only). -->
+          <div class="info-row">
+            <div class="info-row-icon">
+              <v-icon size="16">mdi-clock-time-four-outline</v-icon>
+            </div>
+            <div class="min-w-0">
+              <div class="info-row-label">{{ $t("timeline") }}</div>
+              <div class="info-row-value">{{ yearTimeline }}</div>
+            </div>
+          </div>
+        </v-card>
+
+        <v-row>
+          <!-- Notifications -->
+          <v-col cols="12" lg="6">
+            <v-card class="panel h-100 fade-in" elevation="0">
+              <div class="panel-head">
+                <div class="d-flex align-center ga-3">
+                  <div class="section-icon" style="--sec-color: #6d28d9; --sec-tint: #f5f3ff">
+                    <v-icon size="20">mdi-bell-outline</v-icon>
+                  </div>
+                  <div>
+                    <div class="panel-title">{{ $t("notifications") }}</div>
+                    <div class="panel-sub">{{ $t("notifications-desc") }}</div>
+                  </div>
                 </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                notif.title
-              }}</v-list-item-title>
-              <template v-slot:append>
+              </div>
+
+              <div
+                v-for="notif in notifications"
+                :key="notif.key"
+                class="info-row align-center"
+              >
+                <div class="info-row-icon">
+                  <v-icon size="16">{{ notif.icon }}</v-icon>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="info-row-value">{{ notif.title }}</div>
+                </div>
                 <v-switch
                   :model-value="settings[notif.key]"
                   color="primary"
@@ -227,43 +161,32 @@
                   :disabled="!isAdmin || saving"
                   @update:model-value="toggle(notif.key, $event)"
                 ></v-switch>
-              </template>
-            </v-list-item>
-          </v-list>
-        </v-card>
-      </v-col>
+              </div>
+            </v-card>
+          </v-col>
 
-      <!-- Security & Access -->
-      <v-col cols="12" md="6">
-        <v-card class="intelligence-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="orange-lighten-5" size="40" class="mr-3 rounded-0">
-              <v-icon color="orange-darken-2" size="20"
-                >mdi-shield-lock-outline</v-icon
-              >
-            </v-avatar>
-            <div>
-              <h3 class="text-title">{{ $t("security") }}</h3>
-              <p class="text-detail-tiny">{{ $t("security-desc") }}</p>
-            </div>
-          </div>
-          <v-divider class="mb-2 opacity-10"></v-divider>
-          <v-list class="bg-transparent">
-            <v-list-item class="px-0 py-1">
-              <template v-slot:prepend>
-                <div
-                  class="mr-3 d-flex align-center justify-center rounded-0 bg-grey-lighten-4"
-                  style="width: 32px; height: 32px"
-                >
-                  <v-icon color="secondary" size="16"
-                    >mdi-two-factor-authentication</v-icon
-                  >
+          <!-- Security -->
+          <v-col cols="12" lg="6">
+            <v-card class="panel h-100 fade-in" elevation="0">
+              <div class="panel-head">
+                <div class="d-flex align-center ga-3">
+                  <div class="section-icon" style="--sec-color: #b45309; --sec-tint: #fffbeb">
+                    <v-icon size="20">mdi-shield-lock-outline</v-icon>
+                  </div>
+                  <div>
+                    <div class="panel-title">{{ $t("security") }}</div>
+                    <div class="panel-sub">{{ $t("security-desc") }}</div>
+                  </div>
                 </div>
-              </template>
-              <v-list-item-title class="text-title-small">{{
-                $t("two-factor-auth")
-              }}</v-list-item-title>
-              <template v-slot:append>
+              </div>
+
+              <div class="info-row align-center">
+                <div class="info-row-icon">
+                  <v-icon size="16">mdi-two-factor-authentication</v-icon>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="info-row-value">{{ $t("two-factor-auth") }}</div>
+                </div>
                 <v-switch
                   :model-value="settings.two_factor"
                   color="primary"
@@ -273,65 +196,115 @@
                   :disabled="!isAdmin || saving"
                   @update:model-value="toggle('two_factor', $event)"
                 ></v-switch>
-              </template>
-            </v-list-item>
-          </v-list>
-        </v-card>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
 
     <!-- Edit school info -->
-    <v-dialog v-model="schoolDialog" width="460">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ $t("general-settings") }}</div>
-        <label class="text-detail-tiny mb-1 d-block">{{ $t("school-name") }}</label>
+    <v-dialog v-model="schoolDialog" width="480">
+      <v-card class="pa-5 pa-md-6">
+        <div class="d-flex align-center mb-5">
+          <div class="page-icon mr-3">
+            <v-icon size="20">mdi-school-outline</v-icon>
+          </div>
+          <div>
+            <div class="panel-title">{{ $t("general-settings") }}</div>
+            <div class="panel-sub">{{ $t("general-settings-desc") }}</div>
+          </div>
+        </div>
+
+        <label class="field-label">{{ $t("school-name") }}</label>
         <v-text-field
           v-model="schoolForm.school_name"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
+          prepend-inner-icon="mdi-school-outline"
         ></v-text-field>
-        <label class="text-detail-tiny mb-1 d-block">{{ $t("address") }}</label>
+        <label class="field-label">{{ $t("address") }}</label>
         <v-text-field
           v-model="schoolForm.address"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
+          prepend-inner-icon="mdi-map-marker-outline"
         ></v-text-field>
-        <label class="text-detail-tiny mb-1 d-block">{{ $t("phone") }}</label>
+        <label class="field-label">{{ $t("phone") }}</label>
         <v-text-field
           v-model="schoolForm.phone"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
+          prepend-inner-icon="mdi-phone-outline"
         ></v-text-field>
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="schoolDialog = false">{{ $t("cancel") }}</v-btn>
-          <v-btn color="primary" :loading="saving" @click="saveSchool">{{ $t("save") }}</v-btn>
+
+        <div class="form-actions">
+          <v-btn
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="schoolDialog = false"
+          >
+            {{ $t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveSchool"
+          >
+            {{ $t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
 
     <!-- Edit semester -->
-    <v-dialog v-model="semesterDialog" width="420">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ $t("semester") }}</div>
+    <v-dialog v-model="semesterDialog" width="440">
+      <v-card class="pa-5 pa-md-6">
+        <div class="d-flex align-center mb-5">
+          <div class="page-icon mr-3">
+            <v-icon size="20">mdi-calendar-range-outline</v-icon>
+          </div>
+          <div>
+            <div class="panel-title">{{ $t("semester") }}</div>
+            <div class="panel-sub">{{ $t("academic-config-desc") }}</div>
+          </div>
+        </div>
+
+        <label class="field-label">{{ $t("semester") }}</label>
         <v-text-field
           v-model="semesterForm"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          placeholder="Semester 1"
+          prepend-inner-icon="mdi-calendar-range-outline"
         ></v-text-field>
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="semesterDialog = false">{{ $t("cancel") }}</v-btn>
-          <v-btn color="primary" :loading="saving" @click="saveSemester">{{ $t("save") }}</v-btn>
+
+        <div class="form-actions">
+          <v-btn
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="semesterDialog = false"
+          >
+            {{ $t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
+            class="modern-action-btn primary"
+            :loading="saving"
+            @click="saveSemester"
+          >
+            {{ $t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -446,25 +419,54 @@ const saveSemester = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* School identity block at the top of the summary card */
+.school-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 8px 0 4px;
+}
+.school-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ds-navy) 0%, #0f4c7a 100%);
+  box-shadow: 0 14px 28px -16px rgba(10, 49, 84, 0.7);
+  margin-bottom: 14px;
+}
+.school-name {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--ds-text);
+  line-height: 1.25;
+  word-break: break-word;
+}
+.school-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ds-muted);
+  margin-top: 4px;
 }
 
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+/* Coloured icon square in the panel heads */
+.section-icon {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sec-color, var(--ds-navy));
+  background: var(--sec-tint, var(--ds-navy-tint));
 }
 
-:deep(.v-list-item-title) {
-  line-height: 1.2 !important;
-}
-
-:deep(.v-list-item-subtitle) {
-  opacity: 0.8;
-}
-
-/* Tighten switches */
+/* Tighten switches so the toggle rows stay compact */
 :deep(.v-switch__track) {
   height: 20px !important;
   width: 40px !important;
@@ -472,5 +474,8 @@ const saveSemester = async () => {
 :deep(.v-switch__thumb) {
   height: 14px !important;
   width: 14px !important;
+}
+:deep(.v-switch .v-selection-control) {
+  min-height: 0;
 }
 </style>

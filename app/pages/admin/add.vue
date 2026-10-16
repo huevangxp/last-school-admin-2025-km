@@ -1,260 +1,213 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
+  <div class="page page--narrow">
+    <PageHeader
+      :title="t('admin')"
+      :subtitle="t('role-account-status')"
+      icon="mdi-shield-account-outline"
+      :breadcrumbs="breadcrumbs"
+      back="/admin"
+    />
 
     <v-form ref="formRef" @submit.prevent="save">
-      <v-row>
-        <!-- Left: Identity & Photo -->
-        <v-col cols="12" lg="4">
-          <v-card class="intelligence-card pa-6 mb-6 text-center" elevation="0">
-            <div class="mb-6">
-              <h2 class="text-title mb-1">{{ t("admin") }}</h2>
-              <p class="text-detail">{{ t("admin-profile-photo") }}</p>
-            </div>
+      <v-card class="panel fade-in" elevation="0">
+        <!-- Photo -->
+        <div class="form-section">
+          <v-icon size="16">mdi-camera-outline</v-icon>
+          {{ t("admin-profile-photo") }}
+        </div>
 
-            <div class="d-flex flex-column align-center position-relative">
-              <v-avatar
-                size="160"
-                color="slate-50"
-                class="border-dashed rounded-0 overflow-hidden"
-              >
-                <v-img v-if="previewImage" :src="previewImage" cover alt=""></v-img>
-                <v-icon v-else size="48" color="slate-300"
-                  >mdi-camera-plus-outline</v-icon
-                >
-              </v-avatar>
+        <div class="photo-row mb-6">
+          <div class="photo-avatar" @click="triggerFileInput">
+            <v-img v-if="previewImage" :src="previewImage" cover alt=""></v-img>
+            <v-icon v-else size="36">mdi-camera-plus-outline</v-icon>
+            <span class="photo-edit">
+              <v-icon size="14">mdi-pencil</v-icon>
+            </span>
+          </div>
+          <div class="photo-meta">
+            <div class="cell-title">{{ t("image") }}</div>
+            <div class="field-hint mt-1">{{ t("recommended-photo-size") }}</div>
+            <v-btn
+              variant="flat"
+              size="small"
+              class="modern-action-btn secondary mt-3"
+              @click="triggerFileInput"
+            >
+              <v-icon start size="16">mdi-upload-outline</v-icon>
+              {{ t("image") }}
+            </v-btn>
+          </div>
+          <input
+            type="file"
+            ref="fileInput"
+            class="d-none"
+            accept="image/*"
+            @change="handleFileChange"
+          />
+        </div>
 
-              <v-btn
-                icon="mdi-pencil"
-                size="x-small"
-                color="primary"
-                class="position-absolute elevation-4"
-                style="bottom: 0px; right: 50%; transform: translateX(80px)"
-                @click="triggerFileInput"
-              ></v-btn>
+        <!-- Information -->
+        <div class="form-section">
+          <v-icon size="16">mdi-account-details-outline</v-icon>
+          {{ t("information") }}
+        </div>
 
-              <p class="text-detail-tiny mt-6 opacity-60">
-                {{ t("recommended-photo-size") }}
-              </p>
-              <input
-                type="file"
-                ref="fileInput"
-                class="d-none"
-                accept="image/*"
-                @change="handleFileChange"
-              />
-            </div>
-          </v-card>
+        <v-row>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("admin_name") }}</label>
+            <v-text-field
+              v-model="form.fullName"
+              :placeholder="t('enter-full-name')"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("username") }}</label>
+            <v-text-field
+              v-model="form.username"
+              :placeholder="t('enter-username')"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              prepend-inner-icon="mdi-at"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("gender") }}</label>
+            <v-select
+              v-model="form.gender"
+              :items="genderOptions"
+              :placeholder="t('select-gender')"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("phone") }}</label>
+            <v-text-field
+              v-model="form.phone"
+              placeholder="+856 20 ..."
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              prepend-inner-icon="mdi-phone-outline"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("dob") }}</label>
+            <DialogDate
+              v-model="showDob"
+              :date="form.dob"
+              @update:date="form.dob = $event"
+            />
+            <v-text-field
+              v-model="form.dob"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              prepend-inner-icon="mdi-calendar"
+              readonly
+              @click="showDob = true"
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-          <v-card class="intelligence-card pa-6" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="amber-lighten-5"
-                size="36"
-                class="mr-3 rounded-0"
-              >
-                <v-icon color="amber-darken-2" size="18"
-                  >mdi-shield-account-outline</v-icon
-                >
-              </v-avatar>
-              <div>
-                <h3 class="text-title">{{ t("access") }}</h3>
-                <p class="text-detail-tiny">{{ t("role-account-status") }}</p>
-              </div>
-            </div>
+        <!-- Access -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-shield-account-outline</v-icon>
+          {{ t("access") }}
+        </div>
 
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("role").toUpperCase()
-            }}</label>
+        <v-row>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("role") }}</label>
             <v-select
               v-model="form.role"
               :items="roleOptions"
               :placeholder="t('select-role')"
               variant="outlined"
-              density="compact"
-              class="mb-4"
+              density="comfortable"
               hide-details
             ></v-select>
-
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("status").toUpperCase()
-            }}</label>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("status") }}</label>
             <v-select
               v-model="form.status"
               :items="statusOptions"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
             ></v-select>
-          </v-card>
-        </v-col>
+          </v-col>
+        </v-row>
 
-        <!-- Right: Account Details -->
-        <v-col cols="12" lg="8">
-          <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="primary-lighten-5"
-                size="36"
-                class="mr-3 rounded-0"
-              >
-                <v-icon color="primary" size="18"
-                  >mdi-account-details-outline</v-icon
-                >
-              </v-avatar>
-              <h2 class="text-title">{{ t("information") }}</h2>
-            </div>
+        <!-- Password -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-lock-outline</v-icon>
+          {{ t("password") }}
+        </div>
 
-            <v-row class="ga-y-2">
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("admin_name").toUpperCase()
-                }}</label>
-                <v-text-field
-                  v-model="form.fullName"
-                  :placeholder="t('enter-full-name')"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("username").toUpperCase()
-                }}</label>
-                <v-text-field
-                  v-model="form.username"
-                  :placeholder="t('enter-username')"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("gender").toUpperCase()
-                }}</label>
-                <v-select
-                  v-model="form.gender"
-                  :items="genderOptions"
-                  :placeholder="t('select-gender')"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-select>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("phone").toUpperCase()
-                }}</label>
-                <v-text-field
-                  v-model="form.phone"
-                  placeholder="+856 20 ..."
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("dob").toUpperCase()
-                }}</label>
-                <DialogDate
-                  v-model="showDob"
-                  :date="form.dob"
-                  @update:date="form.dob = $event"
-                />
-                <v-text-field
-                  v-model="form.dob"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  prepend-inner-icon="mdi-calendar"
-                  readonly
-                  @click="showDob = true"
-                ></v-text-field>
-              </v-col>
-            </v-row>
+        <v-row>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("password") }}</label>
+            <v-text-field
+              v-model="form.password"
+              type="password"
+              placeholder="••••••••"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              prepend-inner-icon="mdi-lock-outline"
+            ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="6">
+            <label class="field-label">{{ t("confirmPassword") }}</label>
+            <v-text-field
+              v-model="form.confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              prepend-inner-icon="mdi-lock-check-outline"
+            ></v-text-field>
+          </v-col>
+        </v-row>
 
-            <v-alert
-              v-if="errorMessage"
-              type="error"
-              variant="tonal"
-              density="compact"
-              class="mt-4"
-              >{{ errorMessage }}</v-alert
-            >
-          </v-card>
+        <v-alert
+          v-if="errorMessage"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-5"
+          >{{ errorMessage }}</v-alert
+        >
 
-          <v-card class="intelligence-card pa-6 mb-8" elevation="0">
-            <div class="d-flex align-center mb-6">
-              <v-avatar
-                color="indigo-lighten-5"
-                size="36"
-                class="mr-3 rounded-0"
-              >
-                <v-icon color="indigo-darken-1" size="18"
-                  >mdi-lock-outline</v-icon
-                >
-              </v-avatar>
-              <h2 class="text-title">{{ t("password") }}</h2>
-            </div>
-
-            <v-row class="ga-y-2">
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("password").toUpperCase()
-                }}</label>
-                <v-text-field
-                  v-model="form.password"
-                  type="password"
-                  placeholder="••••••••"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <label class="text-detail-tiny mb-2 d-block">{{
-                  t("confirmPassword").toUpperCase()
-                }}</label>
-                <v-text-field
-                  v-model="form.confirmPassword"
-                  type="password"
-                  placeholder="••••••••"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-card>
-
-          <div class="d-flex justify-end ga-3">
-            <v-btn
-              variant="flat"
-              color="grey-lighten-4"
-              class="modern-action-btn secondary border text-slate-700"
-              height="40"
-              @click="$router.back()"
-            >
-              {{ t("cancel") }}
-            </v-btn>
-            <v-btn
-              variant="flat"
-              color="primary"
-              class="modern-action-btn primary elevation-4"
-              height="40"
-              type="submit"
-              :loading="loading"
-            >
-              {{ t("save") }}
-            </v-btn>
-          </div>
-        </v-col>
-      </v-row>
+        <div class="form-actions">
+          <v-btn
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="$router.back()"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
+            class="modern-action-btn primary"
+            type="submit"
+            :loading="loading"
+          >
+            <v-icon start size="18">mdi-content-save-outline</v-icon>
+            {{ t("save") }}
+          </v-btn>
+        </div>
+      </v-card>
     </v-form>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -369,33 +322,51 @@ const save = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Photo picker row: avatar on the left, hint + upload button on the right. */
+.photo-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.photo-avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+  border-radius: 24px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
+.photo-avatar:hover {
+  border-color: var(--ds-navy);
+  background: var(--ds-navy-tint);
 }
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+.photo-avatar .v-img {
+  width: 100%;
+  height: 100%;
 }
-
-.border-dashed {
-  border: 2px dashed #e2e8f0 !important;
+.photo-edit {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--ds-navy);
+  box-shadow: 0 4px 10px -4px rgba(10, 49, 84, 0.6);
 }
-
-.text-slate-700 {
-  color: #334155 !important;
+.photo-meta {
+  min-width: 0;
 }
 </style>

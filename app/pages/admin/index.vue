@@ -1,278 +1,235 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <!-- Quick Actions Bar: Intelligence Style -->
-    <div class="d-flex justify-end mb-6 fade-in">
-      <div class="action-stack d-flex ga-2">
+  <div class="page">
+    <PageHeader
+      :title="t('admin')"
+      :subtitle="t('role-account-status')"
+      icon="mdi-shield-account-outline"
+      :breadcrumbs="breadcrumbs"
+    >
+      <template #actions>
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
         </v-btn>
-
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          class="modern-action-btn primary"
           to="/admin/add"
         >
           <v-icon icon="mdi-plus" start size="18"></v-icon>
-          {{ t("add") }} {{ t("admin") }}
+          {{ t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Section: High-Signal Metrics -->
-    <v-row class="mb-6 ga-y-4 fade-in">
-      <v-col cols="12" sm="6" lg="3" v-for="(stat, i) in adminStats" :key="i">
-        <v-card elevation="0" class="metric-card h-100 overflow-hidden">
-          <div class="pa-4">
-            <div class="d-flex justify-space-between align-center">
-              <div class="d-flex align-center ga-3">
-                <div :class="`metric-icon-box bg-${stat.color}-lighten-5`">
-                  <v-icon
-                    :icon="stat.icon"
-                    :color="`${stat.color}-darken-2`"
-                    size="18"
-                  ></v-icon>
-                </div>
-                <div class="metric-info">
-                  <div class="text-detail mb-1">{{ stat.label }}</div>
-                  <div class="text-title">{{ stat.value }}</div>
-                </div>
-              </div>
-              <div class="trend-badge up">
-                <v-icon
-                  icon="mdi-arrow-top-right"
-                  size="10"
-                  class="mr-1"
-                ></v-icon>
-                LIVE
-              </div>
-            </div>
-          </div>
-          <div
-            class="metric-footer-line"
-            :style="`background: var(--v-${stat.color}-base)`"
-          ></div>
-        </v-card>
+    <!-- KPI tiles -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in adminStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="stat.color"
+          :tint="stat.tint"
+          :badge="t('live')"
+          pulse
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Repository: Intelligence Area -->
-    <v-card elevation="0" class="intelligence-card pa-6 fade-in">
-      <!-- Search & Contextual Filters -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 400px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-text-field>
+    <!-- Users table -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">{{ t("admin") }}</div>
+          <div class="panel-sub">{{ t("administrators-only") }}</div>
+        </div>
+        <span class="panel-chip">{{ filteredAdmins.length }} {{ t("total") }}</span>
+      </div>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
-          <v-select
-            :items="['All Roles', 'Super Admin', 'Admin', 'Moderator']"
+      <div class="px-4 px-md-5 pt-4 pt-md-5">
+        <div class="filter-bar mb-0">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
             variant="outlined"
             density="compact"
             hide-details
-            style="min-width: 150px"
+            class="filter-search"
+            color="primary"
+          ></v-text-field>
+
+          <v-select
+            v-model="roleFilter"
+            :items="roleFilterItems"
+            variant="outlined"
+            density="compact"
+            hide-details
             prepend-inner-icon="mdi-shield-lock-outline"
-            class="cream-select text-detail"
+            :label="t('role')"
           ></v-select>
 
           <v-select
-            :items="['All Statuses', 'Active', 'Inactive']"
+            v-model="statusFilter"
+            :items="statusFilterItems"
             variant="outlined"
             density="compact"
             hide-details
-            style="min-width: 140px"
-            class="cream-select text-detail"
+            prepend-inner-icon="mdi-list-status"
+            :label="t('status')"
           ></v-select>
-
-          <v-btn
-            variant="flat"
-            color="white"
-            class="modern-action-btn secondary border px-0"
-            height="40"
-            width="40"
-            min-width="40"
-          >
-            <v-icon icon="mdi-tune" size="18"></v-icon>
-          </v-btn>
         </div>
       </div>
 
-      <!-- Data Intelligence Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="admins"
-        :search="search"
-        class="premium-table"
-        hover
-      >
-        <!-- Administrator Identity Slot -->
-        <template v-slot:item.name="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              size="36"
-              class="mr-3 elevation-1 border-white"
+      <div class="table-wrap mt-4">
+        <v-data-table
+          :headers="headers"
+          :items="filteredAdmins"
+          :search="search"
+          class="premium-table admin-table"
+          hover
+        >
+          <!-- Identity -->
+          <template v-slot:item.name="{ item }">
+            <div class="d-flex align-center py-2">
+              <div class="avatar-chip mr-3">
+                <v-img v-if="item.image" :src="item.image" cover alt=""></v-img>
+                <span v-else>{{ (item.name || "?").charAt(0) }}</span>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title text-truncate">{{ item.name }}</div>
+                <div class="cell-sub text-truncate">{{ item.email }}</div>
+              </div>
+            </div>
+          </template>
+
+          <!-- ID -->
+          <template v-slot:item.id="{ item }">
+            <span class="code-chip">{{ item.id || "—" }}</span>
+          </template>
+
+          <!-- Role -->
+          <template v-slot:item.role="{ item }">
+            <div class="cell-title">{{ item.role }}</div>
+            <div class="cell-sub">{{ item.department }}</div>
+          </template>
+
+          <!-- Contact -->
+          <template v-slot:item.phone="{ item }">
+            <span class="cell-title font-weight-medium">{{ item.phone || "—" }}</span>
+          </template>
+
+          <!-- Status -->
+          <template v-slot:item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="
+                item.status === 'Active'
+                  ? 'status-pill--green'
+                  : item.status === 'Suspended'
+                    ? 'status-pill--red'
+                    : 'status-pill--grey'
+              "
             >
-              <v-img :src="item.image" cover alt=""></v-img>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.name }}</div>
-              <div class="text-detail-tiny">{{ item.email }}</div>
-            </div>
-          </div>
-        </template>
+              <span class="status-dot"></span>
+              {{
+                item.status === "Active"
+                  ? t("open")
+                  : item.status === "Suspended"
+                    ? t("closed")
+                    : t("inactive")
+              }}
+            </span>
+          </template>
 
-        <!-- Access Identifier Slot -->
-        <template v-slot:item.id="{ item }">
-          <span
-            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0 font-weight-black"
-          >
-            {{ item.id }}
-          </span>
-        </template>
-
-        <!-- Functional Role Slot -->
-        <template v-slot:item.role="{ item }">
-          <div>
-            <div class="text-title-small">{{ item.role }}</div>
-            <div class="text-detail-tiny text-grey">{{ item.department }}</div>
-          </div>
-        </template>
-
-        <!-- Communication Channel Slot -->
-        <template v-slot:item.phone="{ item }">
-          <div class="text-detail font-weight-bold">{{ item.phone }}</div>
-        </template>
-
-        <!-- Lifecycle Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="item.status === 'Active' ? 'success' : 'grey'"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === 'Active'
-              ? t('open')
-              : item.status === 'Suspended'
-                ? t('closed')
-                : t('inactive') }}
-          </v-chip>
-        </template>
-
-        <!-- Intelligence Actions Slot -->
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              @click="openEdit(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-trash-can-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="removeAdmin(item)"
-            ></v-btn>
-          </div>
-        </template>
-
-        <!-- Navigation Architecture Slot -->
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              Displaying 1-{{ admins.length }} of {{ admins.length }} security
-              records
-            </div>
-            <div class="d-flex gap-1 align-center">
+          <!-- Actions -->
+          <template v-slot:item.actions="{ item }">
+            <div class="row-actions">
               <v-btn
-                icon="mdi-chevron-left"
+                icon="mdi-pencil-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
-              ></v-btn>
-              <v-btn
+                size="small"
                 color="primary"
-                size="x-small"
-                variant="flat"
-                class="font-weight-black rounded-0"
-                style="min-width: 24px; height: 24px"
-              >
-                1
-              </v-btn>
+                @click="openEdit(item)"
+              ></v-btn>
               <v-btn
-                icon="mdi-chevron-right"
+                icon="mdi-trash-can-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
+                size="small"
+                color="error"
+                @click="removeAdmin(item)"
               ></v-btn>
             </div>
-          </div>
-        </template>
-      </v-data-table>
+          </template>
+
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-shield-account-outline"
+                :title="t('no-results-found')"
+                :description="t('no-data')"
+              />
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
-    <!-- Edit User Dialog -->
-    <v-dialog v-model="editDialog" width="480">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ t("edit") }} {{ t("admin") }}</div>
-        <label class="text-detail-tiny mb-1 d-block">{{ t("name") }}</label>
+    <!-- Edit user dialog -->
+    <v-dialog v-model="editDialog" width="520">
+      <v-card class="pa-5 pa-md-6">
+        <div class="d-flex align-center mb-5">
+          <div class="page-icon mr-3">
+            <v-icon size="20">mdi-account-edit-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("edit") }}</div>
+            <div class="panel-sub text-truncate">{{ editForm.full_name }}</div>
+          </div>
+        </div>
+
+        <label class="field-label">{{ t("name") }}</label>
         <v-text-field
           v-model="editForm.full_name"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
-        <v-row>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">{{ t("role") }}</label>
+
+        <v-row dense>
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("role") }}</label>
             <v-select
               v-model="editForm.role"
-              :items="['teacher', 'admin']"
+              :items="editRoleItems"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
             ></v-select>
           </v-col>
-          <v-col cols="6">
-            <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+          <v-col cols="12" sm="6">
+            <label class="field-label">{{ t("status") }}</label>
             <v-select
               v-model="editForm.status"
-              :items="['active', 'inactive']"
+              :items="editStatusItems"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               hide-details
             ></v-select>
           </v-col>
         </v-row>
-        <label class="text-detail-tiny mb-1 mt-3 d-block">{{ t("phone") }}</label>
+
+        <label class="field-label mt-4">{{ t("phone") }}</label>
         <v-text-field
           v-model="editForm.phone_number"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
         ></v-text-field>
 
@@ -285,21 +242,26 @@
           >{{ editError }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="editDialog = false">{{
-            t("cancel")
-          }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="editDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="saveEdit"
-            >{{ t("save") }}</v-btn
           >
+            {{ t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -324,34 +286,43 @@ onMounted(() => {
   teacherStore.fetchTeachers(100, 1);
 });
 
+const breadcrumbs = [
+  { title: t("dashboard"), disabled: false, to: "/" },
+  { title: t("admin"), disabled: true, to: "/admin" },
+];
+
 const adminStats = computed(() => [
   {
-    label: "Total Users",
+    label: t("total"),
     value: String(teacherStore.total),
     icon: "mdi-shield-account",
-    color: "blue",
+    color: "#0A3154",
+    tint: "#E6ECF2",
   },
   {
-    label: "Active",
+    label: t("active"),
     value: String(teacherStore.activeCount),
     icon: "mdi-check-circle",
-    color: "green",
+    color: "#059669",
+    tint: "#ECFDF5",
   },
   {
-    label: "Admins",
+    label: t("administrator"),
     value: String(
       teacherStore.teachers.filter((u) => u.role === "admin").length
     ),
     icon: "mdi-crown",
-    color: "purple",
+    color: "#4F46E5",
+    tint: "#EEF2FF",
   },
   {
-    label: "Inactive",
+    label: t("inactive"),
     value: String(
       teacherStore.teachers.filter((u) => u.status !== "active").length
     ),
     icon: "mdi-clock-outline",
-    color: "orange",
+    color: "#D97706",
+    tint: "#FFFBEB",
   },
 ]);
 
@@ -362,7 +333,7 @@ const headers = [
     align: "start" as const,
     sortable: true,
   },
-  { title: "ACCESS ID", key: "id", align: "start" as const, sortable: true },
+  { title: t("id"), key: "id", align: "start" as const, sortable: true },
   { title: t("role"), key: "role", align: "start" as const, sortable: true },
   {
     title: t("contact"),
@@ -414,6 +385,36 @@ const admins = computed(() =>
     statusRaw: u.status,
   }))
 );
+
+// ---- Presentation-only role / status filters for the table ----
+const roleFilter = ref<string>("");
+const statusFilter = ref<string>("");
+const roleFilterItems = computed(() => [
+  { title: t("all-roles"), value: "" },
+  { title: t("administrator"), value: "admin" },
+  { title: t("teacher"), value: "teacher" },
+]);
+const statusFilterItems = computed(() => [
+  { title: t("all-statuses"), value: "" },
+  { title: t("active"), value: "active" },
+  { title: t("inactive"), value: "inactive" },
+]);
+const filteredAdmins = computed(() =>
+  admins.value.filter(
+    (a) =>
+      (!roleFilter.value || a.roleRaw === roleFilter.value) &&
+      (!statusFilter.value || a.statusRaw === statusFilter.value)
+  )
+);
+// Translated labels for the edit dialog selects (values unchanged).
+const editRoleItems = computed(() => [
+  { title: t("teacher"), value: "teacher" },
+  { title: t("administrator"), value: "admin" },
+]);
+const editStatusItems = computed(() => [
+  { title: t("active"), value: "active" },
+  { title: t("inactive"), value: "inactive" },
+]);
 
 // ---- Edit / Delete ----
 const editDialog = ref(false);
@@ -481,95 +482,17 @@ const removeAdmin = async (item: any) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Columns keep a sensible minimum width; .table-wrap scrolls horizontally on
+   phones instead of squashing the cells. */
+.admin-table {
+  min-width: 720px;
 }
-
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition: transform 0.3s ease;
+.admin-table :deep(.v-data-table__td:first-child),
+.admin-table :deep(.v-data-table__th:first-child) {
+  padding-left: 20px;
 }
-
-.metric-card:hover {
-  transform: translateY(-2px);
-}
-
-.metric-icon-box {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.trend-badge {
-  display: flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.trend-badge.up {
-  background: #f0fdf4;
-  color: #16a34a;
-}
-.trend-badge.down {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-.metric-footer-line {
-  height: 3px;
-  width: 100%;
-  opacity: 0.15;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.intelligence-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
-}
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
-}
-
-.gap-4 {
-  gap: 16px;
+.admin-table :deep(.v-data-table__td:last-child),
+.admin-table :deep(.v-data-table__th:last-child) {
+  padding-right: 20px;
 }
 </style>
