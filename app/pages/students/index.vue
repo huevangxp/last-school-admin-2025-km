@@ -1,13 +1,16 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <!-- Quick Actions Bar: Intelligence Style -->
-    <div class="d-flex justify-end mb-6 fade-in">
-      <div class="action-stack d-flex ga-2">
+  <div class="page">
+    <!-- Header: title, breadcrumbs and primary actions -->
+    <PageHeader
+      :title="t('students')"
+      :subtitle="t('enrolled-students')"
+      icon="mdi-account-group-outline"
+      :breadcrumbs="breadcrumbs"
+    >
+      <template #actions>
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
@@ -16,75 +19,60 @@
 
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          class="modern-action-btn primary"
           to="/students/add"
         >
           <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ t("enroll") }} {{ t("students") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Section: High-Signal Metrics -->
-    <v-row class="mb-6 ga-y-4 fade-in">
-      <v-col cols="12" sm="6" lg="3" v-for="(stat, i) in studentStats" :key="i">
-        <v-card elevation="0" class="metric-card h-100 overflow-hidden">
-          <div class="pa-4">
-            <div class="d-flex justify-space-between align-center">
-              <div class="d-flex align-center ga-3">
-                <div :class="`metric-icon-box bg-${stat.color}-lighten-5`">
-                  <v-icon
-                    :icon="stat.icon"
-                    :color="`${stat.color}-darken-2`"
-                    size="18"
-                  ></v-icon>
-                </div>
-                <div class="metric-info">
-                  <div class="text-detail mb-1">{{ stat.label }}</div>
-                  <div class="text-title">{{ stat.value }}</div>
-                </div>
-              </div>
-              <div class="trend-badge up">
-                <v-icon
-                  icon="mdi-arrow-top-right"
-                  size="10"
-                  class="mr-1"
-                ></v-icon>
-                {{ t("live") }}
-              </div>
-            </div>
-          </div>
-          <div
-            class="metric-footer-line"
-            :style="`background: var(--v-${stat.color}-base)`"
-          ></div>
-        </v-card>
+    <!-- KPI cards (2 per row on phones, 4 on desktop) -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in studentStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+          :badge="t('live')"
+          pulse
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Repository: Intelligence Area -->
-    <v-card elevation="0" class="intelligence-card pa-6 fade-in">
-      <!-- Search & Contextual Filters -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-8 gap-4"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 400px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-text-field>
+    <!-- Student list -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div class="min-w-0">
+          <div class="panel-title">{{ t("students") }}</div>
+          <div class="panel-sub">
+            {{ t("showing") }} 1 {{ t("to") }} {{ students.length }}
+            {{ t("of") }} {{ studentStore.total }} {{ t("records") }}
+          </div>
+        </div>
+        <span class="panel-chip panel-chip--teal">
+          {{ filteredStudents.length }} {{ t("total") }}
+        </span>
+      </div>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
+      <!-- Search + contextual filters -->
+      <div class="list-toolbar">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            clearable
+            color="primary"
+            class="filter-search"
+          ></v-text-field>
+
           <v-select
             v-model="selectedClass"
             :items="classOptions"
@@ -93,9 +81,8 @@
             variant="outlined"
             density="compact"
             hide-details
-            style="min-width: 170px"
+            color="primary"
             prepend-inner-icon="mdi-google-classroom"
-            class="cream-select text-detail"
             :no-data-text="t('no-classrooms')"
           ></v-select>
 
@@ -107,167 +94,123 @@
             variant="outlined"
             density="compact"
             hide-details
-            style="min-width: 150px"
+            color="primary"
             prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
           ></v-select>
         </div>
+
+        <v-alert
+          v-if="studentStore.error"
+          type="error"
+          variant="tonal"
+          density="compact"
+          rounded="lg"
+          class="mb-4"
+        >
+          {{ studentStore.error }}
+        </v-alert>
       </div>
 
-      <v-alert
-        v-if="studentStore.error"
-        type="error"
-        variant="tonal"
-        density="compact"
-        class="mb-4"
-        >{{ studentStore.error }}</v-alert
-      >
-
-      <!-- Data Intelligence Grid -->
-      <v-data-table
-        :headers="headers"
-        :items="filteredStudents"
-        :search="search"
-        :loading="studentStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">{{ t("no-students-found") }}</div>
-        </template>
-        <!-- Student Identity Slot -->
-        <template v-slot:item.name="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              size="36"
-              class="mr-3 elevation-1 border-white"
-              color="primary-lighten-5"
-            >
-              <v-img v-if="item.avatar" :src="item.avatar" cover alt=""></v-img>
-              <v-icon v-else color="primary" size="20">mdi-account</v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.name }}</div>
-              <div class="text-detail-tiny">{{ item.email }}</div>
+      <!-- Data table (scrolls horizontally inside the card on small screens) -->
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="filteredStudents"
+          :search="search"
+          :loading="studentStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-account-search-outline"
+                :title="t('no-students-found')"
+              />
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- Academic Identifier Slot -->
-        <template v-slot:item.studentId="{ item }">
-          <span
-            class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0 font-weight-black"
-          >
-            {{ item.studentId }}
-          </span>
-        </template>
-
-        <!-- Curricular Level Slot -->
-        <template v-slot:item.grade="{ item }">
-          <div>
-            <div class="text-title-small">{{ item.className }}</div>
-            <div class="text-detail-tiny text-grey">
-              {{ item.gradeName }}
+          <!-- Student identity -->
+          <template v-slot:item.name="{ item }">
+            <div class="d-flex align-center ga-3 py-2">
+              <div class="avatar-chip">
+                <v-img
+                  v-if="item.avatar"
+                  :src="item.avatar"
+                  cover
+                  alt=""
+                  width="36"
+                  height="36"
+                ></v-img>
+                <v-icon v-else size="18">mdi-account</v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title text-truncate">{{ item.name }}</div>
+                <div class="cell-sub text-truncate">{{ item.email }}</div>
+              </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- Guardian Intelligence Slot -->
-        <template v-slot:item.parentContact="{ item }">
-          <div>
-            <div class="text-detail font-weight-bold">
-              {{ item.parentContact }}
-            </div>
-            <div class="text-detail-tiny text-grey">{{ item.parentName }}</div>
-          </div>
-        </template>
+          <!-- Student ID -->
+          <template v-slot:item.studentId="{ item }">
+            <span class="code-chip">{{ item.studentId }}</span>
+          </template>
 
-        <!-- Lifecycle Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="getStatusColor(item.status)"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === 'Active' ? t('open') : t('closed') }}
-          </v-chip>
-        </template>
+          <!-- Class / grade -->
+          <template v-slot:item.grade="{ item }">
+            <div class="cell-title">{{ item.className }}</div>
+            <div class="cell-sub">{{ item.gradeName }}</div>
+          </template>
 
-        <!-- Intelligence Actions Slot -->
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              :icon="
-                item.statusRaw === 'active'
-                  ? 'mdi-account-cancel-outline'
-                  : 'mdi-account-check-outline'
-              "
-              variant="text"
-              size="x-small"
-              :color="item.statusRaw === 'active' ? 'warning' : 'success'"
-              :title="item.statusRaw === 'active' ? t('closed') : t('open')"
-              @click="requestToggle(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              :to="`/students/edit/${item.uuid}`"
-            ></v-btn>
-            <v-btn
-              icon="mdi-trash-can-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="requestDelete(item)"
-            ></v-btn>
-          </div>
-        </template>
+          <!-- Guardian -->
+          <template v-slot:item.parentContact="{ item }">
+            <div class="cell-title">{{ item.parentContact }}</div>
+            <div class="cell-sub">{{ item.parentName }}</div>
+          </template>
 
-        <!-- Navigation Architecture Slot -->
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              {{ t("showing") }} 1 {{ t("to") }} {{ students.length }}
-              {{ t("of") }} {{ studentStore.total }} {{ t("records") }}
-            </div>
-            <div class="d-flex gap-1 align-center">
+          <!-- Status -->
+          <template v-slot:item.status="{ item }">
+            <span class="status-pill" :class="statusPillClass(item.status)">
+              <span class="status-dot"></span>
+              {{ item.status === "Active" ? t("open") : t("closed") }}
+            </span>
+          </template>
+
+          <!-- Row actions -->
+          <template v-slot:item.actions="{ item }">
+            <div class="row-actions">
               <v-btn
-                icon="mdi-chevron-left"
+                :icon="
+                  item.statusRaw === 'active'
+                    ? 'mdi-account-cancel-outline'
+                    : 'mdi-account-check-outline'
+                "
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
+                size="small"
+                :color="item.statusRaw === 'active' ? 'warning' : 'success'"
+                :title="item.statusRaw === 'active' ? t('closed') : t('open')"
+                @click="requestToggle(item)"
               ></v-btn>
               <v-btn
+                icon="mdi-pencil-outline"
+                variant="text"
+                size="small"
                 color="primary"
-                size="x-small"
-                variant="flat"
-                class="font-weight-black rounded-0"
-                style="min-width: 24px; height: 24px"
-              >
-                1
-              </v-btn>
+                :title="t('edit')"
+                :to="`/students/edit/${item.uuid}`"
+              ></v-btn>
               <v-btn
+                icon="mdi-trash-can-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
-                class="font-weight-black"
-                style="min-width: 24px; height: 24px"
-              >
-                2
-              </v-btn>
-              <v-btn
-                icon="mdi-chevron-right"
-                variant="text"
-                color="grey-darken-1"
-                size="x-small"
+                size="small"
+                color="error"
+                :title="t('delete')"
+                @click="requestDelete(item)"
               ></v-btn>
             </div>
-          </div>
-        </template>
-      </v-data-table>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Confirm popup for delete / block -->
@@ -281,7 +224,7 @@
       :loading="confirm.loading"
       @confirm="runConfirm"
     />
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -549,94 +492,43 @@ const getStatusColor = (status: string) => {
   }
 };
 
+// Presentation-only: hex accents for the StatCard tiles, keyed by the colour
+// names used in `studentStats`.
+const statPalette: Record<string, { color: string; tint: string }> = {
+  blue: { color: "#0A3154", tint: "#E6ECF2" },
+  green: { color: "#10B981", tint: "#ECFDF5" },
+  purple: { color: "#7C3AED", tint: "#F5F3FF" },
+  orange: { color: "#F59E0B", tint: "#FFFBEB" },
+};
+
+// Presentation-only: status-pill modifier class for a lifecycle status.
+const statusPillClass = (status: string) => {
+  switch ((status || "").toLowerCase()) {
+    case "active":
+      return "status-pill--green";
+    case "graduated":
+      return "status-pill--indigo";
+    case "block":
+      return "status-pill--red";
+    default:
+      return "status-pill--grey";
+  }
+};
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Padded area (filters + alert) above the table inside the flush panel. */
+.list-toolbar {
+  padding: 16px 16px 0;
+}
+@media (min-width: 960px) {
+  .list-toolbar {
+    padding: 20px 24px 0;
+  }
 }
 
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition: transform 0.3s ease;
-}
-
-.metric-card:hover {
-  transform: translateY(-2px);
-}
-
-.metric-icon-box {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.trend-badge {
-  display: flex;
-  align-items: center;
-  padding: 2px 8px;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.trend-badge.up {
-  background: #f0fdf4;
-  color: #16a34a;
-}
-.trend-badge.down {
-  background: #fef2f2;
-  color: #dc2626;
-}
-
-.metric-footer-line {
-  height: 3px;
-  width: 100%;
-  opacity: 0.15;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.intelligence-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
-}
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
+/* Keep the table readable on phones; .table-wrap scrolls it horizontally. */
+.table-wrap :deep(table) {
+  min-width: 760px;
 }
 </style>
