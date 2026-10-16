@@ -1,43 +1,25 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="headerTitle"
+      :subtitle="t('timetable-subtitle')"
+      :icon="headerIcon"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="indigo-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="indigo-darken-2" size="22">{{ headerIcon }}</v-icon>
-        </v-avatar>
-        <div>
-          <div class="text-title">{{ headerTitle }}</div>
-          <div class="text-detail">
-            {{ t("timetable-subtitle") }}
-          </div>
-        </div>
-      </div>
-      <div class="d-flex align-center ga-2 mt-3 mt-md-0">
+      <template #actions>
         <!-- Only students are read-only; teachers can edit their own subjects. -->
-        <v-chip
-          v-if="isStudent"
-          size="small"
-          color="indigo-lighten-5"
-          class="text-indigo-darken-2 font-weight-bold"
-          variant="flat"
-        >
-          <v-icon start size="14">mdi-eye-outline</v-icon>
+        <span v-if="isStudent" class="status-pill status-pill--indigo view-only-pill">
+          <v-icon size="14">mdi-eye-outline</v-icon>
           {{ t("view_only") }}
-        </v-chip>
+        </span>
 
         <!-- Export / print the current timetable -->
         <v-menu v-if="ready">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              variant="tonal"
-              color="indigo-darken-2"
-              size="small"
+              variant="flat"
+              class="modern-action-btn secondary"
               :loading="exporting"
             >
               <v-icon start size="18">mdi-tray-arrow-down</v-icon>
@@ -45,12 +27,10 @@
               <v-icon end size="16">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
-          <v-list density="compact" min-width="200">
+          <v-list density="compact" min-width="200" class="rounded-lg">
             <v-list-item @click="exportExcel">
               <template v-slot:prepend>
-                <v-icon size="18" color="green-darken-2">
-                  mdi-file-excel-outline
-                </v-icon>
+                <v-icon size="18" color="success">mdi-file-excel-outline</v-icon>
               </template>
               <v-list-item-title class="text-detail">
                 {{ t("download_excel") }}
@@ -58,9 +38,7 @@
             </v-list-item>
             <v-list-item @click="exportImage">
               <template v-slot:prepend>
-                <v-icon size="18" color="blue-darken-2">
-                  mdi-file-image-outline
-                </v-icon>
+                <v-icon size="18" color="info">mdi-file-image-outline</v-icon>
               </template>
               <v-list-item-title class="text-detail">
                 {{ t("download_image") }}
@@ -68,9 +46,7 @@
             </v-list-item>
             <v-list-item @click="exportPdf">
               <template v-slot:prepend>
-                <v-icon size="18" color="red-darken-2">
-                  mdi-file-pdf-box
-                </v-icon>
+                <v-icon size="18" color="error">mdi-file-pdf-box</v-icon>
               </template>
               <v-list-item-title class="text-detail">
                 {{ t("download_pdf") }}
@@ -79,7 +55,7 @@
             <v-divider class="my-1"></v-divider>
             <v-list-item @click="printTimetable">
               <template v-slot:prepend>
-                <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
+                <v-icon size="18">mdi-printer</v-icon>
               </template>
               <v-list-item-title class="text-detail">
                 {{ t("print") }}
@@ -87,12 +63,12 @@
             </v-list-item>
           </v-list>
         </v-menu>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <!-- Filters -->
-    <v-card elevation="0" class="intelligence-card pa-4 mb-6">
-      <div class="d-flex flex-column flex-md-row gap-3">
+    <v-card elevation="0" class="panel fade-in mb-4">
+      <div class="filter-bar mb-0">
         <!-- Study page: class picker. Students are locked to their own class. -->
         <v-select
           v-if="!isTeachingTab"
@@ -102,11 +78,10 @@
           item-value="id"
           :label="t('class')"
           variant="outlined"
-          density="compact"
-          class="mb-4 mb-md-0"
+          density="comfortable"
           hide-details
-          style="max-width: 260px"
           color="primary"
+          class="filter-select"
           prepend-inner-icon="mdi-google-classroom"
           :disabled="isStudent"
         ></v-select>
@@ -121,11 +96,10 @@
           item-value="id"
           :label="t('teacher')"
           variant="outlined"
-          density="compact"
-          class="mb-4 mb-md-0"
+          density="comfortable"
           hide-details
-          style="max-width: 260px"
           color="primary"
+          class="filter-select"
           prepend-inner-icon="mdi-account-tie"
         ></v-select>
 
@@ -136,22 +110,21 @@
           item-value="id"
           :label="t('academic')"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          style="max-width: 220px"
           color="primary"
+          class="filter-select"
           prepend-inner-icon="mdi-calendar-check"
         ></v-select>
       </div>
     </v-card>
 
     <!-- Prompt to choose a class / teacher -->
-    <v-card
-      v-if="!ready"
-      elevation="0"
-      class="intelligence-card pa-10 text-center text-detail"
-    >
-      {{ isTeachingTab ? t("pick-teacher-and-year") : t("pick-class-and-year") }}
+    <v-card v-if="!ready" elevation="0" class="panel fade-in">
+      <EmptyState
+        icon="mdi-calendar-search"
+        :title="isTeachingTab ? t('pick-teacher-and-year') : t('pick-class-and-year')"
+      />
     </v-card>
 
     <template v-else>
@@ -161,7 +134,7 @@
         type="info"
         variant="tonal"
         density="compact"
-        class="mb-4"
+        class="mb-4 rounded-lg"
       >
         {{
           isTeachingTab
@@ -173,12 +146,58 @@
         </NuxtLink>
       </v-alert>
 
-      <!-- Timetable grid — full weekly table on tablet/desktop -->
+      <!-- Phone toolbar: day selector for the day list, plus a switch between
+           the one-day list and the full (scrollable) weekly board. -->
+      <div class="d-md-none phone-toolbar fade-in">
+        <v-chip-group
+          v-if="phoneView === 'day'"
+          v-model="selectedDayIdx"
+          mandatory
+          class="day-chips"
+          selected-class="day-chip-on"
+        >
+          <v-chip
+            v-for="(d, i) in days"
+            :key="d.key"
+            :value="i"
+            variant="flat"
+            size="small"
+            class="font-weight-bold"
+          >
+            {{ t(d.key) }}
+          </v-chip>
+        </v-chip-group>
+        <v-btn-toggle
+          v-model="phoneView"
+          mandatory
+          density="compact"
+          variant="outlined"
+          color="primary"
+          divided
+          class="phone-view-toggle"
+        >
+          <v-btn value="day" icon="mdi-view-day-outline" size="small"></v-btn>
+          <v-btn value="week" icon="mdi-view-week-outline" size="small"></v-btn>
+        </v-btn-toggle>
+      </div>
+
+      <!-- Weekly board — always on tablet/desktop; on phones when the week
+           view is selected (scrolls horizontally inside .table-wrap). -->
       <v-card
         elevation="0"
-        class="intelligence-card pa-0 overflow-hidden d-none d-md-block"
+        class="panel panel--flush fade-in"
+        :class="{ 'd-none d-md-block': phoneView === 'day' }"
       >
-        <div class="timetable-wrap">
+        <div class="panel-head">
+          <div class="min-w-0">
+            <div class="panel-title">{{ scopeLabel || headerTitle }}</div>
+            <div class="panel-sub">{{ yearLabel || t("academic") }}</div>
+          </div>
+          <span class="panel-chip panel-chip--teal">
+            {{ scheduleStore.periods.length }} {{ t("period") }}
+          </span>
+        </div>
+        <div class="table-wrap">
           <table class="timetable">
             <thead>
               <tr>
@@ -189,8 +208,8 @@
             <tbody>
               <tr v-for="p in scheduleStore.periods" :key="p.id">
                 <td class="period-col">
-                  <div class="text-title-small">{{ p.period_name }}</div>
-                  <div class="text-detail-tiny">{{ p.period_code }}</div>
+                  <div class="period-name">{{ p.period_name }}</div>
+                  <div class="period-code">{{ p.period_code }}</div>
                 </td>
                 <td
                   v-for="d in days"
@@ -214,9 +233,7 @@
                         {{ secondaryOf(cellFor(p.id, d.key)) }}
                       </div>
                     </template>
-                    <v-icon v-else size="18" color="grey-lighten-1">
-                      mdi-plus
-                    </v-icon>
+                    <v-icon v-else size="18" class="cell-plus">mdi-plus</v-icon>
                   </div>
 
                   <!-- Teacher / admin study board: pick from existing assignments -->
@@ -238,12 +255,10 @@
                             {{ secondaryOf(cellFor(p.id, d.key)) }}
                           </div>
                         </template>
-                        <v-icon v-else size="18" color="grey-lighten-1">
-                          mdi-plus
-                        </v-icon>
+                        <v-icon v-else size="18" class="cell-plus">mdi-plus</v-icon>
                       </div>
                     </template>
-                    <v-list density="compact" class="pa-1" min-width="220">
+                    <v-list density="compact" class="pa-1 rounded-lg" min-width="220">
                       <v-list-subheader class="text-detail-tiny">
                         {{ t("subject") }} —
                         {{ isTeachingTab ? t("class") : t("teacher") }}
@@ -254,7 +269,7 @@
                         @click="assignCell(p.id, d.key, opt.id)"
                       >
                         <v-list-item-title class="text-detail">
-                          <span class="font-weight-bold text-teal-darken-2">{{
+                          <span class="font-weight-bold option-subject">{{
                             opt.subject
                           }}</span>
                           · {{ opt.secondary }}
@@ -294,9 +309,7 @@
                         {{ secondaryOf(cellFor(p.id, d.key)) }}
                       </div>
                     </template>
-                    <span v-else class="text-detail-tiny text-grey-lighten-1"
-                      >—</span
-                    >
+                    <span v-else class="cell-empty">—</span>
                   </div>
                 </td>
               </tr>
@@ -305,37 +318,18 @@
         </div>
       </v-card>
 
-      <!-- Mobile: one day at a time — a day selector plus a vertical list of
-           periods. Replaces the wide horizontally-scrolling table on phones. -->
-      <div class="d-md-none">
-        <v-chip-group
-          v-model="selectedDayIdx"
-          mandatory
-          class="day-chips mb-3"
-          selected-class="day-chip-on"
-        >
-          <v-chip
-            v-for="(d, i) in days"
-            :key="d.key"
-            :value="i"
-            variant="flat"
-            size="small"
-            class="font-weight-bold"
-          >
-            {{ t(d.key) }}
-          </v-chip>
-        </v-chip-group>
-
+      <!-- Phone day list: one day at a time, a vertical list of periods. -->
+      <div v-if="phoneView === 'day'" class="d-md-none fade-in">
         <v-card
           v-for="p in scheduleStore.periods"
           :key="p.id"
           elevation="0"
-          class="intelligence-card mb-2 overflow-hidden"
+          class="panel panel--flush mb-2"
         >
-          <div class="mobile-row d-flex align-stretch">
+          <div class="mobile-row">
             <div class="mobile-period-badge">
-              <div class="text-title-small">{{ p.period_name }}</div>
-              <div class="text-detail-tiny">{{ p.period_code }}</div>
+              <div class="period-name">{{ p.period_name }}</div>
+              <div class="period-code">{{ p.period_code }}</div>
             </div>
 
             <!-- Admin teaching board: tap opens the add/change dialog -->
@@ -353,10 +347,7 @@
                   {{ secondaryOf(cellFor(p.id, currentDayKey)) }}
                 </div>
               </template>
-              <span
-                v-else
-                class="text-primary font-weight-bold d-inline-flex align-center"
-              >
+              <span v-else class="mobile-add">
                 <v-icon size="16" start>mdi-plus</v-icon>{{ t("add") }}
               </span>
             </div>
@@ -377,15 +368,12 @@
                       {{ secondaryOf(cellFor(p.id, currentDayKey)) }}
                     </div>
                   </template>
-                  <span
-                    v-else
-                    class="text-primary font-weight-bold d-inline-flex align-center"
-                  >
+                  <span v-else class="mobile-add">
                     <v-icon size="16" start>mdi-plus</v-icon>{{ t("add") }}
                   </span>
                 </div>
               </template>
-              <v-list density="compact" class="pa-1" min-width="220">
+              <v-list density="compact" class="pa-1 rounded-lg" min-width="220">
                 <v-list-subheader class="text-detail-tiny">
                   {{ t("subject") }} —
                   {{ isTeachingTab ? t("class") : t("teacher") }}
@@ -396,7 +384,7 @@
                   @click="assignCell(p.id, currentDayKey, opt.id)"
                 >
                   <v-list-item-title class="text-detail">
-                    <span class="font-weight-bold text-teal-darken-2">{{
+                    <span class="font-weight-bold option-subject">{{
                       opt.subject
                     }}</span>
                     · {{ opt.secondary }}
@@ -436,7 +424,7 @@
                   {{ secondaryOf(cellFor(p.id, currentDayKey)) }}
                 </div>
               </template>
-              <span v-else class="text-detail-tiny text-grey-lighten-1">—</span>
+              <span v-else class="cell-empty">—</span>
             </div>
           </div>
         </v-card>
@@ -446,41 +434,39 @@
     <!-- Inline add/change teaching time (admin, teaching board) -->
     <v-dialog v-model="addDialog" max-width="440">
       <v-card class="pa-2">
-        <v-card-title class="d-flex align-center text-title-small">
-          <v-icon start size="20" color="indigo-darken-2">
-            mdi-clock-plus-outline
-          </v-icon>
+        <v-card-title class="d-flex align-center panel-title">
+          <v-icon start size="20" color="primary">mdi-clock-plus-outline</v-icon>
           {{ addDialogCell ? t("change_teaching_time") : t("add_teaching_time") }}
         </v-card-title>
-        <v-card-subtitle class="text-detail-tiny">
+        <v-card-subtitle class="panel-sub">
           {{ currentTeacherLabel }}<template v-if="addSlotLabel"> · {{ addSlotLabel }}</template>
         </v-card-subtitle>
         <v-card-text class="pt-4">
+          <label class="field-label">{{ t("class") }}</label>
           <v-select
             v-model="addClassId"
             :items="classOptions"
             item-title="label"
             item-value="id"
-            :label="t('class')"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
-            class="mb-3"
+            class="mb-4"
             prepend-inner-icon="mdi-google-classroom"
           ></v-select>
+          <label class="field-label">{{ t("subject") }}</label>
           <v-select
             v-model="addSubjectId"
             :items="subjectOptions"
             item-title="label"
             item-value="id"
-            :label="t('subject')"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
             prepend-inner-icon="mdi-book-open-variant"
           ></v-select>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="px-4 pb-3">
           <v-btn
             v-if="addDialogCell"
             color="error"
@@ -494,8 +480,8 @@
             {{ t("cancel") }}
           </v-btn>
           <v-btn
-            color="primary"
             variant="flat"
+            class="modern-action-btn primary"
             :disabled="!addClassId || !addSubjectId"
             :loading="adding"
             @click="addTeachingTime"
@@ -505,7 +491,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -596,6 +582,9 @@ const selectedDayIdx = ref(jsDay >= 1 && jsDay <= 5 ? jsDay - 1 : 0);
 const currentDayKey = computed(
   () => days[selectedDayIdx.value]?.key || "monday"
 );
+// Phones can switch between the one-day list and the full weekly board
+// (presentation only; tablets and desktops always show the board).
+const phoneView = ref<"day" | "week">("day");
 
 // Study board picks a class; Teaching board picks a teacher (admins) or is
 // locked to the logged-in teacher.
@@ -1135,94 +1124,159 @@ const printTimetable = () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.view-only-pill {
+  align-self: center;
 }
 
-.timetable-wrap {
-  overflow-x: auto;
+/* Filter selects: a little wider than the generic filter width on desktop. */
+@media (min-width: 960px) {
+  .filter-bar .filter-select {
+    flex: 0 1 260px;
+  }
 }
+
+/* ---- Weekly board ---- */
 .timetable {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   table-layout: fixed;
   min-width: 720px;
 }
 .timetable th,
 .timetable td {
-  border: 1px solid #eef2f6;
+  border-bottom: 1px solid var(--ds-border-soft);
+  border-right: 1px solid var(--ds-border-soft);
   text-align: center;
   vertical-align: middle;
 }
+.timetable th:last-child,
+.timetable td:last-child {
+  border-right: none;
+}
+.timetable tbody tr:last-child td {
+  border-bottom: none;
+}
 .timetable thead th {
-  background: #eef2ff;
-  color: #3730a3;
-  font-size: 12px;
+  background: #f8fafc;
+  color: var(--ds-muted);
+  font-size: 11px;
   font-weight: 800;
-  padding: 10px 6px;
+  padding: 12px 6px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 .period-col {
-  width: 92px;
+  width: 96px;
   background: #f8fafc;
   padding: 8px 6px;
+  /* Keep the period column visible while the board scrolls sideways. */
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.period-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ds-text);
+  line-height: 1.2;
+}
+.period-code {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ds-faint);
 }
 .slot-cell {
-  height: 62px;
+  height: 64px;
   padding: 0;
 }
 .cell-inner {
-  height: 62px;
+  height: 64px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2px;
-  padding: 4px;
+  padding: 4px 6px;
+  transition: background 0.15s ease;
 }
 .slot-cell.editable .cell-inner {
   cursor: pointer;
-  transition: background 0.15s ease;
 }
 .slot-cell.editable .cell-inner:hover {
-  background: #f5f3ff;
+  background: #f8fafc;
 }
 .cell-inner.filled {
   background: #f0fdfa;
+  box-shadow: inset 3px 0 0 var(--ds-teal);
 }
-.cell-inner .subj {
+.slot-cell.editable .cell-inner.filled:hover {
+  background: #ccfbf1;
+}
+.cell-plus {
+  color: #cbd5e1;
+}
+.slot-cell.editable .cell-inner:hover .cell-plus {
+  color: var(--ds-navy);
+}
+.cell-empty {
   font-size: 12px;
+  color: #cbd5e1;
+}
+.cell-inner .subj,
+.mobile-slot .subj {
+  font-size: 12.5px;
   font-weight: 800;
-  color: #0f766e;
+  color: var(--ds-teal-700);
   line-height: 1.15;
 }
-.cell-inner .tchr {
+.cell-inner .tchr,
+.mobile-slot .tchr {
   font-size: 10.5px;
   font-weight: 600;
-  color: #64748b;
+  color: var(--ds-muted);
   line-height: 1.1;
 }
+.option-subject {
+  color: var(--ds-teal-700);
+}
 
-/* ---- Mobile day view ---- */
+/* ---- Phone: toolbar + day list ---- */
+.phone-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.phone-toolbar .day-chips {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.phone-view-toggle {
+  flex: 0 0 auto;
+  margin-left: auto;
+  border-radius: var(--ds-radius-sm) !important;
+  background: #fff;
+}
 .day-chips :deep(.v-chip) {
-  color: #3730a3;
-  background: #eef2ff;
+  color: var(--ds-navy);
+  background: var(--ds-navy-tint);
+  border-radius: 999px;
 }
 .day-chips :deep(.v-chip.day-chip-on) {
-  background: #3730a3;
+  background: var(--ds-navy);
   color: #fff;
+}
+.mobile-row {
+  display: flex;
+  align-items: stretch;
 }
 .mobile-period-badge {
   flex: 0 0 84px;
   width: 84px;
   background: #f8fafc;
-  border-right: 1px solid #eef2f6;
+  border-right: 1px solid var(--ds-border-soft);
   padding: 10px 8px;
   text-align: center;
   display: flex;
@@ -1231,26 +1285,30 @@ const printTimetable = () => {
 }
 .mobile-slot {
   flex: 1 1 auto;
-  min-height: 58px;
+  min-width: 0;
+  min-height: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 8px 12px;
   text-align: center;
 }
 .mobile-slot.filled {
   background: #f0fdfa;
+  box-shadow: inset 3px 0 0 var(--ds-teal);
 }
 .mobile-slot .subj {
-  font-size: 13px;
-  font-weight: 800;
-  color: #0f766e;
-  line-height: 1.15;
+  font-size: 13.5px;
 }
 .mobile-slot .tchr {
   font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
+}
+.mobile-add {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ds-navy);
 }
 </style>

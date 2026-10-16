@@ -1,184 +1,198 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
+  <div class="page">
+    <PageHeader
+      :title="t('contact_messages')"
+      :subtitle="t('contact-inbox-subtitle')"
+      icon="mdi-email-outline"
+      :breadcrumbs="breadcrumbs"
+    />
 
-    <!-- Header -->
-    <div class="d-flex align-center mb-6">
-      <v-avatar color="cyan-lighten-5" size="44" class="mr-3 rounded-0">
-        <v-icon color="cyan-darken-2" size="22">mdi-email-outline</v-icon>
-      </v-avatar>
-      <div>
-        <div class="text-title">{{ t("contact_messages") }}</div>
-        <div class="text-detail">{{ t("contact-inbox-subtitle") }}</div>
-      </div>
-    </div>
-
-    <!-- Stats -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="metric-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-detail-tiny mb-1">{{ t("total-messages") }}</p>
-              <h2 class="text-title">{{ contactStore.contacts.length }}</h2>
-            </div>
-            <v-avatar color="cyan-lighten-5" size="40">
-              <v-icon color="cyan-darken-2" size="18">mdi-email-multiple-outline</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPIs -->
+    <v-row class="mb-2 fade-in">
+      <v-col cols="6" lg="3">
+        <StatCard
+          icon="mdi-email-multiple-outline"
+          :label="t('total-messages')"
+          :value="contactStore.contacts.length"
+        />
       </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-card class="metric-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-detail-tiny mb-1">{{ t("unread") }}</p>
-              <h2 class="text-title">{{ unreadCount }}</h2>
-            </div>
-            <v-avatar color="deep-orange-lighten-5" size="40">
-              <v-icon color="deep-orange-darken-2" size="18">mdi-email-alert-outline</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+      <v-col cols="6" lg="3">
+        <StatCard
+          icon="mdi-email-alert-outline"
+          :label="t('unread')"
+          :value="unreadCount"
+          color="#F59E0B"
+          tint="#FFFBEB"
+          :badge="unreadCount ? t('unread') : ''"
+          :pulse="unreadCount > 0"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <div class="mb-4">
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-        ></v-text-field>
+    <!-- Inbox -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="px-4 px-md-6 pt-4 pt-md-6">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            class="filter-search"
+            color="primary"
+          ></v-text-field>
+          <div class="filter-spacer"></div>
+          <span class="panel-chip panel-chip--amber">
+            {{ unreadCount }} {{ t("unread") }}
+          </span>
+        </div>
       </div>
 
-      <v-data-table
-        :headers="headers"
-        :items="contactStore.contacts"
-        :search="search"
-        :loading="contactStore.loading"
-        class="premium-table"
-        hover
-        @click:row="onRowClick"
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">
-            {{ t("no-contact-messages") }}
-          </div>
-        </template>
-
-        <template v-slot:item.name="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-badge
-              :model-value="item.status === 'unread'"
-              color="deep-orange"
-              dot
-              offset-x="2"
-              offset-y="2"
-            >
-              <v-avatar color="cyan-lighten-5" size="32">
-                <v-icon icon="mdi-account-outline" size="16" color="cyan-darken-2"></v-icon>
-              </v-avatar>
-            </v-badge>
-            <div class="ml-3">
-              <div
-                class="text-title-small"
-                :class="{ 'font-weight-black': item.status === 'unread' }"
-              >
-                {{ item.name }}
-              </div>
-              <div class="text-detail-tiny">{{ item.email }}</div>
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="contactStore.contacts"
+          :search="search"
+          :loading="contactStore.loading"
+          class="premium-table inbox-table"
+          hover
+          @click:row="onRowClick"
+        >
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-email-open-outline"
+                :title="t('no-contact-messages')"
+              />
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template v-slot:item.subject="{ item }">
-          <div class="text-detail text-truncate" style="max-width: 320px">
-            {{ item.subject || "—" }}
-          </div>
-        </template>
+          <template v-slot:item.name="{ item }">
+            <div class="d-flex align-center ga-3 py-2">
+              <v-badge
+                :model-value="item.status === 'unread'"
+                color="warning"
+                dot
+                offset-x="2"
+                offset-y="2"
+              >
+                <div class="avatar-chip">{{ (item.name || "?").charAt(0) }}</div>
+              </v-badge>
+              <div class="min-w-0">
+                <div
+                  class="cell-title text-truncate"
+                  :class="{ 'font-weight-black': item.status === 'unread' }"
+                >
+                  {{ item.name }}
+                </div>
+                <div class="cell-sub text-truncate">{{ item.email }}</div>
+              </div>
+            </div>
+          </template>
 
-        <template v-slot:item.created_at="{ item }">
-          <div class="text-detail-tiny">{{ formatDate(item.created_at) }}</div>
-        </template>
+          <template v-slot:item.subject="{ item }">
+            <div class="subject-cell text-truncate">
+              {{ item.subject || "—" }}
+            </div>
+          </template>
 
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="item.status === 'unread' ? 'deep-orange' : 'grey'"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === "unread" ? t("unread") : t("read") }}
-          </v-chip>
-        </template>
+          <template v-slot:item.created_at="{ item }">
+            <span class="cell-sub">{{ formatDate(item.created_at) }}</span>
+          </template>
 
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              icon="mdi-eye-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              @click.stop="openDetail(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-delete-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click.stop="removeItem(item)"
-            ></v-btn>
-          </div>
-        </template>
-      </v-data-table>
+          <template v-slot:item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="item.status === 'unread' ? 'status-pill--amber' : 'status-pill--grey'"
+            >
+              <span class="status-dot"></span>
+              {{ item.status === "unread" ? t("unread") : t("read") }}
+            </span>
+          </template>
+
+          <template v-slot:item.actions="{ item }">
+            <div class="row-actions">
+              <v-btn
+                icon="mdi-eye-outline"
+                variant="text"
+                size="small"
+                color="primary"
+                @click.stop="openDetail(item)"
+              ></v-btn>
+              <v-btn
+                icon="mdi-delete-outline"
+                variant="text"
+                size="small"
+                color="error"
+                @click.stop="removeItem(item)"
+              ></v-btn>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Detail dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card v-if="selected" class="pa-6">
-        <div class="d-flex align-center justify-space-between mb-4">
-          <div class="text-title">{{ selected.subject || t("message") }}</div>
-          <v-btn icon="mdi-close" variant="text" size="small" @click="dialog = false"></v-btn>
-        </div>
-
-        <div class="d-flex align-center mb-4">
-          <v-avatar color="cyan-lighten-5" size="40" class="mr-3">
-            <v-icon icon="mdi-account-outline" color="cyan-darken-2"></v-icon>
-          </v-avatar>
-          <div>
-            <div class="text-title-small">{{ selected.name }}</div>
-            <div class="text-detail-tiny">
-              {{ selected.email }}
-              <span v-if="selected.phone"> · {{ selected.phone }}</span>
+      <v-card v-if="selected" class="pa-5 pa-md-6">
+        <div class="d-flex align-start justify-space-between ga-3 mb-4">
+          <div class="min-w-0">
+            <div class="panel-title text-truncate">
+              {{ selected.subject || t("message") }}
             </div>
+            <div class="panel-sub">{{ formatDate(selected.created_at) }}</div>
           </div>
-          <v-spacer></v-spacer>
-          <div class="text-detail-tiny">{{ formatDate(selected.created_at) }}</div>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            class="flex-shrink-0"
+            @click="dialog = false"
+          ></v-btn>
         </div>
 
-        <v-divider class="mb-4"></v-divider>
+        <div class="info-row">
+          <div class="info-row-icon">
+            <v-icon size="18">mdi-account-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="info-row-label">{{ t("sender") }}</div>
+            <div class="info-row-value">{{ selected.name }}</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-row-icon">
+            <v-icon size="18">mdi-email-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="info-row-label">{{ t("email") }}</div>
+            <div class="info-row-value">{{ selected.email }}</div>
+          </div>
+        </div>
+        <div v-if="selected.phone" class="info-row">
+          <div class="info-row-icon">
+            <v-icon size="18">mdi-phone-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="info-row-label">{{ t("phone") }}</div>
+            <div class="info-row-value">{{ selected.phone }}</div>
+          </div>
+        </div>
 
-        <div class="text-detail message-body mb-2">{{ selected.message }}</div>
+        <div class="message-body mt-4">{{ selected.message }}</div>
 
-        <div class="d-flex justify-end ga-2 mt-6">
+        <div class="form-actions">
           <v-btn
-            variant="text"
-            color="error"
+            variant="flat"
+            class="modern-action-btn danger"
             @click="removeItem(selected)"
           >
             {{ t("delete") }}
           </v-btn>
           <v-btn
             variant="flat"
-            color="primary"
             class="modern-action-btn primary"
             @click="toggleRead(selected)"
           >
@@ -187,7 +201,7 @@
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -272,43 +286,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-.premium-table {
-  background: transparent !important;
-}
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
+/* Rows open the message, so hint that they are clickable. */
+.inbox-table :deep(tbody tr) {
   cursor: pointer;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
-}
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+.subject-cell {
+  max-width: 320px;
+  font-size: 13.5px;
+  color: #334155;
 }
 .message-body {
   white-space: pre-line;
   line-height: 1.6;
+  font-size: 14px;
+  color: #334155;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 14px 16px;
 }
 </style>
