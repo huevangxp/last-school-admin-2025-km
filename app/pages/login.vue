@@ -237,7 +237,7 @@ const loginBtn = async () => {
 .login-link:hover {
   text-decoration: underline;
 }
-.login-btn {
+.login-card .v-btn.login-btn {
   height: 48px !important;
   font-size: 15px !important;
 }
