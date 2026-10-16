@@ -1,122 +1,134 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="t('gallery')"
+      :subtitle="t('gallery-subtitle')"
+      icon="mdi-image-multiple-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="pink-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="pink-darken-2" size="22">mdi-image-multiple-outline</v-icon>
-        </v-avatar>
+      <template v-if="isAdmin" #actions>
+        <v-btn variant="flat" class="modern-action-btn primary" @click="openCreate">
+          <v-icon icon="mdi-plus" start size="18"></v-icon>
+          {{ t("add") }} {{ t("gallery") }}
+        </v-btn>
+      </template>
+    </PageHeader>
+
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
         <div>
-          <div class="text-title">{{ t("gallery") }}</div>
-          <div class="text-detail">
-            {{ t("gallery-subtitle") }}
+          <div class="panel-title">{{ t("photos") }}</div>
+          <div class="panel-sub">{{ t("gallery-subtitle") }}</div>
+        </div>
+        <span class="panel-chip">
+          {{ galleryStore.galleries.length }} {{ t("total") }}
+        </span>
+      </div>
+
+      <div class="pa-4 pa-md-6">
+        <!-- Loading -->
+        <div v-if="galleryStore.loading" class="py-10 text-center">
+          <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        </div>
+
+        <!-- Empty -->
+        <EmptyState
+          v-else-if="!galleryStore.galleries.length"
+          icon="mdi-image-off-outline"
+          :title="t('no-galleries-yet')"
+          :description="t('gallery-subtitle')"
+        />
+
+        <!-- Gallery grid: 2 cols on phones, 3 on tablets, 4+ on desktop -->
+        <div v-else class="gallery-grid">
+          <div v-for="g in galleryStore.galleries" :key="g.id" class="gallery-card">
+            <div
+              class="gallery-cover"
+              role="button"
+              tabindex="0"
+              @click="openView(g)"
+              @keydown.enter="openView(g)"
+            >
+              <v-img
+                v-if="g.images?.length"
+                :src="mediaUrl(g.images[0].image_url)"
+                :alt="g.title || t('gallery')"
+                :aspect-ratio="4 / 3"
+                cover
+                class="gallery-img"
+              ></v-img>
+              <div v-else class="gallery-noimg">
+                <v-icon size="36">mdi-image-off-outline</v-icon>
+              </div>
+
+              <span
+                class="status-pill gallery-status"
+                :class="
+                  g.gallery_status === 'active'
+                    ? 'status-pill--green'
+                    : 'status-pill--grey'
+                "
+              >
+                <span class="status-dot"></span>
+                {{ g.gallery_status === "active" ? t("open") : t("closed") }}
+              </span>
+
+              <span class="gallery-count">
+                <v-icon size="12">mdi-image-multiple</v-icon>
+                {{ g.images?.length || 0 }}
+              </span>
+
+              <div class="gallery-overlay">
+                <span class="gallery-view">
+                  <v-icon size="16">mdi-eye-outline</v-icon>
+                  {{ t("view") }}
+                </span>
+              </div>
+            </div>
+
+            <div class="gallery-body">
+              <div class="min-w-0 flex-grow-1">
+                <div class="cell-title text-truncate">{{ g.title }}</div>
+                <div class="cell-sub text-truncate">
+                  {{ g.description || (g.images?.length || 0) + " " + t("photos") }}
+                </div>
+              </div>
+              <div v-if="isAdmin" class="row-actions">
+                <v-btn
+                  icon="mdi-pencil-outline"
+                  variant="text"
+                  size="small"
+                  color="primary"
+                  @click="openEdit(g)"
+                ></v-btn>
+                <v-btn
+                  icon="mdi-trash-can-outline"
+                  variant="text"
+                  size="small"
+                  color="error"
+                  @click="removeGallery(g)"
+                ></v-btn>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <v-btn
-        v-if="isAdmin"
-        color="primary"
-        class="modern-action-btn primary elevation-4"
-        height="36"
-        @click="openCreate"
-      >
-        <v-icon icon="mdi-plus" start size="18"></v-icon>
-        {{ t("add") }} {{ t("gallery") }}
-      </v-btn>
-    </div>
-
-    <div v-if="galleryStore.loading" class="py-10 text-center">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-    </div>
-
-    <v-card
-      v-else-if="!galleryStore.galleries.length"
-      elevation="0"
-      class="intelligence-card pa-10 text-center text-detail"
-    >
-      {{ t("no-galleries-yet") }}
     </v-card>
 
-    <!-- Gallery cards -->
-    <v-row v-else class="ga-y-2">
-      <v-col
-        v-for="g in galleryStore.galleries"
-        :key="g.id"
-        cols="12"
-        sm="6"
-        md="4"
-      >
-        <v-card elevation="0" class="intelligence-card overflow-hidden h-100">
-          <div class="cover" @click="openView(g)">
-            <v-img
-              v-if="g.images?.length"
-              :src="mediaUrl(g.images[0].image_url)"
-              :alt="g.title || t('gallery')"
-              height="180"
-              cover
-            ></v-img>
-            <div v-else class="no-cover d-flex align-center justify-center">
-              <v-icon size="40" color="grey-lighten-1">mdi-image-off-outline</v-icon>
-            </div>
-            <v-chip
-              size="x-small"
-              variant="flat"
-              class="count-chip font-weight-bold"
-            >
-              <v-icon start size="12">mdi-image-multiple</v-icon>
-              {{ g.images?.length || 0 }}
-            </v-chip>
-          </div>
-          <div class="pa-4">
-            <div class="d-flex align-center justify-space-between">
-              <div class="text-title-small text-truncate">{{ g.title }}</div>
-              <v-chip
-                size="x-small"
-                variant="flat"
-                :color="
-                  g.gallery_status === 'active' ? 'success' : 'grey-lighten-2'
-                "
-                class="font-weight-black text-uppercase"
-              >
-                {{ g.gallery_status === "active" ? t("open") : t("closed") }}
-              </v-chip>
-            </div>
-            <div v-if="g.description" class="text-detail-tiny mt-1 text-truncate">
-              {{ g.description }}
-            </div>
-            <div v-if="isAdmin" class="d-flex justify-end ga-1 mt-2">
-              <v-btn
-                icon="mdi-pencil-outline"
-                variant="text"
-                size="x-small"
-                color="primary"
-                @click="openEdit(g)"
-              ></v-btn>
-              <v-btn
-                icon="mdi-trash-can-outline"
-                variant="text"
-                size="x-small"
-                color="error"
-                @click="removeGallery(g)"
-              ></v-btn>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-
     <!-- View lightbox -->
-    <v-dialog v-model="viewDialog" width="900">
-      <v-card class="pa-6">
-        <div class="d-flex align-center justify-space-between mb-4">
-          <div>
-            <div class="text-title">{{ viewing?.title }}</div>
-            <div v-if="viewing?.description" class="text-detail">
+    <v-dialog v-model="viewDialog" width="960">
+      <v-card class="pa-5 pa-md-6">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-image-multiple-outline</v-icon>
+          </div>
+          <div class="min-w-0 flex-grow-1">
+            <div class="panel-title text-truncate">{{ viewing?.title }}</div>
+            <div v-if="viewing?.description" class="panel-sub">
               {{ viewing?.description }}
+            </div>
+            <div v-else class="panel-sub">
+              {{ viewing?.images?.length || 0 }} {{ t("photos") }}
             </div>
           </div>
           <v-btn
@@ -126,62 +138,68 @@
             @click="viewDialog = false"
           ></v-btn>
         </div>
-        <v-row class="ga-y-2">
-          <v-col
+
+        <div v-if="viewing?.images?.length" class="lightbox-grid">
+          <v-img
             v-for="(img, i) in viewing?.images || []"
             :key="i"
-            cols="6"
-            sm="4"
-            md="3"
-          >
-            <v-img
-              :src="mediaUrl(img.image_url)"
-              aspect-ratio="1"
-              cover
-              class="border" alt=""></v-img>
-          </v-col>
-        </v-row>
-        <div
-          v-if="!viewing?.images?.length"
-          class="text-detail text-center py-8"
-        >
-          {{ t("no-photos") }}
+            :src="mediaUrl(img.image_url)"
+            aspect-ratio="1"
+            cover
+            class="lightbox-img"
+            alt=""
+          ></v-img>
         </div>
+        <EmptyState v-else icon="mdi-image-off-outline" :title="t('no-photos')" />
       </v-card>
     </v-dialog>
 
     <!-- Create / Edit dialog -->
     <v-dialog v-model="dialog" width="640" persistent>
-      <v-card class="pa-6">
-        <div class="text-title mb-4">
-          {{ isEdit ? t("edit") : t("add") }} {{ t("gallery") }}
+      <v-card class="pa-5 pa-md-6">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-image-plus-outline</v-icon>
+          </div>
+          <div class="min-w-0 flex-grow-1">
+            <div class="panel-title">
+              {{ isEdit ? t("edit") : t("add") }} {{ t("gallery") }}
+            </div>
+            <div class="panel-sub">{{ t("gallery-subtitle") }}</div>
+          </div>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            @click="dialog = false"
+          ></v-btn>
         </div>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
+        <label class="field-label">{{ t("title") }}</label>
         <v-text-field
           v-model="form.title"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("description") }}</label>
+        <label class="field-label">{{ t("description") }}</label>
         <v-textarea
           v-model="form.description"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           rows="2"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-textarea>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("photos") }}</label>
+        <label class="field-label">{{ t("photos") }}</label>
         <v-file-input
           accept="image/*"
           multiple
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
           prepend-icon=""
           prepend-inner-icon="mdi-image-plus-outline"
@@ -190,9 +208,15 @@
           @update:model-value="onPickImages"
         ></v-file-input>
 
-        <div v-if="form.images.length" class="d-flex flex-wrap ga-2 mt-3">
+        <div v-if="form.images.length" class="thumb-grid mt-3">
           <div v-for="(img, i) in form.images" :key="i" class="thumb">
-            <v-img :src="mediaUrl(img)" width="88" height="66" cover alt=""></v-img>
+            <v-img
+              :src="mediaUrl(img)"
+              :aspect-ratio="4 / 3"
+              cover
+              class="thumb-img"
+              alt=""
+            ></v-img>
             <v-btn
               icon
               size="x-small"
@@ -205,14 +229,14 @@
           </div>
         </div>
 
-        <label class="text-detail-tiny mb-1 mt-4 d-block">{{ t("status") }}</label>
+        <label class="field-label mt-4">{{ t("status") }}</label>
         <v-select
           v-model="form.gallery_status"
           :items="statusOptions"
           item-title="label"
           item-value="value"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
         ></v-select>
 
@@ -221,14 +245,20 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
           >{{ formError }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="dialog = false">{{ t("cancel") }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="dialog = false"
+            >{{ t("cancel") }}</v-btn
+          >
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="save"
@@ -237,7 +267,7 @@
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -379,44 +409,191 @@ const removeGallery = async (g: any) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* ---- Responsive gallery grid ---- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+@media (min-width: 600px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
 }
-.cover {
+@media (min-width: 1280px) {
+  .gallery-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1700px) {
+  .gallery-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ---- Gallery card ---- */
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.gallery-card:hover {
+  transform: translateY(-3px);
+  border-color: transparent;
+  box-shadow: var(--ds-shadow-hover);
+}
+.gallery-cover {
   position: relative;
   cursor: pointer;
+  overflow: hidden;
+  background: #f1f5f9;
+  outline: none;
 }
-.no-cover {
-  height: 180px;
-  background: #f8fafc;
+.gallery-img :deep(.v-img__img) {
+  transition: transform 0.35s ease;
 }
-.count-chip {
+.gallery-card:hover .gallery-img :deep(.v-img__img),
+.gallery-cover:focus-visible .gallery-img :deep(.v-img__img) {
+  transform: scale(1.05);
+}
+.gallery-noimg {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+}
+
+/* Hover overlay with a "view" pill */
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to top,
+    rgba(10, 49, 84, 0.72),
+    rgba(10, 49, 84, 0.18)
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.gallery-card:hover .gallery-overlay,
+.gallery-cover:focus-visible .gallery-overlay {
+  opacity: 1;
+}
+.gallery-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ds-navy);
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px -10px rgba(15, 23, 42, 0.5);
+}
+
+/* Image count badge */
+.gallery-count {
   position: absolute;
   right: 8px;
   bottom: 8px;
-  background: rgba(15, 23, 42, 0.7) !important;
-  color: #fff !important;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  backdrop-filter: blur(4px);
+}
+/* Status pill over the image */
+.gallery-status {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.gallery-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+}
+@media (max-width: 599px) {
+  .gallery-body {
+    padding: 10px 12px;
+  }
+  .gallery-body .cell-title {
+    font-size: 13px;
+  }
+}
+
+/* ---- Lightbox grid ---- */
+.lightbox-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (min-width: 600px) {
+  .lightbox-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 960px) {
+  .lightbox-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+.lightbox-img {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+
+/* ---- Thumbnails in the create / edit form ---- */
+.thumb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 .thumb {
   position: relative;
+  width: 96px;
+}
+.thumb-img {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--ds-border);
+  background: #f1f5f9;
 }
 .thumb-x {
   position: absolute;
   top: -8px;
   right: -8px;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-}
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+
+/* Dialog header */
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 </style>

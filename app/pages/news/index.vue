@@ -1,179 +1,179 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="$t('news')"
+      :subtitle="$t('manage-news-subtitle')"
+      icon="mdi-newspaper-variant-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <div class="text-title mb-1">{{ $t("news") }}</div>
-        <div class="text-detail">{{ $t("manage-news-subtitle") }}</div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
-        <v-btn
-          variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
-          @click="openCreate"
-        >
+      <template #actions>
+        <v-btn variant="flat" class="modern-action-btn primary" @click="openCreate">
           <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ $t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Stats -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in newsStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p class="text-detail-tiny mb-1">{{ stat.label }}</p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI tiles -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in newsStats" :key="i" cols="6" md="4">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="$t('search')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          class="cream-input"
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-text-field>
+    <!-- List -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="px-4 px-md-6 pt-4 pt-md-5">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$t('search')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            clearable
+            class="filter-search"
+          ></v-text-field>
+          <div class="filter-spacer"></div>
+          <span class="panel-chip">
+            {{ announcementStore.announcements.length }} {{ $t("total") }}
+          </span>
+        </div>
       </div>
 
-      <v-data-table
-        :headers="headers"
-        :items="announcementStore.announcements"
-        :search="search"
-        :loading="announcementStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">{{ $t("no-news-yet") }}</div>
-        </template>
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="announcementStore.announcements"
+          :search="search"
+          :loading="announcementStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template v-slot:no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-newspaper-variant-outline"
+                :title="$t('no-news-yet')"
+              />
+            </div>
+          </template>
 
-        <template v-slot:item.title="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              color="blue-lighten-5"
-              size="32"
-              class="mr-3 elevation-1 border-white"
-            >
-              <v-icon icon="mdi-newspaper-variant-outline" size="16" color="blue-darken-2"></v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">{{ item.title }}</div>
-              <div class="text-detail-tiny text-truncate" style="max-width: 360px">
-                {{ item.content }}
+          <template v-slot:item.title="{ item }">
+            <div class="d-flex align-center ga-3 py-2">
+              <div class="avatar-chip" style="color: #1d4ed8; background: #dbeafe">
+                <v-icon icon="mdi-newspaper-variant-outline" size="18"></v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title">{{ item.title }}</div>
+                <div class="cell-sub text-truncate cell-desc">
+                  {{ item.content }}
+                </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template v-slot:item.created_at="{ item }">
-          <div class="text-title-small">{{ formatDate(item.created_at) }}</div>
-        </template>
+          <template v-slot:item.created_at="{ item }">
+            <div class="d-flex align-center ga-1 text-no-wrap">
+              <v-icon size="14" color="grey">mdi-calendar-outline</v-icon>
+              <span class="cell-value">{{ formatDate(item.created_at) }}</span>
+            </div>
+          </template>
 
-        <template v-slot:item.announcement_status="{ item }">
-          <v-chip
-            :color="item.announcement_status === 'active' ? 'success' : 'grey'"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.announcement_status === "active" ? $t("open") : $t("closed") }}
-          </v-chip>
-        </template>
+          <template v-slot:item.announcement_status="{ item }">
+            <span
+              class="status-pill"
+              :class="
+                item.announcement_status === 'active'
+                  ? 'status-pill--green'
+                  : 'status-pill--grey'
+              "
+            >
+              <span class="status-dot"></span>
+              {{ item.announcement_status === "active" ? $t("open") : $t("closed") }}
+            </span>
+          </template>
 
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              @click="openEdit(item)"
-            ></v-btn>
-            <v-btn
-              icon="mdi-delete-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="removeItem(item)"
-            ></v-btn>
-          </div>
-        </template>
-      </v-data-table>
+          <template v-slot:item.actions="{ item }">
+            <div class="row-actions">
+              <v-btn
+                icon="mdi-pencil-outline"
+                variant="text"
+                size="small"
+                color="primary"
+                @click="openEdit(item)"
+              ></v-btn>
+              <v-btn
+                icon="mdi-delete-outline"
+                variant="text"
+                size="small"
+                color="error"
+                @click="removeItem(item)"
+              ></v-btn>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Create / Edit Dialog -->
     <v-dialog v-model="dialog" width="560">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">
-          {{ isEdit ? t("edit") : t("add") }} {{ $t("news") }}
+      <v-card class="pa-5 pa-md-6">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-newspaper-variant-outline</v-icon>
+          </div>
+          <div class="min-w-0 flex-grow-1">
+            <div class="panel-title">
+              {{ isEdit ? t("edit") : t("add") }} {{ $t("news") }}
+            </div>
+            <div class="panel-sub">{{ $t("manage-news-subtitle") }}</div>
+          </div>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            size="small"
+            @click="dialog = false"
+          ></v-btn>
         </div>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("title") }}</label>
+        <label class="field-label">{{ t("title") }}</label>
         <v-text-field
           v-model="form.title"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-text-field>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("content") }}</label>
+        <label class="field-label">{{ t("content") }}</label>
         <v-textarea
           v-model="form.content"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           rows="5"
           hide-details
-          class="mb-3"
+          class="mb-4"
         ></v-textarea>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("image") }}</label>
-        <ImagePicker v-model="form.image_url" class="mb-3" />
+        <label class="field-label">{{ t("image") }}</label>
+        <ImagePicker v-model="form.image_url" class="mb-4" />
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("status") }}</label>
+        <label class="field-label">{{ t("status") }}</label>
         <v-select
           v-model="form.announcement_status"
           :items="statusOptions"
           item-title="label"
           item-value="value"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
         ></v-select>
 
@@ -182,14 +182,20 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
           >{{ formError }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="dialog = false">{{ t("cancel") }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="dialog = false"
+            >{{ t("cancel") }}</v-btn
+          >
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="save"
@@ -198,7 +204,7 @@
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -258,6 +264,14 @@ const newsStats = computed(() => [
     color: "orange",
   },
 ]);
+
+// Presentation-only: hex colours for the StatCard tiles (keyed by stat.color).
+const statPalette: Record<string, { color: string; tint: string }> = {
+  purple: { color: "#7c3aed", tint: "#f3e8ff" },
+  blue: { color: "#2563eb", tint: "#dbeafe" },
+  green: { color: "#16a34a", tint: "#dcfce7" },
+  orange: { color: "#ea580c", tint: "#ffedd5" },
+};
 
 // ---- Create / Edit ----
 const dialog = ref(false);
@@ -351,49 +365,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Truncated content preview under the title cell */
+.cell-desc {
+  max-width: 360px;
+}
+.cell-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
 }
 
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.metric-icon-box {
+/* Dialog header */
+.dialog-head {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 </style>
