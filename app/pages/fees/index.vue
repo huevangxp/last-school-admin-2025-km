@@ -1,51 +1,19 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="t('student_fees')"
+      :subtitle="t('fees-subtitle')"
+      icon="mdi-cash-multiple"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="green-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="green-darken-2" size="22">mdi-cash-multiple</v-icon>
-        </v-avatar>
-        <div>
-          <div class="text-title">{{ t("student_fees") }}</div>
-          <div class="text-detail">{{ t("fees-subtitle") }}</div>
-        </div>
-      </div>
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
-        <v-btn
-          variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
-          @click="openStructure"
-        >
-          <v-icon icon="mdi-tune" start size="18"></v-icon>
-          {{ t("set_fee_amounts") }}
-        </v-btn>
-        <v-btn
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
-          :loading="generating"
-          @click="onGenerate"
-        >
-          <v-icon icon="mdi-account-multiple-plus-outline" start size="18"></v-icon>
-          {{ t("generate_fees") }}
-        </v-btn>
-
+      <template #actions>
         <!-- Export / print the fee list -->
         <v-menu v-if="rows.length">
-          <template v-slot:activator="{ props }">
+          <template #activator="{ props }">
             <v-btn
               v-bind="props"
               variant="flat"
-              color="white"
-              class="modern-action-btn secondary border"
-              height="36"
+              class="modern-action-btn secondary"
               :loading="exporting"
             >
               <v-icon icon="mdi-tray-arrow-down" start size="18"></v-icon>
@@ -53,217 +21,271 @@
               <v-icon icon="mdi-chevron-down" end size="16"></v-icon>
             </v-btn>
           </template>
-          <v-list density="compact" min-width="200">
+          <v-list density="compact" min-width="200" rounded="lg" class="py-1">
             <v-list-item @click="exportExcel">
-              <template v-slot:prepend>
-                <v-icon size="18" color="green-darken-2"
-                  >mdi-file-excel-outline</v-icon
-                >
+              <template #prepend>
+                <v-icon size="18" color="success">mdi-file-excel-outline</v-icon>
               </template>
-              <v-list-item-title class="text-detail">{{
-                t("download_excel")
-              }}</v-list-item-title>
+              <v-list-item-title class="text-detail">
+                {{ t("download_excel") }}
+              </v-list-item-title>
             </v-list-item>
             <v-list-item @click="exportImage">
-              <template v-slot:prepend>
-                <v-icon size="18" color="blue-darken-2"
-                  >mdi-file-image-outline</v-icon
-                >
+              <template #prepend>
+                <v-icon size="18" color="info">mdi-file-image-outline</v-icon>
               </template>
-              <v-list-item-title class="text-detail">{{
-                t("download_image")
-              }}</v-list-item-title>
+              <v-list-item-title class="text-detail">
+                {{ t("download_image") }}
+              </v-list-item-title>
             </v-list-item>
             <v-list-item @click="exportPdf">
-              <template v-slot:prepend>
-                <v-icon size="18" color="red-darken-2">mdi-file-pdf-box</v-icon>
+              <template #prepend>
+                <v-icon size="18" color="error">mdi-file-pdf-box</v-icon>
               </template>
-              <v-list-item-title class="text-detail">{{
-                t("download_pdf")
-              }}</v-list-item-title>
+              <v-list-item-title class="text-detail">
+                {{ t("download_pdf") }}
+              </v-list-item-title>
             </v-list-item>
             <v-divider class="my-1"></v-divider>
             <v-list-item @click="printTable">
-              <template v-slot:prepend>
-                <v-icon size="18" color="grey-darken-2">mdi-printer</v-icon>
+              <template #prepend>
+                <v-icon size="18">mdi-printer</v-icon>
               </template>
-              <v-list-item-title class="text-detail">{{
-                t("print")
-              }}</v-list-item-title>
+              <v-list-item-title class="text-detail">
+                {{ t("print") }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
-      </div>
-    </div>
 
-    <!-- Filters -->
-    <v-card elevation="0" class="intelligence-card pa-4 mb-6">
-      <div class="d-flex flex-column flex-md-row gap-3">
-        <v-select
-          v-model="yearId"
-          :items="classroomStore.academicYears"
-          item-title="title"
-          item-value="id"
-          :label="t('academic')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          style="max-width: 220px"
-          class="w-100"
-          color="primary"
-        ></v-select>
-        <v-select
-          v-model="classId"
-          :items="classFilterOptions"
-          item-title="label"
-          item-value="id"
-          :label="t('class')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          clearable
-          style="max-width: 260px"
-          class="w-100"
-          color="primary"
-        ></v-select>
-      </div>
-    </v-card>
+        <v-btn
+          variant="flat"
+          class="modern-action-btn secondary"
+          @click="openStructure"
+        >
+          <v-icon icon="mdi-tune" start size="18"></v-icon>
+          {{ t("set_fee_amounts") }}
+        </v-btn>
+        <v-btn
+          variant="flat"
+          class="modern-action-btn primary"
+          :loading="generating"
+          @click="onGenerate"
+        >
+          <v-icon icon="mdi-account-multiple-plus-outline" start size="18"></v-icon>
+          {{ t("generate_fees") }}
+        </v-btn>
+      </template>
+    </PageHeader>
 
-    <!-- Stats -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(s, i) in stats" :key="i">
-        <v-card class="metric-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-detail-tiny mb-1">{{ s.label }}</p>
-              <h2 class="text-title">{{ s.value }}</h2>
-            </div>
-            <v-avatar :color="`${s.color}-lighten-5`" size="40">
-              <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI tiles -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(s, i) in stats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="s.icon"
+          :label="s.label"
+          :value="s.value"
+          :color="statPalette[s.color]?.color"
+          :tint="statPalette[s.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Table -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <v-text-field
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        :placeholder="t('search')"
-        variant="outlined"
-        density="compact"
-        hide-details
-        style="max-width: 320px"
-        color="primary"
-        class="mb-4"
-      ></v-text-field>
+    <!-- Fee list -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div class="min-w-0">
+          <div class="panel-title">{{ t("student_fees") }}</div>
+          <div class="panel-sub text-truncate">{{ tableTitle }}</div>
+        </div>
+        <span class="panel-chip">{{ rows.length }} {{ t("total") }}</span>
+      </div>
 
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :search="search"
-        :loading="feesStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">{{ t("no-fees-yet") }}</div>
-        </template>
-
-        <template v-slot:item.name="{ item }">
-          <div class="text-title-small">{{ item.name }}</div>
-          <div class="text-detail-tiny text-grey">{{ item.className }} · {{ item.gradeName }}</div>
-        </template>
-        <template v-slot:item.amount_due="{ item }">
-          ₭{{ money(item.amount_due) }}
-        </template>
-        <template v-slot:item.amount_paid="{ item }">
-          <span class="text-green-darken-2">₭{{ money(item.amount_paid) }}</span>
-        </template>
-        <template v-slot:item.balance="{ item }">
-          <span :class="item.balance > 0 ? 'text-red-darken-2' : 'text-grey'">
-            ₭{{ money(item.balance) }}
-          </span>
-        </template>
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="statusColor(item.status)"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ t(item.status) }}
-          </v-chip>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-btn
-            v-if="item.status !== 'paid'"
-            size="x-small"
-            variant="flat"
-            color="primary"
-            class="modern-action-btn primary"
-            @click="openCollect(item)"
-          >
-            {{ t("collect") }}
-          </v-btn>
-          <v-icon v-else color="success" size="20">mdi-check-circle</v-icon>
-        </template>
-      </v-data-table>
-    </v-card>
-
-    <!-- Set fee amounts dialog -->
-    <v-dialog v-model="structureDialog" width="480">
-      <v-card class="pa-6">
-        <div class="text-title mb-1">{{ t("set_fee_amounts") }}</div>
-        <div class="text-detail-tiny mb-4">{{ t("fee_amount_per_grade") }}</div>
-
-        <div v-for="g in classroomStore.gradeLevels" :key="g.id" class="mb-3">
-          <label class="text-detail-tiny mb-1 d-block">
-            {{ g.grade_level_name }}
-          </label>
-          <MoneyInput
-            v-model="structureForm[g.id]"
+      <div class="px-4 px-md-6 pt-4 pt-md-5">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search')"
             variant="outlined"
             density="compact"
             hide-details
             color="primary"
-          ></MoneyInput>
+            class="filter-search"
+          ></v-text-field>
+          <v-select
+            v-model="yearId"
+            :items="classroomStore.academicYears"
+            item-title="title"
+            item-value="id"
+            :label="t('academic')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            color="primary"
+            prepend-inner-icon="mdi-calendar-check"
+          ></v-select>
+          <v-select
+            v-model="classId"
+            :items="classFilterOptions"
+            item-title="label"
+            item-value="id"
+            :label="t('class')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            clearable
+            color="primary"
+            prepend-inner-icon="mdi-google-classroom"
+          ></v-select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :search="search"
+          :loading="feesStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template #no-data>
+            <div class="pa-4">
+              <EmptyState icon="mdi-cash-remove" :title="t('no-fees-yet')" />
+            </div>
+          </template>
+
+          <template #item.name="{ item }">
+            <div class="d-flex align-center py-2">
+              <div class="avatar-chip mr-3">
+                {{ (item.name || "?").charAt(0) }}
+              </div>
+              <div class="min-w-0">
+                <div class="cell-title">{{ item.name }}</div>
+                <div class="cell-sub">{{ item.className }} · {{ item.gradeName }}</div>
+              </div>
+            </div>
+          </template>
+          <template #item.amount_due="{ item }">
+            <span class="money">₭{{ money(item.amount_due) }}</span>
+          </template>
+          <template #item.amount_paid="{ item }">
+            <span class="money money--paid">₭{{ money(item.amount_paid) }}</span>
+          </template>
+          <template #item.balance="{ item }">
+            <span class="money" :class="item.balance > 0 ? 'money--due' : 'money--zero'">
+              ₭{{ money(item.balance) }}
+            </span>
+          </template>
+          <template #item.status="{ item }">
+            <span
+              class="status-pill text-capitalize"
+              :class="
+                item.status === 'paid'
+                  ? 'status-pill--green'
+                  : item.status === 'partial'
+                    ? 'status-pill--amber'
+                    : 'status-pill--red'
+              "
+            >
+              <span class="status-dot"></span>
+              {{ t(item.status) }}
+            </span>
+          </template>
+          <template #item.actions="{ item }">
+            <div class="row-actions">
+              <v-btn
+                v-if="item.status !== 'paid'"
+                variant="tonal"
+                color="primary"
+                size="small"
+                class="font-weight-bold"
+                @click="openCollect(item)"
+              >
+                <v-icon icon="mdi-cash-check" start size="16"></v-icon>
+                {{ t("collect") }}
+              </v-btn>
+              <v-icon v-else color="success" size="20" class="mr-2">mdi-check-circle</v-icon>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
+    </v-card>
+
+    <!-- Set fee amounts dialog -->
+    <v-dialog v-model="structureDialog" width="480">
+      <v-card class="pa-5 pa-md-6">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-tune</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("set_fee_amounts") }}</div>
+            <div class="panel-sub">{{ t("fee_amount_per_grade") }}</div>
+          </div>
         </div>
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="structureDialog = false">{{ t("cancel") }}</v-btn>
+        <div class="dialog-body">
+          <div v-for="g in classroomStore.gradeLevels" :key="g.id" class="mb-3">
+            <label class="field-label">{{ g.grade_level_name }}</label>
+            <MoneyInput
+              v-model="structureForm[g.id]"
+              variant="outlined"
+              density="comfortable"
+              hide-details
+              color="primary"
+            ></MoneyInput>
+          </div>
+        </div>
+
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="structureDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="savingStructure"
             @click="saveStructure"
-            >{{ t("save") }}</v-btn
           >
+            {{ t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
 
     <!-- Collect payment dialog -->
     <v-dialog v-model="collectDialog" width="440">
-      <v-card v-if="collectTarget" class="pa-6">
-        <div class="text-title mb-1">{{ t("collect_payment") }}</div>
-        <div class="text-detail-tiny mb-4">
-          {{ collectTarget.name }} · {{ t("balance") }}: ₭{{ money(collectTarget.balance) }}
+      <v-card v-if="collectTarget" class="pa-5 pa-md-6">
+        <div class="dialog-head">
+          <div class="page-icon">
+            <v-icon size="20">mdi-cash-check</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("collect_payment") }}</div>
+            <div class="panel-sub">
+              {{ collectTarget.name }} · {{ t("balance") }}:
+              <span class="money money--due">₭{{ money(collectTarget.balance) }}</span>
+            </div>
+          </div>
         </div>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("amount") }}</label>
+        <label class="field-label">{{ t("amount") }}</label>
         <MoneyInput
           v-model="collectForm.amount"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
           color="primary"
-          class="mb-3"
+          class="mb-4"
         ></MoneyInput>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("payment-method") }}</label>
+        <label class="field-label">{{ t("payment-method") }}</label>
         <v-select
           v-model="collectForm.method"
           :items="[
@@ -272,7 +294,7 @@
             { title: t('online-payment'), value: 'Online Payment' },
           ]"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
           color="primary"
         ></v-select>
@@ -282,37 +304,50 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
-          >{{ collectError }}</v-alert
         >
+          {{ collectError }}
+        </v-alert>
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="collectDialog = false">{{ t("cancel") }}</v-btn>
+        <div class="form-actions">
           <v-btn
-            color="primary"
+            variant="flat"
+            class="modern-action-btn secondary"
+            @click="collectDialog = false"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
             class="modern-action-btn primary"
             :loading="collecting"
             @click="doCollect"
-            >{{ t("collect") }}</v-btn
           >
+            <v-icon icon="mdi-cash-check" start size="18"></v-icon>
+            {{ t("collect") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
 
     <!-- Payment receipt / bill (shown after a successful collection) -->
     <v-dialog v-model="receiptDialog" width="460">
-      <v-card v-if="receipt" class="pa-4">
+      <v-card v-if="receipt" class="pa-4 pa-md-5">
         <!-- The receipt itself (also what gets printed / saved as image) -->
-        <div v-html="receiptHtml"></div>
+        <div class="receipt-box" v-html="receiptHtml"></div>
 
-        <div class="d-flex justify-end ga-2 mt-4">
-          <v-btn variant="text" @click="receiptDialog = false">{{
-            t("close")
-          }}</v-btn>
+        <div class="form-actions">
           <v-btn
             variant="flat"
-            color="white"
-            class="modern-action-btn secondary border"
+            class="modern-action-btn secondary"
+            @click="receiptDialog = false"
+          >
+            {{ t("close") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
+            class="modern-action-btn secondary"
             :loading="exporting"
             @click="downloadReceiptImage"
           >
@@ -320,7 +355,7 @@
             {{ t("download_image") }}
           </v-btn>
           <v-btn
-            color="primary"
+            variant="flat"
             class="modern-action-btn primary"
             @click="printReceipt"
           >
@@ -330,7 +365,7 @@
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -835,46 +870,54 @@ const downloadReceiptImage = async () => {
 
 const printReceipt = () =>
   printHtml(receiptHtml.value, `${t("payment_receipt")} ${receipt.value?.no || ""}`);
+
+// Presentation only: hex palette for the KPI tiles (StatCard takes hex values).
+const statPalette: Record<string, { color: string; tint: string }> = {
+  blue: { color: "#2563eb", tint: "#eff6ff" },
+  indigo: { color: "#4f46e5", tint: "#eef2ff" },
+  green: { color: "#16a34a", tint: "#f0fdf4" },
+  red: { color: "#dc2626", tint: "#fef2f2" },
+};
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Money cells: tabular digits, never wrap. */
+.money {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ds-text);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.money--paid {
+  color: #15803d;
 }
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.money--due {
+  color: #b91c1c;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
+.money--zero {
+  color: var(--ds-faint);
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+
+/* Dialog header (icon + title) */
+.dialog-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.modern-action-btn.secondary.border {
-  border: 1px solid #e2e8f0 !important;
-  background: white !important;
-  color: #0f172a !important;
+
+/* Scrollable body for the per-grade amount list on small screens. */
+.dialog-body {
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 2px;
 }
-.premium-table {
-  background: transparent !important;
-}
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
+
+/* Receipt preview sits inside a soft frame. */
+.receipt-box {
+  border: 1px dashed #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
 }
 </style>

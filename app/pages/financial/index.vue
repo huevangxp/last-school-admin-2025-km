@@ -1,179 +1,169 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="$t('financial-management')"
+      :subtitle="$t('financial-management-subtitle')"
+      icon="mdi-finance"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <h1 class="text-title mb-1">{{ $t("financial-management") }}</h1>
-        <p class="text-detail">{{ $t("financial-management-subtitle") }}</p>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
+      <template #actions>
         <v-btn
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="32"
+          variant="flat"
+          class="modern-action-btn primary"
           prepend-icon="mdi-plus"
           to="/financial/add"
         >
           {{ $t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in financeStats" :key="i">
-        <v-card class="metric-card pa-4 h-100" elevation="0">
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <p class="text-detail-tiny mb-1">{{ stat.label }}</p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI tiles -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in financeStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Content Card -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <v-text-field
-          v-model="search"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="$t('search-transactions')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-        ></v-text-field>
-
-        <v-select
-          v-model="typeFilter"
-          :items="[
-            { title: $t('total'), value: 'Total' },
-            { title: $t('income'), value: 'income' },
-            { title: $t('expense'), value: 'expense' },
-          ]"
-          variant="outlined"
-          density="compact"
-          hide-details
-          style="min-width: 150px; max-width: 180px"
-          prepend-inner-icon="mdi-filter-variant"
-          color="primary"
-        ></v-select>
+    <!-- Ledger -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div class="min-w-0">
+          <div class="panel-title">{{ $t("financial") }}</div>
+          <div class="panel-sub">{{ $t("financial-management-subtitle") }}</div>
+        </div>
+        <span class="panel-chip">{{ rows.length }} {{ $t("total") }}</span>
       </div>
 
-      <!-- Data Table -->
-      <v-data-table
-        :headers="headers"
-        :items="rows"
-        :search="search"
-        :loading="financeStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">
-            {{ $t("no-transactions-yet") }}
-          </div>
-        </template>
+      <div class="px-4 px-md-6 pt-4 pt-md-5">
+        <div class="filter-bar">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="$t('search-transactions')"
+            variant="outlined"
+            density="compact"
+            hide-details
+            color="primary"
+            class="filter-search"
+          ></v-text-field>
+          <v-select
+            v-model="typeFilter"
+            :items="[
+              { title: $t('total'), value: 'Total' },
+              { title: $t('income'), value: 'income' },
+              { title: $t('expense'), value: 'expense' },
+            ]"
+            variant="outlined"
+            density="compact"
+            hide-details
+            prepend-inner-icon="mdi-filter-variant"
+            color="primary"
+          ></v-select>
+        </div>
+      </div>
 
-        <!-- Description -->
-        <template v-slot:item.description="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar
-              :color="item.type === 'income' ? 'green-lighten-5' : 'red-lighten-5'"
-              size="32"
-              class="mr-3 elevation-1 border-white"
-            >
-              <v-icon
-                :color="item.type === 'income' ? 'green-darken-1' : 'red-darken-1'"
-                size="16"
+      <div class="table-wrap">
+        <v-data-table
+          :headers="headers"
+          :items="rows"
+          :search="search"
+          :loading="financeStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template #no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-receipt-text-outline"
+                :title="$t('no-transactions-yet')"
+              />
+            </div>
+          </template>
+
+          <!-- Description -->
+          <template #item.description="{ item }">
+            <div class="d-flex align-center py-2">
+              <div
+                class="avatar-chip mr-3"
+                :class="item.type === 'income' ? 'tx-icon--in' : 'tx-icon--out'"
               >
-                {{
-                  item.type === "income"
-                    ? "mdi-arrow-bottom-left"
-                    : "mdi-arrow-top-right"
-                }}
-              </v-icon>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">
-                {{ item.description || $t(item.category || "other") }}
+                <v-icon size="16">
+                  {{
+                    item.type === "income"
+                      ? "mdi-arrow-bottom-left"
+                      : "mdi-arrow-top-right"
+                  }}
+                </v-icon>
               </div>
-              <div class="text-detail-tiny text-grey">
-                {{ $t(item.category || "other") }} · {{ item.method }}
+              <div class="min-w-0">
+                <div class="cell-title">
+                  {{ item.description || $t(item.category || "other") }}
+                </div>
+                <div class="cell-sub">
+                  {{ $t(item.category || "other") }} · {{ item.method }}
+                </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- Amount -->
-        <template v-slot:item.amount="{ item }">
-          <span
-            :class="item.type === 'income' ? 'text-green-darken-2' : 'text-red-darken-2'"
-            class="text-title-small"
-          >
-            {{ item.type === "income" ? "+" : "-" }}₭{{ formatMoney(item.amount) }}
-          </span>
-        </template>
+          <!-- Amount -->
+          <template #item.amount="{ item }">
+            <span
+              class="money"
+              :class="item.type === 'income' ? 'money--in' : 'money--out'"
+            >
+              {{ item.type === "income" ? "+" : "-" }}₭{{ formatMoney(item.amount) }}
+            </span>
+          </template>
 
-        <!-- Date -->
-        <template v-slot:item.transaction_date="{ item }">
-          <div class="text-detail">{{ formatDate(item.transaction_date) }}</div>
-        </template>
+          <!-- Date -->
+          <template #item.transaction_date="{ item }">
+            <span class="cell-sub text-no-wrap">
+              {{ formatDate(item.transaction_date) }}
+            </span>
+          </template>
 
-        <!-- Status -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="item.status === 'paid' ? 'success' : 'orange'"
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === "paid" ? $t("paid") : $t("pending") }}
-          </v-chip>
-        </template>
+          <!-- Status -->
+          <template #item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="item.status === 'paid' ? 'status-pill--green' : 'status-pill--amber'"
+            >
+              <span class="status-dot"></span>
+              {{ item.status === "paid" ? $t("paid") : $t("pending") }}
+            </span>
+          </template>
 
-        <!-- Actions -->
-        <template v-slot:item.actions="{ item }">
-          <div class="d-flex justify-end ga-1">
-            <v-btn
-              icon="mdi-pencil-outline"
-              variant="text"
-              size="x-small"
-              color="primary"
-              :to="`/financial/add?id=${item.id}`"
-            ></v-btn>
-            <v-btn
-              icon="mdi-delete-outline"
-              variant="text"
-              size="x-small"
-              color="error"
-              @click="removeItem(item)"
-            ></v-btn>
-          </div>
-        </template>
-      </v-data-table>
+          <!-- Actions -->
+          <template #item.actions="{ item }">
+            <div class="row-actions">
+              <v-btn
+                icon="mdi-pencil-outline"
+                variant="text"
+                size="small"
+                color="primary"
+                :to="`/financial/add?id=${item.id}`"
+              ></v-btn>
+              <v-btn
+                icon="mdi-delete-outline"
+                variant="text"
+                size="small"
+                color="error"
+                @click="removeItem(item)"
+              ></v-btn>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -256,49 +246,38 @@ const removeItem = async (item: any) => {
 onMounted(() => {
   financeStore.fetchFinances();
 });
+
+// Presentation only: hex palette for the KPI tiles (StatCard takes hex values).
+const statPalette: Record<string, { color: string; tint: string }> = {
+  green: { color: "#16a34a", tint: "#f0fdf4" },
+  red: { color: "#dc2626", tint: "#fef2f2" },
+  purple: { color: "#7c3aed", tint: "#f5f3ff" },
+  orange: { color: "#ea580c", tint: "#fff7ed" },
+};
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Income / expense direction icon */
+.tx-icon--in {
+  color: #15803d;
+  background: #f0fdf4;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
+.tx-icon--out {
+  color: #b91c1c;
+  background: #fef2f2;
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+
+/* Signed amount: tabular digits, never wrap. */
+.money {
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.money--in {
+  color: #15803d;
 }
-.metric-icon-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-.premium-table {
-  background: transparent !important;
-}
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-.border-white {
-  border: 1.5px solid #ffffff;
+.money--out {
+  color: #b91c1c;
 }
 </style>

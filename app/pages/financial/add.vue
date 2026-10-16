@@ -1,27 +1,25 @@
 <template>
-  <v-container fluid class="pa-4 pa-md-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
+  <div class="page page--narrow">
+    <PageHeader
+      :title="isEdit ? $t('edit-transaction') : $t('new-transaction')"
+      :subtitle="$t('record-revenue-expense')"
+      icon="mdi-cash-plus"
+      :breadcrumbs="breadcrumbs"
+      back="/financial"
+    />
 
-    <v-card elevation="0" class="intelligence-card pa-6">
-      <div class="d-flex align-center mb-6">
-        <v-avatar color="emerald-lighten-5" size="40" class="mr-3 rounded-0">
-          <v-icon color="emerald-darken-1" size="20">mdi-cash-plus</v-icon>
-        </v-avatar>
-        <div>
-          <h2 class="text-title">
-            {{ isEdit ? $t("edit-transaction") : $t("new-transaction") }}
-          </h2>
-          <p class="text-detail">{{ $t("record-revenue-expense") }}</p>
-        </div>
-      </div>
-
+    <v-card elevation="0" class="panel fade-in">
       <v-form ref="formRef" @submit.prevent="save">
-        <v-row class="ga-y-2">
+        <!-- Transaction details -->
+        <div class="form-section">
+          <v-icon size="16">mdi-swap-horizontal</v-icon>
+          {{ $t("details") }}
+        </div>
+
+        <v-row>
           <!-- Transaction Type -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              $t("transaction-category")
-            }}</label>
+            <label class="field-label">{{ $t("transaction-category") }}</label>
             <v-select
               v-model="form.type"
               :items="[
@@ -29,47 +27,50 @@
                 { title: $t('expense'), value: 'expense' },
               ]"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              :prepend-inner-icon="
+                form.type === 'income' ? 'mdi-arrow-bottom-left' : 'mdi-arrow-top-right'
+              "
             ></v-select>
           </v-col>
 
           <!-- Category -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("category") }}</label>
+            <label class="field-label">{{ $t("category") }}</label>
             <v-select
               v-model="form.category"
               :items="categoryOptions"
               item-title="title"
               item-value="value"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-shape-outline"
             ></v-select>
           </v-col>
 
           <!-- Amount -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("amount") }}</label>
+            <label class="field-label">{{ $t("amount") }}</label>
             <MoneyInput
               v-model="form.amount"
               placeholder="0"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               class="font-weight-black"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-cash"
               :rules="[rules.required, rules.positive]"
             ></MoneyInput>
           </v-col>
 
           <!-- Date -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              $t("transaction-date")
-            }}</label>
+            <label class="field-label">{{ $t("transaction-date") }}</label>
             <DialogDate
               v-model="showDatePicker"
               :date="form.transaction_date"
@@ -78,7 +79,7 @@
             <v-text-field
               v-model="form.transaction_date"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
               prepend-inner-icon="mdi-calendar"
@@ -86,12 +87,18 @@
               @click="showDatePicker = true"
             ></v-text-field>
           </v-col>
+        </v-row>
 
+        <!-- Payment -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-credit-card-outline</v-icon>
+          {{ $t("payment-method") }}
+        </div>
+
+        <v-row>
           <!-- Method -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              $t("payment-method")
-            }}</label>
+            <label class="field-label">{{ $t("payment-method") }}</label>
             <v-select
               v-model="form.method"
               :items="[
@@ -100,15 +107,16 @@
                 { title: $t('online-payment'), value: 'Online Payment' },
               ]"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-wallet-outline"
             ></v-select>
           </v-col>
 
           <!-- Status -->
           <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{ $t("status") }}</label>
+            <label class="field-label">{{ $t("status") }}</label>
             <v-select
               v-model="form.status"
               :items="[
@@ -116,24 +124,31 @@
                 { title: $t('pending'), value: 'pending' },
               ]"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               hide-details="auto"
+              prepend-inner-icon="mdi-check-decagram-outline"
             ></v-select>
           </v-col>
+        </v-row>
 
-          <!-- Description -->
+        <!-- Notes -->
+        <div class="form-section mt-6">
+          <v-icon size="16">mdi-text-box-outline</v-icon>
+          {{ $t("description") }}
+        </div>
+
+        <v-row>
           <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              $t("transaction-notes")
-            }}</label>
+            <label class="field-label">{{ $t("transaction-notes") }}</label>
             <v-textarea
               v-model="form.description"
               :placeholder="$t('description-optional')"
               variant="outlined"
-              density="compact"
+              density="comfortable"
               color="primary"
               rows="3"
+              auto-grow
               hide-details="auto"
             ></v-textarea>
           </v-col>
@@ -144,34 +159,33 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
-          >{{ errorMessage }}</v-alert
         >
+          {{ errorMessage }}
+        </v-alert>
 
-        <div class="d-flex justify-end ga-3 pt-8">
+        <div class="form-actions">
           <v-btn
             variant="flat"
-            color="grey-lighten-4"
-            class="modern-action-btn secondary border text-slate-700"
-            height="40"
+            class="modern-action-btn secondary"
             @click="router.push('/financial')"
           >
             {{ $t("cancel") }}
           </v-btn>
           <v-btn
             variant="flat"
-            color="primary"
-            class="modern-action-btn primary elevation-4"
-            height="40"
+            class="modern-action-btn primary"
             type="submit"
             :loading="loading"
           >
+            <v-icon icon="mdi-check" start size="18"></v-icon>
             {{ $t("confirm-transaction") }}
           </v-btn>
         </div>
       </v-form>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -290,29 +304,6 @@ const save = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  color: white !important;
-}
-
-.text-slate-700 {
-  color: #334155 !important;
-}
+/* All styling comes from the global design system (.page--narrow, .panel,
+   .form-section, .field-label, .form-actions). Nothing page-specific needed. */
 </style>

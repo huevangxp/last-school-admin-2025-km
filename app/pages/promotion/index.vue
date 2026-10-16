@@ -1,45 +1,43 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <div class="mb-6">
-      <div class="text-title mb-1">{{ t("promotion") }}</div>
-      <div class="text-detail">
-        {{ t("promotion-subtitle") }}
-      </div>
-    </div>
+  <div class="page">
+    <PageHeader
+      :title="t('promotion')"
+      :subtitle="t('promotion-subtitle')"
+      icon="mdi-arrow-up-bold-box-outline"
+      :breadcrumbs="breadcrumbs"
+    />
 
     <v-row>
-      <!-- Source -->
-      <v-col cols="12" md="5">
-        <v-card elevation="0" class="intelligence-card pa-6 mb-4">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="blue-lighten-5" size="36" class="mr-3 rounded-0">
-              <v-icon color="blue-darken-2" size="18"
-                >mdi-account-group-outline</v-icon
-              >
-            </v-avatar>
-            <h3 class="text-title">1. {{ t("from") }}</h3>
+      <!-- Steps: source -> target -->
+      <v-col cols="12" md="5" lg="4">
+        <!-- Step 1: source -->
+        <v-card elevation="0" class="panel fade-in mb-4">
+          <div class="step-head">
+            <span class="step-badge">1</span>
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("from") }}</div>
+              <div class="panel-sub">{{ t("source-class") }}</div>
+            </div>
+            <v-icon class="ml-auto" color="primary" size="20">
+              mdi-account-group-outline
+            </v-icon>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">{{
-            t("source-academic-year")
-          }}</label>
+          <label class="field-label">{{ t("source-academic-year") }}</label>
           <v-select
             v-model="sourceYearId"
             :items="classroomStore.academicYears"
             item-title="title"
             item-value="id"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
+            color="primary"
             class="mb-4"
             prepend-inner-icon="mdi-calendar-arrow-left"
           ></v-select>
 
-          <label class="text-detail-tiny mb-2 d-block">{{
-            t("source-class")
-          }}</label>
+          <label class="field-label">{{ t("source-class") }}</label>
           <v-select
             v-model="sourceClassId"
             :items="sourceClassOptions"
@@ -47,41 +45,41 @@
             item-value="id"
             :placeholder="t('select-current-class')"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
+            color="primary"
             prepend-inner-icon="mdi-google-classroom"
           ></v-select>
         </v-card>
 
-        <!-- Target -->
-        <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="d-flex align-center mb-4">
-            <v-avatar color="teal-lighten-5" size="36" class="mr-3 rounded-0">
-              <v-icon color="teal-darken-2" size="18"
-                >mdi-arrow-up-bold-box-outline</v-icon
-              >
-            </v-avatar>
-            <h3 class="text-title">2. {{ t("to") }}</h3>
+        <!-- Step 2: target -->
+        <v-card elevation="0" class="panel fade-in">
+          <div class="step-head">
+            <span class="step-badge step-badge--teal">2</span>
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("to") }}</div>
+              <div class="panel-sub">{{ t("target-class") }}</div>
+            </div>
+            <v-icon class="ml-auto" color="primary" size="20">
+              mdi-arrow-up-bold-box-outline
+            </v-icon>
           </div>
 
-          <label class="text-detail-tiny mb-2 d-block">{{
-            t("target-academic-year")
-          }}</label>
+          <label class="field-label">{{ t("target-academic-year") }}</label>
           <v-select
             v-model="targetYearId"
             :items="classroomStore.academicYears"
             item-title="title"
             item-value="id"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
+            color="primary"
             class="mb-4"
             prepend-inner-icon="mdi-calendar-check"
           ></v-select>
 
-          <label class="text-detail-tiny mb-2 d-block">{{
-            t("target-class")
-          }}</label>
+          <label class="field-label">{{ t("target-class") }}</label>
           <v-select
             v-model="targetClassId"
             :items="targetClassOptions"
@@ -92,12 +90,13 @@
             "
             :disabled="!sourceClassId"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
+            color="primary"
             prepend-inner-icon="mdi-google-classroom"
           ></v-select>
-          <div class="text-detail-tiny text-grey mt-2">
-            <v-icon size="13" class="mr-1">mdi-information-outline</v-icon>
+          <div class="field-hint d-flex align-center mt-2">
+            <v-icon size="14" class="mr-1">mdi-information-outline</v-icon>
             {{ t("higher-grade-only") }}
           </div>
 
@@ -106,96 +105,122 @@
             :type="messageType"
             variant="tonal"
             density="compact"
+            rounded="lg"
             class="mt-4"
-            >{{ message }}</v-alert
           >
+            {{ message }}
+          </v-alert>
 
           <v-btn
             block
-            color="primary"
-            class="modern-action-btn primary elevation-4 mt-5"
-            height="44"
+            variant="flat"
+            class="modern-action-btn primary mt-5"
             :loading="promoting"
             :disabled="!canPromote"
             @click="promote"
           >
-            <v-icon icon="mdi-arrow-up-bold" start></v-icon>
+            <v-icon icon="mdi-arrow-up-bold" start size="18"></v-icon>
             {{ t("promote") }} ({{ selected.length }})
           </v-btn>
         </v-card>
       </v-col>
 
       <!-- Students in source class -->
-      <v-col cols="12" md="7">
-        <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="d-flex align-center justify-space-between mb-4">
-            <h3 class="text-title">
-              {{ t("students") }} ({{ sourceStudents.length }})
-            </h3>
-            <v-btn
-              variant="text"
-              size="small"
-              color="primary"
-              @click="toggleAll"
-              v-if="sourceStudents.length"
-            >
-              {{
-                selected.length === sourceStudents.length
-                  ? t("clear-all")
-                  : t("select-all-passed")
-              }}
-            </v-btn>
+      <v-col cols="12" md="7" lg="8">
+        <v-card elevation="0" class="panel panel--flush fade-in h-100">
+          <div class="panel-head">
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("students") }}</div>
+              <div class="panel-sub">{{ t("select-all-passed") }}</div>
+            </div>
+            <div class="d-flex align-center ga-2 flex-wrap justify-end">
+              <span class="panel-chip panel-chip--teal">
+                {{ selected.length }} / {{ sourceStudents.length }}
+              </span>
+              <v-btn
+                v-if="sourceStudents.length"
+                variant="text"
+                size="small"
+                color="primary"
+                class="font-weight-bold"
+                @click="toggleAll"
+              >
+                {{
+                  selected.length === sourceStudents.length
+                    ? t("clear-all")
+                    : t("select-all-passed")
+                }}
+              </v-btn>
+            </div>
           </div>
 
-          <div v-if="!sourceClassId" class="text-detail py-8 text-center">
-            {{ t("select-source-class-hint") }}
-          </div>
-          <div
-            v-else-if="enrollmentStore.loading"
-            class="py-8 text-center"
-          >
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
-          </div>
-          <div
-            v-else-if="!sourceStudents.length"
-            class="text-detail py-8 text-center"
-          >
-            {{ t("no-students-in-class") }}
-          </div>
+          <div class="pa-4 pa-md-5">
+            <EmptyState
+              v-if="!sourceClassId"
+              icon="mdi-google-classroom"
+              :title="t('select-source-class-hint')"
+            />
+            <div v-else-if="enrollmentStore.loading" class="empty-state">
+              <v-progress-circular
+                indeterminate
+                size="24"
+                width="2"
+                color="primary"
+              ></v-progress-circular>
+              <span>{{ t("loading") }}</span>
+            </div>
+            <EmptyState
+              v-else-if="!sourceStudents.length"
+              icon="mdi-account-off-outline"
+              :title="t('no-students-in-class')"
+            />
 
-          <v-list v-else class="pa-0">
-            <v-list-item
-              v-for="s in sourceStudents"
-              :key="s.id"
-              class="px-2 mb-1 rounded-0 source-student"
-              @click="toggle(s.id)"
-            >
-              <template v-slot:prepend>
+            <div v-else class="student-list">
+              <div
+                v-for="s in sourceStudents"
+                :key="s.id"
+                class="student-row"
+                :class="{ 'student-row--selected': selected.includes(s.id) }"
+                role="button"
+                tabindex="0"
+                @click="toggle(s.id)"
+                @keydown.enter.prevent="toggle(s.id)"
+                @keydown.space.prevent="toggle(s.id)"
+              >
                 <v-checkbox-btn
                   :model-value="selected.includes(s.id)"
                   color="primary"
+                  density="compact"
+                  class="flex-grow-0"
                   @click.stop="toggle(s.id)"
                 ></v-checkbox-btn>
-                <v-avatar size="34" class="mr-3" color="primary-lighten-5">
+                <div class="avatar-chip">
                   <v-img v-if="s.avatar" :src="s.avatar" cover alt=""></v-img>
-                  <v-icon v-else color="primary" size="18">mdi-account</v-icon>
-                </v-avatar>
-              </template>
-              <v-list-item-title class="text-title-small">
-                {{ s.first_name }} {{ s.last_name }}
-              </v-list-item-title>
-              <v-list-item-subtitle class="text-detail-tiny">
-                {{ s.student_id }}
-              </v-list-item-subtitle>
-            </v-list-item>
-          </v-list>
+                  <template v-else>
+                    {{ (s.first_name || "?").charAt(0) }}
+                  </template>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="cell-title text-truncate">
+                    {{ s.first_name }} {{ s.last_name }}
+                  </div>
+                  <div class="cell-sub">{{ s.student_id }}</div>
+                </div>
+                <v-icon
+                  v-if="selected.includes(s.id)"
+                  size="18"
+                  color="primary"
+                  class="flex-shrink-0"
+                >
+                  mdi-check-circle
+                </v-icon>
+              </div>
+            </div>
+          </div>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -382,27 +407,63 @@ const promote = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Step header: numbered badge + title */
+.step-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.step-badge {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ds-navy) 0%, var(--ds-navy-2) 100%);
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
+.step-badge--teal {
+  color: var(--ds-navy);
+  background: var(--ds-teal);
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0a3154 0%, #082741 100%) !important;
-  color: white !important;
+
+/* Selectable roster rows */
+.student-list {
+  display: grid;
+  gap: 8px;
 }
-.source-student {
-  border: 1px solid #f1f5f9;
+.student-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px 8px 6px;
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
-.source-student:hover {
-  background-color: #f8fafc;
+.student-row:hover {
+  background: #f8fafc;
+  border-color: #c7d0db;
+}
+.student-row:focus-visible {
+  outline: 2px solid var(--ds-teal);
+  outline-offset: 1px;
+}
+.student-row--selected {
+  background: #f0fdfa;
+  border-color: var(--ds-teal);
+}
+@media (min-width: 960px) {
+  .student-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 </style>
