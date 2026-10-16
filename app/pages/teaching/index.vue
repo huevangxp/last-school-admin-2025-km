@@ -1,59 +1,41 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="$t('teaching_assignments')"
+      :subtitle="$t('teaching-assignments-subtitle')"
+      icon="mdi-clipboard-account-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="indigo-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="indigo-darken-2" size="22">mdi-clipboard-account-outline</v-icon>
-        </v-avatar>
-        <div>
-          <div class="text-title">{{ $t("teaching_assignments") }}</div>
-          <div class="text-detail">
-            {{ $t("teaching-assignments-subtitle") }}
-          </div>
-        </div>
-      </div>
-      <v-btn
-        v-if="isAdmin"
-        color="primary"
-        class="modern-action-btn primary elevation-4"
-        height="36"
-        @click="openCreate"
-      >
-        <v-icon icon="mdi-plus" start size="18"></v-icon>
-        {{ $t("add") }}
-      </v-btn>
-    </div>
+      <template v-if="isAdmin" #actions>
+        <v-btn variant="flat" class="modern-action-btn primary" @click="openCreate">
+          <v-icon icon="mdi-plus" start size="18"></v-icon>
+          {{ $t("add") }}
+        </v-btn>
+      </template>
+    </PageHeader>
 
-    <div v-if="!isAdmin" class="text-detail text-center py-10">
-      {{ $t("administrators-only") }}
-    </div>
+    <!-- Non-admins only ever see this notice -->
+    <v-card v-if="!isAdmin" elevation="0" class="panel fade-in">
+      <EmptyState icon="mdi-shield-lock-outline" :title="$t('administrators-only')" />
+    </v-card>
 
     <template v-else>
       <!-- Stats -->
-      <v-row class="mb-6">
-        <v-col cols="12" sm="6" md="3" v-for="(s, i) in stats" :key="i">
-          <v-card class="metric-card pa-4 h-100" elevation="0">
-            <div class="d-flex align-center justify-space-between">
-              <div>
-                <p class="text-detail-tiny mb-1">{{ s.label }}</p>
-                <h2 class="text-title">{{ s.value }}</h2>
-              </div>
-              <v-avatar :color="`${s.color}-lighten-5`" size="40">
-                <v-icon :color="`${s.color}-darken-2`" size="18">{{ s.icon }}</v-icon>
-              </v-avatar>
-            </div>
-          </v-card>
+      <v-row class="mb-2 fade-in">
+        <v-col v-for="(s, i) in stats" :key="i" cols="6" lg="3">
+          <StatCard
+            :icon="s.icon"
+            :label="s.label"
+            :value="s.value"
+            :color="statPalette[s.color]?.color"
+            :tint="statPalette[s.color]?.tint"
+          />
         </v-col>
       </v-row>
 
       <!-- Filters -->
-      <v-card elevation="0" class="intelligence-card pa-4 mb-6">
-        <div class="d-flex flex-column flex-md-row gap-3">
+      <v-card elevation="0" class="panel mb-4 fade-in">
+        <div class="filter-bar mb-0">
           <v-select
             v-model="filterClassId"
             :items="classFilterOptions"
@@ -64,8 +46,8 @@
             density="compact"
             hide-details
             clearable
-            style="max-width: 260px"
             color="primary"
+            prepend-inner-icon="mdi-google-classroom"
           ></v-select>
           <v-select
             v-model="selectedYearId"
@@ -76,22 +58,23 @@
             variant="outlined"
             density="compact"
             hide-details
-            style="max-width: 220px"
             color="primary"
+            prepend-inner-icon="mdi-calendar-check"
           ></v-select>
+          <span class="filter-spacer d-none d-md-block"></span>
+          <span class="panel-chip panel-chip--indigo">
+            {{ filteredRows.length }} {{ t("assignments") }}
+          </span>
         </div>
       </v-card>
 
       <!-- Empty state -->
-      <v-card
-        v-if="!groupedByClass.length"
-        elevation="0"
-        class="intelligence-card pa-10 text-center text-detail"
-      >
-        {{ $t("no-teaching-assignments-yet") }}
-        <div class="text-detail-tiny mt-1">
-          {{ $t("press-add-to-assign-teacher", { add: $t("add") }) }}
-        </div>
+      <v-card v-if="!groupedByClass.length" elevation="0" class="panel fade-in">
+        <EmptyState
+          icon="mdi-clipboard-text-off-outline"
+          :title="$t('no-teaching-assignments-yet')"
+          :description="$t('press-add-to-assign-teacher', { add: $t('add') })"
+        />
       </v-card>
 
       <!-- Grouped by class -->
@@ -99,93 +82,97 @@
         v-for="grp in groupedByClass"
         :key="grp.classroom_id"
         elevation="0"
-        class="intelligence-card pa-0 mb-4 overflow-hidden"
+        class="panel panel--flush mb-4 fade-in"
       >
-        <div class="class-head d-flex align-center px-5 py-3">
-          <v-icon color="indigo-darken-2" size="18" class="mr-2">
-            mdi-google-classroom
-          </v-icon>
-          <div class="text-title-small">{{ grp.classroom }}</div>
-          <v-chip
-            size="x-small"
-            class="ml-3 font-weight-bold text-indigo-darken-2"
-            color="indigo-lighten-5"
-            variant="flat"
-          >
+        <div class="panel-head class-head">
+          <div class="d-flex align-center ga-3 min-w-0">
+            <div class="class-icon">
+              <v-icon size="18">mdi-google-classroom</v-icon>
+            </div>
+            <div class="panel-title text-truncate">{{ grp.classroom }}</div>
+          </div>
+          <span class="panel-chip panel-chip--indigo">
             {{ grp.items.length }} {{ t("subject") }}
-          </v-chip>
+          </span>
         </div>
 
-        <div
-          v-for="it in grp.items"
-          :key="it.id"
-          class="assign-row d-flex align-center px-5 py-3"
-        >
-          <v-chip
-            size="small"
-            color="teal-lighten-5"
-            variant="flat"
-            class="text-teal-darken-2 font-weight-bold mr-3 subject-chip"
-          >
-            {{ it.subject }}
-          </v-chip>
-          <v-icon size="16" color="grey-lighten-1">mdi-arrow-right</v-icon>
-          <div class="d-flex align-center ml-3">
-            <v-avatar color="indigo-lighten-5" size="26" class="mr-2">
-              <v-icon size="14" color="indigo-darken-2">mdi-account-tie-outline</v-icon>
-            </v-avatar>
-            <div class="text-detail font-weight-bold">{{ it.teacher }}</div>
+        <div v-for="it in grp.items" :key="it.id" class="assign-row">
+          <span class="assign-subject">
+            <v-icon size="14" class="mr-1">mdi-book-open-variant</v-icon>
+            <span class="text-truncate">{{ it.subject }}</span>
+          </span>
+          <v-icon size="16" class="assign-arrow d-none d-sm-flex">mdi-arrow-right</v-icon>
+          <div class="assign-teacher">
+            <div class="avatar-chip avatar-chip--sm">
+              {{ (it.teacher || "?").charAt(0) }}
+            </div>
+            <span class="cell-title text-truncate">{{ it.teacher }}</span>
           </div>
-          <v-spacer></v-spacer>
-          <v-btn
-            icon="mdi-delete-outline"
-            variant="text"
-            size="x-small"
-            color="error"
-            @click="removeItem(it)"
-          ></v-btn>
+          <div class="row-actions">
+            <v-btn
+              icon="mdi-delete-outline"
+              variant="text"
+              size="small"
+              color="error"
+              @click="removeItem(it)"
+            ></v-btn>
+          </div>
         </div>
       </v-card>
     </template>
 
     <!-- Create dialog -->
     <v-dialog v-model="dialog" width="480">
-      <v-card class="pa-6">
-        <div class="text-title mb-4">{{ t("add") }} {{ $t("teaching_assignments") }}</div>
+      <v-card class="pa-5 pa-sm-6">
+        <div class="d-flex align-center ga-3 mb-5">
+          <div class="page-icon">
+            <v-icon size="20">mdi-clipboard-account-outline</v-icon>
+          </div>
+          <div class="min-w-0">
+            <div class="panel-title">{{ t("add") }} {{ $t("teaching_assignments") }}</div>
+            <div class="panel-sub">{{ $t("teaching-assignments-subtitle") }}</div>
+          </div>
+        </div>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
+        <label class="field-label">{{ t("class") }}</label>
         <v-select
           v-model="form.classroom_id"
           :items="classFilterOptions"
           item-title="label"
           item-value="id"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          color="primary"
+          prepend-inner-icon="mdi-google-classroom"
+          class="mb-4"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
+        <label class="field-label">{{ t("teacher") }}</label>
         <v-select
           v-model="form.teacher_id"
           :items="teacherOptions"
           item-title="label"
           item-value="id"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
-          class="mb-3"
+          color="primary"
+          prepend-inner-icon="mdi-account-tie-outline"
+          class="mb-4"
         ></v-select>
 
-        <label class="text-detail-tiny mb-1 d-block">{{ t("subject") }}</label>
+        <label class="field-label">{{ t("subject") }}</label>
         <v-select
           v-model="form.subject_id"
           :items="dialogSubjectOptions"
           item-title="label"
           item-value="id"
           variant="outlined"
-          density="compact"
+          density="comfortable"
           hide-details
+          color="primary"
+          prepend-inner-icon="mdi-book-open-variant"
         ></v-select>
 
         <v-alert
@@ -193,23 +180,27 @@
           type="error"
           variant="tonal"
           density="compact"
+          rounded="lg"
           class="mt-4"
           >{{ formError }}</v-alert
         >
 
-        <div class="d-flex justify-end ga-2 mt-6">
-          <v-btn variant="text" @click="dialog = false">{{ t("cancel") }}</v-btn>
+        <div class="form-actions">
+          <v-btn variant="flat" class="modern-action-btn secondary" @click="dialog = false">
+            {{ t("cancel") }}
+          </v-btn>
           <v-btn
-            color="primary"
+            variant="flat"
             class="modern-action-btn primary"
             :loading="saving"
             @click="save"
-            >{{ t("save") }}</v-btn
           >
+            {{ t("save") }}
+          </v-btn>
         </div>
       </v-card>
     </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -307,6 +298,14 @@ const stats = computed(() => [
     color: "purple",
   },
 ]);
+
+// Presentation only: StatCard takes hex colours, stats[] keeps its colour names.
+const statPalette: Record<string, { color: string; tint: string }> = {
+  indigo: { color: "#4f46e5", tint: "#eef2ff" },
+  blue: { color: "#2563eb", tint: "#eff6ff" },
+  teal: { color: "#0d9488", tint: "#f0fdfa" },
+  purple: { color: "#7c3aed", tint: "#f5f3ff" },
+};
 
 const filteredRows = computed(() =>
   filterClassId.value
@@ -423,35 +422,36 @@ const removeItem = async (item: any) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
-}
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-}
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
 /* Class group header band — indigo tint gives this page its own identity */
 .class-head {
-  background: #eef2ff;
-  border-bottom: 1px solid #e0e7ff;
+  background: #f7f8ff;
 }
+.class-icon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4338ca;
+  background: #eef2ff;
+}
+
+.avatar-chip--sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* One subject → teacher line */
 .assign-row {
-  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--ds-border-soft);
 }
 .assign-row:last-child {
   border-bottom: 0;
@@ -459,8 +459,41 @@ const removeItem = async (item: any) => {
 .assign-row:hover {
   background: #f8fafc;
 }
-.subject-chip {
-  min-width: 130px;
-  justify-content: center;
+.assign-subject {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 45%;
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #0f766e;
+  background: #f0fdfa;
+  white-space: nowrap;
+}
+.assign-subject .text-truncate {
+  min-width: 0;
+}
+.assign-arrow {
+  color: var(--ds-faint);
+}
+.assign-teacher {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (min-width: 600px) {
+  .assign-row {
+    padding: 10px 24px;
+  }
+  .assign-subject {
+    flex: 0 0 auto;
+    min-width: 140px;
+    max-width: 260px;
+  }
 }
 </style>

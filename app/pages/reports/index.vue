@@ -1,26 +1,33 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <!-- Analytics Matrix -->
-    <v-row class="ga-y-6">
+  <div class="page">
+    <PageHeader
+      :title="t('analytics')"
+      :subtitle="t('global-performance-metrics')"
+      icon="mdi-chart-box-outline"
+      :breadcrumbs="breadcrumbs"
+    />
+
+    <!-- ───────── Enrollment trend & faculty ───────── -->
+    <v-row class="mb-2 fade-in">
       <!-- 1. Student Enrollment Trend (Line) -->
       <v-col cols="12" lg="8">
-        <v-card elevation="0" class="intelligence-card h-100 pa-6">
-          <div class="d-flex justify-space-between align-center mb-6">
-            <div>
-              <div class="text-title mb-1">{{ t("student-enrollment-trend") }}</div>
-              <div class="text-detail">{{ t("annual-enrollment-growth") }}</div>
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("student-enrollment-trend") }}</div>
+              <div class="panel-sub">{{ t("annual-enrollment-growth") }}</div>
             </div>
-            <v-chip
-              color="primary-lighten-5"
-              class="text-primary font-weight-black"
-              size="x-small"
-              variant="flat"
-            >
+            <span class="panel-chip panel-chip--green">
+              <v-icon size="12" class="mr-1">mdi-trending-up</v-icon>
               {{ t("enrollment-growth-badge") }}
-            </v-chip>
+            </span>
           </div>
-          <div class="chart-wrapper" style="height: 300px">
-            <ClientOnly>
+          <div class="chart-box chart-box--tall">
+            <div v-if="!studentData.labels.length" class="chart-empty">
+              <v-progress-circular indeterminate size="22" width="2" color="primary" />
+              <span>{{ t("loading") }}</span>
+            </div>
+            <ClientOnly v-else>
               <Line :data="studentData" :options="lineOptions" />
             </ClientOnly>
           </div>
@@ -29,47 +36,63 @@
 
       <!-- 2. Teacher Distribution (Doughnut) -->
       <v-col cols="12" lg="4">
-        <v-card elevation="0" class="intelligence-card h-100 pa-6">
-          <div class="text-title mb-1">{{ t("faculty-composition") }}</div>
-          <div class="text-detail mb-6">{{ t("teacher-distribution-by-department") }}</div>
-          <div
-            class="chart-wrapper d-flex flex-column align-center"
-            style="height: 250px"
-          >
-            <ClientOnly>
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("faculty-composition") }}</div>
+              <div class="panel-sub">{{ t("teacher-distribution-by-department") }}</div>
+            </div>
+            <span class="panel-chip panel-chip--indigo">
+              {{ teacherData.labels.length }} {{ t("total") }}
+            </span>
+          </div>
+          <div class="chart-box">
+            <div v-if="!teacherData.labels.length" class="chart-empty">
+              <v-icon size="28" class="mb-1">mdi-chart-donut</v-icon>
+              <span>{{ t("no-data") }}</span>
+            </div>
+            <ClientOnly v-else>
               <Doughnut :data="teacherData" :options="doughnutOptions" />
             </ClientOnly>
           </div>
-          <div class="mt-4">
+          <div v-if="teacherData.labels.length" class="legend-list">
             <div
               v-for="(label, i) in teacherData.labels"
               :key="i"
-              class="d-flex align-center justify-space-between mb-1"
+              class="legend-row"
             >
-              <div class="d-flex align-center">
-                <div
-                  class="status-dot mr-2"
-                  :style="`background: ${teacherData.datasets[0].backgroundColor[i]}`"
-                ></div>
-                <span class="text-detail-tiny">{{ label }}</span>
-              </div>
-              <span class="text-title-small" style="font-size: 10px !important"
-                >{{ teacherData.datasets[0].data[i] }}%</span
-              >
+              <span
+                class="legend-dot"
+                :style="{ background: teacherData.datasets[0].backgroundColor[i] }"
+              ></span>
+              <span class="legend-label text-capitalize">{{ label }}</span>
+              <span class="legend-value">{{ teacherData.datasets[0].data[i] }}</span>
             </div>
           </div>
         </v-card>
       </v-col>
+    </v-row>
 
+    <!-- ───────── Classes & subjects ───────── -->
+    <v-row class="mb-2 fade-in">
       <!-- 3. Class Performance (Bar) -->
-      <v-col cols="12" md="6" lg="6">
-        <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="text-title mb-1">{{ t("class-proficiency-audit") }}</div>
-          <div class="text-detail mb-6">
-            {{ t("average-score-distribution") }}
+      <v-col cols="12" md="6">
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("class-proficiency-audit") }}</div>
+              <div class="panel-sub">{{ t("average-score-distribution") }}</div>
+            </div>
+            <span class="panel-chip">
+              {{ classData.labels.length }} {{ t("total") }}
+            </span>
           </div>
-          <div class="chart-wrapper" style="height: 250px">
-            <ClientOnly>
+          <div class="chart-box">
+            <div v-if="!classData.labels.length" class="chart-empty">
+              <v-icon size="28" class="mb-1">mdi-chart-bar</v-icon>
+              <span>{{ t("no-data") }}</span>
+            </div>
+            <ClientOnly v-else>
               <Bar :data="classData" :options="barOptions" />
             </ClientOnly>
           </div>
@@ -77,88 +100,90 @@
       </v-col>
 
       <!-- 4. Subject Popularity (Horizontal Bar) -->
-      <v-col cols="12" md="6" lg="6">
-        <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="text-title mb-1">{{ t("subject-engagement") }}</div>
-          <div class="text-detail mb-6">
-            {{ t("student-enrollment-volume-by-subject") }}
+      <v-col cols="12" md="6">
+        <v-card elevation="0" class="panel h-100">
+          <div class="panel-head">
+            <div class="min-w-0">
+              <div class="panel-title">{{ t("subject-engagement") }}</div>
+              <div class="panel-sub">{{ t("student-enrollment-volume-by-subject") }}</div>
+            </div>
+            <span class="panel-chip panel-chip--teal">
+              {{ subjectData.labels.length }} {{ t("subjects") }}
+            </span>
           </div>
-          <div class="chart-wrapper" style="height: 250px">
-            <ClientOnly>
+          <div class="chart-box">
+            <div v-if="!subjectData.labels.length" class="chart-empty">
+              <v-icon size="28" class="mb-1">mdi-chart-timeline-variant</v-icon>
+              <span>{{ t("no-data") }}</span>
+            </div>
+            <ClientOnly v-else>
               <Bar :data="subjectData" :options="horizontalBarOptions" />
             </ClientOnly>
           </div>
         </v-card>
       </v-col>
+    </v-row>
 
-      <!-- 5. Group Student / Ethnic Diversity (Polar Area) -->
+    <!-- ───────── Demographic diversity (Polar Area) ───────── -->
+    <v-row class="fade-in">
       <v-col cols="12">
-        <v-card elevation="0" class="intelligence-card pa-6">
-          <div class="d-flex align-center mb-6">
-            <v-avatar
-              color="orange-lighten-5"
-              size="40"
-              class="mr-4"
-            >
-              <v-icon color="orange-darken-2" size="20"
-                >mdi-account-group-outline</v-icon
-              >
-            </v-avatar>
-            <div>
-              <div class="text-title mb-1">{{ t("demographic-diversity") }}</div>
-              <div class="text-detail">
-                {{ t("ethnic-group-distribution") }}
+        <v-card elevation="0" class="panel">
+          <div class="panel-head">
+            <div class="d-flex align-center ga-3 min-w-0">
+              <div class="page-icon page-icon--amber">
+                <v-icon size="20">mdi-account-group-outline</v-icon>
+              </div>
+              <div class="min-w-0">
+                <div class="panel-title">{{ t("demographic-diversity") }}</div>
+                <div class="panel-sub">{{ t("ethnic-group-distribution") }}</div>
               </div>
             </div>
+            <span class="panel-chip panel-chip--amber">
+              {{ ethnicData.labels.length }} {{ t("total") }}
+            </span>
           </div>
+
           <v-row>
             <v-col cols="12" md="4" class="d-flex align-center justify-center">
-              <div style="height: 250px; width: 100%">
-                <ClientOnly>
+              <div class="chart-box w-100">
+                <div v-if="!ethnicData.labels.length" class="chart-empty">
+                  <v-icon size="28" class="mb-1">mdi-chart-arc</v-icon>
+                  <span>{{ t("no-data") }}</span>
+                </div>
+                <ClientOnly v-else>
                   <PolarArea :data="ethnicData" :options="polarOptions" />
                 </ClientOnly>
               </div>
             </v-col>
             <v-col cols="12" md="8">
-              <div class="grid-stats pa-4 rounded-0 bg-grey-lighten-4 h-100">
-                <div class="text-detail-tiny mb-4">
+              <div class="breakdown h-100">
+                <div class="breakdown-title">
                   {{ t("detailed-enrollment-breakdown") }}
                 </div>
-                <v-row>
-                  <v-col
-                    cols="6"
-                    sm="4"
-                    lg="3"
+                <div v-if="!ethnicData.labels.length" class="chart-empty py-6">
+                  <span>{{ t("no-data") }}</span>
+                </div>
+                <div v-else class="breakdown-grid">
+                  <div
                     v-for="(val, i) in ethnicData.datasets[0].data"
                     :key="i"
+                    class="breakdown-tile"
+                    :style="{ '--tile-color': ethnicData.datasets[0].backgroundColor[i] }"
                   >
-                    <div
-                      class="pa-3 bg-white rounded-0 border border-slate-100 shadow-sm"
-                    >
-                      <div
-                        class="text-detail-tiny"
-                        :style="`color: ${ethnicData.datasets[0].backgroundColor[i]}`"
-                      >
-                        {{ ethnicData.labels[i] }}
-                      </div>
-                      <div class="text-title">
-                        {{ val }}
-                        <span
-                          class="text-detail"
-                          style="font-size: 10px !important"
-                          >{{ t("students-abbr") }}</span
-                        >
-                      </div>
+                    <div class="breakdown-label">{{ ethnicData.labels[i] }}</div>
+                    <div class="breakdown-value">
+                      {{ val }}
+                      <span class="breakdown-unit">{{ t("students-abbr") }}</span>
                     </div>
-                  </v-col>
-                </v-row>
+                  </div>
+                </div>
               </div>
             </v-col>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -412,42 +437,120 @@ const polarOptions: any = {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.intelligence-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.05);
-}
-
-.chart-wrapper {
+/* Chart canvases need a fixed-height box (maintainAspectRatio is off) */
+.chart-box {
+  position: relative;
   width: 100%;
+  height: 240px;
+}
+.chart-box--tall {
+  height: 300px;
+}
+@media (max-width: 599px) {
+  .chart-box {
+    height: 220px;
+  }
+  .chart-box--tall {
+    height: 240px;
+  }
 }
 
-.status-dot {
+/* Amber variant of the shared page icon for the demographics card */
+.page-icon--amber {
+  color: #b45309;
+  background: #fffbeb;
+}
+
+/* Doughnut legend */
+.legend-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.legend-dot {
+  flex: 0 0 auto;
   width: 8px;
   height: 8px;
+  border-radius: 50%;
+}
+.legend-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+  color: var(--ds-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.legend-value {
+  font-weight: 800;
+  color: var(--ds-text);
 }
 
-.shadow-sm {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+/* Ethnicity breakdown tiles */
+.breakdown {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid var(--ds-border-soft);
 }
-
-.bg-grey-lighten-4 {
-  background-color: #f8fafc !important;
+.breakdown-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ds-faint);
+  margin-bottom: 12px;
 }
-
-.border-slate-100 {
-  border-color: #f1f5f9 !important;
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+.breakdown-tile {
+  position: relative;
+  padding: 12px 12px 12px 16px;
+  background: #fff;
+  border: 1px solid var(--ds-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.breakdown-tile::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--tile-color, var(--ds-navy));
+}
+.breakdown-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tile-color, var(--ds-navy));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.breakdown-value {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--ds-text);
+}
+.breakdown-unit {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ds-faint);
 }
 </style>

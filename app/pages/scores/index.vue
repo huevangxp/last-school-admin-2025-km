@@ -1,36 +1,27 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between ga-4 mb-6"
+  <div class="page">
+    <PageHeader
+      :title="mode === 'enter' ? `${$t('management')} ${$t('scores')}` : $t('score_report')"
+      :subtitle="mode === 'enter' ? $t('enter-student-scores') : $t('full-class-results')"
+      icon="mdi-clipboard-check-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <div class="text-title mb-1">
-          {{ mode === "enter" ? `${$t("management")} ${$t("scores")}` : $t("score_report") }}
-        </div>
-        <div class="text-detail">
-          {{ mode === "enter" ? $t("enter-student-scores") : $t("full-class-results") }}
-        </div>
-      </div>
-
-      <div class="d-flex align-center ga-3">
+      <template #actions>
         <!-- Mode toggle — hidden for the read-only student role. -->
         <v-btn-toggle
           v-if="!isStudent"
           v-model="mode"
           mandatory
           density="compact"
-          variant="outlined"
-          divided
+          variant="text"
           color="primary"
+          class="mode-toggle"
         >
-          <v-btn value="enter" size="small" class="text-none">
+          <v-btn value="enter" size="small" class="text-none font-weight-bold">
             <v-icon icon="mdi-pencil-outline" start size="16"></v-icon>
             {{ $t("score_entry") }}
           </v-btn>
-          <v-btn value="view" size="small" class="text-none">
+          <v-btn value="view" size="small" class="text-none font-weight-bold">
             <v-icon icon="mdi-table-large" start size="16"></v-icon>
             {{ $t("score_report") }}
           </v-btn>
@@ -38,9 +29,8 @@
 
         <v-btn
           v-if="mode === 'enter'"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          variant="flat"
+          class="modern-action-btn primary"
           :loading="scoreStore.saving"
           :disabled="!canSave"
           @click="saveAll"
@@ -48,14 +38,14 @@
           <v-icon icon="mdi-content-save-outline" start size="18"></v-icon>
           {{ $t("save") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <!-- Filters -->
-    <v-card elevation="0" class="intelligence-card pa-4 mb-6">
+    <v-card elevation="0" class="panel mb-4 fade-in">
       <v-row dense>
         <v-col cols="12" sm="6" md="3">
-          <label class="text-detail-tiny mb-1 d-block">{{ t("class") }}</label>
+          <label class="field-label">{{ t("class") }}</label>
           <v-select
             v-model="selectedClassId"
             :items="classOptions"
@@ -65,11 +55,12 @@
             density="compact"
             hide-details
             color="primary"
+            prepend-inner-icon="mdi-google-classroom"
             :disabled="isStudent"
           ></v-select>
         </v-col>
         <v-col v-if="mode === 'enter'" cols="12" sm="6" md="3">
-          <label class="text-detail-tiny mb-1 d-block">{{ t("subject") }}</label>
+          <label class="field-label">{{ t("subject") }}</label>
           <v-select
             v-model="selectedSubjectId"
             :items="subjectOptions"
@@ -79,10 +70,11 @@
             density="compact"
             hide-details
             color="primary"
+            prepend-inner-icon="mdi-book-open-variant"
           ></v-select>
         </v-col>
-        <v-col cols="6" sm="4" md="2">
-          <label class="text-detail-tiny mb-1 d-block">{{ t("semester") }}</label>
+        <v-col cols="6" sm="3" md="2">
+          <label class="field-label">{{ t("semester") }}</label>
           <v-select
             v-model="selectedSemester"
             :items="semesterOptions"
@@ -92,8 +84,8 @@
             color="primary"
           ></v-select>
         </v-col>
-        <v-col cols="6" sm="4" md="2">
-          <label class="text-detail-tiny mb-1 d-block">{{ t("month") }}</label>
+        <v-col cols="6" sm="3" md="2">
+          <label class="field-label">{{ t("month") }}</label>
           <v-select
             v-model="selectedMonth"
             :items="monthOptions"
@@ -103,8 +95,8 @@
             color="primary"
           ></v-select>
         </v-col>
-        <v-col v-if="mode === 'enter' && isAdmin" cols="12" sm="4" md="2">
-          <label class="text-detail-tiny mb-1 d-block">{{ t("teacher") }}</label>
+        <v-col v-if="mode === 'enter' && isAdmin" cols="12" sm="6" md="2">
+          <label class="field-label">{{ t("teacher") }}</label>
           <v-select
             v-model="selectedTeacherId"
             :items="teacherOptions"
@@ -114,45 +106,63 @@
             density="compact"
             hide-details
             color="primary"
+            prepend-inner-icon="mdi-account-tie-outline"
           ></v-select>
         </v-col>
       </v-row>
     </v-card>
 
     <!-- ENTER MODE: editable score grid (one subject) -->
-    <v-card v-if="mode === 'enter'" elevation="0" class="intelligence-card pa-4">
-      <div v-if="!ready" class="text-detail text-center py-10">
-        {{ $t("select-class-subject-teacher") }}
+    <v-card v-if="mode === 'enter'" elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div class="min-w-0">
+          <div class="panel-title">{{ $t("score_entry") }}</div>
+          <div class="panel-sub">
+            {{ selectedClass?.classroom_name || $t("select-a-class") }}
+            · {{ t("semester") }} {{ selectedSemester }} · {{ selectedMonth }}
+          </div>
+        </div>
+        <span v-if="rows.length" class="panel-chip panel-chip--teal">
+          {{ rows.length }} {{ t("students") }}
+        </span>
       </div>
 
-      <div v-else-if="enrollmentStore.loading" class="py-10 text-center">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      <div v-if="!ready" class="pa-4 pa-md-5">
+        <EmptyState icon="mdi-filter-variant" :title="$t('select-class-subject-teacher')" />
       </div>
 
-      <div v-else-if="!rows.length" class="text-detail text-center py-10">
-        {{ $t("no-students-enrolled") }}
+      <div v-else-if="enrollmentStore.loading" class="panel-loading">
+        <v-progress-circular indeterminate color="primary" size="28" width="3"></v-progress-circular>
+        <span>{{ t("loading") }}</span>
       </div>
 
-      <div v-else class="table-wrapper">
+      <div v-else-if="!rows.length" class="pa-4 pa-md-5">
+        <EmptyState icon="mdi-account-off-outline" :title="$t('no-students-enrolled')" />
+      </div>
+
+      <div v-else class="table-wrap">
         <table class="score-table">
           <thead>
             <tr>
-              <th class="col-no text-detail-tiny">{{ t("column-no") }}</th>
-              <th class="col-name text-detail-tiny text-left">
-                {{ t("students") }}
-              </th>
-              <th class="col-score text-detail-tiny">
-                {{ t("scores") }} (0–10)
-              </th>
+              <th class="col-no">{{ t("column-no") }}</th>
+              <th class="col-name text-left">{{ t("students") }}</th>
+              <th class="col-score">{{ t("scores") }} (0–10)</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(row, index) in rows" :key="row.student_id" class="table-row">
-              <td class="text-center text-detail-tiny">{{ index + 1 }}</td>
-              <td class="text-left px-4 text-detail font-weight-black">
-                {{ row.name }}
+            <tr v-for="(row, index) in rows" :key="row.student_id">
+              <td class="col-no text-center">
+                <span class="cell-sub">{{ index + 1 }}</span>
               </td>
-              <td class="text-center score-cell">
+              <td class="col-name">
+                <div class="d-flex align-center ga-3">
+                  <div class="avatar-chip avatar-chip--sm">
+                    {{ (row.name || "?").charAt(0) }}
+                  </div>
+                  <span class="cell-title">{{ row.name }}</span>
+                </div>
+              </td>
+              <td class="col-score text-center">
                 <!-- Enter / ArrowDown move to the next student and ArrowUp back,
                      so a whole class can be entered from the keyboard without
                      reaching for the mouse between every row. -->
@@ -164,9 +174,10 @@
                   variant="outlined"
                   density="compact"
                   hide-details
+                  color="primary"
                   class="score-input"
+                  :class="{ 'score-input--filled': Number(row.score) > 0 }"
                   :data-score-index="index"
-                  style="max-width: 120px; margin: 0 auto"
                   @focus="$event.target.select()"
                   @blur="clampScore(row)"
                   @keydown.enter.prevent="focusScore(index + 1)"
@@ -181,69 +192,84 @@
     </v-card>
 
     <!-- VIEW MODE: read-only results sheet with totals and rank -->
-    <v-card v-else elevation="0" class="intelligence-card pa-4">
-      <div v-if="!selectedClassId" class="text-detail text-center py-10">
-        {{ $t("select-a-class") }}
-      </div>
-      <div v-else-if="scoreStore.loading" class="py-10 text-center">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
-      </div>
-      <div
-        v-else-if="scoreStore.error"
-        class="text-detail text-center py-10 text-error"
-      >
-        {{ scoreStore.error }}
-      </div>
-      <div v-else-if="!students.length" class="text-detail text-center py-10">
-        {{ $t("no-students") }}
+    <v-card v-else elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head">
+        <div class="min-w-0">
+          <div class="panel-title">{{ $t("score_report") }}</div>
+          <div class="panel-sub">
+            {{ selectedClass?.classroom_name || $t("select-a-class") }}
+            · {{ t("semester") }} {{ selectedSemester }} · {{ selectedMonth }}
+          </div>
+        </div>
+        <span v-if="students.length" class="panel-chip panel-chip--indigo">
+          {{ students.length }} {{ t("students") }}
+        </span>
       </div>
 
-      <div v-else class="table-wrapper">
-        <table class="score-table">
+      <div v-if="!selectedClassId" class="pa-4 pa-md-5">
+        <EmptyState icon="mdi-google-classroom" :title="$t('select-a-class')" />
+      </div>
+      <div v-else-if="scoreStore.loading" class="panel-loading">
+        <v-progress-circular indeterminate color="primary" size="28" width="3"></v-progress-circular>
+        <span>{{ t("loading") }}</span>
+      </div>
+      <div v-else-if="scoreStore.error" class="pa-4 pa-md-5">
+        <EmptyState icon="mdi-alert-circle-outline" :title="scoreStore.error" />
+      </div>
+      <div v-else-if="!students.length" class="pa-4 pa-md-5">
+        <EmptyState icon="mdi-account-off-outline" :title="$t('no-students')" />
+      </div>
+
+      <div v-else class="table-wrap">
+        <table class="score-table score-table--report">
           <thead>
             <tr>
-              <th class="col-no text-detail-tiny">{{ t("column-no") }}</th>
-              <th class="col-name text-detail-tiny text-left">{{ t("students") }}</th>
+              <th class="col-no">{{ t("column-no") }}</th>
+              <th class="col-name text-left">{{ t("students") }}</th>
               <th
                 v-for="subj in subjects"
                 :key="subj.id"
-                class="col-score text-detail-tiny"
+                class="col-subj"
                 :title="subj.subject_name"
               >
                 {{ subj.subject_code || subj.subject_name }}
               </th>
-              <th class="col-total text-detail-tiny">{{ t("total") }}</th>
-              <th class="col-rank text-detail-tiny">{{ t("rank") }}</th>
+              <th class="col-total">{{ t("total") }}</th>
+              <th class="col-rank">{{ t("rank") }}</th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="(row, index) in students"
               :key="row.student_id"
-              class="table-row"
+              :class="{ 'is-top': index < 3 }"
             >
-              <td class="text-center text-detail-tiny">{{ index + 1 }}</td>
-              <td class="text-left px-4 text-detail font-weight-black">
-                {{ row.name }}
+              <td class="col-no text-center">
+                <span class="cell-sub">{{ index + 1 }}</span>
+              </td>
+              <td class="col-name">
+                <div class="d-flex align-center ga-3">
+                  <div class="avatar-chip avatar-chip--sm">
+                    {{ (row.name || "?").charAt(0) }}
+                  </div>
+                  <span class="cell-title">{{ row.name }}</span>
+                </div>
               </td>
               <td
                 v-for="subj in subjects"
                 :key="subj.id"
-                class="text-center score-cell text-detail"
+                class="text-center score-value"
+                :class="{ 'score-value--empty': row.scores[subj.id] == null }"
               >
-                {{ row.scores[subj.id] ?? "-" }}
+                {{ row.scores[subj.id] ?? "–" }}
               </td>
-              <td
-                class="text-center font-weight-black total-cell text-detail text-primary"
-              >
-                {{ row.total }}
-              </td>
-              <td class="text-center rank-cell">
+              <td class="text-center total-cell">{{ row.total }}</td>
+              <td class="text-center">
                 <v-chip
-                  size="x-small"
+                  size="small"
                   :color="rankColor(index)"
                   variant="flat"
-                  class="font-weight-black"
+                  class="font-weight-black rank-chip"
                 >
                   {{ index + 1 }}
                 </v-chip>
@@ -253,7 +279,7 @@
         </table>
       </div>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -595,59 +621,151 @@ const rankColor = (index: number) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Segmented enter / report switch in the page header */
+.mode-toggle {
+  height: 40px !important;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm) !important;
+  background: #fff;
+  overflow: hidden;
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 12px !important;
-  padding: 0 12px !important;
+.mode-toggle :deep(.v-btn) {
+  height: 38px !important;
+  font-size: 12px;
+  border-radius: 0 !important;
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
+.mode-toggle :deep(.v-btn--active) {
+  background: var(--ds-navy-tint);
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+@media (max-width: 599px) {
+  .mode-toggle {
+    width: 100%;
+  }
+  .mode-toggle :deep(.v-btn) {
+    flex: 1 1 0;
+  }
 }
-.table-wrapper {
-  overflow-x: auto;
-  border: 1px solid #f1f5f9;
+
+.panel-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 44px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ds-muted);
 }
+
+.avatar-chip--sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* ---- Score sheet ---- */
 .score-table {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
+  min-width: 480px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
 }
 .score-table th {
-  padding: 12px;
-  border: 1px solid #f1f5f9;
-  background-color: #f8fafc;
-  color: #64748b;
-  height: 48px;
+  height: 46px;
+  padding: 0 14px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ds-muted);
+  background: #f8fafc;
+  border-bottom: 1px solid var(--ds-border-soft);
+  white-space: nowrap;
 }
 .score-table td {
-  padding: 10px;
-  border: 1px solid #f1f5f9;
-  height: 56px;
+  height: 58px;
+  padding: 8px 14px;
+  font-size: 13.5px;
+  background: #fff;
+  border-bottom: 1px solid var(--ds-border-soft);
 }
-.table-row:hover {
-  background-color: #f8fafc !important;
+.score-table tbody tr:last-child td {
+  border-bottom: 0;
 }
-.total-cell {
-  background: #f1f5f9;
+.score-table tbody tr:hover td {
+  background: #f8fafc;
 }
-.col-no {
-  width: 64px;
+.score-table .col-no {
+  width: 56px;
+  min-width: 56px;
 }
-.col-score {
+.score-table .col-name {
+  min-width: 200px;
+}
+.score-table .col-score {
   width: 180px;
 }
-.col-total,
-.col-rank {
-  width: 80px;
+.score-table .col-subj {
+  min-width: 84px;
+}
+.score-table .col-total,
+.score-table .col-rank {
+  width: 84px;
+  min-width: 84px;
+}
+
+/* First two columns stay put while the sheet scrolls sideways on small screens */
+.score-table th.col-no,
+.score-table td.col-no {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.score-table th.col-name,
+.score-table td.col-name {
+  position: sticky;
+  left: 56px;
+  z-index: 2;
+  box-shadow: 4px 0 8px -6px rgba(15, 23, 42, 0.18);
+}
+
+/* Entry inputs */
+.score-input {
+  max-width: 120px;
+  margin: 0 auto;
+}
+.score-input :deep(input) {
+  text-align: center;
+  font-weight: 800;
+  color: var(--ds-text);
+}
+.score-input--filled :deep(.v-field) {
+  background: #f0fdfa;
+}
+
+/* Report cells */
+.score-value {
+  font-weight: 600;
+  color: var(--ds-text);
+}
+.score-value--empty {
+  color: var(--ds-faint);
+}
+.total-cell {
+  font-weight: 900;
+  color: var(--ds-navy);
+}
+.score-table td.total-cell {
+  background: #f8fafc;
+}
+.is-top .total-cell {
+  color: var(--ds-teal-700);
+}
+.rank-chip {
+  min-width: 32px;
+  justify-content: center;
 }
 </style>
