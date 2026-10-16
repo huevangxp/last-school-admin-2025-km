@@ -702,3 +702,5 @@ label.text-detail-tiny {
 .fade-in:nth-child(3) { animation-delay: 0.1s; }
 .fade-in:nth-child(4) { animation-delay: 0.15s; }
 .fade-in:nth-child(5) { animation-delay: 0.2s; }
+
+.panel-chip--navy { color: var(--ds-navy); background: var(--ds-navy-tint); }

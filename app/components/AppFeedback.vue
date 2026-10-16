@@ -19,7 +19,7 @@
             block
             variant="text"
             color="grey-darken-1"
-            class="rounded-0 font-weight-bold"
+            class="font-weight-bold"
             height="46"
             @click="ui.resolveConfirm(false)"
           >
@@ -29,7 +29,7 @@
             block
             variant="flat"
             :color="c.color"
-            class="rounded-0 font-weight-bold"
+            class="font-weight-bold"
             height="46"
             @click="ui.resolveConfirm(true)"
           >

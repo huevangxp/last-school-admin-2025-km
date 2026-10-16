@@ -180,7 +180,7 @@
             <v-btn
               v-bind="props"
               variant="text"
-              class="rounded-0 px-2"
+              class="px-2"
               height="44"
             >
               <v-avatar size="24" class="mr-2">
@@ -219,7 +219,7 @@
           variant="text"
           color="primary"
           size="small"
-          class="rounded-0 action-btn"
+          class="action-btn"
           to="/announcement"
           :title="t('announcements')"
         >
@@ -235,7 +235,7 @@
           <template v-slot:activator="{ props }">
             <div
               v-bind="props"
-              class="d-flex align-center cursor-pointer profile-trigger pa-1 pr-3 rounded-0"
+              class="d-flex align-center cursor-pointer profile-trigger pa-1 pr-3"
             >
               <v-avatar
                 size="44"
@@ -327,7 +327,7 @@
             block
             variant="flat"
             color="red"
-            class="rounded-0 font-weight-bold"
+            class="font-weight-bold"
             height="44"
             @click="logoutButton"
             >{{ t("yes_logout") }}</v-btn
