@@ -1,46 +1,32 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="t('organization-chart')"
+      :subtitle="t('faculty-hierarchy-desc')"
+      icon="mdi-sitemap-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div class="d-flex align-center">
-        <v-avatar color="teal-lighten-5" size="44" class="mr-3 rounded-0">
-          <v-icon color="teal-darken-1" size="22">mdi-sitemap-outline</v-icon>
-        </v-avatar>
-        <div>
-          <div class="text-title">{{ t("organization-chart") }}</div>
-          <div class="text-detail">{{ t("faculty-hierarchy-desc") }}</div>
-        </div>
-      </div>
-
       <!-- Managing teachers (list / add) is admin-only; teachers get a
            read-only org chart with no create/edit actions. -->
-      <div v-if="isAdmin" class="d-flex gap-2 align-center mt-4 mt-md-0">
+      <template v-if="isAdmin" #actions>
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           to="/teachers"
         >
-          <v-icon icon="mdi-arrow-left" start size="18"></v-icon>
+          <v-icon icon="mdi-account-group-outline" start size="18"></v-icon>
           {{ t("teachers") }}
         </v-btn>
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          class="modern-action-btn primary"
           to="/teachers/add"
         >
           <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
     <v-alert
       v-if="teacherStore.error"
@@ -51,18 +37,20 @@
       >{{ teacherStore.error }}</v-alert
     >
 
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <div v-if="teacherStore.loading" class="py-10 text-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-      </div>
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="panel-head org-head">
+        <div>
+          <div class="panel-title">{{ t("faculty") }}</div>
+          <div class="panel-sub">{{ t("pan-zoom-hint") }}</div>
+        </div>
 
-      <template v-else>
-        <!-- Zoom controls -->
-        <div v-if="teachers.length" class="d-flex justify-end mb-2">
-          <div class="zoom-bar d-flex align-center">
+        <div class="org-tools">
+          <span class="panel-chip panel-chip--teal">
+            {{ teachers.length }} {{ t("total") }}
+          </span>
+
+          <!-- Zoom controls -->
+          <div v-if="teachers.length && !teacherStore.loading" class="zoom-bar">
             <v-btn
               icon="mdi-minus"
               variant="text"
@@ -70,12 +58,9 @@
               :disabled="zoom <= MIN_ZOOM"
               @click="zoomOut"
             ></v-btn>
-            <span
-              class="zoom-label text-detail-tiny font-weight-black"
-              @click="resetZoom"
-              :title="t('reset')"
-              >{{ Math.round(zoom * 100) }}%</span
-            >
+            <span class="zoom-label" :title="t('reset')" @click="resetZoom">
+              {{ Math.round(zoom * 100) }}%
+            </span>
             <v-btn
               icon="mdi-plus"
               variant="text"
@@ -83,7 +68,7 @@
               :disabled="zoom >= MAX_ZOOM"
               @click="zoomIn"
             ></v-btn>
-            <v-divider vertical class="mx-1"></v-divider>
+            <v-divider vertical class="mx-1 my-1"></v-divider>
             <v-btn
               icon="mdi-fit-to-screen-outline"
               variant="text"
@@ -93,7 +78,13 @@
             ></v-btn>
           </div>
         </div>
+      </div>
 
+      <div v-if="teacherStore.loading" class="py-16 text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </div>
+
+      <template v-else>
         <div
           ref="viewport"
           class="org-viewport"
@@ -114,16 +105,16 @@
             </ul>
           </div>
 
-          <div v-else class="text-detail py-10 text-center">
-            {{ t("no-faculty-display") }}
+          <div v-else class="pa-6">
+            <EmptyState
+              icon="mdi-sitemap-outline"
+              :title="t('no-faculty-display')"
+            />
           </div>
-        </div>
-        <div class="text-detail-tiny text-grey mt-2 text-center">
-          {{ t("pan-zoom-hint") }}
         </div>
       </template>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -383,33 +374,41 @@ const orgRoots = computed(() => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Card header: title on the left, counter + zoom bar on the right; wraps on
+   narrow screens so the zoom bar drops under the title. */
+.org-head {
+  flex-wrap: wrap;
+  align-items: center;
 }
-
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 16px !important;
-}
-
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-}
-
-.gap-2 {
+.org-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
-/* Pannable / zoomable viewport (node styles live in OrgNode.vue) */
+/* Zoom control bar */
+.zoom-bar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 4px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  background: #f8fafc;
+}
+.zoom-label {
+  min-width: 48px;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ds-teal-700);
+}
+
+/* Pannable / zoomable viewport (node styles live in OrgNode.vue). The chart
+   scrolls inside this box, never the page. */
 .org-viewport {
   position: relative;
   overflow: auto;
@@ -427,13 +426,19 @@ const orgRoots = computed(() => {
 .org-viewport.grabbing * {
   user-select: none;
 }
-
 .org-viewport::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 .org-viewport::-webkit-scrollbar-thumb {
   background: #e2e8f0;
+  border-radius: 8px;
+}
+@media (max-width: 599px) {
+  .org-viewport {
+    height: 60vh;
+    min-height: 360px;
+  }
 }
 
 .tree {
@@ -448,20 +453,5 @@ const orgRoots = computed(() => {
   padding: 0;
   margin: 0;
   list-style: none;
-}
-
-/* Zoom control bar */
-.zoom-bar {
-  border: 1px solid #e2e8f0;
-  padding: 2px 4px;
-  background: #f8fafc;
-}
-
-.zoom-label {
-  min-width: 44px;
-  text-align: center;
-  cursor: pointer;
-  user-select: none;
-  color: #0d9488;
 }
 </style>

@@ -1,123 +1,82 @@
 <template>
-  <v-container fluid class="pa-6 dashboard-container">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-4" />
-
-    <!-- Header Section -->
-    <div
-      class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6"
+  <div class="page">
+    <PageHeader
+      :title="`${t('management')} ${t('teachers')}`"
+      :subtitle="t('manage-faculty-desc')"
+      icon="mdi-account-tie-outline"
+      :breadcrumbs="breadcrumbs"
     >
-      <div>
-        <div class="text-title mb-1">
-          {{ t("management") }} {{ t("teachers") }}
-        </div>
-        <div class="text-detail">
-          {{ t("manage-faculty-desc") }}
-        </div>
-      </div>
-
-      <div class="d-flex gap-2 align-center flex-wrap mt-4 mt-md-0">
+      <template #actions>
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           to="/teachers/organization"
         >
           <v-icon icon="mdi-sitemap-outline" start size="18"></v-icon>
           {{ t("organization") }}
         </v-btn>
-
         <v-btn
           variant="flat"
-          color="white"
-          class="modern-action-btn secondary border"
-          height="36"
+          class="modern-action-btn secondary"
           @click="exportList"
         >
           <v-icon icon="mdi-file-download-outline" start size="18"></v-icon>
           {{ t("export") }}
         </v-btn>
-
         <v-btn
           variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="36"
+          class="modern-action-btn primary"
           to="/teachers/add"
         >
           <v-icon icon="mdi-plus" start size="18"></v-icon>
           {{ t("add") }}
         </v-btn>
-      </div>
-    </div>
+      </template>
+    </PageHeader>
 
-    <!-- Stats Cards -->
-    <v-row class="mb-6">
-      <v-col cols="12" sm="6" md="3" v-for="(stat, i) in teacherStats" :key="i">
-        <v-card
-          class="metric-card pa-4 d-flex flex-column justify-space-between h-100"
-          elevation="0"
-        >
-          <div class="d-flex align-center justify-space-between mb-2">
-            <div>
-              <p class="text-detail-tiny mb-1">
-                {{ stat.label }}
-              </p>
-              <h2 class="text-title">{{ stat.value }}</h2>
-            </div>
-            <v-avatar
-              :color="`${stat.color}-lighten-5`"
-              size="40"
-              class="metric-icon-box"
-            >
-              <v-icon :color="`${stat.color}-darken-2`" size="18">{{
-                stat.icon
-              }}</v-icon>
-            </v-avatar>
-          </div>
-        </v-card>
+    <!-- KPI tiles -->
+    <v-row class="mb-2 fade-in">
+      <v-col v-for="(stat, i) in teacherStats" :key="i" cols="6" lg="3">
+        <StatCard
+          :icon="stat.icon"
+          :label="stat.label"
+          :value="stat.value"
+          :color="statPalette[stat.color]?.color"
+          :tint="statPalette[stat.color]?.tint"
+        />
       </v-col>
     </v-row>
 
-    <!-- Main Content Card -->
-    <v-card elevation="0" class="intelligence-card pa-4">
-      <!-- Search and Filter Section -->
-      <div
-        class="d-flex flex-column flex-md-row align-md-center justify-space-between mb-6 gap-3"
-      >
-        <!-- Searchable teacher-name filter (type to search, pick from the list). -->
-        <v-autocomplete
-          v-model="selectedName"
-          :items="teacherNameOptions"
-          prepend-inner-icon="mdi-magnify"
-          :placeholder="t('search-teacher-name')"
-          :no-data-text="t('no-teachers-found')"
-          variant="outlined"
-          density="compact"
-          hide-details
-          clearable
-          auto-select-first
-          class="cream-input"
-          style="max-width: 320px"
-          bg-color="white"
-          color="primary"
-          base-color="grey-lighten-1"
-        ></v-autocomplete>
+    <!-- Teacher list -->
+    <v-card elevation="0" class="panel panel--flush fade-in">
+      <div class="list-toolbar">
+        <div class="filter-bar mb-0">
+          <!-- Searchable teacher-name filter (type to search, pick from the list). -->
+          <v-autocomplete
+            v-model="selectedName"
+            :items="teacherNameOptions"
+            prepend-inner-icon="mdi-magnify"
+            :placeholder="t('search-teacher-name')"
+            :no-data-text="t('no-teachers-found')"
+            variant="outlined"
+            density="comfortable"
+            hide-details
+            clearable
+            auto-select-first
+            class="filter-search"
+            color="primary"
+          ></v-autocomplete>
 
-        <div class="d-flex gap-2 align-center flex-wrap">
           <v-autocomplete
             v-model="selectedRole"
             :items="roleOptions"
             item-title="title"
             item-value="value"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
-            style="min-width: 150px"
             prepend-inner-icon="mdi-account-cog-outline"
-            class="cream-select text-detail"
             color="primary"
-            base-color="grey-lighten-1"
           ></v-autocomplete>
 
           <v-autocomplete
@@ -126,177 +85,169 @@
             item-title="title"
             item-value="value"
             variant="outlined"
-            density="compact"
+            density="comfortable"
             hide-details
-            style="min-width: 150px"
             prepend-inner-icon="mdi-filter-variant"
-            class="cream-select text-detail"
             color="primary"
-            base-color="grey-lighten-1"
           ></v-autocomplete>
         </div>
+
+        <v-alert
+          v-if="teacherStore.error"
+          type="error"
+          variant="tonal"
+          density="compact"
+          class="mt-4"
+          >{{ teacherStore.error }}</v-alert
+        >
       </div>
 
-      <!-- Data Table -->
-      <v-alert
-        v-if="teacherStore.error"
-        type="error"
-        variant="tonal"
-        density="compact"
-        class="mb-4"
-        >{{ teacherStore.error }}</v-alert
-      >
+      <div class="table-wrap">
+        <v-data-table
+          v-model:page="page"
+          :items-per-page="itemsPerPage"
+          :headers="headers"
+          :items="filteredTeachers"
+          :loading="teacherStore.loading"
+          class="premium-table"
+          hover
+        >
+          <template #no-data>
+            <div class="pa-4">
+              <EmptyState
+                icon="mdi-account-search-outline"
+                :title="t('no-teachers-found')"
+              />
+            </div>
+          </template>
 
-      <v-data-table
-        v-model:page="page"
-        :items-per-page="itemsPerPage"
-        :headers="headers"
-        :items="filteredTeachers"
-        :loading="teacherStore.loading"
-        class="premium-table"
-        hover
-      >
-        <template v-slot:no-data>
-          <div class="text-detail py-8 text-center">{{ t("no-teachers-found") }}</div>
-        </template>
-
-        <!-- Teacher Name with Image Slot -->
-        <template v-slot:item.name="{ item }">
-          <div class="d-flex align-center py-2">
-            <v-avatar size="32" class="mr-3 elevation-1 border-white">
-              <v-img :src="item.image" cover alt=""></v-img>
-            </v-avatar>
-            <div>
-              <div class="text-title-small">
-                {{ item.username }}
-              </div>
-              <div class="text-detail-tiny">
-                {{ item.email || t("no-email") }}
+          <!-- Teacher name + avatar -->
+          <template #item.name="{ item }">
+            <div class="d-flex align-center py-2">
+              <v-avatar size="36" rounded="lg" class="mr-3 teacher-avatar">
+                <v-img v-if="item.image" :src="item.image" cover alt=""></v-img>
+                <v-icon v-else size="18" color="primary">mdi-account</v-icon>
+              </v-avatar>
+              <div class="min-w-0">
+                <div class="cell-title text-truncate">{{ item.username }}</div>
+                <div class="cell-sub text-truncate">
+                  {{ item.email || t("no-email") }}
+                </div>
               </div>
             </div>
-          </div>
-        </template>
+          </template>
 
-        <!-- ID Number Slot -->
-        <template v-slot:item.id="{ item }">
-          <span class="text-detail-tiny bg-grey-lighten-4 px-2 py-1 rounded-0">
-            {{ item.id }}
-          </span>
-        </template>
+          <!-- ID number -->
+          <template #item.id="{ item }">
+            <span class="code-chip">{{ item.id }}</span>
+          </template>
 
-        <!-- Subject/Class Slot -->
-        <template v-slot:item.teacherSubject="{ item }">
-          <div>
-            <div class="text-title-small">
-              {{ item.teacherSubject }}
-            </div>
-            <div class="text-detail-tiny text-grey">
-              {{ item.grade || "—" }}
-            </div>
-          </div>
-        </template>
+          <!-- Subject / department -->
+          <template #item.teacherSubject="{ item }">
+            <div class="cell-title">{{ item.teacherSubject }}</div>
+            <div class="cell-sub">{{ item.grade || "—" }}</div>
+          </template>
 
-        <!-- Contact Slot -->
-        <template v-slot:item.phone="{ item }">
-          <div class="text-title-small">
-            {{ item.phone }}
-          </div>
-        </template>
+          <!-- Contact -->
+          <template #item.phone="{ item }">
+            <span class="cell-title">{{ item.phone || "—" }}</span>
+          </template>
 
-        <!-- Status Slot -->
-        <template v-slot:item.status="{ item }">
-          <v-chip
-            :color="
-              item.status === 'Active'
-                ? 'success'
-                : item.status === 'Suspended'
-                  ? 'error'
-                  : 'grey'
-            "
-            size="x-small"
-            variant="flat"
-            class="font-weight-black text-uppercase px-2"
-          >
-            {{ item.status === 'Active'
-              ? t('open')
-              : item.status === 'Suspended'
-                ? t('closed')
-                : t('inactive') }}
-          </v-chip>
-        </template>
+          <!-- Status -->
+          <template #item.status="{ item }">
+            <span
+              class="status-pill"
+              :class="
+                item.status === 'Active'
+                  ? 'status-pill--green'
+                  : item.status === 'Suspended'
+                    ? 'status-pill--red'
+                    : 'status-pill--grey'
+              "
+            >
+              <span class="status-dot"></span>
+              {{
+                item.status === "Active"
+                  ? t("open")
+                  : item.status === "Suspended"
+                    ? t("closed")
+                    : t("inactive")
+              }}
+            </span>
+          </template>
 
-        <!-- Actions Slot -->
-        <template v-slot:item.actions="{ item }">
-          <v-btn
-            :icon="
-              item.statusRaw === 'active'
-                ? 'mdi-account-cancel-outline'
-                : 'mdi-account-check-outline'
-            "
-            variant="text"
-            size="x-small"
-            :color="item.statusRaw === 'active' ? 'warning' : 'success'"
-            :title="item.statusRaw === 'active' ? t('close') : t('open')"
-            @click="requestToggle(item)"
-          ></v-btn>
-          <v-btn
-            icon="mdi-pencil-outline"
-            variant="text"
-            size="x-small"
-            color="primary"
-            @click="openEdit(item)"
-          ></v-btn>
-          <v-btn
-            icon="mdi-delete-outline"
-            variant="text"
-            size="x-small"
-            color="error"
-            @click="requestDelete(item)"
-          ></v-btn>
-        </template>
-
-        <!-- Bottom Pagination Slot -->
-        <template v-slot:bottom>
-          <div class="d-flex align-center justify-space-between pt-4 border-t">
-            <div class="text-detail-tiny">
-              {{ t("showing") }} {{ rangeStart }}-{{ rangeEnd }} {{ t("of") }}
-              {{ filteredTeachers.length }} {{ t("results") }}
-            </div>
-            <div class="d-flex gap-1 align-center">
+          <!-- Row actions -->
+          <template #item.actions="{ item }">
+            <div class="row-actions">
               <v-btn
-                icon="mdi-chevron-left"
+                :icon="
+                  item.statusRaw === 'active'
+                    ? 'mdi-account-cancel-outline'
+                    : 'mdi-account-check-outline'
+                "
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
-                :disabled="page <= 1"
-                @click="page--"
+                size="small"
+                :color="item.statusRaw === 'active' ? 'warning' : 'success'"
+                :title="item.statusRaw === 'active' ? t('close') : t('open')"
+                @click="requestToggle(item)"
               ></v-btn>
-
               <v-btn
-                v-for="p in pages"
-                :key="p"
-                :color="p === page ? 'primary' : 'grey-darken-1'"
-                :variant="p === page ? 'flat' : 'text'"
-                size="x-small"
-                class="font-weight-black rounded-0"
-                style="min-width: 24px; height: 24px"
-                @click="page = p"
-              >
-                {{ p }}
-              </v-btn>
-
-              <v-btn
-                icon="mdi-chevron-right"
+                icon="mdi-pencil-outline"
                 variant="text"
-                color="grey-darken-1"
-                size="x-small"
-                :disabled="page >= pageCount"
-                @click="page++"
+                size="small"
+                color="primary"
+                :title="t('edit')"
+                @click="openEdit(item)"
+              ></v-btn>
+              <v-btn
+                icon="mdi-delete-outline"
+                variant="text"
+                size="small"
+                color="error"
+                :title="t('delete')"
+                @click="requestDelete(item)"
               ></v-btn>
             </div>
-          </div>
-        </template>
-      </v-data-table>
+          </template>
+
+          <!-- Pagination -->
+          <template #bottom>
+            <div class="table-footer list-footer">
+              <div class="cell-sub">
+                {{ t("showing") }} {{ rangeStart }}-{{ rangeEnd }} {{ t("of") }}
+                {{ filteredTeachers.length }} {{ t("results") }}
+              </div>
+              <div class="pager">
+                <v-btn
+                  icon="mdi-chevron-left"
+                  variant="text"
+                  size="small"
+                  :disabled="page <= 1"
+                  @click="page--"
+                ></v-btn>
+                <v-btn
+                  v-for="p in pages"
+                  :key="p"
+                  :color="p === page ? 'primary' : undefined"
+                  :variant="p === page ? 'flat' : 'text'"
+                  size="small"
+                  class="pager-btn"
+                  @click="page = p"
+                >
+                  {{ p }}
+                </v-btn>
+                <v-btn
+                  icon="mdi-chevron-right"
+                  variant="text"
+                  size="small"
+                  :disabled="page >= pageCount"
+                  @click="page++"
+                ></v-btn>
+              </div>
+            </div>
+          </template>
+        </v-data-table>
+      </div>
     </v-card>
 
     <!-- Confirm popup for delete / block -->
@@ -310,7 +261,7 @@
       :loading="confirm.loading"
       @confirm="runConfirm"
     />
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -410,6 +361,15 @@ const teacherStats = computed(() => [
     color: "orange",
   },
 ]);
+
+// Presentation only: StatCard takes hex accent/tint values, so map the stat
+// colour names above to the design-system palette.
+const statPalette: Record<string, { color: string; tint: string }> = {
+  blue: { color: "#0A3154", tint: "#E6ECF2" },
+  green: { color: "#10b981", tint: "#ecfdf5" },
+  purple: { color: "#7c3aed", tint: "#f5f3ff" },
+  orange: { color: "#f59e0b", tint: "#fffbeb" },
+};
 
 const headers = [
   { title: t("id"), key: "id", align: "start" as const, sortable: true },
@@ -612,72 +572,57 @@ const openEdit = (item: any) => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Filter row sits in a padded strip above the table. */
+.list-toolbar {
+  padding: 16px;
+  border-bottom: 1px solid var(--ds-border-soft);
 }
 
-.gap-4 {
-  gap: 16px;
-}
-.gap-3 {
-  gap: 12px;
-}
-.gap-2 {
-  gap: 8px;
-}
-.gap-1 {
-  gap: 4px;
+/* Avatar tile in the name column. */
+.teacher-avatar {
+  flex: 0 0 auto;
+  background: var(--ds-navy-tint);
+  border: 1px solid var(--ds-border);
 }
 
-.metric-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+/* Header cells keep their vertical centring (the shared header class adds a
+   bottom padding that would nudge the label up). */
+.premium-table :deep(.v-data-table__th) {
+  padding-bottom: 0 !important;
 }
 
-.metric-icon-box {
+/* Footer with "showing x-y of z" + page buttons. */
+.list-footer {
+  padding: 14px 16px 16px;
+}
+.pager {
   display: flex;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.pager-btn {
+  min-width: 32px !important;
+  height: 32px !important;
+  padding: 0 6px !important;
+  border-radius: 8px !important;
+  font-weight: 800;
 }
 
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
-}
-
-.premium-table {
-  background: transparent !important;
-}
-
-:deep(.v-data-table__th) {
-  background-color: #f8fafc !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 48px !important;
-}
-
-:deep(.v-data-table__td) {
-  border-bottom: 1px solid #f1f5f9 !important;
-  height: 60px !important;
-}
-
-.cream-input :deep(.v-field__outline__start),
-.cream-input :deep(.v-field__outline__end),
-.cream-input :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.cream-select :deep(.v-field__outline__start),
-.cream-select :deep(.v-field__outline__end),
-.cream-select :deep(.v-field__outline__notch) {
-  border-color: #e2e8f0 !important;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
-}
-
-.border-t {
-  border-top: 1px solid #f1f5f9;
+@media (min-width: 960px) {
+  .list-toolbar {
+    padding: 20px 24px;
+  }
+  .list-footer {
+    padding: 14px 24px 18px;
+  }
+  .premium-table :deep(.v-data-table__th:first-child),
+  .premium-table :deep(.v-data-table__td:first-child) {
+    padding-left: 24px;
+  }
+  .premium-table :deep(.v-data-table__th:last-child),
+  .premium-table :deep(.v-data-table__td:last-child) {
+    padding-right: 24px;
+  }
 }
 </style>

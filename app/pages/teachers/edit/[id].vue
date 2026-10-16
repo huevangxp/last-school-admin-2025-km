@@ -1,216 +1,220 @@
 <template>
-  <v-container fluid class="dashboard-container pa-6">
-    <Breadcrumbs :breadcrumbs="breadcrumbs" class="mb-6" />
+  <div class="page page--narrow">
+    <PageHeader
+      :title="`${t('edit')} ${t('teachers')}`"
+      :subtitle="t('teacher-identity-login')"
+      icon="mdi-account-edit-outline"
+      :breadcrumbs="breadcrumbs"
+      back="/teachers"
+    />
 
     <v-form ref="formRef" @submit.prevent="save">
-      <v-card class="intelligence-card pa-6 mb-6" elevation="0">
-        <div class="d-flex align-center mb-6">
-          <v-avatar color="primary-lighten-5" size="40" class="mr-3 rounded-0">
-            <v-icon color="primary" size="20">mdi-account-edit-outline</v-icon>
-          </v-avatar>
-          <div>
-            <h2 class="text-title">{{ t("edit") }} {{ t("teachers") }}</h2>
-            <p class="text-detail">{{ t("teacher-identity-login") }}</p>
-          </div>
-        </div>
-
-        <div v-if="loadingData" class="py-10 text-center">
+      <v-card class="panel fade-in" elevation="0">
+        <div v-if="loadingData" class="py-16 text-center">
           <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
 
-        <v-row v-else class="ga-y-2">
-          <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("admin-profile-photo")
-            }}</label>
-            <div class="d-flex align-center ga-4">
-              <v-avatar size="72" color="primary-lighten-5" class="elevation-1">
-                <v-img v-if="avatarPreview" :src="avatarPreview" cover alt=""></v-img>
-                <v-icon v-else color="primary" size="32">mdi-account</v-icon>
-              </v-avatar>
-              <div class="flex-grow-1">
-                <ImagePicker v-model="form.avatar" :label="t('image')" />
-              </div>
+        <template v-else>
+          <!-- Profile photo -->
+          <div class="form-section">
+            <v-icon size="16">mdi-camera-outline</v-icon>
+            {{ t("admin-profile-photo") }}
+          </div>
+          <div class="photo-row">
+            <v-avatar size="80" rounded="lg" class="photo-avatar">
+              <v-img v-if="avatarPreview" :src="avatarPreview" cover alt=""></v-img>
+              <v-icon v-else color="primary" size="36">mdi-account</v-icon>
+            </v-avatar>
+            <div class="flex-grow-1 min-w-0">
+              <ImagePicker v-model="form.avatar" :label="t('image')" />
+              <div class="field-hint">{{ t("recommended-photo-size") }}</div>
             </div>
-          </v-col>
+          </div>
 
-          <v-col cols="12">
-            <label class="text-detail-tiny mb-2 d-block"
-              >{{ t("name") }} *</label
-            >
-            <v-text-field
-              v-model="form.full_name"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              :rules="[rules.required]"
-            ></v-text-field>
-          </v-col>
+          <!-- Personal information -->
+          <div class="form-section">
+            <v-icon size="16">mdi-account-outline</v-icon>
+            {{ t("personal-information") }}
+          </div>
+          <v-row class="form-grid">
+            <v-col cols="12">
+              <label class="field-label">{{ t("name") }} *</label>
+              <v-text-field
+                v-model="form.full_name"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                :rules="[rules.required]"
+              ></v-text-field>
+            </v-col>
 
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block"
-              >{{ t("gender") }} *</label
-            >
-            <v-select
-              v-model="form.gender"
-              :items="genderOptions"
-              :placeholder="t('select')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              :rules="[rules.required]"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("dob") }} *</label>
-            <DialogDate
-              v-model="showDobPicker"
-              :date="form.dob"
-              @update:date="form.dob = $event"
-            />
-            <v-text-field
-              v-model="form.dob"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              :rules="[rules.required]"
-              prepend-inner-icon="mdi-calendar"
-              readonly
-              @click="showDobPicker = true"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("phone") }}</label>
-            <v-text-field
-              v-model="form.phone_number"
-              placeholder="+856 20 ..."
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("role") }} *</label>
-            <v-select
-              v-model="form.role"
-              :items="roleOptions"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-            ></v-select>
-          </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <label class="field-label">{{ t("gender") }} *</label>
+              <v-select
+                v-model="form.gender"
+                :items="genderOptions"
+                :placeholder="t('select')"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                :rules="[rules.required]"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <label class="field-label">{{ t("dob") }} *</label>
+              <DialogDate
+                v-model="showDobPicker"
+                :date="form.dob"
+                @update:date="form.dob = $event"
+              />
+              <v-text-field
+                v-model="form.dob"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                :rules="[rules.required]"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                @click="showDobPicker = true"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6" md="4">
+              <label class="field-label">{{ t("phone") }}</label>
+              <v-text-field
+                v-model="form.phone_number"
+                placeholder="+856 20 ..."
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                prepend-inner-icon="mdi-phone-outline"
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("status")
-            }}</label>
-            <v-select
-              v-model="form.status"
-              :items="statusOptions"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("position")
-            }}</label>
-            <v-combobox
-              v-model="form.position"
-              :items="positionOptions"
-              :placeholder="t('select-or-type')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              clearable
-            ></v-combobox>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("department")
-            }}</label>
-            <v-combobox
-              v-model="form.department"
-              :items="departmentOptions"
-              :placeholder="t('select-or-type')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              clearable
-            ></v-combobox>
-          </v-col>
-          <v-col cols="12" md="3">
-            <label class="text-detail-tiny mb-2 d-block">{{ t("layer") }}</label>
-            <v-select
-              v-model="form.layer"
-              :items="layerOptions"
-              :placeholder="t('select-layer')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              clearable
-            ></v-select>
-          </v-col>
+          <!-- Role & account status -->
+          <div class="form-section">
+            <v-icon size="16">mdi-shield-account-outline</v-icon>
+            {{ t("role-account-status") }}
+          </div>
+          <v-row class="form-grid">
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("role") }} *</label>
+              <v-select
+                v-model="form.role"
+                :items="roleOptions"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+              ></v-select>
+            </v-col>
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("status") }}</label>
+              <v-select
+                v-model="form.status"
+                :items="statusOptions"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+              ></v-select>
+            </v-col>
+          </v-row>
 
-          <v-col cols="12" md="6">
-            <label class="text-detail-tiny mb-2 d-block">{{
-              t("reports_to")
-            }}</label>
-            <v-select
-              v-model="form.manager_id"
-              :items="managerOptions"
-              :placeholder="t('select-manager-optional')"
-              variant="outlined"
-              density="compact"
-              hide-details="auto"
-              color="primary"
-              clearable
-              :no-data-text="t('no-other-staff')"
-            ></v-select>
-          </v-col>
+          <!-- Organization -->
+          <div class="form-section">
+            <v-icon size="16">mdi-sitemap-outline</v-icon>
+            {{ t("organization") }}
+          </div>
+          <v-row class="form-grid">
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("position") }}</label>
+              <v-combobox
+                v-model="form.position"
+                :items="positionOptions"
+                :placeholder="t('select-or-type')"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                clearable
+              ></v-combobox>
+            </v-col>
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("department") }}</label>
+              <v-combobox
+                v-model="form.department"
+                :items="departmentOptions"
+                :placeholder="t('select-or-type')"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                clearable
+              ></v-combobox>
+            </v-col>
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("layer") }}</label>
+              <v-select
+                v-model="form.layer"
+                :items="layerOptions"
+                :placeholder="t('select-layer')"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                clearable
+              ></v-select>
+            </v-col>
+            <v-col cols="12" md="6">
+              <label class="field-label">{{ t("reports_to") }}</label>
+              <v-select
+                v-model="form.manager_id"
+                :items="managerOptions"
+                :placeholder="t('select-manager-optional')"
+                variant="outlined"
+                density="comfortable"
+                hide-details="auto"
+                color="primary"
+                clearable
+                :no-data-text="t('no-other-staff')"
+              ></v-select>
+            </v-col>
 
-          <v-col cols="12" v-if="errorMessage">
-            <v-alert type="error" variant="tonal" density="compact">{{
-              errorMessage
-            }}</v-alert>
-          </v-col>
-        </v-row>
+            <v-col v-if="errorMessage" cols="12">
+              <v-alert type="error" variant="tonal" density="compact">{{
+                errorMessage
+              }}</v-alert>
+            </v-col>
+          </v-row>
+        </template>
+
+        <div class="form-actions">
+          <v-btn
+            variant="flat"
+            class="modern-action-btn secondary"
+            to="/teachers"
+          >
+            {{ t("cancel") }}
+          </v-btn>
+          <v-btn
+            variant="flat"
+            class="modern-action-btn primary"
+            type="submit"
+            :loading="loading"
+            :disabled="loadingData"
+          >
+            <v-icon icon="mdi-content-save-outline" start size="18"></v-icon>
+            {{ t("save") }}
+          </v-btn>
+        </div>
       </v-card>
-
-      <div class="d-flex justify-end ga-3">
-        <v-btn
-          variant="flat"
-          color="grey-lighten-4"
-          class="modern-action-btn secondary border text-slate-700"
-          height="42"
-          to="/teachers"
-        >
-          {{ t("cancel") }}
-        </v-btn>
-        <v-btn
-          variant="flat"
-          color="primary"
-          class="modern-action-btn primary elevation-4"
-          height="42"
-          type="submit"
-          :loading="loading"
-          :disabled="loadingData"
-        >
-          {{ t("save") }}
-        </v-btn>
-      </div>
     </v-form>
-  </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -357,25 +361,46 @@ const save = async () => {
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
+/* Photo picker row: avatar beside the picker, stacked on phones. */
+.photo-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
 }
-.intelligence-card {
-  background: white;
-  border: 1px solid #f1f5f9;
+.photo-avatar {
+  flex: 0 0 auto;
+  background: var(--ds-navy-tint);
+  border: 1px solid var(--ds-border);
 }
-.modern-action-btn {
-  text-transform: none !important;
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  padding: 0 20px !important;
+@media (max-width: 599px) {
+  .photo-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
-.modern-action-btn.primary {
-  background: linear-gradient(135deg, #0a3154 0%, #082741 100%) !important;
-  color: white !important;
+
+/* Field groups: a little breathing room before the next section label. */
+.form-grid {
+  margin-bottom: 16px;
 }
-.text-slate-700 {
-  color: #334155 !important;
+
+/* Teal note explaining the org layer of the chosen position. */
+.layer-hint {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--ds-radius-sm);
+  background: #f0fdfa;
+  border: 1px dashed #99f6e4;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f766e;
+}
+.layer-hint-muted {
+  color: var(--ds-muted);
+  font-weight: 600;
 }
 </style>
