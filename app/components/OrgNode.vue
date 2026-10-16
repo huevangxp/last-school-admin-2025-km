@@ -4,18 +4,14 @@
       <v-avatar
         v-if="node.isRoot"
         size="44"
+        rounded="lg"
         class="mb-1 org-root-logo"
       >
         <v-img src="/logo.png" contain alt=""></v-img>
       </v-avatar>
-      <v-avatar
-        v-else
-        size="42"
-        color="white"
-        class="mb-1 border-white elevation-1"
-      >
+      <v-avatar v-else size="44" rounded="lg" class="mb-1 org-avatar">
         <v-img v-if="node.image" :src="node.image" cover alt=""></v-img>
-        <v-icon v-else color="primary">mdi-account</v-icon>
+        <v-icon v-else color="primary" size="22">mdi-account</v-icon>
       </v-avatar>
 
       <!-- <div
@@ -28,15 +24,9 @@
       <div class="org-node-name">{{ node.name }}</div>
       <div class="org-node-role">{{ node.title }}</div>
 
-      <v-chip
-        v-if="node.department"
-        size="x-small"
-        variant="tonal"
-        color="teal"
-        class="mt-1 font-weight-bold"
-      >
+      <span v-if="node.department" class="org-node-dept">
         {{ node.department }}
-      </v-chip>
+      </span>
 
       <!-- <v-chip
         v-if="!node.isRoot && node.status"
@@ -113,8 +103,10 @@ li:last-child::after {
 }
 li:last-child::before {
   border-right: 2px solid #d9e2ec;
+  border-radius: 0 10px 0 0;
 }
 li:first-child::after {
+  border-radius: 10px 0 0 0;
 }
 
 /* Children container + vertical drop line from parent node */
@@ -167,18 +159,27 @@ ul.children--wrap > li::after {
   height: 168px;
   padding: 14px 16px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.18);
+  border: 1px solid #e8edf3;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 24px -16px rgba(15, 23, 42, 0.25);
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
   white-space: normal;
   vertical-align: top;
   overflow: hidden;
 }
 .org-node:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 24px -12px rgba(15, 23, 42, 0.3);
+  border-color: #2dd4bf;
+  box-shadow: 0 16px 32px -18px rgba(15, 23, 42, 0.35);
+}
+
+/* Avatar tile */
+.org-avatar {
+  background: #e6ecf2;
+  border: 1px solid #e8edf3;
 }
 
 /* Layer badge (e.g. Layer 1, Layer 2) */
@@ -190,6 +191,7 @@ ul.children--wrap > li::after {
   color: #0d9488;
   background: #ccfbf1;
   padding: 1px 8px;
+  border-radius: 999px;
   margin-bottom: 2px;
 }
 
@@ -215,24 +217,40 @@ ul.children--wrap > li::after {
   font-weight: 700;
 }
 
+/* Department pill */
+.org-node-dept {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #0f766e;
+  background: #f0fdfa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Root (school) node */
 .org-root {
-  background: linear-gradient(135deg, #14b8a5 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #0a3154 0%, #082741 100%);
   border: 0;
-  box-shadow: 0 10px 24px -10px rgba(13, 148, 136, 0.5);
+  box-shadow: 0 12px 26px -12px rgba(10, 49, 84, 0.6);
 }
 .org-root .org-node-name {
   color: #ffffff;
 }
 .org-root .org-node-role {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.75);
+}
+.org-root .org-node-dept {
+  color: #0a3154;
+  background: #2dd4bf;
 }
 .org-root-logo {
   background: #ffffff;
   padding: 6px;
-}
-
-.border-white {
-  border: 1.5px solid #ffffff;
 }
 </style>
