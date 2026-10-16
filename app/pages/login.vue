@@ -1,115 +1,96 @@
 <template>
-  <div class="login-page-wrapper">
+  <div class="login-page">
+    <!-- Decorative backdrop -->
+    <div class="login-glow login-glow--1"></div>
+    <div class="login-glow login-glow--2"></div>
+    <div class="login-grid"></div>
+
     <!-- Main Login Card -->
-    <v-card class="login-card overflow-hidden" elevation="24">
-      <v-row no-gutters class="fill-height">
-        <!-- Login Form (image removed) -->
-        <v-col
-          cols="12"
-          class="form-side pa-8 pa-md-12 d-flex flex-column align-center justify-center"
-        >
-          <div class="w-100 max-width-form">
-            <div class="text-center mb-10">
-              <div class="mb-4 d-flex justify-center">
-                <v-avatar color="primary-lighten-5" size="72">
-                  <v-img src="/logo.png" alt="Logo" width="44" contain></v-img>
-                </v-avatar>
-              </div>
-              <div
-                class="text-title text-slate-900 mb-2"
-                style="font-size: 18px !important"
-              >
-                {{ t("welcome") }}
-              </div>
-              <div class="text-detail">
-                {{ t("welcomeText") }}
-              </div>
+    <v-card class="login-card fade-in" elevation="0">
+      <div class="login-body">
+        <div class="text-center mb-8">
+          <div class="login-logo">
+            <v-img src="/logo.png" alt="Logo" width="40" height="40" contain></v-img>
+          </div>
+          <h1 class="login-title text-capitalize">{{ t("welcome") }}</h1>
+          <p class="login-subtitle">{{ t("welcomeText") }}</p>
+        </div>
+
+        <v-form @submit.prevent="loginBtn" class="login-form">
+          <v-alert
+            v-if="errorMessage"
+            type="error"
+            variant="tonal"
+            density="compact"
+            class="mb-5"
+            closable
+            @click:close="errorMessage = ''"
+            >{{ errorMessage }}</v-alert
+          >
+
+          <div class="mb-4">
+            <label class="field-label">{{ t("email_or_username") }}</label>
+            <v-text-field
+              v-model="username"
+              :placeholder="t('enter_email')"
+              variant="outlined"
+              density="comfortable"
+              prepend-inner-icon="mdi-account-outline"
+              color="primary"
+              hide-details
+              autocomplete="username"
+            ></v-text-field>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-space-between align-center">
+              <label class="field-label">{{ t("password") }}</label>
+              <a href="#" class="login-link">{{ t("forgotPassword") }}</a>
             </div>
-
-            <v-form @submit.prevent="loginBtn" class="login-form">
-              <v-alert
-                v-if="errorMessage"
-                type="error"
-                variant="tonal"
-                density="compact"
-                class="mb-5"
-                closable
-                @click:close="errorMessage = ''"
-                >{{ errorMessage }}</v-alert
-              >
-
-              <div class="mb-5">
-                <label class="custom-label">{{ t("email_or_username") }}</label>
-                <v-text-field
-                  v-model="username"
-                  :placeholder="t('enter_email')"
-                  variant="outlined"
-                  density="comfortable"
-                  prepend-inner-icon="mdi-email-outline"
-                  class="rounded-input"
-                  hide-details
-                  bg-color="grey-lighten-5"
-                ></v-text-field>
-              </div>
-
-              <div class="mb-6">
-                <div class="d-flex justify-space-between align-center mb-2">
-                  <label class="custom-label">{{ t("password") }}</label>
-                  <a
-                    href="#"
-                    class="text-caption text-primary font-weight-bold text-decoration-none"
-                    >{{ t("forgotPassword") }}</a
-                  >
-                </div>
-                <v-text-field
-                  v-model="password"
-                  placeholder="••••••••"
-                  :type="showPassword ? 'text' : 'password'"
-                  variant="outlined"
-                  density="comfortable"
-                  prepend-inner-icon="mdi-lock-outline"
-                  :append-inner-icon="
-                    showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
-                  "
-                  @click:append-inner="showPassword = !showPassword"
-                  class="rounded-input"
-                  hide-details
-                  bg-color="grey-lighten-5"
-                ></v-text-field>
-              </div>
-
-              <div class="d-flex align-center mb-2">
-                <v-checkbox
-                  v-model="rememberMe"
-                  :label="t('remember_me')"
-                  color="primary"
-                  density="compact"
-                  hide-details
-                  class="compact-checkbox"
-                ></v-checkbox>
-              </div>
-
-              <v-btn
-                type="submit"
-                block
-                size="large"
-                height="56"
-                class="primary-login-btn mb-10"
-                :loading="loading"
-                elevation="8"
-              >
-                {{ t("sign_in") }}
-              </v-btn>
-
-           
-            </v-form>
+            <v-text-field
+              v-model="password"
+              placeholder="••••••••"
+              :type="showPassword ? 'text' : 'password'"
+              variant="outlined"
+              density="comfortable"
+              prepend-inner-icon="mdi-lock-outline"
+              :append-inner-icon="
+                showPassword ? 'mdi-eye-off-outline' : 'mdi-eye-outline'
+              "
+              @click:append-inner="showPassword = !showPassword"
+              color="primary"
+              hide-details
+              autocomplete="current-password"
+            ></v-text-field>
           </div>
 
-          <div class="form-footer mt-2 text-caption text-grey-lighten-1">
-            &copy; {{ new Date().getFullYear() }} {{ t("schoolmanagement") }}
+          <div class="d-flex align-center mb-5">
+            <v-checkbox
+              v-model="rememberMe"
+              :label="t('remember_me')"
+              color="primary"
+              density="compact"
+              hide-details
+              class="compact-checkbox"
+            ></v-checkbox>
           </div>
-        </v-col>
-      </v-row>
+
+          <v-btn
+            type="submit"
+            block
+            class="modern-action-btn primary login-btn"
+            :loading="loading"
+            variant="flat"
+          >
+            {{ t("sign_in") }}
+            <v-icon end size="18">mdi-arrow-right</v-icon>
+          </v-btn>
+        </v-form>
+      </div>
+
+      <div class="login-footer">
+        &copy; {{ new Date().getFullYear() }} {{ t("schoolmanagement") }}
+      </div>
     </v-card>
   </div>
 </template>
@@ -156,141 +137,123 @@ const loginBtn = async () => {
 </script>
 
 <style scoped>
-.login-page-wrapper {
-  min-height: 100vh;
-  width: 100%;
-  background: #f8fafc; /* Clean off-white background */
-  font-family: "Inter", sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.login-card {
-  width: 100%;
-  max-width: 460px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Left Side Styling */
-.image-side {
+/* Full-screen navy backdrop with soft teal glow */
+.login-page {
   position: relative;
-  background-color: #0d9488;
-}
-
-.side-image {
-  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
-}
-
-.image-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(13, 148, 136, 0.4),
-    rgba(13, 148, 136, 0.8)
-  );
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
-
-.overlay-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.logo-box {
-  width: 80px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  background: linear-gradient(135deg, #0a3154 0%, #0c3d68 55%, #0f4c7a 100%);
+}
+.login-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(2px);
+}
+.login-glow--1 {
+  width: 520px;
+  height: 520px;
+  right: -160px;
+  top: -200px;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.35) 0%, rgba(45, 212, 191, 0) 70%);
+}
+.login-glow--2 {
+  width: 460px;
+  height: 460px;
+  left: -140px;
+  bottom: -220px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 70%);
+}
+.login-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
 }
 
-.decoration-line {
-  height: 4px;
-  width: 60px;
-  background: white;
+/* Card */
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 24px !important;
+  background: #fff !important;
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.45) !important;
+  overflow: hidden;
 }
-
-/* Right Side Styling */
-.form-side {
-  background-color: white;
+.login-body {
+  padding: 32px 24px 24px;
 }
-
-.max-width-form {
-  max-width: 420px;
+@media (min-width: 600px) {
+  .login-body {
+    padding: 40px 40px 28px;
+  }
 }
-
-.custom-label {
-  display: block;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #334155;
+.login-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 22px;
+  margin: 0 auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ds-navy-tint, #e6ecf2);
+  box-shadow: inset 0 0 0 1px rgba(10, 49, 84, 0.08);
+}
+.login-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--ds-text, #0f172a);
+  margin: 0 0 6px;
+}
+.login-subtitle {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ds-muted, #64748b);
+  margin: 0;
+}
+.login-link {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ds-teal-700, #0d9488);
+  text-decoration: none;
   margin-bottom: 6px;
 }
-
-.rounded-input :deep(.v-field) {
-  border-color: #e2e8f0 !important;
-  transition: all 0.2s ease;
+.login-link:hover {
+  text-decoration: underline;
 }
-
-.rounded-input :deep(.v-field--focused) {
-  border-color: #0a3154 !important;
-  box-shadow: 0 0 0 4px rgba(10, 49, 84, 0.1) !important;
+.login-btn {
+  height: 48px !important;
+  font-size: 15px !important;
 }
-
-.primary-login-btn {
-  background: linear-gradient(135deg, #0A3154 0%, #082741 100%) !important;
-  color: white !important;
-  height: 60px !important;
-  text-transform: none !important;
-  font-weight: 700 !important;
-  font-size: 1.1rem !important;
-}
-
-.primary-login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 30px -5px rgba(20, 184, 166, 0.4) !important;
-}
-
 .compact-checkbox :deep(.v-label) {
-  font-size: 0.9rem !important;
-  color: #64748b !important;
+  font-size: 13px !important;
+  font-weight: 600;
+  color: var(--ds-muted, #64748b) !important;
   opacity: 1 !important;
 }
-
-.form-footer {
+.login-footer {
+  padding: 14px 24px;
   text-align: center;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 1s ease-out;
-}
-
-@media (max-width: 959px) {
-  .login-card {
-    max-width: 500px;
-  }
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ds-faint, #94a3b8);
+  background: #f8fafc;
+  border-top: 1px solid var(--ds-border-soft, #f1f5f9);
 }
 </style>
